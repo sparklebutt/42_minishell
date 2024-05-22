@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   args.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/21 18:11:00 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/22 09:17:53 by vkettune         ###   ########.fr       */
+/*   Created: 2024/05/21 17:23:16 by vkettune          #+#    #+#             */
+/*   Updated: 2024/05/22 09:27:57 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ms_init(t_data *data, char **env)
+int args(t_data *data, char *prompt)
 {
-	// fill minishell data struct?
-	data->prompt = "\x1b[95mminishell\033[0;37m$ ";
-	data->env = NULL;
-	data->path = NULL;
-	data->pid = 0;
-	data->env = env_init(data, env); // copy env to struct
+	(void)data;
+	(void)prompt;
+	return (0);
 }
-
-// t_env	*env_init(t_data *data, char **env)
-// {
-// 	// understand env
-// 	// copy env to struct
-// 	(void)env;
-// 	(void)data;
-// 	return (0);
-// }

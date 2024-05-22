@@ -1,32 +1,57 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   cmds.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/21 18:11:00 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/22 09:17:53 by vkettune         ###   ########.fr       */
+/*   Created: 2024/05/22 09:28:04 by vkettune          #+#    #+#             */
+/*   Updated: 2024/05/22 09:36:50 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ms_init(t_data *data, char **env)
+int pwd(t_data *data)
 {
-	// fill minishell data struct?
-	data->prompt = "\x1b[95mminishell\033[0;37m$ ";
-	data->env = NULL;
-	data->path = NULL;
-	data->pid = 0;
-	data->env = env_init(data, env); // copy env to struct
+	(void)data;
+	return (0);
 }
 
-// t_env	*env_init(t_data *data, char **env)
-// {
-// 	// understand env
-// 	// copy env to struct
-// 	(void)env;
-// 	(void)data;
-// 	return (0);
-// }
+int cd(t_data *data, char *path)
+{
+	(void)data;
+	(void)path;
+	return (0);
+}
+
+int echo(t_data *data, char *str)
+{
+	(void)data;
+	(void)str;
+	return (0);
+}
+
+int env(t_data *data)
+{
+	(void)data;
+	return (0);
+}	
+
+int export(t_data *data)
+{
+	(void)data;
+	return (0);
+}
+
+int unset(t_data *data)
+{
+	(void)data;
+	return (0);
+}
+
+int ft_exit(t_data *data)
+{
+	(void)data;
+	return (0);
+}
