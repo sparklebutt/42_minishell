@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/22 11:17:15 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/22 14:09:35 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,20 @@ int main(int argc, char **argv, char **env)
 {
 	char	*rl;
 	t_data data;
+	static t_env	envs;
 	// int		out;
 
 	(void)argc;
 	(void)argv;
+	
+	lst_env(&envs);//ar added
+	while (envs.next != NULL)
+	{
+		printf("value in envs  = %s\n", envs.value);
+		printf("key in envs  = %s\n", envs.key);
+		envs = *envs.next;
+	}
+	free_nodes(&envs);
 	ms_init(&data, env); // filling variables in struct
 	// if we want to error handle the return value of ms_init, we can
 	while (1)
