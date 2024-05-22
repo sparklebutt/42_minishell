@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/22 11:17:42 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/22 13:30:09 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 
 typedef struct s_env
 {
-	
 	char	*value;
 }	t_env;
 
@@ -64,12 +63,7 @@ void	ms_init(t_data *data, char **env);
 t_env	*env_init(t_data *data, char **env);
 
 // cmds.c
-int		pwd(t_data *data);
-int		cd(t_data *data, char *path);
-int		echo(t_data *data, char *str);
-int		env(t_data *data);
-int		export(t_data *data);
-int		unset(t_data *data);
-int	ft_exit(t_data *data);
+int		ft_pwd(t_data *data);
+char *ft_cd(t_data *data, char *rl);
 
 #endif

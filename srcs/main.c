@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/22 11:17:15 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/22 13:47:35 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int main(int argc, char **argv, char **env)
 {
 	char	*rl;
 	t_data data;
-	// int		out;
 
 	(void)argc;
 	(void)argv;
@@ -38,6 +37,8 @@ int main(int argc, char **argv, char **env)
 		else if (!rl)
 			break ;
 	}
+	if (rl)
+		free(rl);
 	// free(rl); // ????
 	// free(&data); // ????
   return (0);
@@ -46,31 +47,20 @@ int main(int argc, char **argv, char **env)
 int	handle_line(t_data data, char *rl)
 {
 	char *temp;
+	char *temp2;
 	(void)data;
 	(void)rl;
 	
+	// parsing(data, rl);
+	temp = NULL;
+	temp2 = NULL;
 	// !! move these into srcs/cmds.c and call the functions from there !!
 	if (ft_strncmp(rl, "exit", 5) == 0) // if exit command is given, exit the program
 		return (-1);
-	if (ft_strncmp(rl, "pwd", 4) == 0 || strncmp(rl, "cd", 2) == 0)
-		data.path = getcwd(NULL, 0); // get current working directory
 	if (ft_strncmp(rl, "pwd", 4) == 0)
-		ft_printf("%s\n", data.path); // print current working directory
+		ft_pwd(&data);
 	else if (ft_strncmp(rl, "cd", 2) == 0)
-	{
-		// was testing how it works, THIS IS NOT NEEDED ANYMORE
-		ft_printf("old pwd: %s\n", data.path); // print current working directory
-		// ft_printf("temp: %s\n", rl); 
-		temp = ft_strtrim(rl, "cd ");
-		// ft_printf("temp: %s\n", temp);
-		temp = ft_strjoin("/", temp);
-		// ft_printf("temp: %s\n", temp);
-		temp = ft_strjoin(data.path, temp);
-		// ft_printf("temp: %s\n", temp);
-		chdir(temp);
-		data.path = getcwd(NULL, 0);
-		ft_printf("new pwd: %s\n", data.path); // print new working directory
-	}
+		ft_cd(&data, rl);
 	else if (ft_strncmp(rl, "echo ", 5) == 0)
 	{
 		temp = getenv("USER");
@@ -80,7 +70,10 @@ int	handle_line(t_data data, char *rl)
 	}
 	else
 		ft_printf("%s\n", rl); // return rl on a new line
-	
+	if (data.path)
+		free(data.path);
+	// if (temp)
+	// 	free(temp);
 	// parsing
 	// error handling
 	// check commands (started)

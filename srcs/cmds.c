@@ -6,52 +6,44 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:28:04 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/22 09:36:50 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/22 14:15:14 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int pwd(t_data *data)
+int ft_pwd(t_data *data)
 {
-	(void)data;
+	if (!(getcwd(NULL, 0) == NULL))
+		data->path = getcwd(NULL, 0);
+	ft_printf("%s\n", data->path);
 	return (0);
 }
 
-int cd(t_data *data, char *path)
+char *ft_cd(t_data *data, char *rl)
 {
-	(void)data;
-	(void)path;
-	return (0);
-}
+	char *temp;
+	char *temp2;
 
-int echo(t_data *data, char *str)
-{
-	(void)data;
-	(void)str;
-	return (0);
-}
-
-int env(t_data *data)
-{
-	(void)data;
-	return (0);
-}	
-
-int export(t_data *data)
-{
-	(void)data;
-	return (0);
-}
-
-int unset(t_data *data)
-{
-	(void)data;
-	return (0);
-}
-
-int ft_exit(t_data *data)
-{
-	(void)data;
-	return (0);
+	temp = NULL;
+	temp2 = NULL;
+	if (!(getcwd(NULL, 0) == NULL))
+		data->path = getcwd(NULL, 0);
+	if (ft_strncmp(rl, "cd", 3) == 0)
+	{
+		
+		chdir(HOME);
+	}
+	ft_printf("old pwd: %s\n", data->path); // remove
+	free(data->path); // remove
+	temp = ft_strtrim(rl, "cd ");
+	temp2 = ft_strjoin("/", temp);
+	free(temp);
+	temp = ft_strjoin(data->path, temp2);
+	free(temp2);
+	chdir(temp);
+	free(temp);
+	data->path = getcwd(NULL, 0);
+	ft_printf("new pwd: %s\n", data->path); // remove
+	return (data->path);
 }

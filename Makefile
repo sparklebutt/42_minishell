@@ -6,7 +6,7 @@
 #    By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/05/22 09:33:28 by vkettune         ###   ########.fr        #
+#    Updated: 2024/05/22 13:40:47 by vkettune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ LIBS = $(READLINE) $(LIBFT)
 READLINE = -lreadline  -L ~/.brew/opt/readline/lib
 LIBFT = libft/libft.a
 
-FILES = main.c init.c signals.c args.c env.c cmds.c
+FILES = main.c init.c signals.c args.c cmds.c
 
 SRCS = $(addprefix srcs/, $(FILES))
 OBJS = $(addprefix objs/, $(FILES:.c=.o))
@@ -74,5 +74,10 @@ fclean: clean
 	
 re: fclean all
 	@echo "$(GREEN)Sucessfully cleaned and rebuilt everything$(X)"
+
+test: # remove this
+	@mkdir -p example/ example/example2 example/example2/example3
+	@touch example/file1 example/file2 example/example2/file3 example/example2/file4 example/example2/example3/file5
+	@echo "$(DARK_MAGENTA)- - - - - test folders and files created - - - - - -\n$(X)"
 
 .PHONY: all clean fclean re
