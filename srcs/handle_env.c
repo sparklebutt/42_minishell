@@ -6,10 +6,31 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 12:56:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/05/22 13:56:51 by araveala         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:42:43 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
  #include "minishell.h"
+
+char *find_key_name(char *string)
+{
+	char *name;
+	int i;
+
+	i = 0;
+	name = NULL;
+	while (string[i])
+	{
+		
+		if (string[i] == '=')
+		{
+			name = ft_substr(string, 0, i);
+			return (name);
+		}
+		i++;
+	}
+	printf("error in finding key name\n");
+	return (0);
+}
 
 void     lst_env(t_env *envs)
 {
@@ -18,40 +39,10 @@ void     lst_env(t_env *envs)
     char *test;
 
     i = 0;
-	test = "a";
     while (environ[i] != NULL)
     {
+		test = find_key_name(environ[i]);
 		addnode(&envs, add_new_node(environ[i], test));
         i++;
     }
 }
-
-
-/*char	*lst_env()
-{
-    extern char **environ;
-    int i;
-    char **array;
-
-    i = 0;
-    while (environ[i] != NULL)
-    {
-        printf("whats in the environ = %s\n", environ[i]);
-        printf("test = %d\n", test);
-        i++;
-    }
-	array = ft_calloc(i, sizeof(char *));
-	if (array == NULL)
-		return (0);
-	i = 0;
-    while (environ[i] != NULL)
-    {
-		array[i] = environ[i];
-        printf("whats in the environ = %s\n", environ[i]);
-        printf("test = %d\n", test);
-        i++;
-    }
-	
-	return (array);
-}*/
-//array version
