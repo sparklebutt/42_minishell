@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:12:21 by araveala          #+#    #+#             */
-/*   Updated: 2024/05/22 14:13:06 by araveala         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:57:07 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -43,6 +43,11 @@ void addnode(t_env **env_lst, t_env *node) //to end
 		env_lst = &temp; //return pointer 
 	}
 }
+
+/*void	remove_node()
+{
+	for unset 
+	}*/
 
 void	free_nodes(t_env *nodes)
 {

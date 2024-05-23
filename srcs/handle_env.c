@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 12:56:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/05/22 15:42:43 by araveala         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:54:50 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
  #include "minishell.h"

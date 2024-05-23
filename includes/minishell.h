@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/22 14:08:59 by araveala         ###   ########.fr       */
+/*   Updated: 2024/05/23 17:46:02 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,24 @@ typedef struct s_env
 	struct	s_env *prev;//might not need due to having a key
 }	t_env;
 
+typedef struct s_tokens
+{
+	char *cmd;
+	char **args;
+
+	int	pipe_count;
+}			t_tokens;
+
+
 typedef struct s_data
 {
-	char	*prompt;
-	t_env	*env;
+	char		*prompt;
+	t_env		*env;
+	t_tokens	*tokens;
 	int		pid;
 	char *path;
 }	t_data;
+
 
 typedef struct s_cmd
 {
@@ -78,4 +89,11 @@ int		env(t_data *data);
 int		export(t_data *data);
 int		unset(t_data *data);
 int	ft_exit(t_data *data);
+
+//test functions that may ormay not be in need of renovation
+void	collect_cmd_array(t_tokens *tokens, char *string);
+void	check_path_bla(char *string, char *cmd, int flag);
+void	find_passage(t_env *envs, char *string, char *cmd);
+
 #endif
+
