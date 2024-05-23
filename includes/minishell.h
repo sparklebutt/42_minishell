@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/22 13:30:09 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/23 11:29:59 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,11 @@
 
 typedef struct s_env
 {
+	char	*key;
 	char	*value;
+	struct	s_env *next;
+	struct	s_env *prev; //might not need due to having a key
 }	t_env;
-
-typedef struct s_data
-{
-	char	*prompt;
-	t_env	*env;
-	int		pid;
-	char *path;
-}	t_data;
 
 typedef struct s_cmd
 {
@@ -45,25 +40,43 @@ typedef struct s_cmd
 	char	**args;
 }	t_cmd;
 
+typedef struct s_data
+{
+	char	*prompt;
+	t_env	*env;
+	t_cmd	*cmds;
+	int		pid;
+	char *path;
+}	t_data;
+
 // args.c
 int		args(t_data *data, char *prompt);
 
 // main.c
 int		main(int argc, char **argv, char **env);
-int	handle_line(t_data data, char *rl);
+int	handle_line(t_data data, t_env envs, char *rl);
 
 // signals.c
 void	signal_handler(int signo);
 void	set_signals(void);
 
 // init.c
-void	ms_init(t_data *data, char **env);
+void	ms_init(t_data *data);
 
 // env.c
 t_env	*env_init(t_data *data, char **env);
 
+t_env	*add_new_node(char *value_in, char *key_in);
+void	addnode(t_env **env_list, t_env *node);
+void	lst_env(t_env *envs);
+void	free_nodes(t_env *nodes);
+
 // cmds.c
 int		ft_pwd(t_data *data);
-char *ft_cd(t_data *data, char *rl);
+void ft_cd(t_data *data, char *rl);
+int ft_exit(char *cmd);
+void ft_echo(char *rl);
+void handle_quotes(char **str);
+void ft_env(char *rl, char *cmd, t_env envs);
 
 #endif
