@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/23 11:29:59 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/24 10:58:42 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,6 @@ int ft_exit(char *cmd);
 void ft_echo(char *rl);
 void handle_quotes(char **str);
 void ft_env(char *rl, char *cmd, t_env envs);
+char	*trim_start(char *str);
 
 #endif

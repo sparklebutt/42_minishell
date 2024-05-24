@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:28:04 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/23 12:59:35 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/24 11:12:11 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,31 @@ void ft_echo(char *rl)
 {
 	char *temp;
 
-	//trim echo from rl
-	// check if there are any quotes
-	// if there are, echo the string inside the quotes
-	// if there are not, echo the string
-	ft_printf("temp: %s\n", rl);
-	temp = ft_strtrim(rl, "echo ");
-	ft_printf("temp: %s\n", temp);
+	// ft_printf("before trim: '%s'\n", rl);
+	temp = trim_start(rl);
+	// ft_printf("after trim: '%s'\n", temp);
 	handle_quotes(&temp);
+	// ft_printf("after handling quotes: '%s'\n", temp);
 	ft_printf("%s\n", temp);
-	free(temp);
+}
+
+char	*trim_start(char *str)
+{
+	int i;
+	int j;
+	char *c;
+
+	i = 0;
+	j = 0;
+	c = "echo";
+	while (str[i] == ' ' || str[i] == '\t')
+		i++;
+	while (str[i] == c[j] && c[j] != '\0')
+	{
+		i++;
+		j++;
+	}
+	return (str + i);
 }
 
 void handle_quotes(char **str)
@@ -93,7 +108,6 @@ void handle_quotes(char **str)
 		}
 		i++;
 	}
-	ft_printf("temp: %s\n", temp);
 	*str = temp;
 }
 

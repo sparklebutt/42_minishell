@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/23 12:59:42 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/24 11:08:43 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int	handle_line(t_data data, t_env envs, char *rl)
 		while (cmd && cmd[++i] != '\0')
 			cmd[i] = ft_tolower(cmd[i]);
 		// ft_printf("after tolower cmd: %s|\n", cmd); //remove
+
+		
 		if (ft_strncmp(cmd, "echo", 5) == 0)
 		{
 			// ft_printf("added space\n"); //remove
