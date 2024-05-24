@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 12:56:15 by araveala          #+#    #+#             */
 /*   Updated: 2024/05/22 16:54:50 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
- #include "minishell.h"
+
+#include "minishell.h"
 
 char *find_key_name(char *string)
 {
