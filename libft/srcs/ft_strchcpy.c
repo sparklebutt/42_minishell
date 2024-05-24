@@ -1,38 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_strchcpy.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/25 08:36:02 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/23 09:51:23 by vkettune         ###   ########.fr       */
+/*   Created: 2024/05/23 07:26:39 by vkettune          #+#    #+#             */
+/*   Updated: 2024/05/23 09:39:39 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+void	*ft_strchcpy(char *dest, const char *src, char c)
 {
-	char	*s3;
-	size_t	i;
-	size_t	j;
-
+	int	i;
+	
 	i = 0;
-	j = 0;
-	s3 = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!s1 || !s2 || !s3)
-		return (0);
-	while (s1[i])
+	dest = malloc((ft_strlen(src) + 1) * sizeof(char));
+	while (src && src[i] != c && src[i] != '\0')
 	{
-		s3[i] = s1[i];
+		if (src[i] == c)
+			break ;
+		dest[i] = src[i];
 		i++;
 	}
-	while (s2[j])
-	{
-		s3[i + j] = s2[j];
-		j++;
-	}
-	s3[i + j] = '\0';
-	return (s3);
+	dest[i] = '\0';
+	return (dest);
 }

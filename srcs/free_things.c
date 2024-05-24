@@ -1,20 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tolower.c                                       :+:      :+:    :+:   */
+/*   free_things.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 15:20:52 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/23 10:08:02 by vkettune         ###   ########.fr       */
+/*   Created: 2024/05/24 10:59:15 by araveala          #+#    #+#             */
+/*   Updated: 2024/05/24 11:00:25 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_tolower(int c)
+void	free_array(char **array)
 {
-	while (c >= 'A' && c <= 'Z')
-		c += 32;
-	return (c);
+	int i;
+
+	i = 0;
+	while (array[i] != NULL)
+	{
+		free(array[i]);
+		array[i] = NULL;
+		i++;
+	}
+	if (array != NULL)
+	{
+		free(array);
+		array = NULL;
+	}
 }
