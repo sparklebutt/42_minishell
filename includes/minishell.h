@@ -34,6 +34,14 @@ typedef struct s_env
 	struct	s_env *prev; //might not need due to having a key
 }	t_env;
 
+typedef struct s_tokens
+{
+	char *cmd;
+	char **args;
+
+	int	pipe_count;
+}			t_tokens;
+
 typedef struct s_cmd
 {
 	char	*cmd;
@@ -45,6 +53,7 @@ typedef struct s_data
 	char	*prompt;
 	t_env	*env;
 	t_cmd	*cmds;
+  t_tokens	*tokens;
 	int		pid;
 	char *path;
 }	t_data;
@@ -70,6 +79,11 @@ t_env	*add_new_node(char *value_in, char *key_in);
 void	addnode(t_env **env_list, t_env *node);
 void	lst_env(t_env *envs);
 void	free_nodes(t_env *nodes);
+
+//test functions that may ormay not be in need of renovation
+void	collect_cmd_array(t_tokens *tokens, char *string);
+void	check_path_bla(char *string, char *cmd, int flag);
+void	find_passage(t_env *envs, char *string, char *cmd);
 
 // cmds.c
 int		ft_pwd(t_data *data);

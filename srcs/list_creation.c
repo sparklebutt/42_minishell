@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:12:21 by araveala          #+#    #+#             */
-/*   Updated: 2024/05/23 06:53:41 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:57:07 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@ void addnode(t_env **env_lst, t_env *node) //to end
 		env_lst = &temp; //return pointer 
 	}
 }
+
+/*void	remove_node()
+{
+	for unset 
+	}*/
 
 void	free_nodes(t_env *nodes)
 {

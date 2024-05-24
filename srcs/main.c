@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/24 11:08:43 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/23 18:29:32 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,20 @@
 
 int main(int argc, char **argv, char **env)
 {
+	printf("aarg\n");	
 	char	*rl;
 	t_data data;
 	static t_env	envs;
+	static t_tokens tokens;
 
+//	char *why[]= {"ls", NULL};
+//	char *test[] = {"/bin", NULL};
 	(void)argc;
 	(void)argv;
-	(void)env;
-	
-	lst_env(&envs); //ar added
-	// ft_printf("test\n");
-	// while (envs.next != NULL)
-	// {
-	// 	printf("value in envs  = %s\n", envs.value);
-	// 	printf("key in envs  = %s\n", envs.key);
-	// 	envs = *envs.next;
-	// }
-	// free_nodes(&envs);
-	ms_init(&data); // filling variables in struct
+
+	lst_env(&envs);
+
+	ms_init(&data, env); // filling variables in struct
 	// if we want to error handle the return value of ms_init, we can
 	while (1)
 	{
@@ -39,8 +35,22 @@ int main(int argc, char **argv, char **env)
 		rl_on_new_line(); // tells update routine that we are starting a new line, check into this?
 		rl = readline(data.prompt); // pastes prompt and reads a line from terminal, returning output
 		add_history(rl); // add to history automatically
+
 		if (rl)
-		{ 
+		{
+
+			collect_cmd_array(&tokens, rl);
+			find_passage(&envs, "PATH", "ls");
+			//free_nodes(&envs); //fixes the 11 leaks
+
+
+//an example on how to use a execvecommand from env no added bs
+/*	if (ft_strncmp(rl, "ls", 2) == 0)
+    {
+      printf("inhere bitch\n");
+      execve("/bin/ls", why, env);
+     }*/
+
 			if (handle_line(data, envs, rl) == -1) // new line function, prasing and stuff
 				break ;
 			// free(&data); // ???? do I need to free this too? or after while loop
