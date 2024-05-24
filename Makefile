@@ -36,7 +36,7 @@ LIBS = $(READLINE) $(LIBFT)
 READLINE = -lreadline  -L ~/.brew/opt/readline/lib
 LIBFT = libft/libft.a
 
-FILES = main.c init.c signals.c args.c cmds.c handle_env.c list_creation.c 
+FILES = main.c init.c signals.c args.c cmds.c handle_env.c list_creation.c parsing.c
 
 SRCS = $(addprefix srcs/, $(FILES))
 OBJS = $(addprefix objs/, $(FILES:.c=.o))
