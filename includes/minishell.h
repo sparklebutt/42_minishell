@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/24 10:58:42 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/24 13:25:48 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ typedef struct s_data
 int		args(t_data *data, char *prompt);
 
 // main.c
-int		main(int argc, char **argv, char **env);
-int	handle_line(t_data data, t_env envs, char *rl);
+int		main(int argc, char **argv);//, char **env);
+int		handle_line(t_data data, t_env envs, char *rl);
 
 // signals.c
 void	signal_handler(int signo);
@@ -84,6 +84,9 @@ void	free_nodes(t_env *nodes);
 void	collect_cmd_array(t_tokens *tokens, char *string);
 void	check_path_bla(char *string, char *cmd, int flag);
 void	find_passage(t_env *envs, char *string, char *cmd);
+void	free_array(char **array);
+char	**ft_split_adv(char const*s, char c);
+size_t  total_words_c(char const *s, char c);
 
 // cmds.c
 int		ft_pwd(t_data *data);

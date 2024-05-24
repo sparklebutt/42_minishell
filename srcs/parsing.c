@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/05/23 18:36:09 by araveala         ###   ########.fr       */
+/*   Updated: 2024/05/24 13:32:22 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,31 @@ void	pipe_collector(t_tokens *tokens, char **array)
 {
 	int i;
 	int count;
+	int len;
 
 	i = 0;
 	count = 0;
 	while (array[i] != '\0')
 	{
+		len = ft_strlen(array[i]);
+
 		if (array[i][0] == '|')
 		{
+			if (len == 2)
+			{
+				if (array[i][1] == '|')
+					printf("we have 2 pipes next to eachother BONUS POTENTIAL\n");
+					//we can do a count and mark special char for bonuse here
+			}
+			if (len > 2)
+			{
 
+				if (array[i][2] == '|')
+					printf("syntax error , too many pipes STEP BACK TO MAIN\n");
+			}
 			count++;
 			//splt already confirmed spaces around pipe
-			//what if pipe is the last char with no feed, it takes input differently
+			//pipe as last char needs to be handled
 		}
 		i++;
 	}
@@ -40,32 +54,27 @@ void	pipe_collector(t_tokens *tokens, char **array)
 }
 
 //string is rl
-//rename to collect array data
 void collect_cmd_array(t_tokens *tokens, char *string)
 {
 	int i;
 	int x;
 
-	x = 8;//get array count or make split finish array with null
+	x = total_words_c(string, ' ');
 	i = 0;
-	
-	//spit does not consider if string has multiple spaces to print, will split spaces away.
-	//could consider placeholder for delimeter ooor we will navigate rl to compare and find strings to print   
-	// quotes should be a safe space for spaces
-
-	tokens->args = ft_split(string, ' ');
+//spit adv has some double quotes handing just for example
+	tokens->args = ft_split_adv(string, ' ');
 	pipe_collector(tokens, tokens->args); //maybe dont need
-	//maybe special char collector? such as &&
 	if (tokens->args == NULL)
 	{
 		ft_printf("malloc fail in parsing , making of array of args\n");
 		return ;
 	}	
 	i = 0;
-
-//just so we can see insideVVV
-	while (i != x)//causes->segv(&command_array[i + 1] != NULL) 
+//just so we can see inside
+	while (i != x)
 	{
+		//we can loop though to find syntax errors here, eg | | is a syntax error
+		//we can also collect special chars here or just after pipe collector
 		printf("looking inside array in struct = %s\n", tokens->args[i]);
 		i++;
 	}
@@ -79,6 +88,11 @@ void	find_passage(t_env *envs, char *string, char *cmd)
 	//if command is not a built in command
 	int strlen;
 
+	if (envs == NULL)
+		printf("ENVS NULL OHO \n");
+	if (string  == NULL || cmd == NULL)
+		printf("STRING OR CMD  NULL OHO \n");
+
 	strlen = ft_strlen(string);
 	while (envs->next != NULL)
 	{
@@ -90,12 +104,10 @@ void	find_passage(t_env *envs, char *string, char *cmd)
 			printf("we found passage for commands\n");
 		}	
 	}
-	if (envs == NULL)
-		printf("holding position \n");
 	//clean stuff
 	}
 
-///THIS IS A CO,PLETE MESS AND I LOST HOPE  
+
 void	check_path_bla(char *string, char *cmd, int flag)
 {
 	struct dirent *dp; //dp = dir pointer, struct required 
@@ -106,21 +118,21 @@ void	check_path_bla(char *string, char *cmd, int flag)
 	char *suffix;// "/ + cmd"
 	size_t	 cmd_len; //size t because strlen returns size t
 	int i;
-//	char *why[] = {cmd, NULL};
 
 	i = 0;
-
 	temp = NULL;
-	cmd_len = ft_strlen(cmd);
 	filename = NULL;
+	cmd_len = ft_strlen(cmd);
 	suffix = ft_strjoin("/", cmd);
+
 	if (suffix == NULL)
 		printf("malloc fail in check path bla\n");
 	if (flag == 1) //PATH
 		temp = ft_split(string, ':');
-	else if (flag == 2)
+	if (flag == 2)
 		//temp = set up home
-	printf("bug huntning \n");
+	if (temp == NULL || temp[i] == NULL)
+		printf("temp[i] is null for some reason\n");
 	while (temp[i] != NULL)
 	{
 		printf("temp i = %s\n", temp[i]);
@@ -128,21 +140,30 @@ void	check_path_bla(char *string, char *cmd, int flag)
 		{
 			printf("access says ok to DIR\n");
 			test = opendir(temp[i]);
+//			if (test == NULL)
+//				printf("what what in the butt\n");
 			printf("we opened dir\n");
-			//if test null check
-
-
-			while((dp = readdir(test)) != NULL)// (dp != NULL)
+			while((dp = readdir(test)) != NULL)// work arouund needed here
 			{
-
-
 				if (ft_strncmp(dp->d_name, cmd, cmd_len) == 0 && ft_strlen(dp->d_name) == cmd_len)//otherwise we do not find exact cmd
 				{
+
 					filename = ft_strjoin(temp[i], suffix);
 					printf("filename = %s\n", filename);
 //					execve(cmd, why, &temp[i]);
 					printf("are we execut~~~~~~~~~~~~~e\n");
-
+					if (filename != NULL)
+					{
+						free(filename);
+						filename = NULL;
+					}
+					if (suffix != NULL)
+					{
+						free(suffix);
+						suffix = NULL;
+					}
+					printf("succed so then we leav~~~~~~~~~~~~~e\n");
+					return;
 				}
 //				dp = readdir(test);
 //				if (dp == NULL)
@@ -151,18 +172,6 @@ void	check_path_bla(char *string, char *cmd, int flag)
 			}
 			closedir(test);
 			printf("close dir 1\n");
-			if (filename != NULL)
-			{
-				free(filename);
-				filename = NULL;
-			}
-			if (suffix != NULL)
-			{
-				free(suffix);
-				suffix = NULL;
-			}
-			closedir(test);
-			printf("we close dirwtf\n");
 		}
 		i++;
 		

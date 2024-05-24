@@ -6,13 +6,13 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/23 18:29:32 by araveala         ###   ########.fr       */
+/*   Updated: 2024/05/24 13:24:44 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(int argc, char **argv, char **env)
+int main(int argc, char **argv)//, char **env)
 {
 	printf("aarg\n");	
 	char	*rl;
@@ -27,7 +27,7 @@ int main(int argc, char **argv, char **env)
 
 	lst_env(&envs);
 
-	ms_init(&data, env); // filling variables in struct
+	ms_init(&data); // filling variables in struct
 	// if we want to error handle the return value of ms_init, we can
 	while (1)
 	{
