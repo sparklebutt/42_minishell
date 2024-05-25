@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:28:04 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/24 11:12:11 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/25 06:21:49 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*trim_start(char *str)
 
 	i = 0;
 	j = 0;
-	c = "echo";
+	c = "echo  ";
 	while (str[i] == ' ' || str[i] == '\t')
 		i++;
 	while (str[i] == c[j] && c[j] != '\0')
@@ -96,18 +96,19 @@ void handle_quotes(char **str)
 
 	i = 0;
 	temp = *str;
+	// ft_printf("before handling quotes temp: %s\n", temp);
 	while (temp[i] != '\0')
 	{
 		// \" means the string is inside quotes
 		if (temp[i] == '\"')
 		{
 			temp2 = ft_strtrim(temp, "\"");
-			free(temp);
 			temp = temp2;
 			break;
 		}
 		i++;
 	}
+	// ft_printf("after temp: %s\n", temp);
 	*str = temp;
 }
 

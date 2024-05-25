@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/24 13:25:48 by araveala         ###   ########.fr       */
+/*   Updated: 2024/05/25 06:51:08 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ void	free_nodes(t_env *nodes);
 //test functions that may ormay not be in need of renovation
 void	collect_cmd_array(t_tokens *tokens, char *string);
 void	check_path_bla(char *string, char *cmd, int flag);
-void	find_passage(t_env *envs, char *string, char *cmd);
+// void	find_passage(t_env *envs, char *string, t_tokens *tokens);
+void	find_passage(t_env *envs, char *string, char **args);
 void	free_array(char **array);
 char	**ft_split_adv(char const*s, char c);
 size_t  total_words_c(char const *s, char c);
