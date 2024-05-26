@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 16:05:37 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/26 12:58:20 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/26 14:28:38 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,25 +37,19 @@ int find_node(t_env *envs, char *key)
 	if (!envs)
 		return (0);
 	temp = envs;
-	ft_printf("envs->value: %s\n", envs->value);
-	ft_printf("temp->value: %s\n", temp->value); // correct value
 	while (1)
 	{
-		ft_printf("- - - - - - - - - - - - - - - - - - \n");
+		ft_printf("- - - - - - - - - - - - - - - - - - \n"); // remove
 		ft_printf("looking for key: %s|\n", key); // remove
 		ft_printf("temp->key: %s|\n", temp->key); // remove
 		ft_printf("temp->value: %s\n", temp->value); // places revious key as value???
-		// if (temp->next == NULL)
-		// 	break ;
-		// ft_printf("temp->prev->value: %s\n", temp->next->value); // remove
-		// ft_printf("temp->prev->key: %s\n", temp->next->key); // remove
+		if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) == 0 && (ft_strlen(temp->key) == ft_strlen(key)))
+		{
+			ft_printf("found %s key from env!!\n", temp->key);
+			ft_printf("kay's value is: %s\n", temp->value);
+			return (0);
+		}
 		temp = temp->prev;
-		// if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) && ft_strlen(temp->key) == ft_strlen(key))
-		// {
-		// 	ft_printf("found key: %s\n", temp->key);
-		// 	ft_printf("found value: %s\n", temp->value);
-		// 	return (0);
-		// }
 		// temp = temp->next;
 		// temp->value = temp->prev->value;
 		// temp->key = temp->prev->key;

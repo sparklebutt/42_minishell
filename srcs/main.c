@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/26 13:36:58 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/26 14:27:02 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,18 @@ int main(int argc, char **argv)//, char **env)
 
 	// lst_env(&envs);
 	envs = *lst_env(&envs);
-	// envs = *envs.next;
-	// ft_printf("0 envs_key: %s\n", envs.key);
-	// ft_printf("0 envs_value: %s\n", envs.value);
-	// ft_printf("- - - - - - - - - - - - - - - - - - \n");
-	// if (find_node(&envs, "HOME") == 0)
-	// {
-	// 	ft_printf("found\n");
-	// 	// envs = *move_list(&envs, "HOME");
-	// }
-		// ft_printf("found\n");
-	// ft_printf("1 envs_key: %s\n", envs.key);
-	// ft_printf("1 envs_value: %s\n", envs.value);
-	// ft_printf("- - - - - - - - - - - - - - - - - - \n");
+	envs = *envs.next; // do not remove, moves node to be the last
+	
+	if (find_node(&envs, "HOME") == 0)
+	{
+		envs = *move_list(&envs, "HOME");
+		ft_printf("- - - - - - moved into new env node - - - - - - - - \n");
+	}
+	ft_printf("main.c envs_key: %s\n", envs.key);
+	ft_printf("main.c envs_value: %s\n", envs.value);
+	ft_printf("- - - - - - - - - - - - - - - - - - \n");
+
+	
 	ms_init(&data); // filling variables in struct
 	// if we want to error handle the return value of ms_init, we can
 	while (1)
