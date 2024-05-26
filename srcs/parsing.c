@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/05/25 07:09:13 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/25 08:58:27 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	pipe_collector(t_tokens *tokens, char **array)
 		i++;
 	}
 	tokens->pipe_count = count;
-	printf("we have %d pipes\n", tokens->pipe_count);
+	// printf("we have %d pipes\n", tokens->pipe_count);
 }
 
 // string is rl
@@ -61,11 +61,11 @@ void collect_cmd_array(t_tokens *tokens, char *string)
 
 	x = total_words_c(string, ' ');
 	i = 0;
-// spit adv has some double quotes handing just for example
-	ft_printf("test\n");
+	// spit adv has some double quotes handing just for example
+	// ft_printf("test\n");
 	tokens->args = ft_split_adv(string, ' ');
-	ft_printf("x = %d\n", x);
-	ft_printf("args = %s\n", tokens->args[0]);
+	// ft_printf("x = %d\n", x);
+	// ft_printf("args = %s\n", tokens->args[0]);
 	pipe_collector(tokens, tokens->args); //maybe dont need
 	if (tokens->args == NULL)
 	{

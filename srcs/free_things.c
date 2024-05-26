@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_things.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:59:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/05/24 11:00:25 by araveala         ###   ########.fr       */
+/*   Updated: 2024/05/26 13:56:08 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,10 @@ void	free_array(char **array)
 		free(array);
 		array = NULL;
 	}
+}
+
+int error(char *cmd, char *error)
+{
+	ft_printf("minishell: %s: %s\n", cmd, error);
+	return (1);
 }

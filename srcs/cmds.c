@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:28:04 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/25 06:21:49 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/26 13:58:48 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,23 @@ int ft_pwd(t_data *data)
 	if (temp == NULL) //remove
 		free(temp);
 	else
+	{
+		// free(data->path);
 		data->path = temp;
+	}
 	ft_printf("%s\n", data->path);
 	return (0);
 }
 
-void ft_cd(t_data *data, char *rl)
+void ft_cd(t_data *data, t_env *envs, char *rl)
 {
 	char *temp;
 	char *temp2;
+	t_tokens *tokens;
+	(void)envs;
 
+	
+	tokens = data->tokens;
 	if (ft_strncmp(rl, "cd", 3) == 0)
 	{
 		ft_printf("return to HOME: connect this with env (alexandra)\n");
@@ -43,29 +50,49 @@ void ft_cd(t_data *data, char *rl)
 	if (temp == NULL)
 		free(temp);
 	else
+	{
+		// ft_printf("temp: %s\n", data->path);
+		// free(data->path);
 		data->path = temp;
-	// ft_printf("old pwd: %s\n", data->path); //remove
-	free(data->path);
+	}
+	ft_printf("old pwd: %s\n", data->path); //remove
+	// free(data->path);
 	temp = ft_strtrim(rl, "cd ");
 	temp2 = ft_strjoin("/", temp);
 	free(temp);
 	temp = ft_strjoin(data->path, temp2);
 	free(temp2);
 	chdir(temp);
-	free(temp);
-	data->path = getcwd(NULL, 0);
-	// ft_printf("new pwd: %s\n", data->path); //remove
+	if (chdir(temp) == 0)
+	{
+		free(data->path);
+		data->path = getcwd(NULL, 0);
+	}
+	else
+	{
+		ft_printf("error\n");
+		error(tokens->args[0], strerror(errno)); 
+	}
+	// free(temp);
+	// data->path = getcwd(NULL, 0);
+	ft_printf("new pwd: %s\n", data->path); //remove
 }
 
 void ft_echo(char *rl)
 {
 	char *temp;
+	// int i;
 
-	// ft_printf("before trim: '%s'\n", rl);
+	ft_printf("before trim: '%s'\n", rl);
 	temp = trim_start(rl);
-	// ft_printf("after trim: '%s'\n", temp);
+	ft_printf("after trim: '%s'\n", temp);
+	// i = 0;
+	// while (args[i++] != '|' || args[i] != NULL)
+	// {
+	// 	temp = ft_strjoin(args[i], " ");
+	// }
 	handle_quotes(&temp);
-	// ft_printf("after handling quotes: '%s'\n", temp);
+	ft_printf("after handling quotes: '%s'\n", temp);
 	ft_printf("%s\n", temp);
 }
 
@@ -104,6 +131,7 @@ void handle_quotes(char **str)
 		{
 			temp2 = ft_strtrim(temp, "\"");
 			temp = temp2;
+			free(temp2); // maybe
 			break;
 		}
 		i++;
@@ -114,9 +142,11 @@ void handle_quotes(char **str)
 
 int ft_exit(char *cmd)
 {
+	// (void)cmd;
 	free(cmd);
 	ft_printf("exit\n");
-	return (-1);
+	exit(0);
+	return (1);
 }
 
 void ft_env(char *rl, char *cmd, t_env envs)

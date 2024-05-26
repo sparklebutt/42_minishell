@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/25 06:51:08 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/26 13:56:48 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ int		args(t_data *data, char *prompt);
 
 // main.c
 int		main(int argc, char **argv);//, char **env);
-int		handle_line(t_data data, t_env envs, char *rl);
+int		handle_line(t_data data, t_env envs, t_tokens *tokens, char *rl);
+// int	handle_line(t_data data, t_env envs, t_tokens *tokens, char *line);
 
 // signals.c
 void	signal_handler(int signo);
@@ -77,8 +78,12 @@ t_env	*env_init(t_data *data, char **env);
 
 t_env	*add_new_node(char *value_in, char *key_in);
 void	addnode(t_env **env_list, t_env *node);
-void	lst_env(t_env *envs);
+t_env	*lst_env(t_env *envs);
 void	free_nodes(t_env *nodes);
+int error(char *cmd, char *error);
+
+int	find_node(t_env *envs, char *key);
+t_env	*move_list(t_env *envs, char *key);
 
 //test functions that may ormay not be in need of renovation
 void	collect_cmd_array(t_tokens *tokens, char *string);
@@ -88,14 +93,20 @@ void	find_passage(t_env *envs, char *string, char **args);
 void	free_array(char **array);
 char	**ft_split_adv(char const*s, char c);
 size_t  total_words_c(char const *s, char c);
+char *find_key_from_envs(t_env *envs, char *key);
 
 // cmds.c
 int		ft_pwd(t_data *data);
-void ft_cd(t_data *data, char *rl);
+void ft_cd(t_data *data, t_env *envs, char *rl);
 int ft_exit(char *cmd);
 void ft_echo(char *rl);
 void handle_quotes(char **str);
 void ft_env(char *rl, char *cmd, t_env envs);
 char	*trim_start(char *str);
+
+// handle_line.c
+char *cmd_to_lower(char *rl);
+int is_builtins(char *cmd);
+int exec_builtins(t_data data, t_env envs, char *rl);
 
 #endif
