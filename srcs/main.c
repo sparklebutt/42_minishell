@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/22 14:09:35 by araveala         ###   ########.fr       */
+/*   Updated: 2024/05/23 18:29:32 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,19 @@
 
 int main(int argc, char **argv, char **env)
 {
+	printf("aarg\n");	
 	char	*rl;
 	t_data data;
 	static t_env	envs;
-	// int		out;
+	static t_tokens tokens;
 
+//	char *why[]= {"ls", NULL};
+//	char *test[] = {"/bin", NULL};
 	(void)argc;
 	(void)argv;
-	
-	lst_env(&envs);//ar added
-	while (envs.next != NULL)
-	{
-		printf("value in envs  = %s\n", envs.value);
-		printf("key in envs  = %s\n", envs.key);
-		envs = *envs.next;
-	}
-	free_nodes(&envs);
+
+	lst_env(&envs);
+
 	ms_init(&data, env); // filling variables in struct
 	// if we want to error handle the return value of ms_init, we can
 	while (1)
@@ -38,9 +35,23 @@ int main(int argc, char **argv, char **env)
 		rl_on_new_line(); // tells update routine that we are starting a new line, check into this?
 		rl = readline(data.prompt); // pastes prompt and reads a line from terminal, returning output
 		add_history(rl); // add to history automatically
+
 		if (rl)
-		{ 
-			if (handle_line(data, rl) == -1) // new line function, prasing and stuff
+		{
+
+			collect_cmd_array(&tokens, rl);
+			find_passage(&envs, "PATH", "ls");
+			//free_nodes(&envs); //fixes the 11 leaks
+
+
+//an example on how to use a execvecommand from env no added bs
+/*	if (ft_strncmp(rl, "ls", 2) == 0)
+    {
+      printf("inhere bitch\n");
+      execve("/bin/ls", why, env);
+     }*/
+
+			if (handle_line(data, envs, rl) == -1) // new line function, prasing and stuff
 				break ;
 			// free(&data); // ???? do I need to free this too? or after while loop
 			free(rl);
@@ -48,54 +59,59 @@ int main(int argc, char **argv, char **env)
 		else if (!rl)
 			break ;
 	}
-	// free(rl); // ????
-	// free(&data); // ????
+	if (rl)
+		free(rl);
   return (0);
 }
 
-int	handle_line(t_data data, char *rl)
+int	handle_line(t_data data, t_env envs, char *rl)
 {
 	char *temp;
-	(void)data;
-	(void)rl;
+	char *temp2;
+	char *cmd;
+	int i;
 	
-	// !! move these into srcs/cmds.c and call the functions from there !!
-	if (ft_strncmp(rl, "exit", 5) == 0) // if exit command is given, exit the program
-		return (-1);
-	if (ft_strncmp(rl, "pwd", 4) == 0 || strncmp(rl, "cd", 2) == 0)
-		data.path = getcwd(NULL, 0); // get current working directory
-	if (ft_strncmp(rl, "pwd", 4) == 0)
-		ft_printf("%s\n", data.path); // print current working directory
-	else if (ft_strncmp(rl, "cd", 2) == 0)
+	// parsing(data, rl);
+	
+	temp = NULL;
+	temp2 = NULL;
+	i = -1;
+	if (ft_strncmp(rl, "cd", 2) != 0)
 	{
-		// was testing how it works, THIS IS NOT NEEDED ANYMORE
-		ft_printf("old pwd: %s\n", data.path); // print current working directory
-		// ft_printf("temp: %s\n", rl); 
-		temp = ft_strtrim(rl, "cd ");
-		// ft_printf("temp: %s\n", temp);
-		temp = ft_strjoin("/", temp);
-		// ft_printf("temp: %s\n", temp);
-		temp = ft_strjoin(data.path, temp);
-		// ft_printf("temp: %s\n", temp);
-		chdir(temp);
-		data.path = getcwd(NULL, 0);
-		ft_printf("new pwd: %s\n", data.path); // print new working directory
-	}
-	else if (ft_strncmp(rl, "echo ", 5) == 0)
-	{
-		temp = getenv("USER");
-		ft_printf("%s\n", temp);
-		// rl = ft_strtrim(rl, "echo ");
-		// ft_printf("%s\n", rl); // print echo
+		cmd = ft_strchcpy(temp, rl, ' ');
+		// ft_printf("after strchcpy cmd: %s|\n", cmd); //remove
+		while (cmd && cmd[++i] != '\0')
+			cmd[i] = ft_tolower(cmd[i]);
+		// ft_printf("after tolower cmd: %s|\n", cmd); //remove
+
+		
+		if (ft_strncmp(cmd, "echo", 5) == 0)
+		{
+			// ft_printf("added space\n"); //remove
+			// ft_printf("rl: %s|\n", rl); //remove
+			ft_printf("rl: %s|\n", rl); //remove
+			rl = ft_memmove(rl, cmd, 4);
+			ft_printf("rl: %s|\n", rl); //remove
+		}
 	}
 	else
+		cmd = ft_strdup("cd "); 
+	// ft_printf("final cmd: %s|\n", cmd); //remove
+	if (ft_strncmp(cmd, "exit", 5) == 0) // if exit command is given, exit the program
+		return (ft_exit(cmd)); // leaks cause it dodes not free cmd
+	else if (ft_strncmp(cmd, "pwd", 4) == 0)
+		ft_pwd(&data);
+	else if (ft_strncmp(cmd, "cd", 2) == 0)
+		ft_cd(&data, rl);
+	else if (ft_strncmp(cmd, "echo", 5) == 0)
+		ft_echo(rl);
+	else if (ft_strncmp(cmd, "env", 4) == 0)
+		ft_env(cmd, rl, envs);
+	else
 		ft_printf("%s\n", rl); // return rl on a new line
-	
-	// parsing
-	// error handling
-	// check commands (started)
-	// handle arguments
-	// impliment pipes
+	if (data.path)
+		free(data.path);
+	free(cmd);
 	return (0);
 }
 

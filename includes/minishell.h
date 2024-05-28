@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/22 14:08:59 by araveala         ###   ########.fr       */
+/*   Updated: 2024/05/24 10:58:42 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,16 @@ typedef struct s_env
 	char	*key;
 	char	*value;
 	struct	s_env *next;
-	struct	s_env *prev;//might not need due to having a key
+	struct	s_env *prev; //might not need due to having a key
 }	t_env;
 
-typedef struct s_data
+typedef struct s_tokens
 {
-	char	*prompt;
-	t_env	*env;
-	int		pid;
-	char *path;
-}	t_data;
+	char *cmd;
+	char **args;
+
+	int	pipe_count;
+}			t_tokens;
 
 typedef struct s_cmd
 {
@@ -48,19 +48,29 @@ typedef struct s_cmd
 	char	**args;
 }	t_cmd;
 
+typedef struct s_data
+{
+	char	*prompt;
+	t_env	*env;
+	t_cmd	*cmds;
+  t_tokens	*tokens;
+	int		pid;
+	char *path;
+}	t_data;
+
 // args.c
 int		args(t_data *data, char *prompt);
 
 // main.c
 int		main(int argc, char **argv, char **env);
-int		handle_line(t_data data, char *rl);
+int	handle_line(t_data data, t_env envs, char *rl);
 
 // signals.c
 void	signal_handler(int signo);
 void	set_signals(void);
 
 // init.c
-void	ms_init(t_data *data, char **env);
+void	ms_init(t_data *data);
 
 // env.c
 t_env	*env_init(t_data *data, char **env);
@@ -70,12 +80,18 @@ void	addnode(t_env **env_list, t_env *node);
 void	lst_env(t_env *envs);
 void	free_nodes(t_env *nodes);
 
+//test functions that may ormay not be in need of renovation
+void	collect_cmd_array(t_tokens *tokens, char *string);
+void	check_path_bla(char *string, char *cmd, int flag);
+void	find_passage(t_env *envs, char *string, char *cmd);
+
 // cmds.c
-int		pwd(t_data *data);
-int		cd(t_data *data, char *path);
-int		echo(t_data *data, char *str);
-int		env(t_data *data);
-int		export(t_data *data);
-int		unset(t_data *data);
-int	ft_exit(t_data *data);
+int		ft_pwd(t_data *data);
+void ft_cd(t_data *data, char *rl);
+int ft_exit(char *cmd);
+void ft_echo(char *rl);
+void handle_quotes(char **str);
+void ft_env(char *rl, char *cmd, t_env envs);
+char	*trim_start(char *str);
+
 #endif
