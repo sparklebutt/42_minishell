@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 12:56:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/05/26 12:51:43 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/27 11:57:16 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,14 @@ t_env	*lst_env(t_env *envs)
 	int i;
 	char *key_name;
 
+	t_env *test;
+
 	i = 0;
 	while (environ[i] != NULL)
 	{
 	key_name = find_key_name(environ[i]);
-	addnode(&envs, add_new_node(environ[i], key_name));
+	test = add_new_node(environ[i], key_name);
+	addnode(&envs, test);//add_new_node(environ[i], key_name));
 	i++;
 	// }
 	// // while (i-- > 0 && envs->prev != NULL)

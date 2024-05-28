@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/26 13:56:48 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:25:37 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <sys/wait.h>
 
 # include "libft.h"
+
 
 typedef struct s_env
 {
@@ -48,14 +49,28 @@ typedef struct s_cmd
 	char	**args;
 }	t_cmd;
 
+typedef struct s_temps
+{
+	char	**array;
+	char	*ex_arr[4];
+	char	*filename;
+	char	*suffix;// do we need multiple different ones
+	char	*env_line;
+	int		i;
+}			t_temps;
+
+
+
 typedef struct s_data
 {
-	char	*prompt;
-	t_env	*env;
-	t_cmd	*cmds;
-  t_tokens	*tokens;
-	int		pid;
-	char *path;
+	char		*prompt;
+	t_env		*env;
+	t_cmd		*cmds;
+	t_tokens	*tokens;
+	t_temps		*tmp;
+	int			pid;
+//	char		*env_line;
+	char 		*path;
 }	t_data;
 
 // args.c
@@ -82,15 +97,20 @@ t_env	*lst_env(t_env *envs);
 void	free_nodes(t_env *nodes);
 int error(char *cmd, char *error);
 
-int	find_node(t_env *envs, char *key);
+int	find_node(t_env *envs, char *key, t_data *data);
 t_env	*move_list(t_env *envs, char *key);
+
+//parsers
+void	pipe_collector(t_tokens *tokens, char **array);
+void	mini_parser(t_tokens *tokens, int i, int x);
 
 //test functions that may ormay not be in need of renovation
 void	collect_cmd_array(t_tokens *tokens, char *string);
-void	check_path_bla(char *string, char *cmd, int flag);
+void	check_path(char *string, int divert, t_data *all);
 // void	find_passage(t_env *envs, char *string, t_tokens *tokens);
-void	find_passage(t_env *envs, char *string, char **args);
+void	find_passage(t_data *all, char *string, int divert);
 void	free_array(char **array);
+void	free_string(char *string);
 char	**ft_split_adv(char const*s, char c);
 size_t  total_words_c(char const *s, char c);
 char *find_key_from_envs(t_env *envs, char *key);

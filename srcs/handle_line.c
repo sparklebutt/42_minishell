@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/26 13:37:12 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/28 19:36:21 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,9 @@ int exec_builtins(t_data data, t_env envs, char *rl)
 	// temp2 = NULL;
 	tokens = data.tokens;
 	i = -1;
-  // cmd = cmd_to_lower(tokens->args[0]);
 	cmd = cmd_to_lower(tokens->args[0]);
 	// find_key_name(envs, "HOME");
-	temp2 = find_key_from_envs(&envs, "HOME");
+	temp2 = find_key_from_envs(&envs, "HOME"); // do we need this anymore???
 	// ft_printf("next key: %s\n", .menvs.value);
 	// ft_printf("home: %s\n", &temp2->key);
 	// ft_printf("envs: %s\n", temp2);
@@ -78,7 +77,7 @@ char *cmd_to_lower(char *cmd)
 {
 	char *temp;
 	int exit_true;
-	// char *cmd;
+//	char *cmd;
 	int i;
 
 	i = -1;
@@ -127,11 +126,17 @@ int	handle_line(t_data data, t_env envs, t_tokens *tokens, char *line)
 		// parse line
 		// call pipex & reset pipes / childen
 	cmd = cmd_to_lower(tokens->args[0]);
-	// ft_printf("cmd: %s|\n", cmd); //remove
+	ft_printf("cmd: %s|\n", cmd); //remove
 	if (is_builtins(cmd) == 1)
+	{
+		// free_string(cmd); // fixes leaks but stops pwd from working
 		exec_builtins(data, envs, line);
+	}
 	else
+	{
+		find_passage(&data, "PATH", 1);
 		ft_printf("%s\n", line);
+	}
 	// 	ft_printf("%s\n", line);
 	// else if (exec_readdir() == 1)
 	// {

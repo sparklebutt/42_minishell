@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:11:00 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/23 08:50:45 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/27 14:53:49 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void ms_init(t_data *data)
 {
 	// fill minishell data struct?
 	data->prompt = "\x1b[95mminishell\033[0;37m$ ";
-	data->env = NULL;
+//	data->env = NULL;
 	data->path = NULL;
 	data->cmds = NULL;
 	data->pid = 0;

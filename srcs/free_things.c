@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:59:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/05/26 13:56:08 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/27 12:33:39 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,15 @@ void	free_array(char **array)
 	{
 		free(array);
 		array = NULL;
+	}
+}
+
+void	free_string(char *string)
+{
+	if (string)
+	{
+		free(string);
+		string = NULL;
 	}
 }
 

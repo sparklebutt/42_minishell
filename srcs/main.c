@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/26 14:27:02 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/28 17:32:04 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,28 @@
 
 int main(int argc, char **argv)//, char **env)
 {
-	// printf("aarg\n");	
 	char	*rl;
-	t_data data;
+	static t_data data;
 	static t_env	envs;
 	static t_tokens tokens;
+	static t_temps tmp;
 
 	(void)argc;
 	(void)argv;
-
+	data.tokens = &tokens;
+	data.env = &envs;
+	data.tmp = &tmp;
 	// lst_env(&envs);
 	envs = *lst_env(&envs);
 	envs = *envs.next; // do not remove, moves node to be the last
-	
-	if (find_node(&envs, "HOME") == 0)
+/*	if (find_node(&envs, "HOME", &data) == 0)
 	{
 		envs = *move_list(&envs, "HOME");
 		ft_printf("- - - - - - moved into new env node - - - - - - - - \n");
 	}
 	ft_printf("main.c envs_key: %s\n", envs.key);
 	ft_printf("main.c envs_value: %s\n", envs.value);
-	ft_printf("- - - - - - - - - - - - - - - - - - \n");
+	ft_printf("- - - - - - - - - - - - - - - - - - \n");*/
 
 	
 	ms_init(&data); // filling variables in struct
@@ -49,16 +50,13 @@ int main(int argc, char **argv)//, char **env)
 		if (rl)
 		{
 			collect_cmd_array(&tokens, rl);
-			// free_nodes(&envs); //fixes the 11 leaks
+			// find_passage(&data, "PATH", 1);
 
-			// an example on how to use a execvecommand from env no added bs
-			// if (ft_strncmp(rl, "ls", 2) == 0)
-			// {
-			// 	printf("inhere bitch\n");
-			// 	execve("/bin/ls", why, env);
-			// }
+			// free_nodes(&envs);
+			// example of exceve() usage in check_passage
 			if (handle_line(data, envs, &tokens, rl) == -1)
 				break ;
+
 			// ft_printf("%s\n", rl); //remove
 			free_array(tokens.args);
 			// free(data.path);

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:28:04 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/26 13:58:48 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/05/28 19:01:02 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int ft_pwd(t_data *data)
 	// ft_printf("%s\n", data->path);
 	// trash_dir = "$HOME/.Trash"; // a guess, probably doesn't work
 	temp = getcwd(NULL, 0);
+
 	// if (temp == NULL || ft_strncmp(temp, trash_dir, ft_strlen(trash_dir) + 1) == 0)
 	if (temp == NULL) //remove
 		free(temp);
@@ -43,7 +44,11 @@ void ft_cd(t_data *data, t_env *envs, char *rl)
 	tokens = data->tokens;
 	if (ft_strncmp(rl, "cd", 3) == 0)
 	{
-		ft_printf("return to HOME: connect this with env (alexandra)\n");
+		// ft_printf("return to HOME: connect this with env (alexandra)\n");
+		find_passage(data, "HOME", 2);
+		printf("our path that should be checked by the open and read dir = %s\n", data->tmp->filename);
+		chdir(data->tmp->filename);
+//		free_string(data->tmp->filename);// when done with confirmed path?
 		return ;
 	}
 	temp = getcwd(NULL, 0);
