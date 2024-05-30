@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/28 18:25:37 by araveala         ###   ########.fr       */
+/*   Updated: 2024/05/30 18:57:48 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,22 @@
 
 # include "libft.h"
 
-
 typedef struct s_env
 {
-	char	*key;
-	char	*value;
-	struct	s_env *next;
-	struct	s_env *prev; //might not need due to having a key
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+	struct s_env	*prev; //might not need due to having a key
 }	t_env;
 
 typedef struct s_tokens
 {
-	char *cmd;
-	char **args;
+	char	*cmd;
+	char	**args;
 
-	int	pipe_count;
-}			t_tokens;
+	int		array_count;
+	int		pipe_count;
+}	t_tokens;
 
 typedef struct s_cmd
 {
@@ -57,9 +57,7 @@ typedef struct s_temps
 	char	*suffix;// do we need multiple different ones
 	char	*env_line;
 	int		i;
-}			t_temps;
-
-
+}	t_temps;
 
 typedef struct s_data
 {
@@ -70,7 +68,7 @@ typedef struct s_data
 	t_temps		*tmp;
 	int			pid;
 //	char		*env_line;
-	char 		*path;
+	char		*path;
 }	t_data;
 
 // args.c
@@ -90,43 +88,43 @@ void	ms_init(t_data *data);
 
 // env.c
 t_env	*env_init(t_data *data, char **env);
-
 t_env	*add_new_node(char *value_in, char *key_in);
-void	addnode(t_env **env_list, t_env *node);
 t_env	*lst_env(t_env *envs);
-void	free_nodes(t_env *nodes);
-int error(char *cmd, char *error);
-
-int	find_node(t_env *envs, char *key, t_data *data);
 t_env	*move_list(t_env *envs, char *key);
+void	addnode(t_env **env_list, t_env *node);
+void	free_nodes(t_env *nodes);
+int		error(char *cmd, char *error);
+int		find_node(t_env *envs, char *key, t_data *data);
 
 //parsers
 void	pipe_collector(t_tokens *tokens, char **array);
 void	mini_parser(t_tokens *tokens, int i, int x);
+//export parsing
+int		validate_it(t_data *data, char *string, int i);
 
 //test functions that may ormay not be in need of renovation
 void	collect_cmd_array(t_tokens *tokens, char *string);
 void	check_path(char *string, int divert, t_data *all);
-// void	find_passage(t_env *envs, char *string, t_tokens *tokens);
 void	find_passage(t_data *all, char *string, int divert);
 void	free_array(char **array);
 void	free_string(char *string);
 char	**ft_split_adv(char const*s, char c);
-size_t  total_words_c(char const *s, char c);
-char *find_key_from_envs(t_env *envs, char *key);
+char	*find_key_from_envs(t_env *envs, char *key);
+size_t	total_words_c(char const *s, char c);
 
 // cmds.c
 int		ft_pwd(t_data *data);
-void ft_cd(t_data *data, t_env *envs, char *rl);
-int ft_exit(char *cmd);
-void ft_echo(char *rl);
-void handle_quotes(char **str);
-void ft_env(char *rl, char *cmd, t_env envs);
+int		ft_exit(char *cmd);
 char	*trim_start(char *str);
+void	ft_cd(t_data *data, t_env *envs, char *rl);
+void	ft_echo(char *rl);
+void	handle_quotes(char **str);
+void	ft_env(char *rl, char *cmd, t_env envs);
+void	ft_export(t_data *data, char *rl);
 
 // handle_line.c
-char *cmd_to_lower(char *rl);
-int is_builtins(char *cmd);
-int exec_builtins(t_data data, t_env envs, char *rl);
+char	*cmd_to_lower(char *rl);
+int		is_builtins(char *cmd);
+int		exec_builtins(t_data data, t_env envs, char *rl);
 
 #endif

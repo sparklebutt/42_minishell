@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/28 17:32:04 by araveala         ###   ########.fr       */
+/*   Updated: 2024/05/30 16:51:06 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,16 @@ int main(int argc, char **argv)//, char **env)
 		rl = readline(data.prompt); // pastes prompt and reads a line from terminal, returning output
 		add_history(rl); // add to history automatically
 
+
 		if (rl)
 		{
 			collect_cmd_array(&tokens, rl);
-			// find_passage(&data, "PATH", 1);
-
+			if (tokens.args[0] == NULL)
+				break ;
 			// free_nodes(&envs);
 			// example of exceve() usage in check_passage
 			if (handle_line(data, envs, &tokens, rl) == -1)
 				break ;
-
 			// ft_printf("%s\n", rl); //remove
 			free_array(tokens.args);
 			// free(data.path);

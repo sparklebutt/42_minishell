@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/05/28 19:27:07 by araveala         ###   ########.fr       */
+/*   Updated: 2024/05/29 12:56:57 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void collect_cmd_array(t_tokens *tokens, char *string)
 	tokens->args = ft_split_adv(string, ' ');
 	tmp = NULL;
 	pipe_collector(tokens, tokens->args); //maybe dont need
+	tokens->array_count = x;
 	if (tokens->args == NULL)
 	{
 		ft_printf("malloc fail in parsing , making of array of args\n");

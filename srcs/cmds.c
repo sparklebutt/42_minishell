@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:28:04 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/28 19:01:02 by araveala         ###   ########.fr       */
+/*   Updated: 2024/05/30 19:01:58 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void ft_cd(t_data *data, t_env *envs, char *rl)
 	else
 	{
 		ft_printf("error\n");
-		error(tokens->args[0], strerror(errno)); 
+		error(tokens->args[0], strerror(errno));
 	}
 	// free(temp);
 	// data->path = getcwd(NULL, 0);
@@ -85,7 +85,7 @@ void ft_cd(t_data *data, t_env *envs, char *rl)
 
 void ft_echo(char *rl)
 {
-	char *temp;
+	char	*temp;
 	// int i;
 
 	ft_printf("before trim: '%s'\n", rl);
@@ -103,9 +103,9 @@ void ft_echo(char *rl)
 
 char	*trim_start(char *str)
 {
-	int i;
-	int j;
-	char *c;
+	char	*c;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
@@ -120,11 +120,11 @@ char	*trim_start(char *str)
 	return (str + i);
 }
 
-void handle_quotes(char **str)
+void	handle_quotes(char **str)
 {
-	char *temp;
-	char *temp2;
-	int i;
+	char	*temp;
+	char	*temp2;
+	int		i;
 
 	i = 0;
 	temp = *str;
@@ -137,7 +137,7 @@ void handle_quotes(char **str)
 			temp2 = ft_strtrim(temp, "\"");
 			temp = temp2;
 			free(temp2); // maybe
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -169,5 +169,26 @@ void ft_env(char *rl, char *cmd, t_env envs)
 	{
 		printf("%s\n", envs.value);
 		envs = *envs.next;
+	}
+}
+
+// this is just so i had something to test with 
+void	ft_export(t_data *data, char *rl)
+{
+	int	i;
+
+	i = 1; // by passing the cmd export
+	if (rl == NULL)
+		printf("rl null\n(ft_export)\n");
+	if (data == NULL)
+		printf("oopsies data null (ft_export)\n");
+	if (data->tokens->array_count == 0)
+		printf("array count is 0 (ft_export)\n");
+	if (data->tokens->array_count == 1)
+		printf("only the word export given (ft_export)\n");
+	while (i < data->tokens->array_count)
+	{
+		validate_it(data, rl, i);
+		i++;
 	}
 }

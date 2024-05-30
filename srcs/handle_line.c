@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/28 19:36:21 by araveala         ###   ########.fr       */
+/*   Updated: 2024/05/30 18:48:22 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int exec_builtins(t_data data, t_env envs, char *rl)
 	}
 	else if (ft_strncmp(cmd, "env", 4) == 0)
 		ft_env(cmd, rl, envs);
+	else if(ft_strncmp(cmd, "export", 7) == 0)
+		ft_export(&data, rl);
 	// else 
 	// ft_printf("AAAAAAA %s\n", rl);
 	// if (!tokens->args && tokens->args[0] == NULL)
@@ -69,6 +71,8 @@ int is_builtins(char *cmd)
 	else if (ft_strncmp(cmd, "echo", 5) == 0)
 		return (1);
 	else if (ft_strncmp(cmd, "env", 4) == 0)
+		return (1);
+	else if (ft_strncmp(cmd, "export", 7) == 0) // only lowercase is valid
 		return (1);
 	return (0);
 }
@@ -125,6 +129,9 @@ int	handle_line(t_data data, t_env envs, t_tokens *tokens, char *line)
 		// check line (spaces, export, quotes, >, <, pipes, etc.)
 		// parse line
 		// call pipex & reset pipes / childen
+
+	if (tokens->args[0] == NULL)
+		return (0); // fixes segfault on pressing enter with nothing in array
 	cmd = cmd_to_lower(tokens->args[0]);
 	ft_printf("cmd: %s|\n", cmd); //remove
 	if (is_builtins(cmd) == 1)
