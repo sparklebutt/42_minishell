@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export_parsing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 10:57:49 by araveala          #+#    #+#             */
-/*   Updated: 2024/05/30 18:52:28 by araveala         ###   ########.fr       */
+/*   Updated: 2024/06/06 18:37:18 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	check_char(t_data *data, int i, int x)
+int	check_char(t_data *data, int i, int x)
 {
 	char character;
 
@@ -141,30 +141,6 @@ int	validate_it(t_data *data, char *string, int i)
     }
     return (i);
 	}*/
-
-/*static char    *ft_strtrim_front(char const *s1, char const *set)
-{
-    int     total_len;
-    int     front;
-    int		i;
-    char    *trimmed_str;
-
-    i = 0;
-    if (!s1 || !set)
-        return (NULL);
-    while (ft_strchr(set, s1[i]))
-    {
-       if (s1[i] == '\0')
-            return (1);
-        i++;
-    }
-    front = i;//ft_check_front(s1, set);
-    total_len = ft_strlen(s1) - front;
-    trimmed_str = ft_substr(s1, front, total_len + 1);
-    if (trimmed_str == NULL)
-        return (NULL);
-    return (trimmed_str);
-}*/
 
  /*static	char *ignore_quotes(char *string)
 {

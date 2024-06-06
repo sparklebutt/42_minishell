@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/30 18:57:48 by araveala         ###   ########.fr       */
+/*   Updated: 2024/06/06 18:37:43 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
+	struct s_env	*head;
 	struct s_env	*next;
 	struct s_env	*prev; //might not need due to having a key
 }	t_env;
@@ -71,11 +72,13 @@ typedef struct s_data
 	char		*path;
 }	t_data;
 
+// char *handle_arg(char *arg);
+
 // args.c
 int		args(t_data *data, char *prompt);
 
 // main.c
-int		main(int argc, char **argv);//, char **env);
+int		main(int argc, char **argv); //, char **env);
 int		handle_line(t_data data, t_env envs, t_tokens *tokens, char *rl);
 // int	handle_line(t_data data, t_env envs, t_tokens *tokens, char *line);
 
@@ -100,7 +103,8 @@ int		find_node(t_env *envs, char *key, t_data *data);
 void	pipe_collector(t_tokens *tokens, char **array);
 void	mini_parser(t_tokens *tokens, int i, int x);
 //export parsing
-int		validate_it(t_data *data, char *string, int i);
+int	validate_it(t_data *data, char *string, int i);
+int	check_char(t_data *data, int i, int x);
 
 //test functions that may ormay not be in need of renovation
 void	collect_cmd_array(t_tokens *tokens, char *string);
@@ -119,8 +123,11 @@ char	*trim_start(char *str);
 void	ft_cd(t_data *data, t_env *envs, char *rl);
 void	ft_echo(char *rl);
 void	handle_quotes(char **str);
-void	ft_env(char *rl, char *cmd, t_env envs);
-void	ft_export(t_data *data, char *rl);
+void	ft_env(t_data *data);
+void	ft_export(t_data *data);
+void	handle_arg(t_data *data, int arg_i, t_tokens *tokens);
+char *find_value(char *arg);
+char    *ft_strtrim_front(char *s1, char set);
 
 // handle_line.c
 char	*cmd_to_lower(char *rl);

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:28:04 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/30 19:01:58 by araveala         ###   ########.fr       */
+/*   Updated: 2024/06/06 18:57:26 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,48 +147,128 @@ void	handle_quotes(char **str)
 
 int ft_exit(char *cmd)
 {
-	// (void)cmd;
 	free(cmd);
 	ft_printf("exit\n");
 	exit(0);
 	return (1);
 }
 
-void ft_env(char *rl, char *cmd, t_env envs)
+void	ft_env(t_data *data)
 {
-	(void)cmd;
-	(void)rl;
+	t_env	*env;
+
+	env = data->env;
 	// make so that "Env ghjk" does not work and throws an error
-	// ft_strtrim(rl, "env ");
 	// if (ft_strncmp(rl, "env", 3) != 0)
 	// {
 	// 	ft_printf("env: command not found\n");
 	// 	return ;
 	// }
-	while (envs.next != NULL)
+	// if (data->tokens->array_count >= 1)
+	// {
+	// 	ft_printf("print env in alphabetical order\n");
+	// }
+	while (env->next != NULL)
 	{
-		printf("%s\n", envs.value);
-		envs = *envs.next;
+		printf("%s=%s\n", env->key, env->value);
+		env = env->next;
 	}
 }
 
-// this is just so i had something to test with 
-void	ft_export(t_data *data, char *rl)
+void	ft_export(t_data *data)
 {
-	int	i;
+	t_env	*env;
+	t_tokens *tokens;
+	int		i;
 
-	i = 1; // by passing the cmd export
-	if (rl == NULL)
-		printf("rl null\n(ft_export)\n");
-	if (data == NULL)
-		printf("oopsies data null (ft_export)\n");
-	if (data->tokens->array_count == 0)
-		printf("array count is 0 (ft_export)\n");
+	i = 1;
+	tokens = data->tokens;
+	env = data->env;
+	if (tokens->args[1] == NULL)
+		printf("no args\n");
 	if (data->tokens->array_count == 1)
-		printf("only the word export given (ft_export)\n");
+		printf("print env in alphabetical order\n");
 	while (i < data->tokens->array_count)
 	{
-		validate_it(data, rl, i);
+		handle_arg(data, i, data->tokens);
 		i++;
 	}
+}
+
+void handle_arg(t_data *data, int arg_i, t_tokens *tokens)
+{
+	char	*arg;
+	t_env	*env;
+	char	*new_value;
+	char	*key;
+	int		i;
+	t_env *new_node;
+	
+	env = data->env;
+	tokens = data->tokens;
+	arg = data->tokens->args[arg_i];
+	i = 0;
+	if (ft_strchr(arg, '=') == NULL)
+	{
+		ft_printf("export: not a valid identifier\n"); // fix error message
+		return ;
+	}
+	check_char(data, arg_i, 0);
+	new_value = find_value(arg);
+	key = ft_strtrim_front(arg, '=');
+	// ft_printf("key: %s\n", key);
+	while (env->next != NULL)
+	{
+		if (ft_strncmp(env->key, key, ft_strlen(key)) == 0)
+		{
+			ft_printf("key exists\n");
+			free(env->value);
+			env->value = new_value;
+			return ;
+		}
+		env = env->next;
+	}
+	// call cute function that does this already (forgot name)
+	ft_printf("key does not exist\n");
+	new_node = add_new_node(new_value, key); // does not work????
+	addnode(&env, new_node);
+	
+	// env->next = malloc(sizeof(t_env));
+	// env->next->key = key;
+	// env->next->value = new_value;
+	// env->next->next = NULL;
+}
+
+char	*find_value(char *arg)
+{
+	char *value;
+
+	// ft_printf("arg: %s\n", arg);
+	value = ft_strchr(arg, '=');
+	value++;
+	// ft_printf("value: %s\n", value);
+	if (value == NULL)
+		return (arg);
+	// handle quotes in value
+	return (value);
+}
+
+char	*ft_strtrim_front(char *s1, char set)
+{
+	int		i;
+	char	*trimmed_str;
+
+	i = 0;
+	if (!s1 || !set)
+		return (NULL);
+	while (ft_strchr(&s1[i], set))
+	{
+		if (s1[i] == '\0')
+				return (NULL);
+		i++;
+	}
+	trimmed_str = ft_substr(s1, 0, i - 1);
+	if (trimmed_str == NULL)
+		return (NULL);
+	return (trimmed_str);
 }

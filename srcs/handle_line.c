@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/30 18:48:22 by araveala         ###   ########.fr       */
+/*   Updated: 2024/06/06 18:25:44 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int exec_builtins(t_data data, t_env envs, char *rl)
 {
 	char *temp;
-	char *temp2;
 	char *cmd;
 	t_tokens *tokens;
 	int i;
@@ -26,7 +25,6 @@ int exec_builtins(t_data data, t_env envs, char *rl)
 	i = -1;
 	cmd = cmd_to_lower(tokens->args[0]);
 	// find_key_name(envs, "HOME");
-	temp2 = find_key_from_envs(&envs, "HOME"); // do we need this anymore???
 	// ft_printf("next key: %s\n", .menvs.value);
 	// ft_printf("home: %s\n", &temp2->key);
 	// ft_printf("envs: %s\n", temp2);
@@ -46,9 +44,9 @@ int exec_builtins(t_data data, t_env envs, char *rl)
 		ft_echo(rl);	
 	}
 	else if (ft_strncmp(cmd, "env", 4) == 0)
-		ft_env(cmd, rl, envs);
+		ft_env(&data);
 	else if(ft_strncmp(cmd, "export", 7) == 0)
-		ft_export(&data, rl);
+		ft_export(&data);
 	// else 
 	// ft_printf("AAAAAAA %s\n", rl);
 	// if (!tokens->args && tokens->args[0] == NULL)
