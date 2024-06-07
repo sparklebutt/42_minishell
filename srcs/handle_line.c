@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/06 18:25:44 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/07 15:22:06 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,9 @@ int exec_builtins(t_data data, t_env envs, char *rl)
 	int i;
 	
 	temp = NULL;
-	// temp2 = NULL;
 	tokens = data.tokens;
 	i = -1;
 	cmd = cmd_to_lower(tokens->args[0]);
-	// find_key_name(envs, "HOME");
-	// ft_printf("next key: %s\n", .menvs.value);
-	// ft_printf("home: %s\n", &temp2->key);
-	// ft_printf("envs: %s\n", temp2);
-	// rl = cmd_to_lower(rl);
-	// ft_printf("fuck this\n");
-	// ft_printf("cmd inside exec: %s|\n", cmd); //remove
-	// ft_printf("final cmd: %s|\n", cmd); //remove
 	if (ft_strncmp(cmd, "exit", 5) == 0) // if exit command is given, exit the program
 		return (ft_exit(cmd)); // leaks cause it dodes not free cmd
 	else if (ft_strncmp(cmd, "pwd", 4) == 0)
@@ -39,32 +30,22 @@ int exec_builtins(t_data data, t_env envs, char *rl)
 	else if (ft_strncmp(cmd, "cd", 2) == 0)
 		ft_cd(&data, &envs, rl);
 	else if (ft_strncmp(cmd, "echo", 5) == 0)
-	{
-		// ft_printf("echo\n");
-		ft_echo(rl);	
-	}
+		ft_echo(rl);
 	else if (ft_strncmp(cmd, "env", 4) == 0)
 		ft_env(&data);
 	else if(ft_strncmp(cmd, "export", 7) == 0)
 		ft_export(&data);
-	// else 
-	// ft_printf("AAAAAAA %s\n", rl);
-	// if (!tokens->args && tokens->args[0] == NULL)
-	// 	ft_printf("CCCCCCC\n");
-	// else 
-	// 	ft_printf("BBBBBBB %s\n", tokens->args[0]);
-	// else if (find_passage(&envs, "PATH", data.tokens) != 0)
-	// 	ft_printf("%s\n", rl);
+	free(cmd);
 	return (0);
 }
 
 int is_builtins(char *cmd)
 {
-	if (ft_strncmp(cmd, "exit", 5) == 0)
+	if (ft_strncmp(cmd, "exit", 5) == 0) // only lowercase is valid
 		return (1);
 	else if (ft_strncmp(cmd, "pwd", 4) == 0)
 		return (1);
-	else if (ft_strncmp(cmd, "cd", 2) == 0)
+	else if (ft_strncmp(cmd, "cd", 2) == 0) // only lowercase is valid
 		return (1);
 	else if (ft_strncmp(cmd, "echo", 5) == 0)
 		return (1);
@@ -79,7 +60,6 @@ char *cmd_to_lower(char *cmd)
 {
 	char *temp;
 	int exit_true;
-//	char *cmd;
 	int i;
 
 	i = -1;
@@ -90,9 +70,6 @@ char *cmd_to_lower(char *cmd)
 		exit_true = 1;
 	if (ft_strncmp(cmd, "cd", 2) != 0)
 	{
-		// ft_printf("rl: %s|\n", rl); //remove
-		// cmd = ft_strchcpy(temp, rl, ' ');
-		// ft_printf("after strchcpy cmd: %s|\n", cmd); //remove
 		while (cmd && cmd[++i] != '\0')
 			cmd[i] = ft_tolower(cmd[i]);
 		// ft_printf("after tolower cmd: %s|\n", cmd); //remove
@@ -117,29 +94,22 @@ int	handle_line(t_data data, t_env envs, t_tokens *tokens, char *line)
 {
 	int i;
 	char *cmd;
-	(void)envs;
 
 	i = 0;
 	data.tokens = tokens;
-	// ft_printf("arg 0: %s|\n", tokens->args[0]); //remove
-	// ft_printf("arg 1: %s|\n", tokens->args[1]); //remove
-	// handle line to do:
-		// check line (spaces, export, quotes, >, <, pipes, etc.)
-		// parse line
-		// call pipex & reset pipes / childen
-
 	if (tokens->args[0] == NULL)
 		return (0); // fixes segfault on pressing enter with nothing in array
 	cmd = cmd_to_lower(tokens->args[0]);
 	ft_printf("cmd: %s|\n", cmd); //remove
 	if (is_builtins(cmd) == 1)
 	{
-		// free_string(cmd); // fixes leaks but stops pwd from working
-		exec_builtins(data, envs, line);
+		exec_builtins(data, envs, line); // add cmd as a parameter
 	}
-	else
+	else if (find_passage(&data, "PATH", 1) == -1)
 	{
-		find_passage(&data, "PATH", 1);
+		// free(args);
+		// free(tokens->args[0]);
+		// free_array(tokens->args);
 		ft_printf("%s\n", line);
 	}
 	// 	ft_printf("%s\n", line);
@@ -149,5 +119,6 @@ int	handle_line(t_data data, t_env envs, t_tokens *tokens, char *line)
 	// }
 	// if (exec_builtins(data, envs, line) != 0)
 	// 	;
+	free(cmd);
 	return (0);
 }

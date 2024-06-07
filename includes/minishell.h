@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/06 18:37:43 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/07 14:14:26 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
-	struct s_env	*head;
+	struct s_env	*head; // not needed
 	struct s_env	*next;
-	struct s_env	*prev; //might not need due to having a key
+	struct s_env	*prev; // not needed
 }	t_env;
 
 typedef struct s_tokens
@@ -102,14 +102,16 @@ int		find_node(t_env *envs, char *key, t_data *data);
 //parsers
 void	pipe_collector(t_tokens *tokens, char **array);
 void	mini_parser(t_tokens *tokens, int i, int x);
+int insert_node(t_env **env_lst, char *key_name, char *value);
+
 //export parsing
 int	validate_it(t_data *data, char *string, int i);
 int	check_char(t_data *data, int i, int x);
 
 //test functions that may ormay not be in need of renovation
 void	collect_cmd_array(t_tokens *tokens, char *string);
-void	check_path(char *string, int divert, t_data *all);
-void	find_passage(t_data *all, char *string, int divert);
+int	check_path(char *string, int divert, t_data *all);
+int	find_passage(t_data *all, char *string, int divert);
 void	free_array(char **array);
 void	free_string(char *string);
 char	**ft_split_adv(char const*s, char c);

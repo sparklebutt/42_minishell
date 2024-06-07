@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/30 16:51:06 by araveala         ###   ########.fr       */
+/*   Updated: 2024/06/07 15:21:41 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,46 +25,36 @@ int main(int argc, char **argv)//, char **env)
 	data.tokens = &tokens;
 	data.env = &envs;
 	data.tmp = &tmp;
-	// lst_env(&envs);
 	envs = *lst_env(&envs);
-	envs = *envs.next; // do not remove, moves node to be the last
-/*	if (find_node(&envs, "HOME", &data) == 0)
-	{
-		envs = *move_list(&envs, "HOME");
-		ft_printf("- - - - - - moved into new env node - - - - - - - - \n");
-	}
-	ft_printf("main.c envs_key: %s\n", envs.key);
-	ft_printf("main.c envs_value: %s\n", envs.value);
-	ft_printf("- - - - - - - - - - - - - - - - - - \n");*/
-
-	
-	ms_init(&data); // filling variables in struct
-	// if we want to error handle the return value of ms_init, we can
+	envs = *envs.next; // do not remove, moves node to be the last ????????
+	ms_init(&data); // if we want to error handle the return value of ms_init, we can
 	while (1)
 	{
-		set_signals(); 
+		set_signals();
 		rl_on_new_line(); // tells update routine that we are starting a new line, check into this?
 		rl = readline(data.prompt); // pastes prompt and reads a line from terminal, returning output
 		add_history(rl); // add to history automatically
-
 
 		if (rl)
 		{
 			collect_cmd_array(&tokens, rl);
 			if (tokens.args[0] == NULL)
 				break ;
-			// free_nodes(&envs);
 			// example of exceve() usage in check_passage
 			if (handle_line(data, envs, &tokens, rl) == -1)
+			{
+				// free_array(tokens.args);
 				break ;
+			}
 			// ft_printf("%s\n", rl); //remove
-			free_array(tokens.args);
+			// free_array(tokens.args);
 			// free(data.path);
 			free(rl);
 		}
 		if (!rl)
 			break ;
 	}
+	// free_nodes(&envs);
   return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:28:04 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/06 18:57:26 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/07 15:13:32 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int ft_pwd(t_data *data)
 {
 	char *temp;
-	// char *trash_dir;
 
 	// ft_printf("%s\n", data->path);
 	// trash_dir = "$HOME/.Trash"; // a guess, probably doesn't work
@@ -23,7 +22,7 @@ int ft_pwd(t_data *data)
 
 	// if (temp == NULL || ft_strncmp(temp, trash_dir, ft_strlen(trash_dir) + 1) == 0)
 	if (temp == NULL) //remove
-		free(temp);
+		return (1);
 	else
 	{
 		// free(data->path);
@@ -40,34 +39,23 @@ void ft_cd(t_data *data, t_env *envs, char *rl)
 	t_tokens *tokens;
 	(void)envs;
 
-	
 	tokens = data->tokens;
 	if (ft_strncmp(rl, "cd", 3) == 0)
 	{
-		// ft_printf("return to HOME: connect this with env (alexandra)\n");
 		find_passage(data, "HOME", 2);
-		printf("our path that should be checked by the open and read dir = %s\n", data->tmp->filename);
+		// printf("our path that should be checked by the open and read dir = %s\n", data->tmp->filename);
 		chdir(data->tmp->filename);
-//		free_string(data->tmp->filename);// when done with confirmed path?
 		return ;
 	}
 	temp = getcwd(NULL, 0);
-	if (temp == NULL)
-		free(temp);
-	else
-	{
-		// ft_printf("temp: %s\n", data->path);
-		// free(data->path);
+	if (temp != NULL)
 		data->path = temp;
-	}
 	ft_printf("old pwd: %s\n", data->path); //remove
-	// free(data->path);
 	temp = ft_strtrim(rl, "cd ");
 	temp2 = ft_strjoin("/", temp);
 	free(temp);
 	temp = ft_strjoin(data->path, temp2);
 	free(temp2);
-	chdir(temp);
 	if (chdir(temp) == 0)
 	{
 		free(data->path);
@@ -75,12 +63,11 @@ void ft_cd(t_data *data, t_env *envs, char *rl)
 	}
 	else
 	{
-		ft_printf("error\n");
-		error(tokens->args[0], strerror(errno));
+		ft_printf("error\n"); // what error?? we need "return (cmd_error(cmd, msg));"" function
 	}
-	// free(temp);
-	// data->path = getcwd(NULL, 0);
+	free(temp);
 	ft_printf("new pwd: %s\n", data->path); //remove
+	free(data->path);
 }
 
 void ft_echo(char *rl)
@@ -168,7 +155,7 @@ void	ft_env(t_data *data)
 	// {
 	// 	ft_printf("print env in alphabetical order\n");
 	// }
-	while (env->next != NULL)
+	while (env != NULL)
 	{
 		printf("%s=%s\n", env->key, env->value);
 		env = env->next;
@@ -199,57 +186,42 @@ void handle_arg(t_data *data, int arg_i, t_tokens *tokens)
 {
 	char	*arg;
 	t_env	*env;
-	char	*new_value;
 	char	*key;
-	int		i;
-	t_env *new_node;
 	
 	env = data->env;
-	tokens = data->tokens;
-	arg = data->tokens->args[arg_i];
-	i = 0;
+	arg = tokens->args[arg_i];
 	if (ft_strchr(arg, '=') == NULL)
 	{
 		ft_printf("export: not a valid identifier\n"); // fix error message
 		return ;
 	}
 	check_char(data, arg_i, 0);
-	new_value = find_value(arg);
 	key = ft_strtrim_front(arg, '=');
-	// ft_printf("key: %s\n", key);
 	while (env->next != NULL)
 	{
+		env = env->next;
 		if (ft_strncmp(env->key, key, ft_strlen(key)) == 0)
 		{
 			ft_printf("key exists\n");
-			free(env->value);
-			env->value = new_value;
+			free(env->value); // if issue, use free_str
+			env->value = find_value(arg);
+			free(key);
 			return ;
 		}
-		env = env->next;
 	}
-	// call cute function that does this already (forgot name)
 	ft_printf("key does not exist\n");
-	new_node = add_new_node(new_value, key); // does not work????
-	addnode(&env, new_node);
-	
-	// env->next = malloc(sizeof(t_env));
-	// env->next->key = key;
-	// env->next->value = new_value;
-	// env->next->next = NULL;
+	insert_node(&env, key, find_value(arg));
 }
 
 char	*find_value(char *arg)
 {
 	char *value;
+	char *temp;
 
-	// ft_printf("arg: %s\n", arg);
-	value = ft_strchr(arg, '=');
-	value++;
-	// ft_printf("value: %s\n", value);
+	temp = ft_strchr(arg, '=');
+	value = ft_substr(temp, 1, ft_strlen(arg));
 	if (value == NULL)
-		return (arg);
-	// handle quotes in value
+		return (NULL);
 	return (value);
 }
 

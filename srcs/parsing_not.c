@@ -41,24 +41,34 @@ void collect_cmd_array(t_tokens *tokens, char *string)
 	// some error handling maybe?
 }
 
-void	find_passage(t_data *all, char *string, int divert)
+int	find_passage(t_data *all, char *string, int divert)
 {
 	// if command is not a built in command
 	int strlen;
+	int path_found;
 
-	if (all->tokens->args == NULL || all->tokens->args[0] == NULL) // cmd is the same as a->t>a[0]
-	{
-		printf("ARGS NULL OHO \n");
-		return;
-	}
+	path_found = 0;
 	ft_printf("cmd = %s\n", all->tokens->args[0]);
 	if (all->env->key == NULL || all->env == NULL)
+	{
 		printf("ENVS NULL OHO \n");
+		return (0);
+	}
+	ft_printf("string = %s\n", string);
 	if (string  == NULL)
+	{
 		printf("STRING OR CMD  NULL OHO \n");
+		return (-1);
+	}
 	strlen = ft_strlen(string);
 	if (find_node(all->env, string, all) == 0 && all->tmp->env_line != NULL)
-		check_path(all->tmp->env_line, divert, all);
+		path_found = check_path(all->tmp->env_line, divert, all);
+	if (path_found == 0)
+	{
+		printf("command not found\n");
+		return (-1);
+	}
+	return (1);
 }
 
 static void	set_array(t_data *data)// char *flag, char *arguments)
@@ -82,7 +92,7 @@ static void	split_diversion(t_data *data, int divert, char *string)
 	}
 }
 
-void	check_path(char *string, int divert, t_data *all)
+int	check_path(char *string, int divert, t_data *all)
 {
 	struct dirent	*dp;
 	DIR				*test; 
@@ -94,7 +104,10 @@ void	check_path(char *string, int divert, t_data *all)
 	cmd_len = ft_strlen(all->tokens->args[0]);
 	suffix = ft_strjoin("/", all->tokens->args[0]);
 	if (suffix == NULL || cmd_len == 0)
+	{
 		printf("malloc fail in check path bla or cmd len 0\n");
+		return (0);
+	}
 	split_diversion(all, divert, string);
 	while (all->tmp->array[i] != NULL)
 	{
@@ -103,16 +116,24 @@ void	check_path(char *string, int divert, t_data *all)
 		{
 			test = opendir(all->tmp->array[i]);
 			if (test == NULL)
-				printf("openddir FAIL\n\n"); // remove
+			{
+				printf("opendir FAIL\n\n"); // remove
+				closedir(test);
+				return (0);
+			}
 			dp = readdir(test);
 			if (dp == NULL)
+			{
 				printf("readddir FAIL\n\n"); // remove
+				closedir(test);
+				return (0);
+			}
 			if (divert == 2)
 			{
 				all->tmp->filename = all->tmp->array[i];
 				free_string(suffix);
 				closedir(test);
-				return;
+				return (1);
 			}
 			while (dp != NULL)
 			{
@@ -127,13 +148,14 @@ void	check_path(char *string, int divert, t_data *all)
 					execve(all->tmp->filename, all->tmp->ex_arr, NULL);
 					free_string(all->tmp->filename);
 					free(suffix);
-					return;
+					return (1);
 				}
 				dp = readdir(test);
 			}
 			closedir(test);
+			return (0);
 		}
 		i++;
 	}
-
+	return (0);
 }

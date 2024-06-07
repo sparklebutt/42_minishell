@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 16:05:37 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/28 16:42:40 by araveala         ###   ########.fr       */
+/*   Updated: 2024/06/07 11:23:21 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ t_env	*move_list(t_env *envs, char *key)
 	t_env *temp;
 
 	temp = envs;
-	while (temp->prev != NULL)// (1)
+	while (temp->next != NULL)// (1)
 	{
 		if (ft_strnstr(temp->key, key, ft_strlen(temp->key) + 1) && ft_strlen(temp->key) == ft_strlen(key))
 			break ;
-		temp = temp->prev;
+		temp = temp->next;
 	}
 	return (temp);
 }
@@ -36,7 +36,7 @@ int find_node(t_env *envs, char *key, t_data *data)
 	if (!envs)
 		return (0);
 	temp = envs;
-	while (temp->prev != NULL)// (1)
+	while (temp->next != NULL)// (1)
 	{
 //		ft_printf("- - - - - - - - - - - - - - - - - - \n"); // remove
 //		ft_printf("looking for key: %s|\n", key); // remove
@@ -50,11 +50,11 @@ int find_node(t_env *envs, char *key, t_data *data)
 			printf("aaaarg = %s\n", data->tmp->env_line);
 			return (0);
 		}
-		temp = temp->prev;
+		temp = temp->next;
 		// temp = temp->next;
 		// temp->value = temp->prev->value;
 		// temp->key = temp->prev->key;
-		if (temp->prev == envs)
+		if (temp->next == envs)
 			break ;
 	}
 
