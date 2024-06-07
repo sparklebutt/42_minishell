@@ -105,33 +105,31 @@ int	check_path(char *string, int divert, t_data *all)
 	suffix = ft_strjoin("/", all->tokens->args[0]);
 	if (suffix == NULL || cmd_len == 0)
 	{
-		printf("malloc fail in check path bla or cmd len 0\n");
+		// printf("malloc fail in check path bla or cmd len 0\n");
 		return (0);
 	}
 	split_diversion(all, divert, string);
 	while (all->tmp->array[i] != NULL)
 	{
-		printf("temp i = %s\n", all->tmp->array[i]); // remove
+		// printf("temp i = %s\n", all->tmp->array[i]); // remove
 		if (access(all->tmp->array[i], X_OK) == 0)
 		{
+			// ft_printf("access granted\n"); // remove
 			test = opendir(all->tmp->array[i]);
 			if (test == NULL)
 			{
-				printf("opendir FAIL\n\n"); // remove
-				closedir(test);
+				// printf("opendir FAIL\n\n"); // remove
 				return (0);
 			}
 			dp = readdir(test);
 			if (dp == NULL)
 			{
-				printf("readddir FAIL\n\n"); // remove
-				closedir(test);
+				// printf("readddir FAIL\n\n"); // remove
 				return (0);
 			}
 			if (divert == 2)
 			{
 				all->tmp->filename = all->tmp->array[i];
-				free_string(suffix);
 				closedir(test);
 				return (1);
 			}
@@ -142,20 +140,19 @@ int	check_path(char *string, int divert, t_data *all)
 				{			
 					all->tmp->filename = ft_strjoin(all->tmp->array[i], suffix);
 					set_array(all); //, NULL, NULL, NULL);
-					printf("filename = %s\n", all->tmp->filename); // remove
-					free_string(all->tmp->env_line);
+					// printf("filename = %s\n", all->tmp->filename); // remove
 					// execve will be sent to child from here
 					execve(all->tmp->filename, all->tmp->ex_arr, NULL);
 					free_string(all->tmp->filename);
-					free(suffix);
+					free_string(suffix);
 					return (1);
 				}
-				dp = readdir(test);
+				dp = readdir(test); // without close below, leaks
 			}
-			closedir(test);
-			return (0);
+			closedir(test); // THE close below here!
 		}
 		i++;
 	}
+	free_string(suffix); // this fixes "/cmd" leak
 	return (0);
 }
