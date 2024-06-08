@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/08 17:51:29 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/08 19:38:50 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@ int main(int argc, char **argv)//, char **env)
 	(void)argc;
 	(void)argv;
 	data.tokens = &tokens;
-	// data.env = lst_env();
 	data.tmp = &tmp;
-	data.env = init(&data); // data.env = init(&data);
+	data.env = init(&data);
 	while (1)
 	{
 		set_signals();
@@ -49,5 +48,5 @@ int main(int argc, char **argv)//, char **env)
 			break ;
 	}
 	free_nodes(data.env);
-  return (0);
+	return (0);
 }

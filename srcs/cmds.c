@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:28:04 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/08 18:34:42 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/08 20:43:19 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,10 @@ int ft_pwd(t_data *data)
 	char *temp;
 
 	temp = getcwd(NULL, 0);
-
 	if (temp != NULL)
 	{
 		free(data->path);
 		data->path = temp;
-	}
-	else
-	{
-		ft_printf("error\n");
-		return (1);
 	}
 	ft_printf("%s\n", data->path);
 	free(temp);
@@ -57,16 +51,10 @@ void ft_cd(t_data *data, t_env *envs)
 	temp = getcwd(NULL, 0);
 	if (temp != NULL)
 		data->path = temp;
-	if (ft_strncmp(tokens->args[1], "/", 1) != 0)
-	{
-		// ft_printf("no / at the start of path\n"); //remove
+	if (ft_strncmp(tokens->args[1], "/", 1) != 0) // no / at the start of path
 		temp2 = ft_strjoin("/", tokens->args[1]);
-	}
-	else
-	{
-		// ft_printf("slash in path\n"); //remove
+	else // slash in path
 		temp2 = ft_strdup(tokens->args[1]);
-	}
 	free(data->path); // idk how this fixes leaks, and actually works
 	temp = ft_strjoin(data->path, temp2);
 	free(temp2);
@@ -76,10 +64,11 @@ void ft_cd(t_data *data, t_env *envs)
 	}
 	else
 	{
-		ft_printf("error\n"); // what error?? we need "return (cmd_error(cmd, msg));"" function
+		cmd_error(tokens->args[0], tokens->args[1], "No such file or directory");
+		free(temp);
+		return ;
 	}
 	free(temp);
-	ft_printf("new pwd: %s\n", data->path); //remove
 	free(data->path);
 }
 

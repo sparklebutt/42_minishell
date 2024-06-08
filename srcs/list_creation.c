@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 13:12:21 by araveala          #+#    #+#             */
-/*   Updated: 2024/06/08 17:19:00 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/08 19:44:37 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,3 @@ int insert_node(t_env **env_lst, char *key_name, char *value)
 // {
 // 	// for unset 
 // }
-
-void	free_nodes(t_env *node)
-{
-	while ((*node).next != NULL)
-	{
-		free(node->value);
-		free(node->key);
-		node = node->next;
-	}
-}

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/08 18:29:45 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/08 19:22:45 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,11 @@ int	handle_line(t_data data, t_env envs, t_tokens *tokens, char *line)
 	if (tokens->args[0] == NULL)
 		return (0);
 	cmd = cmd_to_lower(tokens->args[0]);
-	ft_printf("cmd: %s|\n", cmd); //remove
+	// ft_printf("cmd: %s|\n", cmd); //remove
 	if (is_builtins(cmd) == 1)
 		exec_builtins(data, envs, line, cmd);
 	else if (find_passage(&data, "PATH", 1) == -1)
 		ft_printf("%s\n", line);
 	free(cmd);
-	
 	return (0);
 }

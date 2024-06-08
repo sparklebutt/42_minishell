@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 16:05:37 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/08 15:42:35 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/08 19:58:32 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,48 +57,3 @@ int find_node(t_env *envs, char *key, t_data *data)
 	ft_printf("key not found\n");
 	return (0); // segfaults if not found, need to fix this
 }
-
-// char *find_key(t_data *data, char *str)
-// {
-// 	char *key;
-// 	int i;
-
-// 	i = 0;
-// 	while (str[i] != '=')
-// 		i++;
-// 	while
-// 	key = ft_substr(str, 0, i);
-// 	return (key);
-// }
-
-// int find_node(t_env *envs, char *key) 
-// {
-// 	t_env *temp;
-
-// 	if (!envs || !key) {
-// 			return 0;
-// 	}
-// 	temp = envs;
-// 	printf("envs->value: %s\n", envs->value);
-// 	printf("temp->value: %s\n", temp->value); // correct value
-// 	while (temp != NULL) {
-// 			printf("- - - - - - - - - - - - - - - - - - \n");
-// 			printf("looking for key: %s|\n", key); // remove
-// 			printf("temp->key: %s|\n", temp->key); // remove
-// 			printf("temp->value: %s\n", temp->value); // places previous key as value???
-// 			if (temp->prev != NULL) {
-// 					printf("temp->prev->value: %s\n", temp->prev->value); // remove
-// 					printf("temp->prev->key: %s\n", temp->prev->key); // remove
-// 			} else {
-// 					printf("temp->prev is NULL\n"); // remove
-// 			}
-// 			if (strncmp(temp->key, key, strlen(key)) == 0 && strlen(temp->key) == strlen(key)) {
-// 					printf("found key: %s\n", temp->key);
-// 					printf("found value: %s\n", temp->value);
-// 					return 1;
-// 			}
-// 			temp = temp->next;
-// 	}
-// 	printf("key not found\n");
-// 	return 0;
-// }
