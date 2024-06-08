@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 09:28:04 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/08 17:29:55 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/08 14:51:50 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,12 @@ void ft_cd(t_data *data, t_env *envs, char *rl)
 		find_passage(data, "HOME", 2);
 		if (chdir(data->tmp->filename) == 0)
 		{
-			ft_printf("chdir success\n");
 			free(data->tmp->filename);
 			free(data->path);
 			data->path = getcwd(NULL, 0);
 		}
 		return ;
 	}
-	free(data->path); // idk how this fixes leaks
 	free(tokens->args[0]); // idk how this fixes leaks
 	temp = getcwd(NULL, 0);
 	if (temp != NULL)
@@ -196,9 +194,9 @@ void	ft_export(t_data *data)
 	tokens = data->tokens;
 	env = data->env;
 	if (tokens->args[1] == NULL)
-		ft_printf("no args\n");
+		printf("no args\n");
 	if (data->tokens->array_count == 1)
-		ft_printf("print env in alphabetical order\n");
+		printf("print env in alphabetical order\n");
 	while (i < data->tokens->array_count)
 	{
 		handle_arg(data, i, data->tokens);
@@ -227,7 +225,7 @@ void handle_arg(t_data *data, int arg_i, t_tokens *tokens)
 		if (ft_strncmp(env->key, key, ft_strlen(key)) == 0)
 		{
 			ft_printf("key exists\n");
-			free(env->value);
+			free(env->value); // if issue, use free_str
 			env->value = find_value(arg);
 			free(key);
 			return ;

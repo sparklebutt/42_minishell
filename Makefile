@@ -6,7 +6,7 @@
 #    By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/05/29 11:19:44 by araveala         ###   ########.fr        #
+#    Updated: 2024/06/08 09:19:52 by vkettune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,16 +52,16 @@ objs/%.o: srcs/%.c
 
 $(NAME): $(OBJS)
 	@cc $(OBJS) $(LIBS) $(FLAGS) -o $(NAME)
-	@echo "$(DARK_MAGENTA)- - - - - ✨ Minishell compiled ✨ - - - - - -$(X)"
+	@echo "$(DARK_MAGENTA)- - - - -  ✨ Minishell compiled ✨ - - - - -$(X)"
 
 
 folders:
-	@echo "$(DARK_MAGENTA)- - - - - 📦 Creating folders 📦 - - - - - -$(X)"
+	@echo "$(DARK_MAGENTA)- - - - -  📦 Creating folders 📦 - - - - - -$(X)"
 	@mkdir -p objs/
 	@mkdir -p libft/objs/
 
 comp_libft:
-	@echo "$(DARK_MAGENTA)- - - - - 📦 Compiling libft 📦 - - - - - -\n$(X)"
+	@echo "$(DARK_MAGENTA)- - - - - - 📦 Compiling libft 📦 - - - - - -$(X)"
 	@make -C ./libft
 
 clean:

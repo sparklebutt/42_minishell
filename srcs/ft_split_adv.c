@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_adv.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/05/24 12:36:36 by araveala         ###   ########.fr       */
+/*   Updated: 2024/06/08 16:22:38 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char    **ft_split_adv(char const *s, char c)
 				x++;
 				while (s[i] != '"')
 					x++;
-			}//
+			}
 		}
         else
         {

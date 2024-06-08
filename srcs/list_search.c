@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 16:05:37 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/07 11:23:21 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/08 15:42:35 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,30 +38,38 @@ int find_node(t_env *envs, char *key, t_data *data)
 	temp = envs;
 	while (temp->next != NULL)// (1)
 	{
-//		ft_printf("- - - - - - - - - - - - - - - - - - \n"); // remove
-//		ft_printf("looking for key: %s|\n", key); // remove
-//		ft_printf("temp->key: %s|\n", temp->key); // remove
-//		ft_printf("temp->value: %s\n", temp->value); // places revious key as value???
+		// ft_printf("- - - - - - - - - - - - - - - - - - \n"); // remove
+		// ft_printf("looking for key: %s|\n", key); // remove
+		// ft_printf("temp->key: %s|\n", temp->key); // remove
+		// ft_printf("temp->value: %s\n", temp->value); // places revious key as value???
 		if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) == 0 && (ft_strlen(temp->key) == ft_strlen(key)))
 		{
 //			ft_printf("found %s key from env!!\n", temp->key);
 //			ft_printf("kay's value is: %s\n", temp->value);
 			data->tmp->env_line = ft_strdup(temp->value);
 			printf("aaaarg = %s\n", data->tmp->env_line);
-			return (0);
+			return (1);
 		}
 		temp = temp->next;
-		// temp = temp->next;
-		// temp->value = temp->prev->value;
-		// temp->key = temp->prev->key;
 		if (temp->next == envs)
 			break ;
 	}
-
 	ft_printf("key not found\n");
-	return (1); // segfaults if not found, need to fix this
+	return (0); // segfaults if not found, need to fix this
 }
 
+// char *find_key(t_data *data, char *str)
+// {
+// 	char *key;
+// 	int i;
+
+// 	i = 0;
+// 	while (str[i] != '=')
+// 		i++;
+// 	while
+// 	key = ft_substr(str, 0, i);
+// 	return (key);
+// }
 
 // int find_node(t_env *envs, char *key) 
 // {

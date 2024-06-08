@@ -1,20 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 11:31:25 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/22 11:33:33 by vkettune         ###   ########.fr       */
+/*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
+/*   Updated: 2024/06/08 15:06:42 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ms_builtins(t_data *data)
+int ft_pwd(t_data *data)
 {
-	(void)data;
-	
+	char *temp;
+
+	temp = getcwd(NULL, 0);
+	if (temp != NULL) //remove
+	{
+		free(data->path);
+		data->path = temp;
+	}
+	ft_printf("%s\n", data->path);
+	free(temp);
 	return (0);
 }

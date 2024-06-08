@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 08:33:27 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/22 09:16:49 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:17:11 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	signal_handler(int signo)
 	{
 		ft_printf("\n");
 		rl_on_new_line();
-		// rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }

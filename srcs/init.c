@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:11:00 by vkettune          #+#    #+#             */
-/*   Updated: 2024/05/27 14:53:49 by araveala         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:23:17 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,3 @@ void ms_init(t_data *data)
 	data->pid = 0;
 	// data->env = env_init(data, env);// copy env to struct
 }
-
-// t_env	*env_init(t_data *data, char **env)
-// {
-// 	// understand env
-// 	// copy env to struct
-	
-// 	(void)env;
-// 	(void)data;
-// 	return (0);
-// }

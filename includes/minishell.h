@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/07 14:14:26 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/08 16:04:32 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	ms_init(t_data *data);
 // env.c
 t_env	*env_init(t_data *data, char **env);
 t_env	*add_new_node(char *value_in, char *key_in);
-t_env	*lst_env(t_env *envs);
+t_env	*lst_env(void);
 t_env	*move_list(t_env *envs, char *key);
 void	addnode(t_env **env_list, t_env *node);
 void	free_nodes(t_env *nodes);
@@ -134,6 +134,6 @@ char    *ft_strtrim_front(char *s1, char set);
 // handle_line.c
 char	*cmd_to_lower(char *rl);
 int		is_builtins(char *cmd);
-int		exec_builtins(t_data data, t_env envs, char *rl);
+int		exec_builtins(t_data data, t_env envs, char *rl, char *cmd);
 
 #endif

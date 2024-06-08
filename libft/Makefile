@@ -6,7 +6,7 @@
 #    By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 15:15:31 by vkettune          #+#    #+#              #
-#    Updated: 2024/05/23 07:31:11 by vkettune         ###   ########.fr        #
+#    Updated: 2024/06/08 15:19:52 by vkettune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,8 +44,7 @@ LIBFT = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 		ft_atoi.c ft_calloc.c ft_strdup.c ft_substr.c ft_strjoin.c \
 		ft_strtrim.c ft_split.c ft_strmapi.c ft_striteri.c ft_putchar_fd.c \
 		ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_itoa.c ft_lstadd_back.c \
-		ft_lstadd_front.c ft_lstdelone.c ft_lstlast.c ft_lstnew.c ft_lstsize.c \
-		ft_strchcpy.c
+		ft_lstadd_front.c ft_lstdelone.c ft_lstlast.c ft_lstnew.c ft_lstsize.c
 PRINTF = ft_printf.c ft_print.c ft_utils.c
 SOURCES = $(addprefix $(SRCS_DIR), $(LIBFT)) \
 		$(addprefix $(SRCS_DIR), $(PRINTF)) \
@@ -64,11 +63,11 @@ $(NAME): $(OBJECTS)
 
 libft: $(LIBFT_OBJ)
 	@ar -rc $(NAME) $(LIBFT_OBJ)
-	@echo "$(DARK_CYAN)- - - - - - ✨ Libft compiled! ✨ - - - - - -\n$(X)"
+	@echo "$(DARK_CYAN)- - - - - - ✨ Libft compiled! ✨ - - - - - -$(X)"
 
 ft_printf: $(PRINTF_OBJ)
 	@ar -rc $(NAME) $(PRINTF_OBJ)
-	@echo "$(DARK_CYAN)- - - - - - ✨ Printf compiled! ✨ - - - - - -\n$(X)"
+	@echo "$(DARK_CYAN)- - - - - - ✨ Printf compiled! ✨  - - - - -$(X)"
 
 clean:
 	@rm -rf $(OBJS_DIR)

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 12:56:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/06/07 13:06:40 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/08 16:16:44 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ char *find_key_name(char *string)
 	return (0);
 }
 
-t_env	*lst_env(t_env *envs)
+t_env	*lst_env(void)
 {
 	extern char **environ;
 	int i;
 	char *value;
 	char *key_name;
-
-	// t_env *test;
+	t_env *envs;
 
 	i = 0;
+	envs = NULL;
 	while (environ[i] != NULL)
 	{
 		value = find_value(environ[i]);
@@ -52,17 +52,18 @@ t_env	*lst_env(t_env *envs)
 		// addnode(&envs, test);//add_new_node(environ[i], key_name));
 		i++;
 	// }
-	// // while (i-- > 0 && envs->prev != NULL)
-	// // {
-	// 	envs = envs->next;
-	// 	ft_printf("- - - - - - - - - - - - - - - - - - \n");
-	// 	ft_printf("A envs->key: %s\n", envs->key);
-	// 	ft_printf("A envs->value: %s\n", envs->value);
-	// 	ft_printf("- - - - - - - - - - - - - - - - - - \n");
-	// 	envs = envs->prev;
-	// 	ft_printf("B envs->key: %s\n", envs->key);
-	// 	ft_printf("B envs->value: %s\n", envs->value);
-	// 	ft_printf("- - - - - - - - - - - - - - - - - - \n");
+		// while (i-- > 0 && envs->next != NULL)
+		// {
+		// 	envs = envs->next;
+		// 	ft_printf("- - - - - - - - - - - - - - - - - - \n");
+		// 	ft_printf("A envs->key: %s\n", envs->key);
+		// 	ft_printf("A envs->value: %s\n", envs->value);
+		// 	ft_printf("- - - - - - - - - - - - - - - - - - \n");
+		// 	envs = envs->prev;
+		// 	ft_printf("B envs->key: %s\n", envs->key);
+		// 	ft_printf("B envs->value: %s\n", envs->value);
+		// 	ft_printf("- - - - - - - - - - - - - - - - - - \n");
+		// }
 	}
 	return (envs);
 }

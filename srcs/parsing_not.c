@@ -41,9 +41,8 @@ void collect_cmd_array(t_tokens *tokens, char *string)
 	// some error handling maybe?
 }
 
-int	find_passage(t_data *all, char *string, int divert)
+int	find_passage(t_data *all, char *string, int divert) // check if command is not a built in command
 {
-	// if command is not a built in command
 	int strlen;
 	int path_found;
 
@@ -61,7 +60,7 @@ int	find_passage(t_data *all, char *string, int divert)
 		return (-1);
 	}
 	strlen = ft_strlen(string);
-	if (find_node(all->env, string, all) == 0 && all->tmp->env_line != NULL)
+	if (find_node(all->env, string, all) == 1 && all->tmp->env_line != NULL)
 		path_found = check_path(all->tmp->env_line, divert, all);
 	if (path_found == 0)
 	{
@@ -74,8 +73,8 @@ int	find_passage(t_data *all, char *string, int divert)
 static void	set_array(t_data *data)// char *flag, char *arguments)
 {
 	data->tmp->ex_arr[0] = data->tmp->filename;
-	data->tmp->ex_arr[1] = NULL;//flag;
-	data->tmp->ex_arr[2] = NULL; //arguments;
+	data->tmp->ex_arr[1] = NULL; // flag;
+	data->tmp->ex_arr[2] = NULL; // arguments;
 	data->tmp->ex_arr[3] = NULL; // last one is null
 }
 
@@ -105,54 +104,61 @@ int	check_path(char *string, int divert, t_data *all)
 	suffix = ft_strjoin("/", all->tokens->args[0]);
 	if (suffix == NULL || cmd_len == 0)
 	{
+		free_string(suffix);
 		// printf("malloc fail in check path bla or cmd len 0\n");
 		return (0);
 	}
 	split_diversion(all, divert, string);
 	while (all->tmp->array[i] != NULL)
 	{
-		// printf("temp i = %s\n", all->tmp->array[i]); // remove
+		// ft_printf("array[i] = %s\n", all->tmp->array[i]); // remove
 		if (access(all->tmp->array[i], X_OK) == 0)
 		{
 			// ft_printf("access granted\n"); // remove
 			test = opendir(all->tmp->array[i]);
 			if (test == NULL)
 			{
+				free_string(suffix);
 				// printf("opendir FAIL\n\n"); // remove
 				return (0);
 			}
 			dp = readdir(test);
 			if (dp == NULL)
 			{
+				free_string(suffix);
 				// printf("readddir FAIL\n\n"); // remove
 				return (0);
 			}
 			if (divert == 2)
 			{
+				// printf("string = key we looking for aka HOME\n\n"); // remove
 				all->tmp->filename = all->tmp->array[i];
+				free_string(suffix);
 				closedir(test);
 				return (1);
 			}
 			while (dp != NULL)
 			{
-				// printf("dp name = %s\n", dp->d_name); // remove
 				if (ft_strncmp(dp->d_name, all->tokens->args[0], cmd_len) == 0 && ft_strlen(dp->d_name) == cmd_len)
 				{			
 					all->tmp->filename = ft_strjoin(all->tmp->array[i], suffix);
 					set_array(all); //, NULL, NULL, NULL);
-					// printf("filename = %s\n", all->tmp->filename); // remove
+					printf("filename = %s\n", all->tmp->filename); // remove
 					// execve will be sent to child from here
 					execve(all->tmp->filename, all->tmp->ex_arr, NULL);
 					free_string(all->tmp->filename);
 					free_string(suffix);
 					return (1);
 				}
-				dp = readdir(test); // without close below, leaks
+				dp = readdir(test); // without close below, leaks a lot
 			}
 			closedir(test); // THE close below here!
 		}
 		i++;
 	}
+	ft_printf("\tAAA command not found\n");
+	free_string(all->tmp->env_line);
+	free_array(all->tmp->array);
 	free_string(suffix); // this fixes "/cmd" leak
 	return (0);
 }
