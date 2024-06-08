@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/08 17:24:06 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:51:29 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ int main(int argc, char **argv)//, char **env)
 	(void)argc;
 	(void)argv;
 	data.tokens = &tokens;
-	data.env = lst_env();
+	// data.env = lst_env();
 	data.tmp = &tmp;
-	ms_init(&data); // if we want to error handle the return value of ms_init, we can
+	data.env = init(&data); // data.env = init(&data);
 	while (1)
 	{
 		set_signals();

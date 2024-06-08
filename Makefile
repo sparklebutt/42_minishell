@@ -6,7 +6,7 @@
 #    By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/06/08 09:19:52 by vkettune         ###   ########.fr        #
+#    Updated: 2024/06/08 18:29:20 by vkettune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,9 +36,9 @@ LIBS = $(READLINE) $(LIBFT)
 READLINE = -lreadline  -L ~/.brew/opt/readline/lib
 LIBFT = libft/libft.a
 
-FILES = main.c init.c signals.c args.c cmds.c \
+FILES = main.c init.c signals.c cmds.c \
 	handle_env.c list_creation.c parsing_not.c parsers.c export_parsing.c free_things.c \
-	ft_split_adv.c handle_line.c list_search.c
+	ft_split_adv.c handle_line.c list_search.c error_handling.c \
 
 SRCS = $(addprefix srcs/, $(FILES))
 OBJS = $(addprefix objs/, $(FILES:.c=.o))
