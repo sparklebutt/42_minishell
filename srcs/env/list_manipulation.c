@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:47:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/12 14:31:05 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/12 18:20:15 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,9 @@ void	remove_node(t_env *node)
 	// for unset 
 }
 
-void replace_value(t_data *data, char *key, char *new_value)
+t_env *replace_value(t_env *env, char *key, char *new_value)
 {
-	t_env	*env;
-
-	env = data->env;
+	env = move_list(env, key);
 	while (env->next != NULL)
 	{
 		env = env->next;
@@ -77,9 +75,11 @@ void replace_value(t_data *data, char *key, char *new_value)
 			free(env->value);
 			env->value = new_value;
 			free(key);
-			return ;
+			return (env);
 		}
 	}
+	free(key);
+	return (NULL);
 }
 
 char	*find_key(char *str)

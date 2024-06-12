@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/12 14:18:15 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/12 15:49:53 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,18 @@ int ft_pwd(t_data *data)
 	return (0);
 }
 
-t_env *fill_old_pwd(t_data *data, t_env *env, char *new_path) // needs fixing
+t_env *fill_pwd_and_oldpwd(t_data *data, t_env *env, char *new_pwd) // needs fixing
 {
-	char *temp;
+	char *new_oldpwd;
 
-	new_path = getcwd(NULL, 0);
-	temp = NULL;
+	// new_pwd = getcwd(NULL, 0);
+	// new_oldpwd = NULL;
 	if (find_node(env, "PWD", data) == 1)
 	{
 		env = move_list(env, "PWD");
-		temp = ft_strdup(env->value);
+		if (env->value != NULL)
+			new_oldpwd = ft_strdup(env->value);
+		env = replace_value(env, ft_strdup("PWD"), new_pwd);
 	}
 	else
 	{
@@ -61,11 +63,11 @@ t_env *fill_old_pwd(t_data *data, t_env *env, char *new_path) // needs fixing
 	}
 	if (find_node(env, "OLDPWD", data) == 1)
 	{
+		ft_printf("oldpwd found\n");
 		env = move_list(env, "OLDPWD");
 		if (env->value != NULL)
 			free(env->value);
-		env->value = ft_strdup(temp);
-		free(temp);
+		env->value = new_oldpwd;
 	}
 	else
 	{
@@ -75,9 +77,9 @@ t_env *fill_old_pwd(t_data *data, t_env *env, char *new_path) // needs fixing
 	env = move_list(env, "PWD");
 	if (env->value != NULL)
 		free(env->value);
-	ft_printf("new_path: %s\n", new_path);
-	env->value = ft_strdup(new_path);
-	free(new_path);
+	ft_printf("new_path: %s\n", new_pwd);
+	env->value = ft_strdup(new_pwd);
+	free(new_pwd);
 	return (env);
 }
 

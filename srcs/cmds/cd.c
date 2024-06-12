@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/12 15:18:05 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/12 15:46:12 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ void ft_cd(t_data *data, t_env *envs) // needs work
 	free(temp2);
 	if (check_dir(temp) && chdir(temp) == 0) // add access check fucntion
 	{
+		ft_printf("path: %s\n", temp);
 		// data->path = getcwd(NULL, 0); //remove
-		envs = move_list(envs, "PWD");
-		envs = fill_old_pwd(data, envs, data->path); // this is broken!!!!
+		envs = fill_pwd_and_oldpwd(data, envs, temp); // this is broken!!!!
 		// free(data->path);
 		// if (envs-value != NULL)
 		// 	free(envs->value);
