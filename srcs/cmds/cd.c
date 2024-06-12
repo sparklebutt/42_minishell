@@ -51,6 +51,7 @@ void ft_cd(t_data *data, t_env *envs) // needs work
 	free(temp2);
 	if (check_dir(temp) && chdir(temp) == 0) // add access check fucntion
 	{
+		ft_printf("path: %s\n", temp);
 		// data->path = getcwd(NULL, 0); //remove
 		envs = move_list(envs, "PWD");
 		envs = fill_old_pwd(data, envs, data->path); // this is broken!!!!
