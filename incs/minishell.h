@@ -84,6 +84,7 @@ char *find_keys_value(t_env *envs, char *key);
 t_env *replace_value(t_env *env, char *key, char *new_value);
 int check_dir(char *str);
 
+
 int	insert_node(t_env **env_lst, char *key_name, char *value);
 // char *fill_old_pwd(t_data *data, t_env *env, char *temp_path);
 t_env *fill_pwd_and_oldpwd(t_data *data, t_env *env, char *temp_path);
@@ -111,16 +112,17 @@ int		find_node(t_env *envs, char *key, t_data *data);
 //parsers
 void	pipe_collector(t_tokens *tokens, char **array);
 void	mini_parser(t_tokens *tokens, int i, int x);
-int insert_node(t_env **env_lst, char *key_name, char *value);
-
+int		insert_node(t_env **env_lst, char *key_name, char *value);
+//forking
+int		simple_fork(t_data *data);
 //export parsing
-int	validate_it(t_data *data, char *string, int i);
-int	check_char(t_data *data, int i, int x);
+int		validate_it(t_data *data, char *string, int i);
+int		check_char(t_data *data, int i, int x);
 
 //test functions that may or may not be in need of renovation
 void	collect_cmd_array(t_tokens *tokens, char *string);
-int	check_path(char *string, int divert, t_data *all);
-int	find_passage(t_data *all, char *string, int divert);
+int		check_path(char *string, int divert, t_data *all);
+int		find_passage(t_data *all, char *string, int divert);
 void	free_array(char **array);
 void	free_string(char *string);
 char	**ft_split_adv(char const*s, char c);
@@ -137,7 +139,7 @@ void	handle_quotes(char **str);
 void	ft_env(t_data *data);
 void	ft_export(t_data *data);
 void	handle_arg(t_data *data, int arg_i, t_tokens *tokens);
-char *find_value(char *arg);
+char	*find_value(char *arg);
 char    *ft_strtrim_front(char *s1, char set);
 
 // handle_line.c
