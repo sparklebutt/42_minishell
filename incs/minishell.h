@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/08 18:29:04 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/12 14:42:53 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,25 @@ typedef struct s_data
 	char		*path;
 }	t_data;
 
+t_env	*init(t_data *data);
+void	minishell(t_data *data);
+void	cmd_error(char *cmd, char *arg, char *msg);
+
+void	free_nodes(t_env *node);
+t_env	*create_env_list(void);
+
+char	*find_key(char *str);
+char	*find_value(char *arg);
+char *find_keys_value(t_env *envs, char *key);
+void replace_value(t_data *data, char *key, char *new_value);
+int check_dir(char *str);
+
+int	insert_node(t_env **env_lst, char *key_name, char *value);
+// char *fill_old_pwd(t_data *data, t_env *env, char *temp_path);
+t_env *fill_old_pwd(t_data *data, t_env *env, char *temp_path);
+
+// OLD STUFF
+
 // main.c
 int		main(int argc, char **argv); //, char **env);
 int		handle_line(t_data data, t_env envs, t_tokens *tokens, char *rl);
@@ -83,7 +102,7 @@ void	set_signals(void);
 t_env	*init(t_data *data);
 
 // env.c
-t_env	*lst_env(void);
+// t_env	*lst_env(void);
 t_env	*move_list(t_env *envs, char *key);
 void	free_nodes(t_env *nodes);
 int		error(char *cmd, char *error);
@@ -110,7 +129,7 @@ size_t	total_words_c(char const *s, char c);
 
 // cmds.c
 int		ft_pwd(t_data *data);
-int		ft_exit(char *cmd, t_tokens *tokens);
+int		ft_exit(t_data *data, char *cmd, t_tokens *tokens);
 char	*trim_start(char *str);
 void	ft_cd(t_data *data, t_env *envs);
 void	ft_echo(char *rl);

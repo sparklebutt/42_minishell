@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list_search.c                                      :+:      :+:    :+:   */
+/*   list_manipulation.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/25 16:05:37 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/08 19:58:32 by vkettune         ###   ########.fr       */
+/*   Created: 2024/06/08 19:47:46 by vkettune          #+#    #+#             */
+/*   Updated: 2024/06/12 14:31:05 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ t_env	*move_list(t_env *envs, char *key)
 	return (temp);
 }
 
-// finds the node with the key that matches the input key
 int find_node(t_env *envs, char *key, t_data *data)
 {
 	// do we need to combine all into data, we get very long lines ???
 	t_env *temp;
+	(void)data;
 	
 	if (!envs)
 		return (0);
@@ -44,16 +44,98 @@ int find_node(t_env *envs, char *key, t_data *data)
 		// ft_printf("temp->value: %s\n", temp->value); // places revious key as value???
 		if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) == 0 && (ft_strlen(temp->key) == ft_strlen(key)))
 		{
-//			ft_printf("found %s key from env!!\n", temp->key);
-//			ft_printf("kay's value is: %s\n", temp->value);
+			// ft_printf("key found\n"); // remove
 			data->tmp->env_line = ft_strdup(temp->value);
-			printf("aaaarg = %s\n", data->tmp->env_line);
 			return (1);
 		}
 		temp = temp->next;
 		if (temp->next == envs)
 			break ;
 	}
-	ft_printf("key not found\n");
-	return (0); // segfaults if not found, need to fix this
+	free(key);
+	// ft_printf("key not found\n");
+	return (0);
+}
+
+void	remove_node(t_env *node)
+{
+	(void)node;
+	// for unset 
+}
+
+void replace_value(t_data *data, char *key, char *new_value)
+{
+	t_env	*env;
+
+	env = data->env;
+	while (env->next != NULL)
+	{
+		env = env->next;
+		if (ft_strncmp(env->key, key, ft_strlen(key)) == 0)
+		{
+			// ft_printf("key exists\n");
+			free(env->value);
+			env->value = new_value;
+			free(key);
+			return ;
+		}
+	}
+}
+
+char	*find_key(char *str)
+{
+	char *key;
+	int i;
+
+	i = 0;
+	key = NULL;
+	while (str[i] != '=')
+		i++;
+	if (str[i] == '=')
+	{
+		key = ft_substr(str, 0, i);
+		return (key);
+	}
+	else
+		printf("error in finding key name\n");
+	free(key);
+	return (NULL);
+}
+
+char	*find_value(char *arg)
+{
+	char	*value;
+	char	*temp;
+
+	temp = ft_strchr(arg, '=');
+	if (temp == NULL)
+		return (NULL);
+	value = ft_substr(temp, 1, ft_strlen(arg));
+	if (value == NULL)
+		return (NULL);
+	return (value);
+}
+
+int	insert_node(t_env **env_lst, char *key_name, char *value)
+{
+	t_env	*new_node;
+	t_env	*tmp;
+
+	new_node = malloc(sizeof(t_env));
+	if (new_node == NULL)
+			return (-1);
+	new_node->key = key_name;
+	new_node->value = value;
+	new_node->next = NULL;
+	new_node->head = NULL;
+	if (*env_lst == NULL)
+	{
+			*env_lst = new_node;
+			return (1);
+	}
+	tmp = *env_lst;
+	while (tmp->next != NULL)
+			tmp = tmp->next;
+	tmp->next = new_node;
+	return (1);
 }

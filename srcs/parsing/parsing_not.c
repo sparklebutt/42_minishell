@@ -47,13 +47,12 @@ int	find_passage(t_data *all, char *string, int divert) // check if command is n
 	int path_found;
 
 	path_found = 0;
-	ft_printf("cmd = %s\n", all->tokens->args[0]);
+	// ft_printf("cmd = %s\n", all->tokens->args[0]);
 	if (all->env->key == NULL || all->env == NULL)
 	{
 		printf("ENVS NULL OHO \n");
 		return (0);
 	}
-	ft_printf("string = %s\n", string);
 	if (string  == NULL)
 	{
 		printf("STRING OR CMD  NULL OHO \n");
@@ -143,7 +142,7 @@ int	check_path(char *string, int divert, t_data *all)
 				{			
 					all->tmp->filename = ft_strjoin(all->tmp->array[i], suffix);
 					set_array(all); //, NULL, NULL, NULL);
-					printf("filename = %s\n", all->tmp->filename); // remove
+					// printf("filename = %s\n", all->tmp->filename); // remove
 					// execve will be sent to child from here
 					execve(all->tmp->filename, all->tmp->ex_arr, NULL);
 					free_string(all->tmp->filename);
@@ -156,7 +155,7 @@ int	check_path(char *string, int divert, t_data *all)
 		}
 		i++;
 	}
-	ft_printf("\tAAA command not found\n");
+	// ft_printf("\tAAA command not found\n");
 	free_string(all->tmp->env_line);
 	free_array(all->tmp->array);
 	free_string(suffix); // this fixes "/cmd" leak

@@ -6,7 +6,7 @@
 #    By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/06/08 18:29:20 by vkettune         ###   ########.fr        #
+#    Updated: 2024/06/10 15:58:15 by vkettune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,18 +30,42 @@ WHITE = \033[0;97m
 
 NAME = minishell
 FLAGS = -Wall -Wextra -Werror -g $(HEADERS)
-HEADERS = -I ./includes/ # -I ~/.brew/opt/readline/include
+HEADERS = -I ./incs/ # -I ~/.brew/opt/readline/include
 
 LIBS = $(READLINE) $(LIBFT)
 READLINE = -lreadline  -L ~/.brew/opt/readline/lib
 LIBFT = libft/libft.a
 
-FILES = main.c init.c signals.c cmds.c \
-	handle_env.c list_creation.c parsing_not.c parsers.c export_parsing.c free_things.c \
-	ft_split_adv.c handle_line.c list_search.c error_handling.c \
+OBJS_DIR = objs/
+SRCS_DIR = srcs/
 
-SRCS = $(addprefix srcs/, $(FILES))
-OBJS = $(addprefix objs/, $(FILES:.c=.o))
+CMD_FILES = exit.c pwd.c export.c cd.c echo.c env.c #unset.c
+
+ENV_FILES = find_from_env.c list_manipulation.c #list_creation.c
+
+PAR_FILES = export_parsing.c parsers.c parsing_not.c #parse.c parse_utils.c export_parse.c
+
+UTIL_FILES = free_things.c error_handling.c ft_split_adv.c signals.c
+
+FILES = main.c init.c handle_line.c 
+
+CMD = $(addprefix cmds/, $(CMD_FILES))
+ENV = $(addprefix env/, $(ENV_FILES))
+PAR = $(addprefix parsing/, $(PAR_FILES))
+UTIL = $(addprefix utils/, $(UTIL_FILES))
+
+SOURCES = $(addprefix $(SRCS_DIR), $(FILES)) \
+		$(addprefix $(SRCS_DIR), $(CMD)) \
+		$(addprefix $(SRCS_DIR), $(ENV)) \
+		$(addprefix $(SRCS_DIR), $(UTIL_FILES)) \
+		$(addprefix $(SRCS_DIR), $(PAR)) \
+
+OBJ = $(addprefix $(OBJS_DIR), $(FILES:.c=.o))
+CMD_OBJ = $(addprefix $(OBJS_DIR), $(CMD:.c=.o))
+ENV_OBJ = $(addprefix $(OBJS_DIR), $(ENV:.c=.o))
+UTIL_OBJ = $(addprefix $(OBJS_DIR), $(UTIL:.c=.o))
+PAR_OBJ = $(addprefix $(OBJS_DIR), $(PAR:.c=.o))
+OBJECTS = $(OBJ) $(CMD_OBJ) $(ENV_OBJ) $(UTIL_OBJ) $(PAR_OBJ)
 
 all: folders comp_libft $(NAME)
 	@echo "$(GREEN)- - - - - - - - - - - - - - - - - - - - - - -$(X)"
@@ -50,14 +74,13 @@ all: folders comp_libft $(NAME)
 objs/%.o: srcs/%.c
 	@cc $(FLAGS) -c $< -o $@ && echo "$(DARK_GRAY)Compiled: $@ $(X)"
 
-$(NAME): $(OBJS)
-	@cc $(OBJS) $(LIBS) $(FLAGS) -o $(NAME)
+$(NAME): $(OBJECTS)
+	@cc $(OBJECTS) $(LIBS) $(FLAGS) -o $(NAME)
 	@echo "$(DARK_MAGENTA)- - - - -  ✨ Minishell compiled ✨ - - - - -$(X)"
-
 
 folders:
 	@echo "$(DARK_MAGENTA)- - - - -  📦 Creating folders 📦 - - - - - -$(X)"
-	@mkdir -p objs/
+	@mkdir -p objs/cmds objs/env objs/utils objs/parsing
 	@mkdir -p libft/objs/
 
 comp_libft:

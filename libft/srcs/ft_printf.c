@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:54:01 by vkettune          #+#    #+#             */
-/*   Updated: 2024/03/03 08:11:45 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/11 15:51:54 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	ft_check_error(int value, int check)
 {
 	if (value == -1 || check == -1)
 		return (-1);
-	return (value + check);
+	return (2);
 }
 
 int	ft_conversion(va_list args, const char format)

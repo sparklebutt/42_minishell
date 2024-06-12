@@ -6,16 +6,44 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/08 19:38:50 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/11 16:22:47 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(int argc, char **argv)//, char **env)
+void	minishell(t_data *data)
 {
 	char	*rl;
-	static t_data data;
+
+	while (1)
+	{
+		set_signals();
+		rl_on_new_line();
+		rl = readline(data->prompt);
+		add_history(rl);
+		if (rl)
+		{
+			collect_cmd_array(data->tokens, rl);
+			// if (data->tokens->args[0] == NULL)
+			// 	break ;
+			if (handle_line(*data, *data->env, data->tokens, rl) == -1)
+			{
+				ft_printf("error\n");
+				break ;
+			}
+			free_array(data->tokens->args);
+			free(rl);
+		}
+		if (!rl)
+			break ;
+	}
+	ft_printf("exit\n"); // move this tp ^D function
+}
+
+int main(int argc, char **argv)//, char **env)
+{
+	t_data data;
 	static t_tokens tokens;
 	static t_temps tmp;
 
@@ -24,29 +52,7 @@ int main(int argc, char **argv)//, char **env)
 	data.tokens = &tokens;
 	data.tmp = &tmp;
 	data.env = init(&data);
-	while (1)
-	{
-		set_signals();
-		rl_on_new_line();
-		rl = readline(data.prompt);
-		add_history(rl);
-		if (rl)
-		{
-			collect_cmd_array(&tokens, rl);
-			if (tokens.args[0] == NULL)
-				break ;
-			// example of execve() usage in check_passage
-			if (handle_line(data, *data.env, &tokens, rl) == -1)
-			{
-				ft_printf("error\n");
-				break ;
-			}
-			free_array(tokens.args);
-			free(rl);
-		}
-		if (!rl)
-			break ;
-	}
+	minishell(&data); // exits when whitsespace
 	free_nodes(data.env);
 	return (0);
 }
