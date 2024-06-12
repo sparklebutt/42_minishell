@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/05/29 12:56:57 by araveala         ###   ########.fr       */
+/*   Updated: 2024/06/12 17:46:58 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	find_passage(t_data *all, char *string, int divert) // check if command is n
 	int path_found;
 
 	path_found = 0;
-	// ft_printf("cmd = %s\n", all->tokens->args[0]);
 	if (all->env->key == NULL || all->env == NULL)
 	{
 		printf("ENVS NULL OHO \n");
@@ -60,7 +59,10 @@ int	find_passage(t_data *all, char *string, int divert) // check if command is n
 	}
 	strlen = ft_strlen(string);
 	if (find_node(all->env, string, all) == 1 && all->tmp->env_line != NULL)
+	{
 		path_found = check_path(all->tmp->env_line, divert, all);
+		free_string(all->tmp->env_line);
+	}
 	if (path_found == 0)
 	{
 		printf("command not found\n");
@@ -93,7 +95,7 @@ static void	split_diversion(t_data *data, int divert, char *string)
 int	check_path(char *string, int divert, t_data *all)
 {
 	struct dirent	*dp;
-	DIR				*test; 
+	DIR				*dir; 
 	char			*suffix;
 	size_t			cmd_len;
 	int				i;
@@ -101,6 +103,7 @@ int	check_path(char *string, int divert, t_data *all)
 	i = 0;
 	cmd_len = ft_strlen(all->tokens->args[0]);
 	suffix = ft_strjoin("/", all->tokens->args[0]);
+
 	if (suffix == NULL || cmd_len == 0)
 	{
 		free_string(suffix);
@@ -111,29 +114,21 @@ int	check_path(char *string, int divert, t_data *all)
 	while (all->tmp->array[i] != NULL)
 	{
 		// ft_printf("array[i] = %s\n", all->tmp->array[i]); // remove
-		if (access(all->tmp->array[i], X_OK) == 0)
+		if (check_dir(all->tmp->array[i]) == 0)
 		{
-			// ft_printf("access granted\n"); // remove
-			test = opendir(all->tmp->array[i]);
-			if (test == NULL)
-			{
-				free_string(suffix);
-				// printf("opendir FAIL\n\n"); // remove
-				return (0);
-			}
-			dp = readdir(test);
-			if (dp == NULL)
-			{
-				free_string(suffix);
-				// printf("readddir FAIL\n\n"); // remove
-				return (0);
-			}
+			free_string(suffix);
+			return (-1);
+		}
+		if (check_dir(all->tmp->array[i]) == 1)
+		{
+			dir = opendir(all->tmp->array[i]);
+			dp = readdir(dir);
 			if (divert == 2)
 			{
 				// printf("string = key we looking for aka HOME\n\n"); // remove
 				all->tmp->filename = all->tmp->array[i];
 				free_string(suffix);
-				closedir(test);
+				closedir(dir);
 				return (1);
 			}
 			while (dp != NULL)
@@ -142,20 +137,24 @@ int	check_path(char *string, int divert, t_data *all)
 				{			
 					all->tmp->filename = ft_strjoin(all->tmp->array[i], suffix);
 					set_array(all); //, NULL, NULL, NULL);
-					// printf("filename = %s\n", all->tmp->filename); // remove
-					// execve will be sent to child from here
-					execve(all->tmp->filename, all->tmp->ex_arr, NULL);
-					free_string(all->tmp->filename);
-					free_string(suffix);
+					if (simple_fork(all) == 0)
+					{
+						// if we need any of this data, we should not free yet
+						free_string(all->tmp->filename);
+						free_string(suffix);
+						// free_string(all->tmp->env_line);
+						free_array(all->tmp->array);
+						closedir(dir);
+						return (1);
+					}
 					return (1);
 				}
-				dp = readdir(test); // without close below, leaks a lot
+				dp = readdir(dir); // without close below, leaks a lot
 			}
-			closedir(test); // THE close below here!
+			closedir(dir); // THE close below here!
 		}
 		i++;
 	}
-	// ft_printf("\tAAA command not found\n");
 	free_string(all->tmp->env_line);
 	free_array(all->tmp->array);
 	free_string(suffix); // this fixes "/cmd" leak

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/12 14:18:15 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/12 18:00:07 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@ t_env *fill_old_pwd(t_data *data, t_env *env, char *new_path) // needs fixing
 	{
 		env = move_list(env, "PWD");
 		temp = ft_strdup(env->value);
+		// ft_printf("temp = %s\n", temp);
+		// ft_printf("env line = %s\n", data->tmp->env_line); find node stores an env line that is usable each find node, must also free it,
+		free_string(data->tmp->env_line);
 	}
 	else
 	{
@@ -66,6 +69,7 @@ t_env *fill_old_pwd(t_data *data, t_env *env, char *new_path) // needs fixing
 			free(env->value);
 		env->value = ft_strdup(temp);
 		free(temp);
+		free_string(data->tmp->env_line);
 	}
 	else
 	{

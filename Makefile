@@ -6,7 +6,7 @@
 #    By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/06/10 15:58:15 by vkettune         ###   ########.fr        #
+#    Updated: 2024/06/12 17:30:58 by araveala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ PAR_FILES = export_parsing.c parsers.c parsing_not.c #parse.c parse_utils.c expo
 
 UTIL_FILES = free_things.c error_handling.c ft_split_adv.c signals.c
 
-FILES = main.c init.c handle_line.c 
+FILES = main.c init.c handle_line.c forking.c
 
 CMD = $(addprefix cmds/, $(CMD_FILES))
 ENV = $(addprefix env/, $(ENV_FILES))

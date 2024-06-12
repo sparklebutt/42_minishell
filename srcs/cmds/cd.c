@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/12 15:18:05 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/12 17:51:49 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void ft_cd(t_data *data, t_env *envs) // needs work
 {
 	char *temp;
 	char *temp2;
+
 	t_tokens *tokens;
 	// t_env *temp_env;
 	(void)envs;
@@ -27,8 +28,9 @@ void ft_cd(t_data *data, t_env *envs) // needs work
 		find_passage(data, "HOME", 2);
 		if (chdir(data->tmp->filename) == 0)
 		{
-			free(data->tmp->filename);
-			data->path = getcwd(NULL, 0);
+			free_array(data->tmp->array);
+//			ft_printf("string = %s\n", data->tmp->filename);
+			data->path = getcwd(NULL, 0); 
 			// temp_env = fill_old_pwd(t_data *data, t_env *env, char *new_path)
 			free(data->path);
 		}
@@ -40,6 +42,7 @@ void ft_cd(t_data *data, t_env *envs) // needs work
 	// 	data->path = temp;
 	if (ft_strncmp(tokens->args[1], "/", 1) != 0) // no '/' at the start of path
 		data->path = ft_strjoin(temp, "/");
+
 	free(temp);
 	temp2 = ft_strdup(tokens->args[1]);
 	// if (data->path != NULL)
@@ -51,6 +54,7 @@ void ft_cd(t_data *data, t_env *envs) // needs work
 		// data->path = getcwd(NULL, 0); //remove
 		envs = move_list(envs, "PWD");
 		envs = fill_old_pwd(data, envs, data->path); // this is broken!!!!
+//		envs = fill_old_pwd(data, envs, temp3); // this is broken!!!!
 		// free(data->path);
 		// if (envs-value != NULL)
 		// 	free(envs->value);
@@ -64,6 +68,7 @@ void ft_cd(t_data *data, t_env *envs) // needs work
 		cmd_error(tokens->args[0], tokens->args[1], "No such file or directory");
 	free(temp);
 	free(data->path);
+//	free_string(data->tmp->env_line);
 }
 
 int	check_dir(char *str)
