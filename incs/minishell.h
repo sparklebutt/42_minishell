@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/12 15:41:36 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/13 14:32:46 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,12 @@ typedef struct s_data
 
 t_env	*init(t_data *data);
 void	minishell(t_data *data);
-void	cmd_error(char *cmd, char *arg, char *msg);
+void	cmd_error(char *cmd, char *arg);
+t_env	*call_env_error(char *cmd, char *arg);
 
-void	free_nodes(t_env *node);
 t_env	*create_env_list(void);
+int		call_cmd_error(char *cmd, char *arg, int ret_value);
+void	collective_free(char *str1, char *str2, char **array);
 
 char	*find_key(char *str);
 char	*find_value(char *arg);
@@ -130,7 +132,7 @@ char	*find_key_from_envs(t_env *envs, char *key);
 size_t	total_words_c(char const *s, char c);
 
 // cmds.c
-int		ft_pwd(t_data *data);
+int		ft_pwd(t_data *data, t_env *envs);
 int		ft_exit(t_data *data, char *cmd, t_tokens *tokens);
 char	*trim_start(char *str);
 void	ft_cd(t_data *data, t_env *envs);
@@ -146,8 +148,5 @@ char    *ft_strtrim_front(char *s1, char set);
 char	*cmd_to_lower(char *rl);
 int		is_builtins(char *cmd);
 int		exec_builtins(t_data data, t_env envs, char *rl, char *cmd);
-
-// error_handling.c
-void	cmd_error(char *cmd, char *arg, char *msg);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/05/28 19:29:47 by araveala         ###   ########.fr       */
+/*   Updated: 2024/06/13 14:42:10 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	mini_parser(t_tokens *tokens, int i, int x)
 			printf("did it get smaller = %s\n", tokens->args[i]);
 			 free_string(args[i]);*/
 
-
+			// some error handling maybe?
 		}
 		i++;
 	}

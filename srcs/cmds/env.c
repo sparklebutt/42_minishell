@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/11 08:45:24 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/13 14:20:01 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_env(t_data *data) // is needs work
 	value = 0;
 	if (key == 0)
 	{
-		cmd_error("env", NULL, "No such file or directory");
+		cmd_error("env", NULL);
 		return ;
 	}
 	else // how do we check that PATH is valid?
@@ -38,11 +38,11 @@ void	ft_env(t_data *data) // is needs work
 			// do smth with temp->value here
 			// free(value);
 		}
-		free(key);	
+		free(key);
 	}
 	if (data->tokens->args[1] != NULL) // gives error with "env dfgh"
 	{
-		cmd_error("env", data->tokens->args[1], "No such file or directory");
+		cmd_error("env", data->tokens->args[1]);
 		return ;
 	}
 	// move env to the start of the list, prints env starting PATH

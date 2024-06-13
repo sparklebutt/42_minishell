@@ -26,8 +26,7 @@ void collect_cmd_array(t_tokens *tokens, char *string)
 
 	x = total_words_c(string, ' ');
 	i = 0;
-	// spit adv has some double quotes handing just for example
-	tokens->args = ft_split_adv(string, ' ');
+	tokens->args = ft_split_adv(string, ' '); // only double, no single
 	tmp = NULL;
 	pipe_collector(tokens, tokens->args); //maybe dont need
 	tokens->array_count = x;
@@ -37,8 +36,7 @@ void collect_cmd_array(t_tokens *tokens, char *string)
 		return ;
 	}	
 	i = 0;
-	mini_parser(tokens, i, x); //changing CD to cd for example
-	// some error handling maybe?
+	mini_parser(tokens, i, x);
 }
 
 int	find_passage(t_data *all, char *string, int divert) // check if command is not a built in command
@@ -105,29 +103,20 @@ int	check_path(char *string, int divert, t_data *all)
 	suffix = ft_strjoin("/", all->tokens->args[0]);
 
 	if (suffix == NULL || cmd_len == 0)
-	{
-		free_string(suffix);
-		// printf("malloc fail in check path bla or cmd len 0\n");
-		return (0);
-	}
+		return (free_extra_return_function(suffix, 0));
 	split_diversion(all, divert, string);
 	while (all->tmp->array[i] != NULL)
 	{
-		// ft_printf("array[i] = %s\n", all->tmp->array[i]); // remove
 		if (check_dir(all->tmp->array[i]) == 0)
-		{
-			free_string(suffix);
-			return (-1);
-		}
+			return (free_extra_return_function(suffix, -1));
 		if (check_dir(all->tmp->array[i]) == 1)
 		{
 			dir = opendir(all->tmp->array[i]);
 			dp = readdir(dir);
 			if (divert == 2)
 			{
-				// printf("string = key we looking for aka HOME\n\n"); // remove
-				all->tmp->filename = all->tmp->array[i];
-				free_string(suffix);
+				all->tmp->filename = ft_strdup(all->tmp->array[i]);
+				collective_free(NULL, suffix, all->tmp->array);
 				closedir(dir);
 				return (1);
 			}
@@ -140,23 +129,18 @@ int	check_path(char *string, int divert, t_data *all)
 					if (simple_fork(all) == 0)
 					{
 						// if we need any of this data, we should not free yet
-						free_string(all->tmp->filename);
-						free_string(suffix);
-						// free_string(all->tmp->env_line);
-						free_array(all->tmp->array);
+						collective_free(all->tmp->filename, suffix, all->tmp->array);
 						closedir(dir);
 						return (1);
 					}
 					return (1);
 				}
-				dp = readdir(dir); // without close below, leaks a lot
+				dp = readdir(dir);
 			}
-			closedir(dir); // THE close below here!
+			closedir(dir);
 		}
 		i++;
 	}
-	free_string(all->tmp->env_line);
-	free_array(all->tmp->array);
-	free_string(suffix); // this fixes "/cmd" leak
+	collective_free(all->tmp->env_line, suffix, all->tmp->array);
 	return (0);
 }

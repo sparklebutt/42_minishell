@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:11:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/11 08:41:44 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/13 14:19:29 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int ft_exit(t_data *data, char *cmd, t_tokens *tokens) // this should now be pre
 	if (tokens->array_count > 1)
 	{
 		if (atoi(tokens->args[1]) == 0)
-			cmd_error(cmd, tokens->args[1], "numeric argument required\n");
+			cmd_error(cmd, tokens->args[1]);
 		else if (tokens->array_count > 2)
-			cmd_error(cmd, NULL, "too many arguments\n");
+			cmd_error(cmd, NULL);
 		
 		free(cmd);
 		exit(0);
