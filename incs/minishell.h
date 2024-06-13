@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/13 10:20:54 by araveala         ###   ########.fr       */
+/*   Updated: 2024/06/13 14:32:46 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ void	minishell(t_data *data);
 void	cmd_error(char *cmd, char *arg);
 t_env	*call_env_error(char *cmd, char *arg);
 
-void	free_nodes(t_env *node);
 t_env	*create_env_list(void);
 int		call_cmd_error(char *cmd, char *arg, int ret_value);
+void	collective_free(char *str1, char *str2, char **array);
 
 char	*find_key(char *str);
 char	*find_value(char *arg);

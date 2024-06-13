@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/13 10:26:47 by araveala         ###   ########.fr       */
+/*   Updated: 2024/06/13 14:33:49 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,12 @@ t_env	*fill_old_pwd(t_data *data, t_env *env, char *new_path)
 	}
 	else
 		return (call_env_error("cd", "PWD"));
+	// if (ft_strncmp(new_path, temp, ft_strlen(temp)) != 0)
+	// {
+	// 	free(new_path);
+	// 	free(temp);
+	// 	return (env);
+	// }
 	if (find_node(env, "OLDPWD", data) == 1)
 		env = update_oldpwd(data, env, temp);
 	else
