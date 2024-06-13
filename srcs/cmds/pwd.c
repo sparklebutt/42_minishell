@@ -3,21 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/12 18:00:07 by araveala         ###   ########.fr       */
+/*   Updated: 2024/06/13 10:26:47 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_pwd(t_data *data)
+int	ft_pwd(t_data *data, t_env *envs)
 {
-	t_env *env;
-	char *temp_path;
+	char	*temp_path;
 
-	env = data->env;
 	temp_path = getcwd(NULL, 0);
 	if (temp_path != NULL)
 	{
@@ -28,97 +26,56 @@ int ft_pwd(t_data *data)
 	{
 		if (find_key("OLDPWD") != NULL)
 		{
-			env = move_list(env, "OLDPWD");
-			if (env->value != NULL)
-				data->path = ft_strdup(env->value);
+			envs = move_list(envs, "OLDPWD");
+			if (envs->value != NULL)
+				data->path = ft_strdup(envs->value);
+			else
+				return (call_cmd_error("pwd", "OLDPWD", -1));
 		}
 		else
-		{
-			cmd_error("pwd", "OLDPWD", "not found");
-			return (-1);
-		}
+			return (call_cmd_error("pwd", "OLDPWD", -1));
 	}
 	ft_printf("%s\n", data->path);
 	free(temp_path);
 	return (0);
 }
 
-t_env *fill_old_pwd(t_data *data, t_env *env, char *new_path) // needs fixing
+t_env	*update_oldpwd(t_data *data, t_env *env, char *temp)
 {
-	char *temp;
+	t_env	*temp_env;
 
-	new_path = getcwd(NULL, 0);
-	temp = NULL;
-	if (find_node(env, "PWD", data) == 1)
-	{
-		env = move_list(env, "PWD");
-		temp = ft_strdup(env->value);
-		// ft_printf("temp = %s\n", temp);
-		// ft_printf("env line = %s\n", data->tmp->env_line); find node stores an env line that is usable each find node, must also free it,
-		free_string(data->tmp->env_line);
-	}
-	else
-	{
-		cmd_error("cd", "PWD", "not found");
-		return (NULL);
-	}
-	if (find_node(env, "OLDPWD", data) == 1)
-	{
-		env = move_list(env, "OLDPWD");
-		if (env->value != NULL)
-			free(env->value);
-		env->value = ft_strdup(temp);
-		free(temp);
-		free_string(data->tmp->env_line);
-	}
-	else
-	{
-		cmd_error("cd", "OLDPWD", "not found");
-		return (NULL);
-	}
-	env = move_list(env, "PWD");
+	temp_env = data->env;	
+	env = move_list(temp_env, "OLDPWD");
 	if (env->value != NULL)
 		free(env->value);
-	ft_printf("new_path: %s\n", new_path);
+	env->value = ft_strdup(temp);
+	free(temp);
+	free_string(data->tmp->env_line);
+	return (env);
+}
+
+t_env	*fill_old_pwd(t_data *data, t_env *env, char *new_path)
+{
+	t_env	*temp_env;
+	char	*temp;
+
+	temp = NULL;
+	temp_env = env;
+	if (find_node(env, "PWD", data) == 1)
+	{
+		temp = ft_strdup(data->tmp->env_line);
+		free_string(data->tmp->env_line);
+	}
+	else
+		return (call_env_error("cd", "PWD"));
+	if (find_node(env, "OLDPWD", data) == 1)
+		env = update_oldpwd(data, env, temp);
+	else
+		return (call_env_error("cd", "OLDPWD"));
+	env = move_list(temp_env, "PWD");
+	if (env->value != NULL)
+		free(env->value);
 	env->value = ft_strdup(new_path);
 	free(new_path);
 	return (env);
 }
-
-
-// char *fill_old_pwd(t_data *data, t_env *env, char *new_path) // needs testing
-// {
-// 	char *temp;
-
-// 	new_path = getcwd(NULL, 0);
-// 	temp = NULL;
-// 	if (find_node(env, "PWD", data) == 1)
-// 	{
-// 		env = move_list(env, "PWD");
-// 		temp = ft_strdup(env->value);
-// 	}
-// 	else
-// 	{
-// 		cmd_error("cd", "PWD", "not found");
-// 		return (NULL);
-// 	}
-// 	if (find_node(env, "OLDPWD", data) == 1)
-// 	{
-// 		env = move_list(env, "OLDPWD");
-// 		if (env->value != NULL)
-// 			free(env->value);
-// 		env->value = ft_strdup(temp);
-// 	}
-// 	else
-// 	{
-// 		cmd_error("cd", "OLDPWD", "not found");
-// 		return (NULL);
-// 	}
-// 	env = move_list(env, "PWD");
-// 	if (env->value != NULL)
-// 		free(env->value);
-// 	env->value = ft_strdup(new_path);
-// 	free(temp);
-// 	free(new_path);
-// 	return (env->value);
-// }

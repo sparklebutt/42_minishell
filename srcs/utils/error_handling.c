@@ -3,20 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 18:24:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/12 15:10:58 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/13 10:20:40 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cmd_error(char *cmd, char *arg, char *msg)
+int	call_cmd_error(char *cmd, char *arg, int ret_value)
+{
+	cmd_error(cmd, arg);
+	return (ret_value);
+}
+
+t_env	*call_env_error(char *cmd, char *arg)
+{
+	cmd_error(cmd, arg);
+	return (NULL);
+}
+
+void	cmd_error(char *cmd, char *arg)
 {
 	char *error_msg;
 	char *temp;
-	(void)msg;
 
 	temp = ft_strjoin("minishell: ", cmd);
 	error_msg = ft_strjoin(temp, ": ");

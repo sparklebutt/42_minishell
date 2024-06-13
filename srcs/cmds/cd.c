@@ -3,78 +3,71 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/12 17:51:49 by araveala         ###   ########.fr       */
+/*   Updated: 2024/06/13 10:21:19 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ft_cd(t_data *data, t_env *envs) // needs work
+void	to_home(t_data *data, t_env *envs)
 {
-	char *temp;
-	char *temp2;
+	find_passage(data, "HOME", 2);
+	if (chdir(data->tmp->filename) == 0)
+	{
+		data->path = getcwd(NULL, 0);
+		envs = move_list(envs, "PWD");
+		envs = fill_old_pwd(data, envs, data->tmp->filename);
+		free(data->path);
+	}
+}
 
-	t_tokens *tokens;
-	// t_env *temp_env;
-	(void)envs;
+void	change_dir(t_data *data, t_env *envs, char *temp)
+{
+	t_tokens	*tokens;
 
 	tokens = data->tokens;
-	if (ft_strncmp(tokens->args[0], "cd", 3) == 0 && tokens->args[1] == NULL)
+	if (check_dir(temp) && chdir(temp) == 0)
 	{
-		// ft_printf("test\n");
-		find_passage(data, "HOME", 2);
-		if (chdir(data->tmp->filename) == 0)
-		{
-			free_array(data->tmp->array);
-//			ft_printf("string = %s\n", data->tmp->filename);
-			data->path = getcwd(NULL, 0); 
-			// temp_env = fill_old_pwd(t_data *data, t_env *env, char *new_path)
-			free(data->path);
-		}
-		return ;
-	}
-	// free(data->path); // not needed
-	temp = getcwd(NULL, 0);
-	// if (temp != NULL)
-	// 	data->path = temp;
-	if (ft_strncmp(tokens->args[1], "/", 1) != 0) // no '/' at the start of path
-		data->path = ft_strjoin(temp, "/");
-
-	free(temp);
-	temp2 = ft_strdup(tokens->args[1]);
-	// if (data->path != NULL)
-	temp = ft_strjoin(data->path, temp2);
-	ft_printf("temp: %s\n", temp);
-	free(temp2);
-	if (check_dir(temp) && chdir(temp) == 0) // add access check fucntion
-	{
-		// data->path = getcwd(NULL, 0); //remove
 		envs = move_list(envs, "PWD");
-		envs = fill_old_pwd(data, envs, data->path); // this is broken!!!!
-//		envs = fill_old_pwd(data, envs, temp3); // this is broken!!!!
-		// free(data->path);
-		// if (envs-value != NULL)
-		// 	free(envs->value);
-		// envs->value = fill_old_pwd(data, data->env, data->path);
-		// free(temp);
-		// return ;
+		envs = fill_old_pwd(data, envs, temp);
 	}
 	else if (!check_dir(temp))
-		cmd_error(tokens->args[0], tokens->args[1], "Permission denied");
+		cmd_error(tokens->args[0], tokens->args[1]);
 	else
-		cmd_error(tokens->args[0], tokens->args[1], "No such file or directory");
+		cmd_error(tokens->args[0], tokens->args[1]);
+}
+
+void	ft_cd(t_data *data, t_env *envs)
+{
+	char	*temp;
+	char	*temp2;
+
+	if (ft_strncmp(data->tokens->args[0], "cd", 3) == 0
+		&& data->tokens->args[1] == NULL)
+	{
+		to_home(data, envs);
+		return ;
+	}
+	temp = getcwd(NULL, 0);
+	if (temp != NULL) // add same error handling than what pwd has
+		data->path = temp;
+	if (ft_strncmp(data->tokens->args[1], "/", 1) != 0)
+		data->path = ft_strjoin(temp, "/");
 	free(temp);
+	temp2 = ft_strdup(data->tokens->args[1]);
+	temp = ft_strjoin(data->path, temp2);
+	free(temp2);
+	change_dir(data, envs, temp);
 	free(data->path);
-//	free_string(data->tmp->env_line);
 }
 
 int	check_dir(char *str)
 {
 	struct dirent		*dp;
-	DIR							*test;
+	DIR					*test;
 
 	test = NULL;
 	if (access(str, X_OK) == 0)

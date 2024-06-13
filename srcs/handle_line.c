@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/09 20:24:37 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/13 09:54:16 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int exec_builtins(t_data data, t_env envs, char *rl, char *cmd)
 	if (ft_strncmp(cmd, "exit", 5) == 0)
 		return (ft_exit(&data, cmd, tokens));
 	else if (ft_strncmp(cmd, "pwd", 4) == 0)
-		ft_pwd(&data);
+		ft_pwd(&data, &envs);
 	else if (ft_strncmp(cmd, "cd", 2) == 0)
 		ft_cd(&data, &envs);
 	else if (ft_strncmp(cmd, "echo", 5) == 0)

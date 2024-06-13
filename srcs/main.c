@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/12 17:39:07 by araveala         ###   ########.fr       */
+/*   Updated: 2024/06/13 09:16:53 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ int main(int argc, char **argv)//, char **env)
 	data.tokens = &tokens;
 	data.tmp = &tmp;
 	data.env = init(&data);
+	ft_printf("env->key: %s\n", data.env->key);
 	minishell(&data); // exits when whitsespace
+	ft_printf("env->key: %s\n", data.env->key);
 	free_nodes(data.env);
 	return (0);
 }

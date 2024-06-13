@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/11 08:45:24 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/06/13 09:12:25 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ft_env(t_data *data) // is needs work
 			// do smth with temp->value here
 			// free(value);
 		}
-		free(key);	
+		free(key);
 	}
 	if (data->tokens->args[1] != NULL) // gives error with "env dfgh"
 	{
