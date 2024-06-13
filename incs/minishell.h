@@ -82,13 +82,14 @@ void	collective_free(char *str1, char *str2, char **array);
 
 char	*find_key(char *str);
 char	*find_value(char *arg);
-char	*find_keys_value(t_env *envs, char *key);
-void	replace_value(t_data *data, char *key, char *new_value);
-int		check_dir(char *str);
+char *find_keys_value(t_env *envs, char *key);
+t_env *replace_value(t_env *env, char *key, char *new_value);
+int check_dir(char *str);
+
 
 int	insert_node(t_env **env_lst, char *key_name, char *value);
 // char *fill_old_pwd(t_data *data, t_env *env, char *temp_path);
-t_env *fill_old_pwd(t_data *data, t_env *env, char *temp_path);
+t_env *fill_pwd_and_oldpwd(t_data *data, t_env *env, char *temp_path);
 
 // OLD STUFF
 

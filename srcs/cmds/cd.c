@@ -58,6 +58,7 @@ void	ft_cd(t_data *data, t_env *envs)
 	temp2 = ft_strdup(data->tokens->args[1]);
 	temp = ft_strjoin(data->path, temp2);
 	free(temp2);
+
 	change_dir(data, envs, temp);
 	free(data->path);
 }
