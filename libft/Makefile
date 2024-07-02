@@ -6,7 +6,7 @@
 #    By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 15:15:31 by vkettune          #+#    #+#              #
-#    Updated: 2024/06/08 19:42:29 by vkettune         ###   ########.fr        #
+#    Updated: 2024/07/01 16:33:42 by araveala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ WHITE = \033[0;97m
 NAME = libft.a
 FLAGS = -Wall -Wextra -Werror $(HEADERS)
 
-HEADERS = -I ../incs/
+HEADERS = -I ../includes/
 SRCS_DIR = srcs/
 OBJS_DIR = objs/
 

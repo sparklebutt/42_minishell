@@ -1,36 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   forking.c                                          :+:      :+:    :+:   */
+/*   free_things.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/07/01 17:48:12 by araveala         ###   ########.fr       */
+/*   Created: 2024/05/24 10:59:15 by araveala          #+#    #+#             */
+/*   Updated: 2024/05/24 11:00:25 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	simple_fork(t_data *data)
+void	free_array(char **array)
 {
-	// int	ret;
-	int	status; // ? not sure why yet
-	ft_printf("how deep are we\n");
-	data->pid = fork();
-	if (data->pid == -1)
+	int i;
+
+	i = 0;
+	while (array[i] != NULL)
 	{
-		ft_printf("fork error\n");
-		exit(1);
+		free(array[i]);
+		array[i] = NULL;
+		i++;
 	}
-	if (data->pid == 0)
+	if (array != NULL)
 	{
-		ft_printf("this is the child\n");
-		execve(data->tmp->filename, data->tmp->ex_arr, NULL);
+		free(array);
+		array = NULL;
 	}
-	ft_printf("this is the parent\n");
-	waitpid(data->pid, &status, 0);
-//	free_array(data->tmp->ex_arr);
-	close(data->pid);
-	return (0);
 }

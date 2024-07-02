@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/13 14:38:45 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/07/02 11:00:42 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	to_home(t_data *data, t_env *envs)
 {
-	find_passage(data, "HOME", 2);
+	find_passage(data, "cd", "HOME", 2);
 	if (chdir(data->tmp->filename) == 0)
 	{
 		envs = move_list(envs, "PWD");
@@ -58,7 +58,6 @@ void	ft_cd(t_data *data, t_env *envs)
 	temp2 = ft_strdup(data->tokens->args[1]);
 	temp = ft_strjoin(data->path, temp2);
 	free(temp2);
-
 	change_dir(data, envs, temp);
 	free(data->path);
 }
@@ -69,6 +68,8 @@ int	check_dir(char *str)
 	DIR					*test;
 
 	test = NULL;
+	if (access(str, X_OK) == -1)
+		return( 0);
 	if (access(str, X_OK) == 0)
 		test = opendir(str);
 	if (test == NULL)

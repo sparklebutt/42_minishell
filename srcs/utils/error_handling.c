@@ -6,14 +6,32 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 18:24:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/13 10:20:40 by araveala         ###   ########.fr       */
+/*   Updated: 2024/06/14 12:09:56 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	call_cmd_error(char *cmd, char *arg, int ret_value)
+void not_perror(char *cmd, char *arg, char *msg)
 {
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	if (arg != NULL)
+	{
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(arg, 2);
+	}
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(msg, 2);
+}
+
+int	call_cmd_error(char *cmd, char *arg, char *msg, int ret_value)
+{
+	if (ret_value == -10)
+	{
+		not_perror(cmd, arg, msg);
+		return (-1);
+	}
 	cmd_error(cmd, arg);
 	return (ret_value);
 }
@@ -29,15 +47,16 @@ void	cmd_error(char *cmd, char *arg)
 	char *error_msg;
 	char *temp;
 
-	temp = ft_strjoin("minishell: ", cmd);
-	error_msg = ft_strjoin(temp, ": ");
-	free(temp);
+	temp = NULL;
+	error_msg = ft_strjoin("minishell: ", cmd);
 	if (arg != NULL)
 	{
-		temp = ft_strjoin(error_msg, arg);
+		temp = ft_strjoin(error_msg, ": ");
 		free(error_msg);
-		error_msg = temp;
+		error_msg = ft_strjoin(temp, arg);
 	}
+	if (temp != NULL)
+		free(temp);
 	perror(error_msg);
 	free(error_msg);
 }
