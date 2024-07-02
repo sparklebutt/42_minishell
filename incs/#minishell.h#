@@ -26,6 +26,7 @@
 
 # include "libft.h"
 
+
 typedef struct s_env
 {
 	char			*key;

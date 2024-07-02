@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/07/02 11:17:08 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/02 14:38:31 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,16 @@ void collect_cmd_array(t_tokens *tokens, char *string)
 {
 	int i;
 	int x;
-	// char *tmp;
 
 	x = total_words_c(string, ' ');
 	i = 0;
+	// fix exandable variables
 	tokens->args = ft_split_adv(string, ' '); // only double, no single
-	// tmp = NULL;
+	if (check_open_quotes(tokens) < 0)
+		return ;
+	expansion_parser(tokens);
+	
+	// clean the okens array
 	pipe_collector(tokens, tokens->args); //maybe dont need
 	tokens->array_count = x;
 	if (tokens->args == NULL)
@@ -97,10 +101,8 @@ static void	set_array(t_data *data)// char *flag, char *arguments)
 
 static void	split_diversion(t_data *data, int divert, char *string)
 {
-	ft_printf("lets check the string %s\n", string);
 	if (divert == 1) // PATH
 		data->tmp->array = ft_split(string, ':');
-
 	else if (divert == 2) // HOME
 		data->tmp->array = ft_split(string, ' ');
 	if (data->tmp->array == NULL)
