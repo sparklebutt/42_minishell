@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:04:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/10 18:24:40 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/07/01 17:41:18 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	ft_export(t_data *data)
 {
-	t_env	*env;
+	// t_env	*env;
 	t_tokens *tokens;
 	int		i;
 
 	i = 1;
 	tokens = data->tokens;
-	env = data->env;
+	// env = data->env;
 	if (tokens->args[1] == NULL)
 		ft_printf("no args\n");
 	if (data->tokens->array_count == 1)

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/06/13 14:42:10 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/07/01 17:42:25 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	pipe_collector(t_tokens *tokens, char **array)
 
 	i = 0;
 	count = 0;
-	while (array[i] != '\0')
+	while (array[i]) // != '\0')
 	{
 		len = ft_strlen(array[i]);
 		if (array[i][0] == '|')
@@ -48,9 +48,9 @@ void	pipe_collector(t_tokens *tokens, char **array)
 
 void	mini_parser(t_tokens *tokens, int i, int x)
 {
-	char	*tmp;
+	// char	*tmp;
 
-	tmp = NULL;
+	// tmp = NULL;
 	while (i != x)
 	{
 		if (ft_strncmp(tokens->args[i], "CD", 2) == 0)

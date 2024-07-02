@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/14 14:33:17 by araveala          #+#    #+#             */
-/*   Updated: 2023/11/22 11:55:07 by araveala         ###   ########.fr       */
+/*   Created: 2024/05/22 09:17:26 by vkettune          #+#    #+#             */
+/*   Updated: 2024/05/22 11:17:19 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	*ft_memchr(const void *s, int c, size_t n)
+t_env	*env_init(t_data *data, char **env)
 {
-	unsigned char	*str;
-
-	str = (unsigned char *)s;
-	while (n != 0)
-	{
-		if (*str == (unsigned char)c)
-			return (str);
-		str++;
-		n--;
-	}
-	return (NULL);
+	// understand env
+	// copy env to struct
+	
+	(void)env;
+	(void)data;
+	return (0);
 }
