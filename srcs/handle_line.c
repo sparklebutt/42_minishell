@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/01 17:44:29 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/05 11:34:44 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,9 @@
 
 int exec_builtins(t_data data, t_env envs, char *rl, char *cmd)
 {
-	// char *temp;
 	t_tokens *tokens;
-	// int i;
 	
-	// temp = NULL;
 	tokens = data.tokens;
-	// i = -1;
 	if (ft_strncmp(cmd, "exit", 5) == 0)
 		return (ft_exit(cmd, tokens));
 	else if (ft_strncmp(cmd, "pwd", 4) == 0)
@@ -53,40 +49,78 @@ int is_builtins(char *cmd)
 	return (0);
 }
 
-char *cmd_to_lower(char *cmd)
+//static int	check_for_cmd()
+//{
+
+//}
+
+int	handle_pipe_line(t_data data, t_env envs, t_tokens *tokens, char *line)
 {
-	// char *temp;
+	char *cmd;
+	int	pipes;
 	int i;
 
-	i = -1;
-	// temp = NULL;
-	if (ft_strncmp(cmd, "cd", 2) != 0)
+	i = 0;
+	pipes = tokens->pipe_count * 2;
+	data.tokens = tokens;
+	if (tokens->args[0] == NULL)
+		return (0);
+	while (tokens->args[i] && pipes > 0)
 	{
-		while (cmd && cmd[++i] != '\0')
-			cmd[i] = ft_tolower(cmd[i]);
+		cmd = tokens->args[i];
+		ft_printf("cmd = %s\n", cmd);
+		if (is_builtins(cmd) == 1)
+		{
+
+			exec_builtins(data, envs, line, cmd);
+		}
+		else
+		{
+			if (find_passage(&data, cmd, "PATH", 1) == -1)
+				call_cmd_error(cmd, NULL, "command not found\n", -10);
+		}
+		i++;
+		pipes--;
 	}
-	else if (ft_strncmp(cmd, "cd", 2) == 0)
-		return (ft_strdup(cmd));
-	else 
-		ft_printf("%s: command not found\n", cmd);
-	return (ft_strdup(cmd));
+//	free(cmd);
+	return (0);
 }
 
 int	handle_line(t_data data, t_env envs, t_tokens *tokens, char *line)
 {
-	// int i;
 	char *cmd;
 
-	// i = 0;
 	data.tokens = tokens;
 	if (tokens->args[0] == NULL)
 		return (0);
-	cmd = cmd_to_lower(tokens->args[0]);
-	// ft_printf("cmd: %s|\n", cmd); //remove
+	cmd = tokens->args[0];
 	if (is_builtins(cmd) == 1)
+	{
+
 		exec_builtins(data, envs, line, cmd);
+	}
 	else if (find_passage(&data, cmd, "PATH", 1) == -1)
 		call_cmd_error(cmd, NULL, "command not found\n", -10);
 	free(cmd);
 	return (0);
 }
+
+/*int	handle_line(t_data data, t_env envs, t_tokens *tokens, char *line)
+{
+	char *cmd;
+
+	data.tokens = tokens;
+	if (tokens->args[0] == NULL)
+		return (0);
+	cmd = tokens->args[0];
+//	printf("heywo\n");
+	if (is_builtins(cmd) == 1)
+	{
+
+		exec_builtins(data, envs, line, cmd);
+	}
+	else if (find_passage(&data, cmd, "PATH", 1) == -1)
+		call_cmd_error(cmd, NULL, "command not found\n", -10);
+	free(cmd);
+	return (0);
+}*/

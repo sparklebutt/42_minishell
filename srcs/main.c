@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/13 09:16:53 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/05 14:52:49 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,23 @@ void	minishell(t_data *data)
 			collect_cmd_array(data->tokens, rl);
 			// if (data->tokens->args[0] == NULL)
 			// 	break ;
-			if (handle_line(*data, *data->env, data->tokens, rl) == -1)
-			{
-				ft_printf("error\n");
-				break ;
-			}
-			free_array(data->tokens->args);
+			// ft_printf("pipe count = %d\n", data->tokens->pipe_count);
+//			if (data->tokens->pipe_count > 0)
+//			{
+//				ft_printf("here we begin the pipe jourey\n");
+//				pipe_fork(data, data->env, rl, NULL);
+//				handle_pipe_line(*data, *data->env, data->tokens, rl);
+//
+//			}
+//			else
+//			{
+			 if (handle_line(*data, *data->env, data->tokens, rl) == -1)
+			 {
+				 ft_printf("error\n");
+				 break ;
+			 }
+//			}
+			//	free_array(data->tokens->args); was casuing double free
 			free(rl);
 		}
 		if (!rl)

@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/02 14:38:00 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/05 14:00:01 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <errno.h>
 # include <sys/param.h>
 # include <sys/wait.h>
+# include <stdbool.h>
 
 # include "libft.h"
 
@@ -42,6 +43,7 @@ typedef struct s_tokens
 
 	int		array_count;
 	int		pipe_count;
+
 }	t_tokens;
 
 typedef struct s_cmd
@@ -96,7 +98,7 @@ t_env	*fill_old_pwd(t_data *data, t_env *env, char *temp_path);
 // main.c
 int		main(int argc, char **argv); //, char **env);
 int		handle_line(t_data data, t_env envs, t_tokens *tokens, char *rl);
-
+int		handle_pipe_line(t_data data, t_env envs, t_tokens *tokens, char *rl);
 // signals.c
 void	signal_handler(int signo);
 void	set_signals(void);
@@ -120,11 +122,17 @@ void	expansion_parser(t_tokens *tokens);
 void	mini_quote_parser(t_tokens *tokens, int i);
 int		insert_node(t_env **env_lst, char *key_name, char *value);
 int		check_open_quotes(t_tokens *tokens);
+int		confirm_action(int du, int si, int d, int s);
+
+char	*clean_quotes(char *string, int len);
+int		count_new_len(char *string);
 //forking
 int		simple_fork(t_data *data);
+int		pipe_fork(t_data *data, t_env *envs, char *line, char *cmd);
 //export parsing
 int		validate_it(t_data *data, char *string, int i);
 int		check_char(t_data *data, int i, int x);
+void	confirm_expansion(char *string, int len);
 
 //test functions that may or may not be in need of renovation
 void	collect_cmd_array(t_tokens *tokens, char *string);

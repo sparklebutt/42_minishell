@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/02 11:00:42 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:19:01 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	check_dir(char *str)
 
 	test = NULL;
 	if (access(str, X_OK) == -1)
-		return( 0);
+		return(0);
 	if (access(str, X_OK) == 0)
 		test = opendir(str);
 	if (test == NULL)

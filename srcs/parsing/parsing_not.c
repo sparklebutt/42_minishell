@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/07/02 14:38:31 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:49:01 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,17 @@
 // string is rl
 void collect_cmd_array(t_tokens *tokens, char *string)
 {
-	int i;
+//	int i;
 	int x;
 
 	x = total_words_c(string, ' ');
-	i = 0;
+//	i = 0;
 	// fix exandable variables
 	tokens->args = ft_split_adv(string, ' '); // only double, no single
 	if (check_open_quotes(tokens) < 0)
 		return ;
-	expansion_parser(tokens);
+	expansion_parser(tokens); //execution parser
+	// remove_quotes();// keepimg it simple to start 
 	
 	// clean the okens array
 	pipe_collector(tokens, tokens->args); //maybe dont need
@@ -38,9 +39,9 @@ void collect_cmd_array(t_tokens *tokens, char *string)
 	{
 		ft_printf("malloc fail in parsing , making of array of args\n");
 		return ;
-	}	
-	i = 0;
-	mini_parser(tokens, i, x);
+	}
+//	i = 0;
+//	mini_parser(tokens, i, x);
 }
 int	null_check(char *str1, t_env *str2, char *str3)
 {
@@ -121,10 +122,30 @@ int	check_path(char *string, int divert, t_data *all)
 	int				i;
 
 	i = 0;
-
+	suffix = NULL;
 	cmd_len = ft_strlen(all->tokens->args[0]);
-	suffix = ft_strjoin("/", all->tokens->args[0]);
+	if (all->tokens->args[0][0] != '/')
+		suffix = ft_strjoin("/", all->tokens->args[0]);
+	else
+	{
+		if (check_dir("/bin") == 1)
+		{
+		//ft_printf("WE ARE IN YOU SON OF A BICH\n");
+		// different fucntion
+		// go through string , count len, work backwards untill \ reached - this from len
+		// seperate /bin , check passage then send ls
+		// suffix == // go reverse in the string, grab characters up to \
+//		suffix = ft_strdup(all->tokens->args[0]);
 
+			all->tmp->filename = all->tokens->args[0];
+			if (simple_fork(all) == 0)
+				return (1);
+			return (-1);
+		}
+	return (-1);
+
+	}
+	ft_printf("suffix = %s\n", suffix);
 	if (suffix == NULL || cmd_len == 0)
 		return (free_extra_return_function(suffix, 0));
 	split_diversion(all, divert, string);
@@ -132,6 +153,7 @@ int	check_path(char *string, int divert, t_data *all)
 	{		
 		if (check_dir(all->tmp->array[i]) == 1)
 		{
+//			ft_printf("rmp array = %s\n", all->tmp->array[i]);
 			dir = opendir(all->tmp->array[i]);
 			dp = readdir(dir);
 			while (dp != NULL)
@@ -140,11 +162,19 @@ int	check_path(char *string, int divert, t_data *all)
 				{			
 					all->tmp->filename = ft_strjoin(all->tmp->array[i], suffix);
 					set_array(all); //, NULL, NULL, NULL);
-					if (simple_fork(all) == 0)
+					if (all->tokens->pipe_count > 0)
+					{
+						return (2);
+//						execve(all->tmp->filename, all->tmp->ex_arr, NULL);
+					}
+					else 
 					{
 						// if we need any of this data, we should not free yet
-						collective_free(all->tmp->filename, suffix, all->tmp->array);
-						closedir(dir);
+						if (simple_fork(all) == 0)
+						{
+							collective_free(all->tmp->filename, suffix, all->tmp->array);
+							closedir(dir);
+						}
 						return (1);
 					}
 					return (-1);

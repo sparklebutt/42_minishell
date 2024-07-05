@@ -1,0 +1,13 @@
+{
+   <readline>
+   Memcheck:Cond
+   ...
+   fun:gdk_set_locale
+}
+
+{
+   <libpango>
+   Memcheck:Leak
+   ...
+   obj:/usr/*lib*/libpango*
+}
