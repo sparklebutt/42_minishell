@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/06/08 16:22:38 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/07/04 16:42:26 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@ static int fancy_strlen(char const *s, char c, int i)
 			while (s[i] != '"')
 				i++;
 		}//
+/*		else if (s[i] == '\'')//tis is to protect the spaces
+		{
+			i++;
+			while (s[i] != '\'')
+				i++;
+				}//*/
         i++;
 	}
     return (i);
@@ -44,6 +50,13 @@ size_t  total_words_c(char const *s, char c)
 				while (s[i] != '"')
 					i++;
 			}//
+/*			else if (s[i] == '\'')//tis is to protect the spaces newnew
+			{
+				i++;
+				while (s[i] != '\'')
+					i++;
+					}//*/
+
 			i++;
 		}
         else if (s[i] != c)
@@ -71,8 +84,8 @@ char    **ft_split_adv(char const *s, char c)
     char    **array;
     int     word;
     int     word_len;
-    int     i;
-	int x;
+    size_t     i;
+	int		x;
 
 	x = 0;
     i = 0;
@@ -80,7 +93,7 @@ char    **ft_split_adv(char const *s, char c)
     array = (char **)ft_calloc(sizeof(char *), (total_words_c(s, c) + 1));
     if (!s || !array)
         return (NULL);
-    while (s[i])
+    while(s[i]) // (i <= ft_strlen(s))//causing read error of 1 in valgrind
     {
 
         if (s[i] == c)
@@ -92,6 +105,12 @@ char    **ft_split_adv(char const *s, char c)
 				while (s[i] != '"')
 					x++;
 			}
+/*			else if (s[i] == '\'')//tis is to protect the spaces
+			{
+				x++;
+				while (s[i] != '\'')
+					x++;
+					}*/
 		}
         else
         {

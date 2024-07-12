@@ -6,27 +6,26 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/12 13:41:45 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/07/10 15:42:34 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+
 int exec_builtins(t_data data, t_env envs, char *cmd)
 {
-	// char *temp;
 	t_tokens *tokens;
-	// int i;
+	t_env *envs;
 	
-	// temp = NULL;
 	tokens = data.tokens;
-	// i = -1;
+	envs = data.env; 
 	if (ft_strncmp(cmd, "exit", 5) == 0)
 		return (ft_exit(cmd, tokens));
 	else if (ft_strncmp(cmd, "pwd", 4) == 0)
-		ft_pwd(&data, &envs);
+		ft_pwd(&data, envs);
 	else if (ft_strncmp(cmd, "cd", 2) == 0)
-		ft_cd(&data, &envs);
+		ft_cd(&data, envs, i);
 	else if (ft_strncmp(cmd, "echo", 5) == 0)
 		ft_echo(tokens->args);
 	else if (ft_strncmp(cmd, "env", 4) == 0)
@@ -53,35 +52,25 @@ int is_builtins(char *cmd)
 	return (0);
 }
 
-char *cmd_to_lower(char *cmd)
+// fixed to handle multiple cmds ***FIND FIX // this is for easy find in vs code
+//int	handle_line(t_data data, t_env envs, t_tokens *tokens, char *line)
+int	handle_line(t_data data, t_tokens *tokens, char *line)
 {
-	int i;
-
-	i = -1;
-	if (ft_strncmp(cmd, "cd", 2) != 0)
-	{
-		while (cmd && cmd[++i] != '\0')
-			cmd[i] = ft_tolower(cmd[i]);
-	}
-	else if (ft_strncmp(cmd, "cd", 2) == 0)
-		return (ft_strdup(cmd));
-	else 
-		ft_printf("%s: command not found\n", cmd);
-	return (ft_strdup(cmd));
-}
-
-int	handle_line(t_data data, t_env envs, t_tokens *tokens)
-{
-	char *cmd;
-
 	data.tokens = tokens;
 	if (tokens->args[0] == NULL)
 		return (0);
-	cmd = cmd_to_lower(tokens->args[0]);
-	if (is_builtins(cmd) == 1)
-		exec_builtins(data, envs, cmd);
-	else if (find_passage(&data, cmd, "PATH", 1) == -1)
-		call_cmd_error(cmd, NULL, "command not found\n", -10);
-	free(cmd);
+	if (tokens->args[data.i] != NULL)	//if
+	{
+		if (is_builtins(tokens->args[data.i]) == 1)
+		{
+			exec_builtins(data, line, tokens->args[data.i], data.i);
+		}
+		else if (find_passage(&data, data.i, "PATH", 1) == -1)
+		{
+			
+			call_cmd_error(tokens->args[data.i], NULL, "command not found\n", -10);
+		}
+		data.i++;
+	}
 	return (0);
 }

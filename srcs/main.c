@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/12 09:49:47 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/07/10 15:40:34 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	minishell(t_data *data)
 
 int main(int argc, char **argv)//, char **env)
 {
-	t_data data;
+	static t_data data;
 	static t_tokens tokens;
 	static t_temps tmp;
 

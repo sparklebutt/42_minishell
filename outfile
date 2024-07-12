@@ -1,12 +1,24 @@
+total 84
+drwxr-xr-x 7 araveala 2020   143 Jul  9 16:58 .
+drwxr-xr-x 4 araveala 2020    40 Jul  2 11:35 ..
+drwxr-xr-x 8 araveala 2020   202 Jul  9 16:43 .git
+drwxr-xr-x 2 araveala 2020    40 Jul  8 18:28 incs
+drwxr-xr-x 4 araveala 2020    61 Jul  9 16:41 libft
+-rw-r--r-- 1 araveala 2020  3842 Jul  3 17:11 Makefile
+-rwxr-xr-x 1 araveala 2020 76048 Jul  9 16:41 minishell
+drwxr-xr-x 6 araveala 2020   123 Jul  9 16:41 objs
+-rw-r--r-- 1 araveala 2020     0 Jul  9 16:58 outfile
+drwxr-xr-x 6 araveala 2020   267 Jul  9 16:43 srcs
+-rw-r--r-- 1 araveala 2020   135 Jul  4 14:38 valgrind.supressions
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+         #
+#    By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/07/10 14:35:07 by araveala         ###   ########.fr        #
+#    Updated: 2024/07/03 17:11:35 by araveala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +41,7 @@ CYAN = \033[0;96m
 WHITE = \033[0;97m
 
 NAME = minishell
-FLAGS = -Wall -Wextra -Werror -g -fsanitize=address $(HEADERS)
+FLAGS = -Wall -Wextra -Werror -g $(HEADERS)
 HEADERS = -I ./incs/ # -I ~/.brew/opt/readline/include
 
 LIBS = $(READLINE) $(LIBFT)
@@ -41,7 +53,7 @@ SRCS_DIR = srcs/
 
 CMD_FILES = exit.c pwd.c export.c cd.c echo.c env.c #unset.c
 
-ENV_FILES = find_from_env.c list_manipulation.c variable_expansions.c #list_creation.c
+ENV_FILES = find_from_env.c list_manipulation.c #list_creation.c
 
 PAR_FILES = export_parsing.c parsers.c parsing_not.c quotes_parsing.c pipe_parsing.c #parse.c parse_utils.c export_parse.c
 

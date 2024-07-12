@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 10:28:19 by vkettune          #+#    #+#             */
-/*   Updated: 2024/01/03 05:47:00 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/07/04 14:53:26 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,3 +31,14 @@ void	*ft_calloc(size_t count, size_t size)
 	ft_bzero(dest, temp);
 	return (dest);
 }
+
+/*void	*ft_calloc(size_t count, size_t size)
+{
+	void	*storage_ptr;
+
+	storage_ptr = malloc(count * size);
+	if (storage_ptr == NULL)
+		return (NULL);
+	ft_bzero(storage_ptr, count * size);
+	return (storage_ptr);
+}*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:11:00 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/12 14:30:36 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/07/10 15:42:09 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ t_env	*init(t_data *data)
 	data->path = NULL;
 	data->cmds = NULL;
 	data->pid = 0;
+	data->i = 0;
 	return (create_env_list());
 }
