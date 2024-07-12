@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/07/04 17:43:48 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/10 08:47:50 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void	expansion_parser(t_tokens *tokens)
 	//new = NULL;
 	while (tokens->args[i])
 	{
-		ft_printf("TOKEN BEFORE CHANGES WITH QUOTES = %s\n", tokens->args[i]);
+		// ft_printf("TOKEN BEFORE CHANGES WITH QUOTES = %s\n", tokens->args[i]);
 		len = ft_strlen(tokens->args[i]) - 1;
 		if (ft_strchr(tokens->args[i], '$') != NULL)
 			confirm_expansion(tokens->args[i], len);// to expand or not to expand, should also handle the expansion or we expand here based on true and false
@@ -127,7 +127,7 @@ void	expansion_parser(t_tokens *tokens)
 //		ft_printf("token s arg freed\n\n");
 			tokens->args[i] = new;
 		}
-		ft_printf("TOKEN AFTER quotes array update = %s \n", tokens->args[i]);
+		// ft_printf("TOKEN AFTER quotes array update = %s \n", tokens->args[i]);
 		// free_string(new);
 		i++;
 	}
@@ -135,22 +135,8 @@ void	expansion_parser(t_tokens *tokens)
 	i = 0;
 	while (tokens->args[i])
 	{
-		ft_printf("TOKEN AFTER = %s\n", tokens->args[i]);
+		// ft_printf("TOKEN AFTER = %s\n", tokens->args[i]);
 		i++;
 	}
 ////
 }
-
- 
-/*void	mini_parser(t_tokens *tokens, int i, int x)
-{
-	while (tokens->args[i])
-	{
-		while (tokens->args[i][x])
-		{
-			if ()
-			x++;
-		}
-	}
-	i++;
-	}*/

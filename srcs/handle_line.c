@@ -6,23 +6,25 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/05 11:34:44 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/10 15:42:34 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int exec_builtins(t_data data, t_env envs, char *rl, char *cmd)
+int exec_builtins(t_data data, char *rl, char *cmd, int i)
 {
 	t_tokens *tokens;
+	t_env *envs;
 	
 	tokens = data.tokens;
+	envs = data.env; 
 	if (ft_strncmp(cmd, "exit", 5) == 0)
 		return (ft_exit(cmd, tokens));
 	else if (ft_strncmp(cmd, "pwd", 4) == 0)
-		ft_pwd(&data, &envs);
+		ft_pwd(&data, envs);
 	else if (ft_strncmp(cmd, "cd", 2) == 0)
-		ft_cd(&data, &envs);
+		ft_cd(&data, envs, i);
 	else if (ft_strncmp(cmd, "echo", 5) == 0)
 		ft_echo(rl);
 	else if (ft_strncmp(cmd, "env", 4) == 0)
@@ -49,78 +51,32 @@ int is_builtins(char *cmd)
 	return (0);
 }
 
-//static int	check_for_cmd()
-//{
-
-//}
-
-int	handle_pipe_line(t_data data, t_env envs, t_tokens *tokens, char *line)
+// fixed to handle multiple cmds ***FIND FIX // this is for easy find in vs code
+//int	handle_line(t_data data, t_env envs, t_tokens *tokens, char *line)
+int	handle_line(t_data data, t_tokens *tokens, char *line)
 {
-	char *cmd;
-	int	pipes;
-	int i;
+	//int i;
 
-	i = 0;
-	pipes = tokens->pipe_count * 2;
+	//i = 0;
 	data.tokens = tokens;
+	//data.i = 0;
 	if (tokens->args[0] == NULL)
 		return (0);
-	while (tokens->args[i] && pipes > 0)
+	if (tokens->args[data.i] != NULL)	//if
 	{
-		cmd = tokens->args[i];
-		ft_printf("cmd = %s\n", cmd);
-		if (is_builtins(cmd) == 1)
+		if (is_builtins(tokens->args[data.i]) == 1)
 		{
-
-			exec_builtins(data, envs, line, cmd);
+			exec_builtins(data, line, tokens->args[data.i], data.i);
 		}
-		else
+		else if (find_passage(&data, data.i, "PATH", 1) == -1)
 		{
-			if (find_passage(&data, cmd, "PATH", 1) == -1)
-				call_cmd_error(cmd, NULL, "command not found\n", -10);
+			
+			call_cmd_error(tokens->args[data.i], NULL, "command not found\n", -10);
 		}
-		i++;
-		pipes--;
+		//i++;
+		data.i++;
+		//data.i = 0;
+		
 	}
-//	free(cmd);
 	return (0);
 }
-
-int	handle_line(t_data data, t_env envs, t_tokens *tokens, char *line)
-{
-	char *cmd;
-
-	data.tokens = tokens;
-	if (tokens->args[0] == NULL)
-		return (0);
-	cmd = tokens->args[0];
-	if (is_builtins(cmd) == 1)
-	{
-
-		exec_builtins(data, envs, line, cmd);
-	}
-	else if (find_passage(&data, cmd, "PATH", 1) == -1)
-		call_cmd_error(cmd, NULL, "command not found\n", -10);
-	free(cmd);
-	return (0);
-}
-
-/*int	handle_line(t_data data, t_env envs, t_tokens *tokens, char *line)
-{
-	char *cmd;
-
-	data.tokens = tokens;
-	if (tokens->args[0] == NULL)
-		return (0);
-	cmd = tokens->args[0];
-//	printf("heywo\n");
-	if (is_builtins(cmd) == 1)
-	{
-
-		exec_builtins(data, envs, line, cmd);
-	}
-	else if (find_passage(&data, cmd, "PATH", 1) == -1)
-		call_cmd_error(cmd, NULL, "command not found\n", -10);
-	free(cmd);
-	return (0);
-}*/

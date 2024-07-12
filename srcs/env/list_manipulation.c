@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:47:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/13 09:10:11 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/12 11:01:16 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ int find_node(t_env *envs, char *key, t_data *data)
 	{
 		// ft_printf("- - - - - - - - - - - - - - - - - - \n"); // remove
 		// ft_printf("looking for key: %s|\n", key); // remove
-		// ft_printf("temp->key: %s|\n", temp->key); // remove
-		// ft_printf("temp->value: %s\n", temp->value); // places revious key as value???
+		 // ft_printf("temp->key: %s|\n", temp->key); // remove
+		 // ft_printf("temp->value: %s\n", temp->value); // places revious key as value???
 		if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) == 0 && (ft_strlen(temp->key) == ft_strlen(key)))
 		{
 			// ft_printf("key found\n"); // remove
@@ -52,7 +52,8 @@ int find_node(t_env *envs, char *key, t_data *data)
 		if (temp->next == envs)
 			break ;
 	}
-	free(key);
+	
+	// free_string(key);
 	// ft_printf("key not found\n");
 	return (0);
 }
@@ -127,7 +128,7 @@ int	insert_node(t_env **env_lst, char *key_name, char *value)
 	new_node->key = key_name;
 	new_node->value = value;
 	new_node->next = NULL;
-	new_node->head = NULL;
+//	new_node->head = NULL;
 	if (*env_lst == NULL)
 	{
 			*env_lst = new_node;

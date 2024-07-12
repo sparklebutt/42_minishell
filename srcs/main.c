@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/05 14:52:49 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/10 15:40:34 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	minishell(t_data *data)
 		if (rl)
 		{
 			collect_cmd_array(data->tokens, rl);
+			
 			// if (data->tokens->args[0] == NULL)
 			// 	break ;
 			// ft_printf("pipe count = %d\n", data->tokens->pipe_count);
@@ -37,7 +38,7 @@ void	minishell(t_data *data)
 //			}
 //			else
 //			{
-			 if (handle_line(*data, *data->env, data->tokens, rl) == -1)
+			 if (handle_line(*data, data->tokens, rl) == -1)
 			 {
 				 ft_printf("error\n");
 				 break ;
@@ -54,7 +55,7 @@ void	minishell(t_data *data)
 
 int main(int argc, char **argv)//, char **env)
 {
-	t_data data;
+	static t_data data;
 	static t_tokens tokens;
 	static t_temps tmp;
 

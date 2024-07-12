@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/14 12:12:20 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/08 10:33:14 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	ft_pwd(t_data *data, t_env *envs)
 		else
 			return (call_cmd_error("pwd", "OLDPWD", NULL, -1));
 	}
+	ft_printf("HOW MANT TIMES\n");
 	ft_printf("%s\n", data->path);
 	free(temp_path);
 	return (0);

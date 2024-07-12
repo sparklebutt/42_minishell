@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/04 18:19:01 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/08 16:19:48 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 void	to_home(t_data *data, t_env *envs)
 {
-	find_passage(data, "cd", "HOME", 2);
-	if (chdir(data->tmp->filename) == 0)
+	find_passage(data, 0, "HOME", 2);
+	//if (chdir(data->tmp->filename) == 0) ///change back
+	if(chdir(data->tmp->env_line) == 0)
 	{
 		envs = move_list(envs, "PWD");
-		envs = fill_old_pwd(data, envs, data->tmp->filename);
+		//envs = fill_old_pwd(data, envs, data->tmp->filename);///change back
+		envs = fill_old_pwd(data, envs, data->tmp->env_line);
 	}
 }
 
@@ -38,25 +40,27 @@ void	change_dir(t_data *data, t_env *envs, char *temp)
 		cmd_error(tokens->args[0], tokens->args[1]);
 }
 
-void	ft_cd(t_data *data, t_env *envs)
+void	ft_cd(t_data *data, t_env *envs, int i)
 {
 	char	*temp;
 	char	*temp2;
-
-	if (ft_strncmp(data->tokens->args[0], "cd", 3) == 0
-		&& data->tokens->args[1] == NULL)
+	
+	if (ft_strncmp(data->tokens->args[i], "cd", 3) == 0
+		&& data->tokens->args[i + 1] == NULL)
 	{
+		
 		to_home(data, envs);
 		return ;
 	}
 	temp = getcwd(NULL, 0);
 	if (temp != NULL) // add same error handling than what pwd has
 		data->path = temp;
-	if (ft_strncmp(data->tokens->args[1], "/", 1) != 0)
+	if (ft_strncmp(data->tokens->args[i + 1], "/", 1) != 0)
 		data->path = ft_strjoin(temp, "/");
 	free(temp);
-	temp2 = ft_strdup(data->tokens->args[1]);
+	temp2 = ft_strdup(data->tokens->args[i + 1]);
 	temp = ft_strjoin(data->path, temp2);
+	data->i++; // because we used it already
 	free(temp2);
 	change_dir(data, envs, temp);
 	free(data->path);
