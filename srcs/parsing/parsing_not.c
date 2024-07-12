@@ -35,6 +35,7 @@ void collect_cmd_array(t_tokens *tokens, char *string)
 		return ;
 	}
 }
+
 int	null_check(char *str1, t_env *str2, char *str3)
 {
 	

@@ -41,7 +41,7 @@ SRCS_DIR = srcs/
 
 CMD_FILES = exit.c pwd.c export.c cd.c echo.c env.c #unset.c
 
-ENV_FILES = find_from_env.c list_manipulation.c #list_creation.c
+ENV_FILES = find_from_env.c list_manipulation.c variable_expansions.c #list_creation.c
 
 PAR_FILES = export_parsing.c parsers.c parsing_not.c quotes_parsing.c pipe_parsing.c #parse.c parse_utils.c export_parse.c
 

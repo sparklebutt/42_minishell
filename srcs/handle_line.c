@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   handle_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
 /*   Updated: 2024/07/10 15:42:34 by araveala         ###   ########.fr       */
@@ -12,7 +12,8 @@
 
 #include "minishell.h"
 
-int exec_builtins(t_data data, char *rl, char *cmd, int i)
+
+int exec_builtins(t_data data, t_env envs, char *cmd)
 {
 	t_tokens *tokens;
 	t_env *envs;
@@ -26,7 +27,7 @@ int exec_builtins(t_data data, char *rl, char *cmd, int i)
 	else if (ft_strncmp(cmd, "cd", 2) == 0)
 		ft_cd(&data, envs, i);
 	else if (ft_strncmp(cmd, "echo", 5) == 0)
-		ft_echo(rl);
+		ft_echo(tokens->args);
 	else if (ft_strncmp(cmd, "env", 4) == 0)
 		ft_env(&data);
 	else if(ft_strncmp(cmd, "export", 7) == 0)
@@ -55,11 +56,7 @@ int is_builtins(char *cmd)
 //int	handle_line(t_data data, t_env envs, t_tokens *tokens, char *line)
 int	handle_line(t_data data, t_tokens *tokens, char *line)
 {
-	//int i;
-
-	//i = 0;
 	data.tokens = tokens;
-	//data.i = 0;
 	if (tokens->args[0] == NULL)
 		return (0);
 	if (tokens->args[data.i] != NULL)	//if
@@ -73,10 +70,7 @@ int	handle_line(t_data data, t_tokens *tokens, char *line)
 			
 			call_cmd_error(tokens->args[data.i], NULL, "command not found\n", -10);
 		}
-		//i++;
 		data.i++;
-		//data.i = 0;
-		
 	}
 	return (0);
 }
