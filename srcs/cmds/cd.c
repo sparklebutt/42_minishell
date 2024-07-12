@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/08 16:19:48 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/12 15:41:58 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,11 @@ void	change_dir(t_data *data, t_env *envs, char *temp)
 		cmd_error(tokens->args[0], tokens->args[1]);
 }
 
-void	ft_cd(t_data *data, t_env *envs, int i)
+void	ft_cd(t_data *data, t_env *envs)
 {
 	char	*temp;
 	char	*temp2;
+	int i = data->i;
 	
 	if (ft_strncmp(data->tokens->args[i], "cd", 3) == 0
 		&& data->tokens->args[i + 1] == NULL)

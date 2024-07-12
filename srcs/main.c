@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/10 15:40:34 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/12 15:37:17 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	minishell(t_data *data)
 			if (data->tokens->args[0] == NULL)
 				break ;
 			printf("\t!!! arg[0] = %s\n", data->tokens->args[0]);
-			if (handle_line(*data, *data->env, data->tokens, rl) == -1)
+			if (handle_line(*data, *data->env, data->tokens) == -1)
 			{
 				ft_printf("error dfghjkl\n");
 				break ;
