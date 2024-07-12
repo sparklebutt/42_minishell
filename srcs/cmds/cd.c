@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/02 11:00:42 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/12 12:02:50 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	change_dir(t_data *data, t_env *envs, char *temp)
 		envs = move_list(envs, "PWD");
 		envs = fill_old_pwd(data, envs, temp);
 	}
-	else if (!check_dir(temp))
-		cmd_error(tokens->args[0], tokens->args[1]);
 	else
 		cmd_error(tokens->args[0], tokens->args[1]);
 }

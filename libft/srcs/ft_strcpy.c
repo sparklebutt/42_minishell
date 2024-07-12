@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find_from_env.c                                    :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/08 20:02:41 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/05 15:28:24 by vkettune         ###   ########.fr       */
+/*   Created: 2024/07/12 09:05:27 by vkettune          #+#    #+#             */
+/*   Updated: 2024/07/12 09:07:42 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-char *find_keys_value(t_env *envs, char *key)
+char	*ft_strcpy(char *dest, const char *src)
 {
-	t_env *temp;
+	size_t i = 0;
 
-	temp = envs;
-	while (temp->next != NULL)
+	while (src[i] != '\0')
 	{
-		// ft_printf("key: %s\n", temp->key); // remove
-		// ft_printf("value: %s\n", temp->value); // remove
-		if (ft_strncmp(temp->key, key, ft_strlen(key)) == 0)
-			return (temp->value);
-		temp = temp->next;
+		dest[i] = src[i];
+		i++;
 	}
-	return (0);
+	dest[i] = '\0';
+	return (dest);
 }
-
-// void find_passage(t_data *data, char *key, int mode)
-// {
-	
-// }

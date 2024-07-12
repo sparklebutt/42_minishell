@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/13 09:16:53 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/12 09:49:47 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,20 @@ void	minishell(t_data *data)
 
 	while (1)
 	{
-		set_signals();
+		// set_signals();
 		rl_on_new_line();
 		rl = readline(data->prompt);
 		add_history(rl);
 		if (rl)
 		{
 			collect_cmd_array(data->tokens, rl);
-			// if (data->tokens->args[0] == NULL)
-			// 	break ;
+			data->tokens->args = variable_expansions(data, data->env, data->tokens->args);
+			if (data->tokens->args[0] == NULL)
+				break ;
+			printf("\t!!! arg[0] = %s\n", data->tokens->args[0]);
 			if (handle_line(*data, *data->env, data->tokens, rl) == -1)
 			{
-				ft_printf("error\n");
+				ft_printf("error dfghjkl\n");
 				break ;
 			}
 			free_array(data->tokens->args);
@@ -38,7 +40,7 @@ void	minishell(t_data *data)
 		if (!rl)
 			break ;
 	}
-	ft_printf("exit\n"); // move this tp ^D function
+	ft_printf("exit\n");
 }
 
 int main(int argc, char **argv)//, char **env)
@@ -52,9 +54,7 @@ int main(int argc, char **argv)//, char **env)
 	data.tokens = &tokens;
 	data.tmp = &tmp;
 	data.env = init(&data);
-	ft_printf("env->key: %s\n", data.env->key);
-	minishell(&data); // exits when whitsespace
-	ft_printf("env->key: %s\n", data.env->key);
+	minishell(&data);
 	free_nodes(data.env);
 	return (0);
 }

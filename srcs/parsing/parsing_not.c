@@ -22,20 +22,18 @@ void collect_cmd_array(t_tokens *tokens, char *string)
 {
 	int i;
 	int x;
-	// char *tmp;
 
 	x = total_words_c(string, ' ');
 	i = 0;
 	tokens->args = ft_split_adv(string, ' '); // only double, no single
-	// tmp = NULL;
+	// parser here!!!!
 	pipe_collector(tokens, tokens->args); //maybe dont need
 	tokens->array_count = x;
 	if (tokens->args == NULL)
 	{
 		ft_printf("malloc fail in parsing , making of array of args\n");
 		return ;
-	}	
-	i = 0;
+	}
 	mini_parser(tokens, i, x);
 }
 int	null_check(char *str1, t_env *str2, char *str3)

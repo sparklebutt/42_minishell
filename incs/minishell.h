@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/01 17:37:49 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/12 12:28:30 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,17 +85,21 @@ char	*find_value(char *arg);
 char	*find_keys_value(t_env *envs, char *key);
 t_env	*replace_value(t_env *env, char *key, char *new_value);
 int		check_dir(char *str);
-
+char **variable_expansions(t_data *data, t_env *envs, char **args);
 
 int		insert_node(t_env **env_lst, char *key_name, char *value);
 // char *fill_old_pwd(t_data *data, t_env *env, char *temp_path);
 t_env	*fill_old_pwd(t_data *data, t_env *env, char *temp_path);
 
+char *replace_expansion(t_data *data, t_env *envs, char *arg, int i);
+char	*look_if_expansions(t_data *data, t_env *envs, char *arg);
+int is_pipe_or_redirect(char *arg);
+
 // OLD STUFF
 
 // main.c
 int		main(int argc, char **argv); //, char **env);
-int		handle_line(t_data data, t_env envs, t_tokens *tokens, char *rl);
+int		handle_line(t_data data, t_env envs, t_tokens *tokens);
 
 // signals.c
 void	signal_handler(int signo);
@@ -136,10 +140,10 @@ size_t	total_words_c(char const *s, char c);
 // cmds.c
 int		ft_pwd(t_data *data, t_env *envs);
 int		ft_exit(char *cmd, t_tokens *tokens); // t_data *data, 
-char	*trim_start(char *str);
+// char	*trim_start(char *str);
 void	ft_cd(t_data *data, t_env *envs);
-void	ft_echo(char *rl);
-void	handle_quotes(char **str);
+void	ft_echo(char **args);
+// void	handle_quotes(char **str);
 void	ft_env(t_data *data);
 void	ft_export(t_data *data);
 void	handle_arg(t_data *data, int arg_i, t_tokens *tokens);
@@ -149,6 +153,6 @@ char    *ft_strtrim_front(char *s1, char set);
 // handle_line.c
 char	*cmd_to_lower(char *rl);
 int		is_builtins(char *cmd);
-int		exec_builtins(t_data data, t_env envs, char *rl, char *cmd);
+int		exec_builtins(t_data data, t_env envs, char *cmd);
 
 #endif
