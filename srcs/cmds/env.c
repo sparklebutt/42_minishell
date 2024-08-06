@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/05 15:08:19 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/06 13:40:33 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,16 @@ void	ft_env(t_data *data) // is needs work
 		cmd_error("env", data->tokens->args[1]);
 		return ;
 	}*/
-	if (data->tokens->args[data->i + 1][0] != '|' && data->tokens->args[data->i + 1] != NULL)
+	printf("does this work??? heloooooooooo\n");
+	if (data->tokens->args[data->i + 1] != NULL)
 	{
-		if (check_dir(data->tokens->args[data->i + 1]) == 0)
+		if (data->tokens->args[data->i + 1][0] != '|')
 		{
-			cmd_error("env", data->tokens->args[data->i + 1]);
-			return ;
+			if (check_dir(data->tokens->args[data->i + 1]) == 0)
+			{
+				cmd_error("env", data->tokens->args[data->i + 1]);
+				return ;
+			}
 		}
 	}
 	// move env to the start of the list, prints env starting PATH
