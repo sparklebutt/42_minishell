@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:59:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/07/11 11:43:22 by araveala         ###   ########.fr       */
+/*   Updated: 2024/07/12 16:07:54 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,13 @@ void	free_array_2(char **array, int x)
 
 void	free_string(char *string)
 {
-	if (string)
+	if (string != NULL)
 	{
 		free(string);
 		string = NULL;
 	}
+	else
+		string = NULL;
 }
 
 void	free_nodes(t_env *node)
@@ -86,11 +88,14 @@ int error(char *cmd, char *error)
 
 void	collective_free(char *str1, char *str2, char **array)
 {
-	if (array != NULL)
-		free_array(array);
-	if (str1 != NULL)
-		free_string(str1);
-	if (str2 != NULL)
-		free_string(str2);
+//	if (array != NULL)
+	free_array(array);
+	array = NULL;	
+//	if (str1 != NULL)
+	free_string(str1);
+	str1 = NULL;
+//	if (str2 != NULL)
+	free_string(str2);
+	str2 = NULL;
 
 }

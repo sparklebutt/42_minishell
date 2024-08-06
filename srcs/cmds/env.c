@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/06/13 14:20:01 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:08:19 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,25 @@ void	ft_env(t_data *data) // is needs work
 		}
 		free(key);
 	}
-	if (data->tokens->args[1] != NULL) // gives error with "env dfgh"
+	/* ~~ below error handeling is porblematic with pipes
+	   ive written an alternative below it that works with pipes ~~*/
+	/*if (data->tokens->args[1] != NULL) // gives error with "env dfgh"
 	{
 		cmd_error("env", data->tokens->args[1]);
 		return ;
+	}*/
+	if (data->tokens->args[data->i + 1][0] != '|' && data->tokens->args[data->i + 1] != NULL)
+	{
+		if (check_dir(data->tokens->args[data->i + 1]) == 0)
+		{
+			cmd_error("env", data->tokens->args[data->i + 1]);
+			return ;
+		}
 	}
 	// move env to the start of the list, prints env starting PATH
 	while (env != NULL)
 	{
+		// write(2, "printing env\n", 13);
 		printf("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}

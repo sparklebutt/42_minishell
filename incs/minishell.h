@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/12 15:09:33 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/06 11:25:31 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_data
 	int			i;
 	char		*prompt;
 	t_env		*env;
+	char		**env_array; // this is needed for exceves last parameter, eg to run clear
 	t_cmd		*cmds;
 	t_tokens	*tokens;
 	t_temps		*tmp;
@@ -100,7 +101,9 @@ int is_pipe_or_redirect(char *arg);
 
 // main.c
 int		main(int argc, char **argv); //, char **env);
-int		handle_line(t_data data, t_env envs, t_tokens *tokens);
+/*changed but originals are still safe*/
+// int		handle_line(t_data data, t_env envs, t_tokens *tokens);
+int		handle_line(t_data data, t_tokens *tokens);
 
 // signals.c
 void	signal_handler(int signo);
@@ -128,13 +131,18 @@ int		insert_node(t_env **env_lst, char *key_name, char *value);
 int		check_open_quotes(t_tokens *tokens);
 int		confirm_action(int du, int si, int d, int s);
 
-int		set_array(t_data *data, int x);
+
 char	*clean_quotes(char *string, int len);
 int		count_new_len(char *string);
 //forking
 int		simple_fork(t_data *data);
-int		pipe_fork(t_data *data, int i);
-int		children(t_data *data, int fds[2]);
+int		pipe_fork(t_data *data); //int		pipe_set_up(t_data *data);
+int		child(t_data *data, int *fds, int prev_fd, int x, int flag);
+int		send_to_child(t_data *data, int fds[2], int prev_fd, int x);
+// forking utils
+int		set_array(t_data *data);// set argumenst array for exceve()
+void	set_env_array(t_data *data);
+int		dup_fds(t_data *data, int *fds, int prev_fd, int x);
 //export parsing
 int		validate_it(t_data *data, char *string, int i);
 int		check_char(t_data *data, int i, int x);
@@ -155,7 +163,7 @@ int		ft_pwd(t_data *data, t_env *envs);
 int		ft_exit(char *cmd, t_tokens *tokens); // t_data *data, 
 void	ft_cd(t_data *data, t_env *envs);
 void	ft_echo(char **args);
-void	ft_env(t_data *data);
+void	ft_env(t_data *data);//void	ft_env(t_data *data, int fd, int r_w);
 void	ft_export(t_data *data);
 void	handle_arg(t_data *data, int arg_i, t_tokens *tokens);
 char	*find_value(char *arg);
@@ -164,6 +172,11 @@ char    *ft_strtrim_front(char *s1, char set);
 // handle_line.c
 char	*cmd_to_lower(char *rl);
 int		is_builtins(char *cmd);
-int		exec_builtins(t_data data, t_env envs, char *cmd);
+//int		exec_builtins(t_data data, t_env envs, char *cmd);
+int		exec_builtins(t_data data, char *cmd, int fd, int r_w);
 
+// fuck about and find out section
+/*please remeber to update commenst on if the fucntion is actually usefull or move it into the main fucntions.*/
+int send_to_forks(t_data *data);
+char	**ft_split_n_keep(char const *s, char c);
 #endif

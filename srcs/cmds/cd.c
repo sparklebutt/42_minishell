@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/12 15:41:58 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/05 14:53:11 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ void	change_dir(t_data *data, t_env *envs, char *temp)
 		envs = fill_old_pwd(data, envs, temp);
 	}
 	else
-		cmd_error(tokens->args[0], tokens->args[1]);
+		cmd_error(tokens->args[data->i], tokens->args[data->i + 1]);
 }
 
 void	ft_cd(t_data *data, t_env *envs)
 {
 	char	*temp;
 	char	*temp2;
-	int i = data->i;
+	int i = data->i; // data->i is the new iterator added during pipe handeling
 	
 	if (ft_strncmp(data->tokens->args[i], "cd", 3) == 0
 		&& data->tokens->args[i + 1] == NULL)
@@ -59,7 +59,7 @@ void	ft_cd(t_data *data, t_env *envs)
 	free(temp);
 	temp2 = ft_strdup(data->tokens->args[i + 1]);
 	temp = ft_strjoin(data->path, temp2);
-	data->i++; // because we used it already
+	i++; // because we used it already
 	free(temp2);
 	change_dir(data, envs, temp);
 	free(data->path);

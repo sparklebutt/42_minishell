@@ -6,197 +6,135 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/07/12 15:10:33 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/05 17:29:15 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	set_array(t_data *data, int x)
-{
-	int flag;
-	flag = 0;
+/* please see if its possible to remove simple fork completely and just use this function,
+ it is possible we need to change how x is handled to ensure its possible*/
 
-	data->tmp->ex_arr[0] = NULL;
-	data->tmp->ex_arr[1] = NULL;
-	data->tmp->ex_arr[2] = NULL;
-	data->tmp->ex_arr[3] = NULL;
-	// ft_printf("dat i = %d\n", data->i);
-	if (data->tmp->filename == NULL || data->tokens->args[data->i] == NULL)
- 	{
-		ft_printf("filename is NULL , we hve finsihed the pipes\n");
-		return (-1);
-	}
-	if (data->tmp->filename != NULL)
-	{
-		data->tmp->ex_arr[0] = data->tmp->filename;// ft_strdup(data->tmp->filename);
-		// ft_printf("set array  0 = %s\n", data->tmp->ex_arr[0]);
-		x++;
-		data->i++;
-	}
-	// ft_printf("dat i for flag = %d\n", data->i);
-	if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] == '-')
-	{
-		// ft_printf("added flag\n");
-		data->tmp->ex_arr[1] = data->tokens->args[data->i];// ft_strdup(data->tokens->args[x + 1]); // flag;
-		// ft_printf("set array  0 = %s\n", data->tmp->ex_arr[1]);
-		x++;
-		data->i++;
-		flag = 1;
-	}
-	else
-		data->tmp->ex_arr[1] = NULL;
-	if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|')
-	{
-		data->tmp->ex_arr[1] = data->tokens->args[data->i];//ft_strdup(data->tokens->args[x + 1]); // argument;
-		x++;
-		data->i++;
-	}
-	else
-		data->tmp->ex_arr[2] = NULL; // arguments;
-	data->tmp->ex_arr[3] = NULL; // last one is null
-	return (data->i);
-}
+////this test fucntion shows me what fds are open this will help debugging later
+/*static void list_open_fds() {
+    for (int fd = 0; fd < 1024; fd++) {
+        if (fcntl(fd, F_GETFD) != -1) {
+            printf("FD %d is open\n", fd);
+        }
+    }
+	}*/
 
-static int update_i(t_data *data, int i)
-{
-	int x;
-	
-	x = i;
-	if (data->tmp->filename == NULL)
-	{
-		ft_printf("filename is null we should be at the end \n");
-		return(-1);
-	}
-	while (i > 0)
-	{
-		// ft_printf("_____________i = %d______________ \n", i);
-		if (data->tmp->filename != NULL && data->tokens->args[x] != NULL)
-			x++;
-		if (data->tokens->args[x] != NULL && data->tokens->args[x][0] == '-') // why is this overflow??????
-			x++;
-		if (data->tokens->args[x] != NULL && data->tokens->args[x][0] != '|')
-			x++;
-		i--;
-	}
-	return (x);	
-}
+int	child(t_data *data, int *fds, int prev_fd, int x, int flag) // will try to put all fds in array prev_fd = fd[2]
+{	
+	pid_t	child;
+	int		status;
 
-/// this works for 1 pipe just fine just switch back to orginal name below and uncomment
-// int pipe_fork(t_data *data, int i)
-int	children(t_data *data, int fds[2])
-{
-	
-//	int fds[2];
-	pid_t child[2];
-	int status;
-	int testies;
-
-	testies = 0;
-	// set_array(data, data->i);//(just i
-	if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] == '|')
-		data->i++;
-	if (pipe(fds) == -1)
-	{
-		ft_printf("error in pipe\n");
-	}
-	child[0] = fork();
-	if (child[0] == -1)
+	child = fork();
+	if (child == -1)
 	{
 		ft_printf("errror in first child perror\n");
+		return (-1);
 	}
-	if (child[0] == 0)
+	if (child == 0)
 	{
-		testies = dup2(fds[1], STDOUT_FILENO);
-		close(fds[0]); // closing read end
-		close(fds[1]);
-		execve(data->tmp->filename, data->tmp->ex_arr, NULL);		
-		ft_printf("need perror here, exceve ffailed in piep fork\n");
-		exit(1);
-	}
-	else
-	{
-		waitpid(child[0], &status, 0);
-		child[1] = fork();
-		if (child[1] == -1)
+		dup_fds(data, fds, prev_fd, x);
+		if (flag == 1)
 		{
-			ft_printf("error in second child need perror\n");
+			exec_builtins(*data, data->tokens->args[data->i], 0, 0);
+			exit(0);
 		}
-		if (child[1] == 0)
+		else if (flag == 0)
 		{
-			dup2(fds[0], STDIN_FILENO);
-			close(fds[0]); // closing read end
-			close(fds[1]);
-			check_path(data->tmp->env_line, 1, data, data->i);
-			set_array(data, data->i); //////////
-			execve(data->tmp->filename, data->tmp->ex_arr, NULL);
+			execve(data->tmp->filename, data->tmp->ex_arr, data->env_array);
+			ft_printf("need perror here, exceve failed in pipe fork\n");
 			exit(1);
 		}
-		else
-		{
-			close(fds[0]); // closing read end
-			close(fds[1]);
-			close(child[0]);
-			close(child[1]);
-
-		}
 	}
-	waitpid(child[0], &status, 0);
-	waitpid(child[1], &status, 0);
-	close(fds[0]);
+	if (prev_fd != -1)
+		close(prev_fd);
 	close(fds[1]);
-	close(child[0]);
-	close(child[1]);
+	waitpid(child, &status, 0);
 	return (0);
 }
-int pipe_fork(t_data *data, int i)
+// pid is in struct , we can use that 
+
+/*here we try to send to exceve or seperate thing for our builtins*/
+int	send_to_child(t_data *data, int fds[2], int prev_fd, int x)
 {
-	int fds[data->tokens->pipe_count * 2];
-	int x;
+	if (is_builtins(data->tokens->args[data->i]) == 1)
+	{
+		// printf("handle bultin\n");
+		child(data, fds, prev_fd, x, 1);
+		data->i++;
+		while (data->tokens->args[data->i] != NULL)
+		{
+			/* should check what the arguments are after, if we need to handle them at all at this stage*/
+			if (data->tokens->args[data->i][0] == '|')
+			{
+				data->i++;
+				break ;
+			}
+			data->i++;
+		}
+	}
+	else if (check_path(data->tmp->env_line, 1, data, data->i) != -1)
+	{
+		set_array(data);
+		child(data, fds, prev_fd, x, 0);
+		if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] == '|')
+			data->i++;
+	}
+	else
+		return (-1);
+	return (0); // success
+}
+
+/*pipes and forks does not handle bultins yet*/
+/*here we loop through and reuse the fds using prev as outr ?linker fd?*/
+int	pipe_fork(t_data *data) // rename pipe_set_up for example as this is what it does
+{
+	int	fds[2];
+	int	prev_fd;
+	int	x;
 
 	x = 0;
-	ft_printf("holding i = %d\n", i);
-	while (x < data->tokens->pipe_count && x++)
+	prev_fd = -1;
+	// might need to set env array in functions that manipulate env list
+	set_env_array(data);
+	while (x <= data->tokens->pipe_count)
 	{
-		if (pipe(fds + 2 * x) < 0)
-		{
-			ft_printf("error in pipe perror needed\n");
-			exit(EXIT_FAILURE);
-		}
-		x++;
-	}
-	x = 0;
-	while (x < data->tokens->pipe_count)
-	{
-	//	if (data->tokens->args[data->i]  != NULL && data->tokens->args[data->i][0] == '|') //data->tokens->args[data->i] != NULL && 
-	//		data->i++;
 		if (data->i > data->tokens->array_count)
 		{
 			ft_printf("we are somehow out of bounds \n");
 			return (-1);
 		}
-		if (check_path(data->tmp->env_line, 1, data, data->i) !=  -1)
+		if (pipe(fds) < 0)
 		{
-			set_array(data, data->i - 1); // - 1 is confusing , hunting requred
-			children(data, &fds[x * 2]);
-			data->i = update_i(data, data->i - 1);//, x);  // - 1 is confusing , hunting requred
+			ft_printf("error in pipe perror needed\n");
+			exit(EXIT_FAILURE);
 		}
+		// eg example Env | grep PATH=
+		send_to_child(data, fds, prev_fd, x);
+		prev_fd = fds[0]; // saving current pipe read end 
+		// close(fds[0]);
 		x++;
 	}
-	x  = 0;
-	while (x < data->tokens->pipe_count)
-	{
-		close(fds[x]);
-		x++;
-	}
+	free_array(data->env_array);
+	close(fds[0]);
+	close(fds[1]);	
+//	list_open_fds();	
+	if (prev_fd != -1)
+		close(prev_fd);
 	return (0);
 }
 
+/* simple forking*/
+
 int	simple_fork(t_data *data)
 {
-	// int	ret;
 	int	status;
-	
+
+	status = 0;
 	data->pid = fork();
 	if (data->pid == -1)
 	{
@@ -205,10 +143,14 @@ int	simple_fork(t_data *data)
 	}
 	if (data->pid == 0)
 	{
-		if (execve(data->tmp->filename, data->tmp->ex_arr, NULL) == -1)
-		ft_printf("exceve fail\n");
+		if (execve(data->tmp->filename, data->tmp->ex_arr, data->env_array) == -1)
+		{
+			ft_printf("exceve fail\n");
+			exit(1); // should this be different kind of error handeling
+		}
 	}
+	// free_array(data->env_array);
 	waitpid(data->pid, &status, 0);
-	close(data->pid);
+//	list_open_fds();
 	return (0);
 }
