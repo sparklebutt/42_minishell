@@ -6,14 +6,11 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/05 17:29:15 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:59:23 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* please see if its possible to remove simple fork completely and just use this function,
- it is possible we need to change how x is handled to ensure its possible*/
 
 ////this test fucntion shows me what fds are open this will help debugging later
 /*static void list_open_fds() {
@@ -22,7 +19,7 @@
             printf("FD %d is open\n", fd);
         }
     }
-	}*/
+}*/
 
 int	child(t_data *data, int *fds, int prev_fd, int x, int flag) // will try to put all fds in array prev_fd = fd[2]
 {	
@@ -68,7 +65,6 @@ int	send_to_child(t_data *data, int fds[2], int prev_fd, int x)
 		data->i++;
 		while (data->tokens->args[data->i] != NULL)
 		{
-			/* should check what the arguments are after, if we need to handle them at all at this stage*/
 			if (data->tokens->args[data->i][0] == '|')
 			{
 				data->i++;
@@ -89,8 +85,6 @@ int	send_to_child(t_data *data, int fds[2], int prev_fd, int x)
 	return (0); // success
 }
 
-/*pipes and forks does not handle bultins yet*/
-/*here we loop through and reuse the fds using prev as outr ?linker fd?*/
 int	pipe_fork(t_data *data) // rename pipe_set_up for example as this is what it does
 {
 	int	fds[2];
@@ -99,7 +93,6 @@ int	pipe_fork(t_data *data) // rename pipe_set_up for example as this is what it
 
 	x = 0;
 	prev_fd = -1;
-	// might need to set env array in functions that manipulate env list
 	set_env_array(data);
 	while (x <= data->tokens->pipe_count)
 	{
