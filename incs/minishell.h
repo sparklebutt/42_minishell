@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/07 17:05:45 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:50:44 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,110 +73,93 @@ typedef struct s_data
 	char		*path;
 }	t_data;
 
-t_env	*init(t_data *data);
-void	minishell(t_data *data);
+// PARSING - - - - - - - - -
+void	pipe_collector(t_tokens *tokens, char **array);
+void	expansion_parser(t_tokens *tokens, t_data *data);
+int		check_open_quotes(t_tokens *tokens);
+char	*clean_quotes(char *string, int len);
+int		count_new_len(char *string);
+
+void	collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
+int		check_path(char *string, int divert, t_data *all, int x);
+int		find_passage(t_data *all, char *string, int divert);
+
+// ENV - - - - - - - - -
+
+// list manipulation
+t_env	*replace_value(t_env *env, char *key, char *new_value);
+int		insert_node(t_env **env_lst, char *key_name, char *value);
+t_env	*move_list(t_env *envs, char *key);
+
+// find from env
+char	*find_key(char *str);
+char	*find_value(char *arg); // with = e.g. in export
+char	*find_keys_value(t_env *envs, char *key); // from key value from env
+int		find_node_len(t_data *data); // how many nodes
+int		find_node(t_env *envs, char *key, t_data *data); // does node with x key exist in env
+
+// variable expansions
+char *replace_expansion(t_data *data, t_env *envs, char *arg, int i);
+char	*look_if_expansions(t_data *data, t_env *envs, char *arg);
+
+// CMDS - - - - - - - - -
+void	ft_unset(t_env *env, char *key_name);
+int		ft_pwd(t_data *data, t_env *envs);
+t_env	*fill_old_pwd(t_data *data, t_env *env, char *temp_path);
+int		ft_exit(char *cmd, t_tokens *tokens); 
+void	ft_cd(t_data *data, t_env *envs);
+void	ft_echo(char **args);
+void	ft_env(t_data *data);
+void	ft_export(t_data *data);
+void	handle_arg(t_data *data, int arg_i, t_tokens *tokens);
+char	*ft_strtrim_front(char *s1, char set);
+int		check_dir(char *str);
+
+// UTILS - - - - - - - - -
+
+// error_handling
+int		error(char *cmd, char *error);
 void	cmd_error(char *cmd, char *arg);
 t_env	*call_env_error(char *cmd, char *arg);
-
-t_env	*create_env_list(void);
 int		call_cmd_error(char *cmd, char *arg, char *msg, int ret_value);
 void	collective_free(char *str1, char *str2, char **array);
 
-char	*find_key(char *str);
-char	*find_value(char *arg);
-char	*find_keys_value(t_env *envs, char *key);
-t_env	*replace_value(t_env *env, char *key, char *new_value);
-int		check_dir(char *str);
-char **variable_expansions(t_data *data, t_env *envs, char **args);
+// free things
+void	free_array(char **array);
+void	free_string(char *string);
+int		free_extra_return_function(char *str, int ret_val);
+void	free_nodes(t_env *nodes);
 
-int		insert_node(t_env **env_lst, char *key_name, char *value);
-// char *fill_old_pwd(t_data *data, t_env *env, char *temp_path);
-t_env	*fill_old_pwd(t_data *data, t_env *env, char *temp_path);
-
-char *replace_expansion(t_data *data, t_env *envs, char *arg, int i);
-char	*look_if_expansions(t_data *data, t_env *envs, char *arg);
-int is_pipe_or_redirect(char *arg);
-
-// OLD STUFF
-
-// main.c
-int		main(int argc, char **argv); //, char **env);
-/*changed but originals are still safe*/
-// int		handle_line(t_data data, t_env envs, t_tokens *tokens);
-int		handle_line(t_data data, t_tokens *tokens);
-
-// signals.c
+// signals
 void	signal_handler(int signo);
 void	set_signals(void);
 
-// init.c
-t_env	*init(t_data *data);
-
-// env.c
-//free things
-int		free_extra_return_function(char *str, int ret_val);
-void		free_array_2(char **array, int x);
-// t_env	*lst_env(void);
-t_env	*move_list(t_env *envs, char *key);
-void	free_nodes(t_env *nodes);
-int		error(char *cmd, char *error);
-int		find_node(t_env *envs, char *key, t_data *data);
-
-//parsers
-void	pipe_collector(t_tokens *tokens, char **array);
-void	mini_parser(t_tokens *tokens, int i, int x);
-void	expansion_parser(t_tokens *tokens, t_data *data);
-void	mini_quote_parser(t_tokens *tokens, int i);
-int		insert_node(t_env **env_lst, char *key_name, char *value);
-int		check_open_quotes(t_tokens *tokens);
-int		confirm_action(int du, int si, int d, int s);
-
-
-char	*clean_quotes(char *string, int len);
-int		count_new_len(char *string);
-//forking
-int		simple_fork(t_data *data);
-int		pipe_fork(t_data *data); //int		pipe_set_up(t_data *data);
-int		child(t_data *data, int *fds, int prev_fd, int x, int flag);
-int		send_to_child(t_data *data, int fds[2], int prev_fd, int x);
-// forking utils
-int		set_array(t_data *data);// set argumenst array for exceve()
-void	set_env_array(t_data *data);
-int		dup_fds(t_data *data, int *fds, int prev_fd, int x);
-//export parsing
-int		validate_it(t_data *data, char *string, int i);
-int		check_char(t_data *data, int i, int x);
-bool	confirm_expansion(char *string, int len);
-
-//test functions that may or may not be in need of renovation
-void	collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
-int		check_path(char *string, int divert, t_data *all, int x);
-int		find_passage(t_data *all, int i, char *string, int divert);
-void	free_array(char **array);
-void	free_string(char *string);
+// ft_split_adv
 char	**ft_split_adv(char const*s, char c);
-char	*find_key_from_envs(t_env *envs, char *key);
 size_t	total_words_c(char const *s, char c);
 
-// cmds.c
-int		ft_pwd(t_data *data, t_env *envs);
-int		ft_exit(char *cmd, t_tokens *tokens); // t_data *data, 
-void	ft_cd(t_data *data, t_env *envs);
-void	ft_echo(char **args);
-void	ft_env(t_data *data);//void	ft_env(t_data *data, int fd, int r_w);
-void	ft_export(t_data *data);
-void	handle_arg(t_data *data, int arg_i, t_tokens *tokens);
-char	*find_value(char *arg);
-char    *ft_strtrim_front(char *s1, char set);
+// OTHER - - - - - - - - -
 
-// handle_line.c
-char	*cmd_to_lower(char *rl);
+// handle_line, main & init
+int		main(int argc, char **argv);
+void	minishell(t_data *data);
+int		handle_line(t_data data, t_tokens *tokens);
 int		is_builtins(char *cmd);
-//int		exec_builtins(t_data data, t_env envs, char *cmd);
 int		exec_builtins(t_data data, char *cmd, int fd, int r_w);
+t_env	*init(t_data *data);
+t_env	*create_env_list(void);
 
-// fuck about and find out section
-/*please remeber to update commenst on if the fucntion is actually usefull or move it into the main fucntions.*/
+// forking
+int		simple_fork(t_data *data);
+int		pipe_fork(t_data *data);
+int		child(t_data *data, int *fds, int prev_fd, int x, int flag);
+int		send_to_child(t_data *data, int fds[2], int prev_fd, int x);
 int send_to_forks(t_data *data);
-char	**ft_split_n_keep(char const *s, char c);
+
+// forking utils
+int		set_array(t_data *data);
+void	set_env_array(t_data *data);
+int		dup_fds(t_data *data, int *fds, int prev_fd, int x);
+bool	confirm_expansion(char *string, int len);
+
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/07 17:12:29 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:32:11 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,9 @@ void	minishell(t_data *data)
 			collect_cmd_array(data, data->tokens, rl);
 			if (data->tokens->args[0] == NULL)
 				break ;
-			printf("\t!!! arg[0] = %s\n", data->tokens->args[0]);
-			// if (handle_line(*data, *data->env, data->tokens) == -1) <-- removed data->env
-/*~~ adjusted because we dont need to carry this env variable here, we also need space in parameters,
-pipes need different data to be carried and i susupect we an utalize the same functions with or without pipes ~~*/
 			if (handle_line(*data, data->tokens) == -1)			
 			{
-				ft_printf("error dfghjkl\n");
+				ft_printf("error dfghjkl\n"); // change error message
 				break ;
 			}
 			free_array(data->tokens->args);
@@ -45,17 +41,11 @@ pipes need different data to be carried and i susupect we an utalize the same fu
 	ft_printf("exit\n");
 }
 
-int main(int argc, char **argv)//, char **env)
+int main(int argc, char **argv)
 {
-	/*~~ valgrind was complaing about initilization before main, copilot suggested it had
-	  something to do with static variable~~*/
 	static t_data data;
 	static t_tokens tokens;
 	static t_temps tmp;
-
-//	t_data		data;
-//	t_tokens	tokens;
-//	t_temps		tmp;
 	
 	(void)argc;
 	(void)argv;

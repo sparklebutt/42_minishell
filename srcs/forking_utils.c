@@ -3,40 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   forking_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/05 18:02:46 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:26:28 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* function might already exist if not it could go with the node manipulation maybe */
-static int	find_node_len(t_data *data)
-{
-	t_env	*temp;
-	int		i;
-
-	i = 0;
-	temp = data->env;
-	while (temp != NULL)
-	{
-		temp = temp->next;
-		i++;
-	}
-	return (i);
-}
 /*~~~ Here we set the null terminated array for exceve()'s second parameter,
 this which contains the cmd, any flag and or argument that would go with the excecutable. ~~~*/
 
 int	set_array(t_data *data)
 {
 	if (data->tmp->filename == NULL || data->tokens->args[data->i] == NULL)
-	{
-		// ft_printf("filename is NULL , we hve finsihed the pipes\n");
 		return (-1);
-	}
 	if (data->tmp->filename != NULL)
 	{
 		data->tmp->ex_arr[0] = data->tmp->filename;
@@ -52,7 +34,6 @@ int	set_array(t_data *data)
 	if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|')
 	{
 		data->tmp->ex_arr[1] = data->tokens->args[data->i];
-		// printf("checking arg = %s\n", data->tmp->ex_arr[1]);
 		data->i++;
 	}
 	else
@@ -74,13 +55,10 @@ void	set_env_array(t_data *data)
 	temp2 = data->env;
 	key_full = NULL;
 	i = find_node_len(data);
-	data->env_array = malloc(i * sizeof(char *)); //must end in null
+	data->env_array = malloc(i * sizeof(char *));
 	if (data->env_array == NULL)
-	{
-		// perror maybe
 		return ;
-	}
-	while (temp2 != NULL) // x <= i
+	while (temp2 != NULL)
 	{
 		key_full = ft_strjoin(temp2->key, "=");
 		data->env_array[x] = ft_strjoin(key_full, temp2->value);
@@ -88,31 +66,30 @@ void	set_env_array(t_data *data)
 		x++;
 		temp2 = temp2->next;
 	}
-	data->env_array[x - 1] = NULL; //ending in a null is a must
+	data->env_array[x - 1] = NULL;
 }
 
 int	dup_fds(t_data *data, int *fds, int prev_fd, int x)
 {
-	if (x > 0) // not the first
+	if (x > 0)
 	{
-		if (dup2(prev_fd, STDIN_FILENO) == -1) // read from prev	
+		if (dup2(prev_fd, STDIN_FILENO) == -1)
 		{
-			printf("dup of prev failed\n");
+			printf("dup of prev failed\n"); // change error message
 			exit(1);
 		}
 	}
 	if (x < data->tokens->pipe_count)
-	{
-		// ft_printf("hunting more 4 x = %d fd 0 = %d\n", x, fds[0]);			
-		if (dup2(fds[1], STDOUT_FILENO) == -1) // write end
+	{		
+		if (dup2(fds[1], STDOUT_FILENO) == -1)
 		{
-			printf("dup of fds[1] failed\n");
+			printf("dup of fds[1] failed\n"); // change error message
 			exit(1);
 		}
 	}
-	close(fds[0]); // closing read end
+	close(fds[0]);
 	close(fds[1]);
 	if (prev_fd != -1)
 		close(prev_fd);
-	return (0); // do we need to handle erros duiffewently
+	return (0);
 }

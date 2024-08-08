@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:11:00 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/10 15:42:09 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:30:52 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,14 @@ t_env	*create_env_list(void)
 	env = NULL;
 	if (environ[i] == NULL)
 	{
-		insert_node(&env, "SHLVL", "1");
-				return (env) ;
+		insert_node(&env, "SHLVL", "1"); // change this to update number, add other default nodes into env, check "env -i ./minishell" and "env -i bash"
+			return (env) ;
 	}
 	while (environ[i] != NULL)
 	{
 		value = find_value(environ[i]);
 		key = find_key(environ[i]);
 		insert_node(&env, key, value);
-		// fill head into each node or have it in data?
 		i++;
 		if (ft_strncmp(key, "PWD", 4) == 0)
 			insert_node(&env, ft_strdup("OLDPWD"), ft_strdup(value));

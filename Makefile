@@ -6,7 +6,7 @@
 #    By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/08/06 14:11:16 by vkettune         ###   ########.fr        #
+#    Updated: 2024/08/08 16:21:50 by vkettune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,13 +39,13 @@ LIBFT = libft/libft.a
 OBJS_DIR = objs/
 SRCS_DIR = srcs/
 
-CMD_FILES = cd.c echo.c env.c exit.c export.c pwd.c   #unset.c
+CMD_FILES = cd.c echo.c env.c exit.c export.c pwd.c unset.c
 
 ENV_FILES = find_from_env.c list_manipulation.c variable_expansions.c #list_creation.c
 
-PAR_FILES = export_parsing.c parsers.c parsing_not.c pipe_parsing.c quotes_parsing.c #parse.c parse_utils.c export_parse.c
+PAR_FILES = parsers.c parsing_not.c pipe_parsing.c quotes_parsing.c #parse.c parse_utils.c export_parse.c
 
-UTIL_FILES = error_handling.c free_things.c ft_split_adv.c ft_split_n_keep.c signals.c
+UTIL_FILES = error_handling.c free_things.c ft_split_adv.c signals.c
 
 FILES = main.c init.c handle_line.c forking.c forking_utils.c
 

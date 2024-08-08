@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/07 17:44:08 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:05:23 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	to_home(t_data *data, t_env *envs)
 {
-	find_passage(data, 0, "HOME", 2);
+	find_passage(data, "HOME", 2);
 	//if (chdir(data->tmp->filename) == 0) ///change back
 	if(chdir(data->tmp->env_line) == 0)
 	{

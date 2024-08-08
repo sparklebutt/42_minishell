@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_things.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:59:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/07/12 16:07:54 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:39:53 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,6 @@ void	free_array(char **array)
 	while (array[i] != NULL)
 	{
 		free(array[i]);
-		array[i] = NULL;
-		i++;
-	}
-	if (array != NULL)
-	{
-		free(array);
-		array = NULL;
-	}
-}
-
-void	free_array_2(char **array, int x)
-{
-	int i;
-
-	i = 0;
-	while (i < x)
-	{
-		if (array[i] != NULL)
-			free(array[i]);
 		array[i] = NULL;
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/07 18:40:32 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:20:16 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,8 @@
 void collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
 	int x;
-	//int i = 0;
 	x = total_words_c(string, ' ');
-	//printf("checking x = %d is array count\n", x);
 	tokens->args = ft_split_adv(string, ' ');
-	// strinsg are recived in full ! checked
 	if (check_open_quotes(tokens) < 0)
 		return ;
 	expansion_parser(tokens, data);
@@ -34,17 +31,15 @@ void collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	}
 }
 
-int	null_check(char *str1, t_env *str2, char *str3)
+int	null_check(char *str1, t_env *str2, char *str3) // might not be needed
 {
 	
-	if (str1 == NULL)
+	if (str1 == NULL || str2 == NULL)
 	{
-		ft_printf("ENVS KEY NULL \n");
-		return (0);
-	}
-	if (str2 == NULL)
-	{
-		ft_printf("ENVS IS NULL\n");
+		if (str1 == NULL)
+			ft_printf("ENVS KEY NULL \n");
+		else if (str2 == NULL)
+			ft_printf("ENVS IS NULL\n");
 		return (0);
 	}
 	if (str3 == NULL)
@@ -58,42 +53,34 @@ int	null_check(char *str1, t_env *str2, char *str3)
 /*~~ stick this in fork_utils ~~*/
 int send_to_forks(t_data *data)
 {
-	int r;
-
-	r = 0;
 	if (data->tokens->pipe_count > 0)
 	{
-		// ft_printf("steping into find passage wih pipes \n");
 		if (pipe_fork(data) == -1)
 			return (-1);
 		return (2);
 	}
 	else if (data->tokens->pipe_count == 0)
 	{
-		check_path(data->tmp->env_line, 1, data, data->i); // do we need the diversion at all
+		check_path(data->tmp->env_line, 1, data, data->i);
 		set_array(data);
 		set_env_array(data);
 		if (simple_fork(data) == 0)
-			ft_printf("test\n"); //this free below was causing double free problems
-			//collective_free(data->tmp->filename, NULL, data->tmp->array);
+			ft_printf("test\n"); // add error handling here
+			//collective_free(data->tmp->filename, NULL, data->tmp->array); //this free was causing double free problems
 		free_array(data->env_array);
-		// free_array();
+		// free other arrays if needed / there are leaks
 	}
 	return(1);
 }
 
-/*~~ is this function really needed ~~*/
-int	find_passage(t_data *all, int i, char *string, int divert)
+int	find_passage(t_data *all, char *string, int divert)
 {
-	if (i > 0)
-		ft_printf("i is obsolete i think\n");
 	if(null_check(all->env->key, all->env, string) != 1)
 		return (-1);
 	if (find_node(all->env, string, all) == 1 && all->tmp->env_line != NULL)
 	{
 		if (divert == 2)
 		{
-			// ft_printf("is this for home \n");
 			if (check_dir(all->tmp->env_line) == 0)
 				return (free_extra_return_function(all->tmp->env_line, -1));
 			return(1);
@@ -102,7 +89,7 @@ int	find_passage(t_data *all, int i, char *string, int divert)
 		{
 			if (send_to_forks(all) == -1)
 				return (-1);
-			ft_printf("end of send to forks\n");
+			// ft_printf("end of send to forks\n");
 		}
 	}
 	return (1);
@@ -117,28 +104,11 @@ static void	split_diversion(t_data *data, int divert, char *string)
 		data->tmp->array = ft_split(string, ' ');
 	if (data->tmp->array == NULL)
 	{
-		printf("temp[i] is null for some reason\n"); // remove?
-		// error
+		printf("temp[i] is null for some reason\n"); // figure out what kind of error message is needed
 	}
 }
 
-/*static int	check_given_path(t_data *data, int x)
-{
-	char **split_path;
-	int i;
-	int line;
-
-	i = 0;
-	line = 0;
-	split_path = ft_split_n_keep(data->tokens->args[x], '/');
-	while (split_path[i])
-	{
-		printf("checking array = %s\n", split_path[i]);
-		i++;
-	}
-	return (0);
-	}*/
-static char *take_end(char *new,  char *str, int start)//temp
+static char *take_end(char *new,  char *str, int start)
 {
 	size_t i;
 
