@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+/*~~ this is baisicicaly split excepet it ignores the delimeter inside quotes.
+quotes signify a full string therefore we need any and all spaces inside them ~~*/
 static int	fancy_strlen(char const *s, char c, int i)
 {
 	while (s[i] && s[i] != c)
@@ -26,7 +28,7 @@ static int	fancy_strlen(char const *s, char c, int i)
 		{
 			i++;
 			while (s[i] && s[i] != '\'')
-			i++;
+				i++;
 		}
 		i++;
 	}
@@ -44,25 +46,20 @@ size_t	total_words_c(char const *s, char c)
 	{
 		if (s[i] == c)
 		{
-			if (s[i] == '"')
+			if (s[i] == '"' && i++)
 			{
-				i++;
 				while (s[i] && s[i] != '"')
 					i++;
 			}
 			else if (s[i] == '\'')
 			{
-				i++;
-				while (s[i] && s[i] != '\'')
+				while (s[i] && s[i] != '\'' && i++)
 					i++;
 			}
 			i++;
 		}
-		else if (s[i] != c)
-		{
-			words++;
-			i += fancy_strlen(s, c, i) - i;
-		}
+		else if (s[i] != c && words++)
+			i += fancy_strlen(s, c, i) - i; // had words++; seperate
 	}
 	return (words);
 }
@@ -95,7 +92,7 @@ char	**ft_split_adv(char const *s, char c)
 		while (s[i] == c)
 			i++;
 		word_len = fancy_strlen(s, c, i) - i;
-		array[word] = ft_substr(s, i, word_len);				
+		array[word] = ft_substr(s, i, word_len);
 		if (array[word] == NULL)
 			return (free_array_if(array));
 		i += ft_strlen(array[word]);
@@ -104,4 +101,3 @@ char	**ft_split_adv(char const *s, char c)
 	array[word] = NULL;
 	return (array);
 }
-

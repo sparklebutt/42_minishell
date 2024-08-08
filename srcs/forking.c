@@ -12,9 +12,6 @@
 
 #include "minishell.h"
 
-/* please see if its possible to remove simple fork completely and just use this function,
- it is possible we need to change how x is handled to ensure its possible*/
-
 ////this test fucntion shows me what fds are open this will help debugging later
 /*static void list_open_fds() {
     for (int fd = 0; fd < 1024; fd++) {
@@ -22,7 +19,7 @@
             printf("FD %d is open\n", fd);
         }
     }
-	}*/
+}*/
 
 int	child(t_data *data, int *fds, int prev_fd, int x, int flag) // will try to put all fds in array prev_fd = fd[2]
 {	

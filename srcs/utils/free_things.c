@@ -43,8 +43,8 @@ void	free_string(char *string)
 		free(string);
 		string = NULL;
 	}
-	else
-		string = NULL;
+//	else
+//		string = NULL;
 }
 
 void	free_nodes(t_env *node)

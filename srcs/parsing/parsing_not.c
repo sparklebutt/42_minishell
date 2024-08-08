@@ -17,6 +17,7 @@
 void collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
 	int x;
+
 	x = total_words_c(string, ' ');
 	tokens->args = ft_split_adv(string, ' ');
 	if (check_open_quotes(tokens) < 0)
@@ -61,7 +62,8 @@ int send_to_forks(t_data *data)
 	}
 	else if (data->tokens->pipe_count == 0)
 	{
-		check_path(data->tmp->env_line, 1, data, data->i);
+		if (check_path(data->tmp->env_line, 1, data, data->i) == 0)
+			return (0);
 		set_array(data);
 		set_env_array(data);
 		if (simple_fork(data) == 0)
@@ -123,6 +125,44 @@ static char *take_end(char *new,  char *str, int start)
 	return  (&*new);
 }
 
+int handle_absolute_path(t_data *all, int x)
+{
+	size_t len;
+	char	*path;
+	char	*cmd_n;
+
+	path = NULL;
+	cmd_n = path;
+	len = ft_strlen(all->tokens->args[x]);
+	while (len > 0)
+	{
+		if (all->tokens->args[x][len] == '/')
+		{
+			// printf("what char we on look = %c len = %zu\n", all->tokens->args[x][len], len);
+			break ;
+		}
+		len--;
+	}
+	path = ft_calloc(sizeof(char *), len + 1);
+	path = ft_strncpy(path, all->tokens->args[x], len);
+	if (check_dir(path) == 0)
+	{
+		printf("dir fail\n");
+		return (0);
+	}
+	else
+	{
+		cmd_n = ft_calloc(sizeof(char *), len + 1);
+		cmd_n = take_end(cmd_n, all->tokens->args[x], len); 
+		// free_string(all->tmp->filename);
+		all->tmp->filename = all->tokens->args[x];
+		if (all->tokens->pipe_count > 0)
+			free_array(all->tmp->array);
+		printf("dir success\n");
+		return (1);
+	}
+}
+
 int	check_path(char *string, int divert, t_data *all, int x)
 {
 	struct dirent	*dp;
@@ -133,49 +173,20 @@ int	check_path(char *string, int divert, t_data *all, int x)
 
 	i = 0;
 	suffix = NULL;
-	cmd_len = ft_strlen(all->tokens->args[x]);
-	
-	///new
-	if (all->tokens->args[x][0] == '/')
+	cmd_len = ft_strlen(all->tokens->args[x]);	
+	if (ft_strchr(all->tokens->args[x], '/'))
 	{
-		printf("checkcheck\n");
-		size_t len = 0;
-		len = ft_strlen(all->tokens->args[x]);
-		while (len > 0)
+		if (handle_absolute_path(all, x) == 0)
 		{
-			if (all->tokens->args[x][len] == '/')
-			{
-				printf("what char we on look = %c len = %zu\n", all->tokens->args[x][len], len);
-				break ;
-			}
-			len--;
+			// error
+			return (0);
 		}
-		char *path = NULL;
-		char *cmd_n = NULL;
-		path = malloc(sizeof(char *) * len + 2);
-		path = ft_strncpy(path, all->tokens->args[x], len);//len);//ft_strdup(, len + 1);
-		printf("do we have our path = %s\n", path);
-		i = 0;
-		if (check_dir(path) == 0)
-			printf("dir fail\n");
 		else
-		{
-			cmd_n = malloc(sizeof(char *) * len + 2);
-			cmd_n = take_end(cmd_n, all->tokens->args[x], len); 
-			free_string(all->tmp->filename);
-			all->tmp->filename = all->tokens->args[x];//ft_strjoin(all->tmp->array[i], suffix);
-//			free_string(suffix);
-			if (all->tokens->pipe_count > 0)
-				free_array(all->tmp->array);
-			printf("dir success\n");
 			return (1);
-		}
 	}
-	///new ends
-
 	if (all->tokens->args[x][0] != '/')
 		suffix = ft_strjoin("/", all->tokens->args[x]);
-	ft_printf("suffix = %s\n", suffix);	
+	//  ft_printf("suffix = %s\n", suffix);	
 	if (suffix == NULL || cmd_len == 0)
 		return (free_extra_return_function(suffix, 0));
 	split_diversion(all, divert, string);
@@ -183,7 +194,6 @@ int	check_path(char *string, int divert, t_data *all, int x)
 	{
 		if (check_dir(all->tmp->array[i]) == 1)
 		{
-			printf("looking for syntax = %s\n", all->tmp->array[i]);
 			dir = opendir(all->tmp->array[i]);
 			dp = readdir(dir);
 			while (dp != NULL)
@@ -192,7 +202,7 @@ int	check_path(char *string, int divert, t_data *all, int x)
 				{
 					if (all->tmp->array[i] == NULL)
 						return (-1);
-					free_string(all->tmp->filename);
+					// free_string(all->tmp->filename);
 					all->tmp->filename = ft_strjoin(all->tmp->array[i], suffix);
 					free_string(suffix);
 					if (all->tokens->pipe_count > 0)
@@ -207,7 +217,7 @@ int	check_path(char *string, int divert, t_data *all, int x)
 		i++;
 	}
 	closedir(dir);
-	//	return (free_extra_return_function(suffix, -1));
+//	free_extra_return_function(suffix, -1);
 	collective_free(NULL, suffix, all->tmp->array);
 	return (0);
 }

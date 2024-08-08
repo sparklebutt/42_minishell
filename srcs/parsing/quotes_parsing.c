@@ -91,18 +91,14 @@ char *clean_quotes(char *string, int len)
 	int x;
 	int y;
 	int def_len;
-	
+
 	y = 0;
 	x = 0;
 	def_len = ft_strlen(string);
 	new = NULL;
 	new = ft_calloc(len + 1, 1);
-
 	if (new == NULL)
-	{
-		ft_printf("malloc fail in clean quotes\n"); // maybe not needed, handle in when called / in after return
 		return (NULL);
-	}
 	while (x <= len)
 	{
 		if (string[x] == '\'')

@@ -73,23 +73,19 @@ int	check_dir(char *str)
 	test = NULL;
 	if (access(str, X_OK) == -1)
 	{
-		printf("lookylook1\n");
 		return(0);
 	}
-	if (access(str, X_OK) == 0)
+	else// (access(str, X_OK) == 0)
 	{
-		printf("lookylook2\n");		
 		test = opendir(str);
 	}
 	if (test == NULL)
 	{
-		printf("lookylook3\n");		
 		return (0);
 	}
 	dp = readdir(test);
 	if (dp == NULL)
 	{
-		printf("lookylook4\n");		
 		closedir(test);
 		return (0);
 	}
