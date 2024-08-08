@@ -6,7 +6,7 @@
 #    By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 15:15:31 by vkettune          #+#    #+#              #
-#    Updated: 2024/07/02 11:48:55 by araveala         ###   ########.fr        #
+#    Updated: 2024/07/31 18:29:42 by araveala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ CYAN = \033[0;96m
 WHITE = \033[0;97m
 
 NAME = libft.a
-FLAGS = -Wall -Wextra -Werror $(HEADERS)
+FLAGS = -g -Wall -Wextra -Werror $(HEADERS)
 
 HEADERS = -I ../incs/
 SRCS_DIR = srcs/

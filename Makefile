@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+         #
+#    By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/07/10 14:35:07 by araveala         ###   ########.fr        #
+#    Updated: 2024/08/06 14:11:16 by vkettune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,9 +27,9 @@ BLUE = \033[0;94m
 MAGENTA = \033[0;95m
 CYAN = \033[0;96m
 WHITE = \033[0;97m
-
+#-fsanitize=address
 NAME = minishell
-FLAGS = -Wall -Wextra -Werror -g -fsanitize=address $(HEADERS)
+FLAGS = -Wall -Wextra -Werror -g  $(HEADERS)
 HEADERS = -I ./incs/ # -I ~/.brew/opt/readline/include
 
 LIBS = $(READLINE) $(LIBFT)
@@ -39,15 +39,15 @@ LIBFT = libft/libft.a
 OBJS_DIR = objs/
 SRCS_DIR = srcs/
 
-CMD_FILES = exit.c pwd.c export.c cd.c echo.c env.c #unset.c
+CMD_FILES = cd.c echo.c env.c exit.c export.c pwd.c   #unset.c
 
 ENV_FILES = find_from_env.c list_manipulation.c variable_expansions.c #list_creation.c
 
-PAR_FILES = export_parsing.c parsers.c parsing_not.c quotes_parsing.c pipe_parsing.c #parse.c parse_utils.c export_parse.c
+PAR_FILES = export_parsing.c parsers.c parsing_not.c pipe_parsing.c quotes_parsing.c #parse.c parse_utils.c export_parse.c
 
-UTIL_FILES = free_things.c error_handling.c ft_split_adv.c signals.c
+UTIL_FILES = error_handling.c free_things.c ft_split_adv.c ft_split_n_keep.c signals.c
 
-FILES = main.c init.c handle_line.c forking.c
+FILES = main.c init.c handle_line.c forking.c forking_utils.c
 
 CMD = $(addprefix cmds/, $(CMD_FILES))
 ENV = $(addprefix env/, $(ENV_FILES))
@@ -91,12 +91,12 @@ clean:
 	@rm -rf objs/
 	@make clean  -C ./libft
 	@echo "$(DARK_CYAN)- - - - -❗All object files cleaned❗- - - - -$(X)"
-	
+
 fclean: clean
 	@rm -f $(NAME)
 	@make fclean -C  ./libft
 	@echo "$(DARK_CYAN)- - - -❗All executable files cleaned❗- - - -$(X)"
-	
+
 re: fclean all
 	@echo "$(GREEN)Sucessfully cleaned and rebuilt everything$(X)"
 

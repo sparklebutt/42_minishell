@@ -6,105 +6,58 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/07/10 08:47:50 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 11:46:54 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-int confirm_action(int du, int si, int d, int s)
-{
-	if (du == 0 && si == 0)
-		return (2);
-	else if (s == true && d == false)
-	{
-		if ((si > 1 && si % 2 == 0) || du % 2 != 0 || du == 0)
-			return (1);
-		return (0);
-	}
-	else if (d == true && s == false)
-	{
-		if ((du > 1 && du % 2 == 0) || si % 2 == 0 || si == 0)
-			return (1);
-		return (0);
-	}
-	else if (s == true && d == true)
-	{
-		if (si > 1 && si % 2 == 0)
-			return (0);
-		return (1);
-	}
-	else if (s == false && d == false)
-	{
-		if (si > 1 && si % 2 == 0 && du < 1) // what
-			return (0);
-		return (1);
-	}
-	return (-1);
-}
-
-void	confirm_expansion(char *string, int len)
+bool confirm_expansion(char *string, int len)
 {
 	bool s;
 	bool d;
-	int si;
-	int du;
 	int x;
-	
 	s = false;
 	d = false;
+	
 	x = 0;
-	si = 0;
-	du = 0;
-	while (x < len)
+	while (x <= len) 
 	{
-		// ft_printf("lchar = %c\n",string[x]);
 		if (string[x] == '\'')
 		{
-			len -= 1;
-			si += 1;
-			s = ! s;
+			x++;
+			while (string[x] != '\'')
+			{
+				s = !s;
+				x++;
+			}
 		}
 		else if (string[x] == '"')
 		{
-			len -= 1;
-			du += 1;
-			d = ! d;
+			x++;
+			while (string[x] != '"')
+			{
+				d = !d;
+				x++;
+			}		
 		}
 		x++;
 	}
-//	if (du == 0 && si == 0)
-//		return (2);
-	if (confirm_action(du, si, d, s) > 0)
-	{
-		ft_printf("expand true, expand and adjust quotes\n");
-		//return (true)//(1);
-	}
-	else if (confirm_action(du, si, d, s) == 0)
-	{
-		ft_printf("expand false, only adjust quotes\n");
-		// return (false) // (0);
-	}
-	// ft_printf("we have a unknown error in confirm expansion\n");
-	// return (-1) // ERROR 
+/*	if (d == true)
+		printf("d = treu\n");
+	else if (d == false)
+		printf("d = false\n");
+	if (s == true)
+		printf("s = treu\n");
+	else if (s == false)
+		printf("s = false\n");*/
+	return ((d && !s) || (!d && !s));
 }
 
-static int	isquote(char *string)
-{
-	int x;
 
-	x = 0;
-	while (string[x])
-	{
-		if (string[x] == '\'' || string[x] == '"')
-			return (1);
-		x++;
-	}
-	return (0);
-}
-// we could use this as a general parser and handle quotes and some syntax errors based on imidiate input and in order of importance, so far we are handling expansion and just quotes
-void	expansion_parser(t_tokens *tokens)
+/*~~ to find and confirm expansion , then to do expansion so we can pass a preped token array , there is nothing stopping us 
+from instead using this code later down the line instead of being one of the first things we do ~~*/
+void	expansion_parser(t_tokens *tokens, t_data *data)
 {
 	int i;
 	int len;
@@ -112,31 +65,43 @@ void	expansion_parser(t_tokens *tokens)
 	
 	i = 0;
 	len = 0;
-	//new = NULL;
 	while (tokens->args[i])
 	{
-		// ft_printf("TOKEN BEFORE CHANGES WITH QUOTES = %s\n", tokens->args[i]);
 		len = ft_strlen(tokens->args[i]) - 1;
+/*~~ is this check for a dollar sign safe enough or are there special edge cases 
+where our code might get confused and consider the $sign as valuable when it shouldnt ~~*/
 		if (ft_strchr(tokens->args[i], '$') != NULL)
-			confirm_expansion(tokens->args[i], len);// to expand or not to expand, should also handle the expansion or we expand here based on true and false
-		if (isquote(tokens->args[i]) == 1)
 		{
-			new = clean_quotes(tokens->args[i], count_new_len(tokens->args[i]));
-			ft_printf("new created\n");
-			free_string(tokens->args[i]);
-//		ft_printf("token s arg freed\n\n");
-			tokens->args[i] = new;
+			if (confirm_expansion(tokens->args[i], len) == true)
+			{
+				printf("expandable, we start expansion process and cleanin string first\n");
+				if (ft_strchr(tokens->args[i], '"') != NULL || ft_strchr(tokens->args[i], '\'') != NULL)
+				{
+					new = clean_quotes(tokens->args[i], len);
+					free_string(tokens->args[i]);
+					tokens->args[i] = new;
+					printf("args = %s\n", tokens->args[i]);
+					tokens->args = variable_expansions(data, data->env, tokens->args);	
+				}
+				else
+				{
+					printf("why is it here?\n");
+					tokens->args = variable_expansions(data, data->env, tokens->args);
+					printf("why is it here?\n");
+				}
+					
+			}
+			else
+			{
+				printf("not expandable we only clean quotes\n");
+				new = clean_quotes(tokens->args[i], len);
+				free_string(tokens->args[i]);
+				tokens->args[i] = new;
+			}
 		}
-		// ft_printf("TOKEN AFTER quotes array update = %s \n", tokens->args[i]);
-		// free_string(new);
 		i++;
+/*~~ should we clean quotes here aswell or will this clean quotes too early,
+having them here would mean quotes are cleaned before anything happens and this
+could be good for testing but maybe too early for somethings (things unknow)~~*/
 	}
-/// testing only
-	i = 0;
-	while (tokens->args[i])
-	{
-		// ft_printf("TOKEN AFTER = %s\n", tokens->args[i]);
-		i++;
-	}
-////
 }

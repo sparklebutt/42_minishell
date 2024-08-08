@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:04:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/01 17:41:18 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/05 13:20:01 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@ void	ft_export(t_data *data)
 	i = 1;
 	tokens = data->tokens;
 	// env = data->env;
+	ft_printf("we ahve entry\n");
 	if (tokens->args[1] == NULL)
 		ft_printf("no args\n");
 	if (data->tokens->array_count == 1)
 		ft_printf("print env in alphabetical order\n");
 	while (i < data->tokens->array_count)
 	{
+		ft_printf("confused\n");
 		handle_arg(data, i, data->tokens);
 		i++;
 	}
@@ -40,8 +42,8 @@ void handle_arg(t_data *data, int arg_i, t_tokens *tokens)
 	
 	env = data->env;
 	arg = tokens->args[arg_i];
-	if (ft_strchr(arg, '=') == NULL)
-		return ; // bash does not give an error message here
+//	if (ft_strchr(arg, '=') == NULL)
+//		return ; // bash does not give an error message here
 	check_char(data, arg_i, 0);
 	key = ft_strtrim_front(arg, '=');
 	while (env->next != NULL)
@@ -56,7 +58,7 @@ void handle_arg(t_data *data, int arg_i, t_tokens *tokens)
 			return ;
 		}
 	}
-	// ft_printf("key does not exist\n");
+	// ft_printf("just about to insert node\n");
 	insert_node(&env, key, find_value(arg));
 }
 
