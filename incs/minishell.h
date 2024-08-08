@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/06 11:25:31 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/07 17:05:45 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int		find_node(t_env *envs, char *key, t_data *data);
 //parsers
 void	pipe_collector(t_tokens *tokens, char **array);
 void	mini_parser(t_tokens *tokens, int i, int x);
-void	expansion_parser(t_tokens *tokens);
+void	expansion_parser(t_tokens *tokens, t_data *data);
 void	mini_quote_parser(t_tokens *tokens, int i);
 int		insert_node(t_env **env_lst, char *key_name, char *value);
 int		check_open_quotes(t_tokens *tokens);
@@ -146,10 +146,10 @@ int		dup_fds(t_data *data, int *fds, int prev_fd, int x);
 //export parsing
 int		validate_it(t_data *data, char *string, int i);
 int		check_char(t_data *data, int i, int x);
-void	confirm_expansion(char *string, int len);
+bool	confirm_expansion(char *string, int len);
 
 //test functions that may or may not be in need of renovation
-void	collect_cmd_array(t_tokens *tokens, char *string);
+void	collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
 int		check_path(char *string, int divert, t_data *all, int x);
 int		find_passage(t_data *all, int i, char *string, int divert);
 void	free_array(char **array);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable_expansions.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:03:23 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/12 13:53:32 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/08 11:49:55 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ char *replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 		return NULL;
 	ft_strncpy(temp_key, arg + start + 1, key_len);
 	temp_key[key_len] = '\0';
+	printf("bug hunting1\n");
 	if (find_node(envs, temp_key, data) == 1)
 	{
 		value = find_keys_value(envs, temp_key);
@@ -73,18 +74,20 @@ char *replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 			new_arg = remove_key(arg, start, start + key_len + 1);
 		free(arg);
 	}
+	printf("bug hunting2 new arg = %s\n", new_arg);	
 	free(temp_key);
+	/*~~ new arg is showing null here for some reason after trying to expand a exported varaible ~~*/
 	return (new_arg);
 }
 
 char *look_if_expansions(t_data *data, t_env *envs, char *arg)
 {
 	int i = 0;
-
-	while (arg[i])
+	while (arg[i])//&& arg[i] != '\n')
 	{
 		if (arg[i] == '$')
 		{
+			printf("\tit gets here!\n");
 			arg = replace_expansion(data, envs, arg, i);
 			i = -1; // start from 0 and look through the arg again
 		}
@@ -98,8 +101,11 @@ char **variable_expansions(t_data *data, t_env *envs, char **args)
 	int i = 0;
 	while (args[i] != NULL)
 	{
+		/*~~  does not seem to handle if there are no quotes right ~~*/
+		printf("arg[%d] = %s\n", i, args[i]);
 		args[i] = look_if_expansions(data, envs, args[i]);
 		i++;
 	}
+	// printf("the end\n");
 	return (args);
 }

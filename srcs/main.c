@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/05 17:52:35 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/07 17:12:29 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ void	minishell(t_data *data)
 		add_history(rl);
 		if (rl)
 		{
-			collect_cmd_array(data->tokens, rl);
-			data->tokens->args = variable_expansions(data, data->env, data->tokens->args);
+			collect_cmd_array(data, data->tokens, rl);
 			if (data->tokens->args[0] == NULL)
 				break ;
 			printf("\t!!! arg[0] = %s\n", data->tokens->args[0]);
