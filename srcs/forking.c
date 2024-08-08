@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/08 14:59:23 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:29:29 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	child(t_data *data, int *fds, int prev_fd, int x, int flag) // will try to p
 	child = fork();
 	if (child == -1)
 	{
-		ft_printf("errror in first child perror\n");
+		ft_printf("errror in first child perror\n"); // change error message
 		return (-1);
 	}
 	if (child == 0)
@@ -43,7 +43,7 @@ int	child(t_data *data, int *fds, int prev_fd, int x, int flag) // will try to p
 		else if (flag == 0)
 		{
 			execve(data->tmp->filename, data->tmp->ex_arr, data->env_array);
-			ft_printf("need perror here, exceve failed in pipe fork\n");
+			ft_printf("need perror here, exceve failed in pipe fork\n");  // change error message
 			exit(1);
 		}
 	}
@@ -55,12 +55,10 @@ int	child(t_data *data, int *fds, int prev_fd, int x, int flag) // will try to p
 }
 // pid is in struct , we can use that 
 
-/*here we try to send to exceve or seperate thing for our builtins*/
 int	send_to_child(t_data *data, int fds[2], int prev_fd, int x)
 {
 	if (is_builtins(data->tokens->args[data->i]) == 1)
 	{
-		// printf("handle bultin\n");
 		child(data, fds, prev_fd, x, 1);
 		data->i++;
 		while (data->tokens->args[data->i] != NULL)
@@ -82,10 +80,10 @@ int	send_to_child(t_data *data, int fds[2], int prev_fd, int x)
 	}
 	else
 		return (-1);
-	return (0); // success
+	return (0);
 }
 
-int	pipe_fork(t_data *data) // rename pipe_set_up for example as this is what it does
+int	pipe_fork(t_data *data)
 {
 	int	fds[2];
 	int	prev_fd;
@@ -98,30 +96,27 @@ int	pipe_fork(t_data *data) // rename pipe_set_up for example as this is what it
 	{
 		if (data->i > data->tokens->array_count)
 		{
-			ft_printf("we are somehow out of bounds \n");
+			ft_printf("we are somehow out of bounds \n"); // change error message
 			return (-1);
 		}
 		if (pipe(fds) < 0)
 		{
-			ft_printf("error in pipe perror needed\n");
+			ft_printf("error in pipe perror needed\n"); // change error message
 			exit(EXIT_FAILURE);
 		}
 		// eg example Env | grep PATH=
 		send_to_child(data, fds, prev_fd, x);
-		prev_fd = fds[0]; // saving current pipe read end 
-		// close(fds[0]);
+		prev_fd = fds[0];
 		x++;
 	}
 	free_array(data->env_array);
 	close(fds[0]);
 	close(fds[1]);	
-//	list_open_fds();	
+//	list_open_fds();
 	if (prev_fd != -1)
 		close(prev_fd);
 	return (0);
 }
-
-/* simple forking*/
 
 int	simple_fork(t_data *data)
 {
@@ -131,7 +126,7 @@ int	simple_fork(t_data *data)
 	data->pid = fork();
 	if (data->pid == -1)
 	{
-		ft_printf("fork error\n");
+		ft_printf("fork error\n"); // change error message
 		exit(1);
 	}
 	if (data->pid == 0)
@@ -142,7 +137,6 @@ int	simple_fork(t_data *data)
 			exit(1); // should this be different kind of error handeling
 		}
 	}
-	// free_array(data->env_array);
 	waitpid(data->pid, &status, 0);
 //	list_open_fds();
 	return (0);

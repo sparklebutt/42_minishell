@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   variable_expansions.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:03:23 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/08 11:55:39 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 15:55:52 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int find_key_len(char *str, int start)
+int	find_key_len(char *str, int start)
 {
-	int len;
+	int	len;
+	
 	len = start + 1;  // Start of key, after $
 	while (str[len] && !(str[len] == ' ' || str[len] == '\0'
 		|| str[len] == '"' || str[len] == '\''))
@@ -22,10 +23,10 @@ int find_key_len(char *str, int start)
 	return (len - start - 1); // Length excluding $
 }
 
-char *new_str(char *str, char *value, int start, int end)
+char	*new_str(char *str, char *value, int start, int end)
 {
-	int new_len;
-	char *new_str;
+	int		new_len;
+	char	*new_str;
 
 	new_len = start + strlen(value) + strlen(str + end) + 1;
 	new_str = malloc(sizeof(char) * new_len);
@@ -37,10 +38,10 @@ char *new_str(char *str, char *value, int start, int end)
 	return (new_str);
 }
 
-char *remove_key(char *str, int start, int end)
+char	*remove_key(char *str, int start, int end)
 {
-	int new_len;
-	char *new_str;
+	int		new_len;
+	char	*new_str;
 
 	new_len = start + strlen(str + end) + 1;
 	new_str = malloc(sizeof(char) * new_len);
@@ -51,12 +52,12 @@ char *remove_key(char *str, int start, int end)
 	return (new_str);
 }
 
-char *replace_expansion(t_data *data, t_env *envs, char *arg, int start)
+char	*replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 {
-	int key_len;
-	char *temp_key;
-	char *value = NULL;
-	char *new_arg = NULL;
+	int	key_len;
+	char	*temp_key;
+	char	*value = NULL;
+	char	*new_arg = NULL;
 
 	key_len = find_key_len(arg, start);
 	temp_key = malloc(sizeof(char) * (key_len + 1));
@@ -71,40 +72,24 @@ char *replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 			new_arg = new_str(arg, value, start, start + key_len + 1);
 		else
 			new_arg = remove_key(arg, start, start + key_len + 1);
-		free(arg);
 	}
-	printf("bug hunting2 new arg = %s\n", new_arg);	
-	free(temp_key);
-	/*~~ new arg is showing null here for some reason after trying to expand a exported varaible ~~*/
+	else
+		new_arg = remove_key(arg, start, start + key_len + 1);
+	free_string(arg);
+	free_string(temp_key);
 	return (new_arg);
 }
 
-char *look_if_expansions(t_data *data, t_env *envs, char *arg)
+char	*look_if_expansions(t_data *data, t_env *envs, char *arg)
 {
-	int i = 0;
-	while (arg[i])//&& arg[i] != '\n')
+	int	i;
+	
+	i = 0;
+	while (arg[i])
 	{
 		if (arg[i] == '$')
-		{
-			printf("\tit gets here!\n");
 			arg = replace_expansion(data, envs, arg, i);
-			i = -1; // start from 0 and look through the arg again
-		}
 		i++;
 	}
 	return (arg);
-}
-
-char **variable_expansions(t_data *data, t_env *envs, char **args)
-{
-	int i = 0;
-	while (args[i] != NULL)
-	{
-		/*~~  does not seem to handle if there are no quotes right ~~*/
-		printf("arg[%d] = %s\n", i, args[i]);
-		args[i] = look_if_expansions(data, envs, args[i]);
-		i++;
-	}
-	// printf("the end\n");
-	return (args);
 }

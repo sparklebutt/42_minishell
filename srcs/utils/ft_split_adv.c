@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_adv.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/08 13:50:04 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:20:56 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,11 @@ char	**ft_split_adv(char const *s, char c)
 			i++;
 		word_len = fancy_strlen(s, c, i) - i;
 		array[word] = ft_substr(s, i, word_len);
-		// printf("checking the word = %s\n", array[word]);
 		if (array[word] == NULL)
 			return (free_array_if(array));
 		i += ft_strlen(array[word]);
 		word++;
 	}
 	array[word] = NULL;
-	/*~~ this fixed a seg fault as now we have a null terminated array ~~*/
 	return (array);
 }

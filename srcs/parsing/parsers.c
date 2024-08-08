@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/08 11:46:54 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 15:31:12 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool confirm_expansion(char *string, int len)
+bool confirm_expansion(char *string, int len) // similar to quotes_handling (combine them?), maybe add bools into struct
 {
 	bool s;
 	bool d;
@@ -43,20 +43,9 @@ bool confirm_expansion(char *string, int len)
 		}
 		x++;
 	}
-/*	if (d == true)
-		printf("d = treu\n");
-	else if (d == false)
-		printf("d = false\n");
-	if (s == true)
-		printf("s = treu\n");
-	else if (s == false)
-		printf("s = false\n");*/
 	return ((d && !s) || (!d && !s));
 }
 
-
-/*~~ to find and confirm expansion , then to do expansion so we can pass a preped token array , there is nothing stopping us 
-from instead using this code later down the line instead of being one of the first things we do ~~*/
 void	expansion_parser(t_tokens *tokens, t_data *data)
 {
 	int i;
@@ -67,41 +56,33 @@ void	expansion_parser(t_tokens *tokens, t_data *data)
 	len = 0;
 	while (tokens->args[i])
 	{
-		len = ft_strlen(tokens->args[i]) - 1;
-/*~~ is this check for a dollar sign safe enough or are there special edge cases 
-where our code might get confused and consider the $sign as valuable when it shouldnt ~~*/
+		len = ft_strlen(tokens->args[i]) - 1; // maybe remove
 		if (ft_strchr(tokens->args[i], '$') != NULL)
 		{
 			if (confirm_expansion(tokens->args[i], len) == true)
 			{
-				printf("expandable, we start expansion process and cleanin string first\n");
+				// tokens->args[i] = expand_args(tokens->args[i], data, data->env) // add something like this
 				if (ft_strchr(tokens->args[i], '"') != NULL || ft_strchr(tokens->args[i], '\'') != NULL)
 				{
 					new = clean_quotes(tokens->args[i], len);
 					free_string(tokens->args[i]);
-					tokens->args[i] = new;
-					printf("args = %s\n", tokens->args[i]);
-					tokens->args = variable_expansions(data, data->env, tokens->args);	
+					tokens->args[i] = look_if_expansions(data, data->env, new);
 				}
 				else
-				{
-					printf("why is it here?\n");
-					tokens->args = variable_expansions(data, data->env, tokens->args);
-					printf("why is it here?\n");
-				}
-					
+					tokens->args[i] = look_if_expansions(data, data->env, tokens->args[i]);
 			}
 			else
 			{
-				printf("not expandable we only clean quotes\n");
 				new = clean_quotes(tokens->args[i], len);
 				free_string(tokens->args[i]);
 				tokens->args[i] = new;
 			}
 		}
 		i++;
-/*~~ should we clean quotes here aswell or will this clean quotes too early,
-having them here would mean quotes are cleaned before anything happens and this
-could be good for testing but maybe too early for somethings (things unknow)~~*/
 	}
 }
+
+// void parse_redirections(t_tokens *tokens)
+// {
+// 	(void)tokens;
+// }

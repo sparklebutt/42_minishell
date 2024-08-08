@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:11:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/01 17:39:55 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 15:54:00 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_exit( char *cmd, t_tokens *tokens) // this should now be pretty good
+int ft_exit( char *cmd, t_tokens *tokens)
 {
 	// t_data *data,
 	// t_env *envs;
@@ -39,7 +39,6 @@ int ft_exit( char *cmd, t_tokens *tokens) // this should now be pretty good
 			cmd_error(cmd, tokens->args[1]);
 		else if (tokens->array_count > 2)
 			cmd_error(cmd, NULL);
-		
 		free(cmd);
 		exit(0);
 	}
