@@ -6,27 +6,29 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/07 11:18:23 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 13:50:04 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*~~ this is baisicicaly split excepet it ignores the delimeter inside quotes.
+quotes signify a full string therefore we need any and all spaces inside them ~~*/
 static int	fancy_strlen(char const *s, char c, int i)
 {
 	while (s[i] && s[i] != c)
 	{
-		if (s[i] == '"') // tis is to protect the spaces
+		if (s[i] == '"')
 		{
 			i++;
 			while (s[i] && s[i] != '"')
 				i++;
 		}
-		else if (s[i] == '\'') // tis is to protect the spaces
+		else if (s[i] == '\'')
 		{
 			i++;
 			while (s[i] && s[i] != '\'')
-			i++;
+				i++;
 		}
 		i++;
 	}
@@ -42,28 +44,22 @@ size_t	total_words_c(char const *s, char c)
 	i = 0;
 	while (s[i] != '\0')
 	{
-
 		if (s[i] == c)
 		{
-			if (s[i] == '"') // tis is to protect the spaces
+			if (s[i] == '"' && i++)
 			{
-				i++;
 				while (s[i] && s[i] != '"')
 					i++;
 			}
-			else if (s[i] == '\'') // tis is to protect the spaces newnew
+			else if (s[i] == '\'')
 			{
-				i++;
-				while (s[i] && s[i] != '\'')
+				while (s[i] && s[i] != '\'' && i++)
 					i++;
 			}
 			i++;
 		}
-		else if (s[i] != c)
-		{
-			words++;
-			i += fancy_strlen(s, c, i) - i;
-		}
+		else if (s[i] != c && words++)
+			i += fancy_strlen(s, c, i) - i; // had words++; seperate
 	}
 	return (words);
 }
@@ -91,23 +87,19 @@ char	**ft_split_adv(char const *s, char c)
 	array = (char **)ft_calloc(sizeof(char *), (total_words_c(s, c) + 1));
 	if (!s || !array)
 		return (NULL);
-	while (s[i] != '\0') // (i <= ft_strlen(s))//causing read error of 1 in valgrind
+	while (s[i] != '\0')
 	{
 		while (s[i] == c)
 			i++;
-//		printf("char = %c \n", s[i]);
-//		printf("i before minus and i = %zu x = %d\n", i, x);
-		word_len = fancy_strlen(s, c, i);// - i + x;
+		word_len = fancy_strlen(s, c, i) - i;
 		array[word] = ft_substr(s, i, word_len);
-//		printf("do we have a word her = %s\n", array[word]);
-//		printf("do we have a word her = %s\n", s);						
+		// printf("checking the word = %s\n", array[word]);
 		if (array[word] == NULL)
 			return (free_array_if(array));
-		i += ft_strlen(array[word]);//word_len;
-//		printf("what is i now = %zu\n", i);
+		i += ft_strlen(array[word]);
 		word++;
 	}
-	array[word] = NULL; /*~~ this fixed a seg fault as now we have a null terminated array ~~*/
+	array[word] = NULL;
+	/*~~ this fixed a seg fault as now we have a null terminated array ~~*/
 	return (array);
 }
-

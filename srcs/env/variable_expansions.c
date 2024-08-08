@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:03:23 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/08 11:49:55 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 11:55:39 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ char *replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 		return NULL;
 	ft_strncpy(temp_key, arg + start + 1, key_len);
 	temp_key[key_len] = '\0';
-	printf("bug hunting1\n");
 	if (find_node(envs, temp_key, data) == 1)
 	{
 		value = find_keys_value(envs, temp_key);

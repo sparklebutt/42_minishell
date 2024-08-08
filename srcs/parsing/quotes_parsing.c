@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 15:55:36 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/08 11:33:19 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:44:03 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,57 +138,44 @@ char *clean_quotes(char *string, int len)
 	int x;
 	int y;
 	int def_len;
+
 	y = 0;
 	x = 0;
-	//printf("why is len so short = %s\n", string);
 	def_len = ft_strlen(string);
-	ft_printf("len = %d\n", len);
 	new = NULL;
-	// malloc new to array of len + 1
 	new = ft_calloc(len + 1, 1);
-
 	if (new == NULL)
 	{
-		ft_printf("malloc fail in clean quotes\n");
 		return (NULL);
 	}
 	while (x <= len)
 	{
-		printf("a the char now = %c\n", string[x]);
 		if (string[x] == '\'')
 		{
 			x++;
-			printf("b the char now = %c\n", string[x]);
 			while (string[x] != '\'')
 			{
 				new[y] = string[x];
 				y++;
 				x++;
-				printf("\tthe char now = %c\n", string[x]);
 			}
-			ft_printf("1 string = %s\n", new);
 		}
 		else if (string[x] == '"')
 		{
 			x++;
-			printf("c the char now = %c\n", string[x]);
 			while (string[x] != '"')
 			{
 				new[y] = string[x];
 				y++;
 				x++;
-				printf("\tthe char now = %c\n", string[x]);
 			}		
-			ft_printf("2 string = %s\n", new);
 		}
 		x++;
-		printf("d the char now = %c\n", string[x]);
 		if (string[x] != '\'' && string[x] != '"')
 		{
 			new[y] = string[x];
 			y++;
 		}
 	}
-	ft_printf("3 string = %s\n", new);
 	return (*&new);
 }

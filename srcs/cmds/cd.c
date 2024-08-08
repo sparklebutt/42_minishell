@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/07 17:44:08 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:00:07 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,23 +73,19 @@ int	check_dir(char *str)
 	test = NULL;
 	if (access(str, X_OK) == -1)
 	{
-		printf("lookylook1\n");
 		return(0);
 	}
-	if (access(str, X_OK) == 0)
+	else// (access(str, X_OK) == 0)
 	{
-		printf("lookylook2\n");		
 		test = opendir(str);
 	}
 	if (test == NULL)
 	{
-		printf("lookylook3\n");		
 		return (0);
 	}
 	dp = readdir(test);
 	if (dp == NULL)
 	{
-		printf("lookylook4\n");		
 		closedir(test);
 		return (0);
 	}

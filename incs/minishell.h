@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/07 17:05:45 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/08 15:09:56 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,8 @@ int		is_builtins(char *cmd);
 int		exec_builtins(t_data data, char *cmd, int fd, int r_w);
 
 // fuck about and find out section
-/*please remeber to update commenst on if the fucntion is actually usefull or move it into the main fucntions.*/
-int send_to_forks(t_data *data);
+
+int		send_to_forks(t_data *data);
 char	**ft_split_n_keep(char const *s, char c);
+int		handle_absolute_path(t_data *all, int x);
 #endif
