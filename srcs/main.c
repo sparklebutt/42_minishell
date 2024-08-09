@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/08 16:32:11 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 10:49:36 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,9 @@ void	minishell(t_data *data)
 		rl_on_new_line();
 		rl = readline(data->prompt);
 		add_history(rl);
-		if (rl)
-		{
+		if (rl) {
 			collect_cmd_array(data, data->tokens, rl);
-			if (data->tokens->args[0] == NULL)
-				break ;
-			if (handle_line(*data, data->tokens) == -1)			
+			if (handle_line(*data, data->tokens) == -1)
 			{
 				ft_printf("error dfghjkl\n"); // change error message
 				break ;

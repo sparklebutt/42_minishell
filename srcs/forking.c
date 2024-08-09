@@ -6,38 +6,39 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/08 16:29:29 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 10:49:00 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-////this test fucntion shows me what fds are open this will help debugging later
-/*static void list_open_fds() {
-    for (int fd = 0; fd < 1024; fd++) {
-        if (fcntl(fd, F_GETFD) != -1) {
-            printf("FD %d is open\n", fd);
-        }
-    }
+// this test fucntion shows me what fds are open this will help debugging later
+/*static void list_open_fds()
+{
+	for (int fd = 0; fd < 1024; fd++)
+	{
+		if (fcntl(fd, F_GETFD) != -1)
+		{
+			printf("FD %d is open\n", fd);
+		}
+	}
 }*/
 
-int	child(t_data *data, int *fds, int prev_fd, int x, int flag) // will try to put all fds in array prev_fd = fd[2]
+ // will try to put all fds in array prev_fd = fd[2]
+int	child(t_data *data, int *fds, int prev_fd, int x, int flag)
 {	
 	pid_t	child;
 	int		status;
 
 	child = fork();
 	if (child == -1)
-	{
-		ft_printf("errror in first child perror\n"); // change error message
-		return (-1);
-	}
+		return (error("fork", "first child failed"));
 	if (child == 0)
 	{
 		dup_fds(data, fds, prev_fd, x);
 		if (flag == 1)
 		{
-			exec_builtins(*data, data->tokens->args[data->i], 0, 0);
+			exec_builtins(*data, data->tokens->args[data->i]);
 			exit(0);
 		}
 		else if (flag == 0)
@@ -53,12 +54,11 @@ int	child(t_data *data, int *fds, int prev_fd, int x, int flag) // will try to p
 	waitpid(child, &status, 0);
 	return (0);
 }
-// pid is in struct , we can use that 
 
+// pid is in struct , we can use that 
 int	send_to_child(t_data *data, int fds[2], int prev_fd, int x)
 {
-	if (is_builtins(data->tokens->args[data->i]) == 1)
-	{
+	if (is_builtins(data->tokens->args[data->i]) == 1) {
 		child(data, fds, prev_fd, x, 1);
 		data->i++;
 		while (data->tokens->args[data->i] != NULL)
@@ -95,24 +95,18 @@ int	pipe_fork(t_data *data)
 	while (x <= data->tokens->pipe_count)
 	{
 		if (data->i > data->tokens->array_count)
-		{
-			ft_printf("we are somehow out of bounds \n"); // change error message
-			return (-1);
-		}
-		if (pipe(fds) < 0)
-		{
-			ft_printf("error in pipe perror needed\n"); // change error message
+			return error("fork", "we are somehow out of bounds");
+		if (pipe(fds) < 0) {
+			error("fork", "error in pipe perror needed");
 			exit(EXIT_FAILURE);
-		}
-		// eg example Env | grep PATH=
+		} // eg example Env | grep PATH=
 		send_to_child(data, fds, prev_fd, x);
 		prev_fd = fds[0];
 		x++;
 	}
 	free_array(data->env_array);
 	close(fds[0]);
-	close(fds[1]);	
-//	list_open_fds();
+	close(fds[1]);//	add list_open_fds(); ?
 	if (prev_fd != -1)
 		close(prev_fd);
 	return (0);
@@ -124,19 +118,15 @@ int	simple_fork(t_data *data)
 
 	status = 0;
 	data->pid = fork();
-	if (data->pid == -1)
-	{
+	if (data->pid == -1) {
 		ft_printf("fork error\n"); // change error message
 		exit(1);
 	}
 	if (data->pid == 0)
-	{
-		if (execve(data->tmp->filename, data->tmp->ex_arr, data->env_array) == -1)
-		{
+		if (execve(data->tmp->filename, data->tmp->ex_arr, data->env_array) == -1) {
 			ft_printf("exceve fail\n");
 			exit(1); // should this be different kind of error handeling
 		}
-	}
 	waitpid(data->pid, &status, 0);
 //	list_open_fds();
 	return (0);

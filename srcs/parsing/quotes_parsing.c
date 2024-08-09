@@ -6,22 +6,37 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 15:55:36 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/08 16:18:23 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 09:46:09 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_open_quotes(t_tokens *tokens)
+int	loop_quotes(t_tokens *tokens, int quote_count, int i, int *x)
+{
+	char	c;
+
+	if (tokens->quote == 1)
+		c = '\'';
+	else if (tokens->quote == 2)
+		c = '"';
+	(*x)++;
+	quote_count += 1;
+	while (tokens->args[i][*x] != '\0' && tokens->args[i][*x] != c)
+	{
+		(*x)++;
+		if (tokens->args[i][*x] == c)
+			quote_count += 1;
+	}
+	return (quote_count);
+}
+
+int	check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count)
 {
 	int	x;
 	int	i;
-	int	s_quote_count;
-	int	d_quote_count;
 
 	i = -1;
-	s_quote_count = 0;
-	d_quote_count = 0;
 	while (tokens->args[++i])
 	{
 		x = 0;
@@ -29,25 +44,13 @@ int	check_open_quotes(t_tokens *tokens)
 		{
 			if (tokens->args[i][x] == '\'')
 			{
-				x++;
-				s_quote_count += 1;
-				while (tokens->args[i][x] != '\0' && tokens->args[i][x] != '\'')
-				{
-					x++;
-					if (tokens->args[i][x] == '\'')
-						s_quote_count += 1;
-				}
+				tokens->quote = 1;
+				s_quote_count = loop_quotes(tokens, s_quote_count, i, &x);
 			}
 			else if (tokens->args[i][x] == '"')
 			{
-				x++;
-				d_quote_count += 1;
-				while (tokens->args[i][x] != '\0' && tokens->args[i][x] != '"')
-				{
-					x++;
-					if (tokens->args[i][x] == '"')
-						d_quote_count += 1;
-				}
+				tokens->quote = 2;
+				d_quote_count = loop_quotes(tokens, d_quote_count, i, &x);
 			}
 			x++;
 		}
@@ -57,10 +60,10 @@ int	check_open_quotes(t_tokens *tokens)
 	return (1);
 }
 
-int count_new_len(char *string)
+int	count_new_len(char *string)
 {
-	int x;
-	int len;
+	int	x;
+	int	len;
 
 	x = -1;
 	len = 0;
@@ -85,16 +88,10 @@ int count_new_len(char *string)
 	return (len);
 }
 
-char *clean_quotes(char *string, int len)
+char	*clean_quotes(char *string, int len, int x, int y)
 {
-	char *new;
-	int x;
-	int y;
-	int def_len;
+	char	*new;
 
-	y = 0;
-	x = 0;
-	def_len = ft_strlen(string);
 	new = NULL;
 	new = ft_calloc(len + 1, 1);
 	if (new == NULL)
@@ -111,7 +108,7 @@ char *clean_quotes(char *string, int len)
 		{
 			x++;
 			while (string[x] != '"')
-				new[y++] = string[x++];	
+				new[y++] = string[x++];
 		}
 		x++;
 		if (string[x] != '\'' && string[x] != '"')

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:03:03 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/12 09:07:38 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/08 21:36:23 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,8 @@ int		ft_printptr(unsigned long long ptr, int *c);
 int		ft_printhex(unsigned long long nbr, char format, int *c);
 int		ft_len(unsigned long long nbr);
 int		ft_check_error(int value, int check);
+
+// get_next_line
+char	*get_next_line(int fd);
 
 #endif

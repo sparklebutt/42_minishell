@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/08 16:50:44 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 09:58:30 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,16 @@ typedef struct s_tokens
 {
 	char	*cmd;
 	char	**args;
+	int		quote; // 1 = single, 2 = double
 
 	int		array_count;
 	int		pipe_count;
 
+	char	*input_file;   // For < redirection
+	char	*output_file;  // For > and >> redirection
+	bool	redirect_in;
+	bool	redirect_out;
+	bool	redirect_append;
 }	t_tokens;
 
 typedef struct s_cmd
@@ -76,13 +82,16 @@ typedef struct s_data
 // PARSING - - - - - - - - -
 void	pipe_collector(t_tokens *tokens, char **array);
 void	expansion_parser(t_tokens *tokens, t_data *data);
-int		check_open_quotes(t_tokens *tokens);
-char	*clean_quotes(char *string, int len);
+int	check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count);
+char	*clean_quotes(char *string, int len, int x, int y);
 int		count_new_len(char *string);
+int	handle_absolute_path(t_data *all, int x, char *path);
 
 void	collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
 int		check_path(char *string, int divert, t_data *all, int x);
 int		find_passage(t_data *all, char *string, int divert);
+int		parse_redirections(t_tokens *tokens, char **args, int i);
+void	apply_redirections(t_tokens *tokens, int i);
 
 // ENV - - - - - - - - -
 
@@ -145,7 +154,7 @@ int		main(int argc, char **argv);
 void	minishell(t_data *data);
 int		handle_line(t_data data, t_tokens *tokens);
 int		is_builtins(char *cmd);
-int		exec_builtins(t_data data, char *cmd, int fd, int r_w);
+int		exec_builtins(t_data data, char *cmd);
 t_env	*init(t_data *data);
 t_env	*create_env_list(void);
 

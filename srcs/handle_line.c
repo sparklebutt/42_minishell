@@ -6,19 +6,17 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/08 16:05:16 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 10:49:20 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec_builtins(t_data data, char *cmd, int fd, int r_w)
+int	exec_builtins(t_data data, char *cmd)
 {
 	t_env		envs;		
 	t_tokens	*tokens;
 
-	if (fd == 9 || r_w == 9)
-		printf("holding incase we need these parameters"); // might not be needed, delete this
 	envs = *data.env;
 	tokens = data.tokens;
 	if (ft_strncmp(cmd, "exit", 5) == 0)
@@ -65,7 +63,7 @@ int	handle_line(t_data data, t_tokens *tokens)
 	if (tokens->args[data.i] != NULL)
 	{
 		if (tokens->pipe_count == 0 && is_builtins(tokens->args[data.i]) == 1)
-			exec_builtins(data, tokens->args[data.i], 0, 0);
+			exec_builtins(data, tokens->args[data.i]);
 		else if (find_passage(&data, "PATH", 1) == -1)
 			call_cmd_error(tokens->args[data.i], NULL, "command not found\n", -10);
 		data.i++;

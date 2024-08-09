@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/08 16:05:23 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 10:34:18 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	ft_cd(t_data *data, t_env *envs)
 	if (ft_strncmp(data->tokens->args[i], "cd", 3) == 0
 		&& data->tokens->args[i + 1] == NULL)
 	{
-		
 		to_home(data, envs);
 		return ;
 	}
@@ -62,7 +61,6 @@ void	ft_cd(t_data *data, t_env *envs)
 	i++; // because we used it already
 	free(temp2);
 	change_dir(data, envs, temp);
-	free(data->path);
 }
 
 int	check_dir(char *str)
@@ -72,17 +70,11 @@ int	check_dir(char *str)
 
 	test = NULL;
 	if (access(str, X_OK) == -1)
-	{
 		return(0);
-	}
-	else// (access(str, X_OK) == 0)
-	{
+	else // (access(str, X_OK) == 0)
 		test = opendir(str);
-	}
 	if (test == NULL)
-	{
 		return (0);
-	}
 	dp = readdir(test);
 	if (dp == NULL)
 	{
