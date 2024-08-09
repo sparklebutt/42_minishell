@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/09 16:13:30 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 20:42:36 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,38 +136,65 @@ int	simple_fork(t_data *data)
 	int	status;
 
 	status = 0;
-	printf("THIS IN SIMPLE FORK\n");
-	// this exits the project when tested, does correct thing though
-	// if (data->pid == 0 && is_redirect(data->tokens->args[data->i]) >= 1)
-	// {
-	// 	printf("REDIRECTS EXIST\n");
-	// 	data->pid = fork();
-	// 	if (data->pid == -1)
-	// 	{
-	// 		ft_printf("fork error\n"); // change error message
-	// 		exit(1);
-	// 	}
-	// 	apply_redirections(data->tokens, data->i);
-	// 	exit(1);
-	// }
 	data->pid = fork();
-	if (data->pid == -1) {
+	printf("pid = %d\n", data->pid);
+	if (data->pid == -1)
+	{
 		ft_printf("fork error\n"); // change error message
 		exit(1);
-	} // this stays in the loop, but prints everything else BUT what it should in the file
-	if (data->pid == 0 && is_redirect(data->tokens->args[data->i]) >= 1)
+	}
+	if (data->pid == 0 && data->tokens->redirect_count == 0)
+	{
+		if (execve(data->tmp->filename, data->tmp->ex_arr, data->env_array) == -1) {
+			ft_printf("exceve fail\n");
+			exit(1); // should this be different kind of error handeling
+		}
+	}
+	else if (data->pid == 0 && data->tokens->redirect_count >= 1)
 	{
 		printf("REDIRECTS EXIST\n");
 		apply_redirections(data->tokens, data->i);
 		printf("I love you\n");
 		exit(1);
-	}
-	else if (data->pid == 0)
-		if (execve(data->tmp->filename, data->tmp->ex_arr, data->env_array) == -1) {
-			ft_printf("exceve fail\n");
-			exit(1); // should this be different kind of error handeling
-		}
+	}	
 	waitpid(data->pid, &status, 0);
 //	list_open_fds();
 	return (0);
 }
+
+
+// int	simple_fork(t_data *data)
+// {
+// 	int	status;
+
+// 	status = 0;
+// 	printf("THIS IN SIMPLE FORK\n");
+// 	data->pid = fork();
+// 	printf("pid = %d\n", data->pid);
+// 	if (data->pid == -1)
+// 	{
+// 		ft_printf("fork error\n"); // change error message
+// 		exit(1);
+// 	} // this stays in the loop, but prints everything else BUT what it should in the file
+// 	if (data->pid == 0 && is_redirect(data->tokens->args[data->i]) == 0)
+// 	{
+// 		printf("EXECUTE EXECVE\n");
+// 		if (execve(data->tmp->filename, data->tmp->ex_arr, data->env_array) == -1)
+// 		{
+// 			ft_printf("exceve fail\n");
+// 			exit(1); // should this be different kind of error handeling
+// 		}
+// 	}
+// 	else if (data->pid == 0 && is_redirect(data->tokens->args[data->i]) >= 1)
+// 	{
+// 		printf("REDIRECTS EXIST\n");
+// 		apply_redirections(data->tokens, data->i);
+// 		printf("I love you\n");
+// 		exit(1);
+// 	}
+// 	printf("why is it here?\n");
+// 	waitpid(data->pid, &status, 0);
+// 	printf("WHAT???\n");
+// //	list_open_fds();
+// 	return (0);
+// }

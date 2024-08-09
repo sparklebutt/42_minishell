@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/09 14:47:44 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 18:53:12 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	send_to_forks(t_data *data)
 {
 	if (data->tokens->pipe_count > 0)
 	{
+		printf("beeep\n");
 		if (pipe_fork(data) == -1)
 			return (-1);
 		return (2);
@@ -63,7 +64,6 @@ int	send_to_forks(t_data *data)
 	{
 		if (check_path(data->tmp->env_line, 1, data, data->i) == 0)
 			return (-1);
-		
 		set_array(data);
 		set_env_array(data);
 		printf("this is in send forks\n"); // for testing
@@ -95,6 +95,7 @@ int	find_passage(t_data *all, char *string, int divert)
 			printf("check if needs to send to fork\n");
 			if (send_to_forks(all) == -1)
 				return (-1);
+			printf("after simple fork\n");
 			// ft_printf("end of send to forks\n");
 		}
 	}

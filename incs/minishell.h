@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/09 13:31:23 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 20:22:29 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ int		handle_line(t_data data, t_tokens *tokens);
 int		is_builtins(char *cmd);
 int		exec_builtins(t_data data, char *cmd);
 t_env	*init(t_data *data);
-t_env	*create_env_list(void);
+t_env	*create_env_list(t_data *data);
 
 // forking
 int		simple_fork(t_data *data);
