@@ -23,9 +23,9 @@ void	minishell(t_data *data)
 		rl = readline(data->prompt);
 		add_history(rl);
 		if (rl)
-		{
+    {
 			collect_cmd_array(data, data->tokens, rl);
-			if (handle_line(*data, data->tokens) == -1)			
+			if (handle_line(*data, data->tokens) == -1)
 			{
 				ft_printf("error dfghjkl\n"); // change error message
 				break ;

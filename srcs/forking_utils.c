@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/08 16:26:28 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 10:42:30 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,16 @@ int	set_array(t_data *data)
 		data->tmp->ex_arr[0] = data->tmp->filename;
 		data->i++;
 	}
-	if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] == '-')
+	if (data->tokens->args[data->i] != NULL
+		&& data->tokens->args[data->i][0] == '-')
 	{
 		data->tmp->ex_arr[1] = data->tokens->args[data->i];
 		data->i++;
 	}
 	else
 		data->tmp->ex_arr[1] = NULL;
-	if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|')
+	if (data->tokens->args[data->i] != NULL
+		&& data->tokens->args[data->i][0] != '|')
 	{
 		data->tmp->ex_arr[1] = data->tokens->args[data->i];
 		data->i++;
@@ -80,7 +82,7 @@ int	dup_fds(t_data *data, int *fds, int prev_fd, int x)
 		}
 	}
 	if (x < data->tokens->pipe_count)
-	{		
+	{
 		if (dup2(fds[1], STDOUT_FILENO) == -1)
 		{
 			printf("dup of fds[1] failed\n"); // change error message

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:59:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/08 16:39:53 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 09:41:38 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	free_extra_return_function(char *str, int ret_value)
 
 void	free_array(char **array)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (array[i] != NULL)
@@ -43,13 +43,12 @@ void	free_string(char *string)
 		free(string);
 		string = NULL;
 	}
-//	else
-//		string = NULL;
 }
 
 void	free_nodes(t_env *node)
 {
-	t_env *tmp;
+	t_env	*tmp;
+
 	while (node != NULL)
 	{
 		if (node->value)
@@ -61,22 +60,18 @@ void	free_nodes(t_env *node)
 	}
 }
 
-int error(char *cmd, char *error)
+int	error(char *cmd, char *error)
 {
-	ft_printf("minishell: %s: %s\n", cmd, error); //perror
+	ft_printf("minishell: %s: %s\n", cmd, error);
 	return (1);
 }
 
-void	collective_free(char *str1, char *str2, char **array)
+void	collective_free(char *str1, char *str2, char **array) // maybe not needed, will make function amount to be correct
 {
-//	if (array != NULL)
 	free_array(array);
-	array = NULL;	
-//	if (str1 != NULL)
 	free_string(str1);
-	str1 = NULL;
-//	if (str2 != NULL)
 	free_string(str2);
+	array = NULL;
+	str1 = NULL;
 	str2 = NULL;
-
 }
