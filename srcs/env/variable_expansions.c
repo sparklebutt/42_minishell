@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable_expansions.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:03:23 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/08 15:55:52 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 09:19:16 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ char	*replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 
 	key_len = find_key_len(arg, start);
 	temp_key = malloc(sizeof(char) * (key_len + 1));
+	//printf("arg is 1= %s\n", arg);
 	if (!temp_key)
 		return NULL;
 	ft_strncpy(temp_key, arg + start + 1, key_len);
@@ -68,6 +69,7 @@ char	*replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 	if (find_node(envs, temp_key, data) == 1)
 	{
 		value = find_keys_value(envs, temp_key);
+
 		if (value != NULL)
 			new_arg = new_str(arg, value, start, start + key_len + 1);
 		else

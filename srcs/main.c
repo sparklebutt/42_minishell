@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/08 16:32:11 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 09:14:21 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ void	minishell(t_data *data)
 		if (rl)
 		{
 			collect_cmd_array(data, data->tokens, rl);
-			if (data->tokens->args[0] == NULL)
-				break ;
 			if (handle_line(*data, data->tokens) == -1)			
 			{
 				ft_printf("error dfghjkl\n"); // change error message

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/08 16:50:44 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/08 17:41:39 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	expansion_parser(t_tokens *tokens, t_data *data);
 int		check_open_quotes(t_tokens *tokens);
 char	*clean_quotes(char *string, int len);
 int		count_new_len(char *string);
-
+int handle_absolute_path(t_data *all, int x);
 void	collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
 int		check_path(char *string, int divert, t_data *all, int x);
 int		find_passage(t_data *all, char *string, int divert);

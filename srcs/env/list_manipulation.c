@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_manipulation.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:47:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/08 15:55:36 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/08 17:54:37 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	find_node(t_env *envs, char *key, t_data *data)
 		if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) == 0 && (ft_strlen(temp->key) == ft_strlen(key)))
 		{
 			// ft_printf("key found\n"); // remove
-			// data->tmp->env_line = ft_strdup(temp->value);  // not needed
+			data->tmp->env_line = ft_strdup(temp->value);  // not needed
 			return (1);
 		}
 		temp = temp->next;

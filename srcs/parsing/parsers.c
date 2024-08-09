@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/08 15:31:12 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 09:23:33 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool confirm_expansion(char *string, int len) // similar to quotes_handling (com
 		else if (string[x] == '"')
 		{
 			x++;
-			while (string[x] != '"')
+			while (string[x++] != '"')
 			{
 				d = !d;
 				x++;
@@ -54,6 +54,7 @@ void	expansion_parser(t_tokens *tokens, t_data *data)
 	
 	i = 0;
 	len = 0;
+
 	while (tokens->args[i])
 	{
 		len = ft_strlen(tokens->args[i]) - 1; // maybe remove
@@ -62,17 +63,23 @@ void	expansion_parser(t_tokens *tokens, t_data *data)
 			if (confirm_expansion(tokens->args[i], len) == true)
 			{
 				// tokens->args[i] = expand_args(tokens->args[i], data, data->env) // add something like this
+				// printf("expandable\n");
 				if (ft_strchr(tokens->args[i], '"') != NULL || ft_strchr(tokens->args[i], '\'') != NULL)
 				{
 					new = clean_quotes(tokens->args[i], len);
+					// printf("is new here = %s\n", new);
 					free_string(tokens->args[i]);
 					tokens->args[i] = look_if_expansions(data, data->env, new);
 				}
 				else
+				{
+					// printf("not expandle\n");
 					tokens->args[i] = look_if_expansions(data, data->env, tokens->args[i]);
+				}
 			}
 			else
 			{
+				
 				new = clean_quotes(tokens->args[i], len);
 				free_string(tokens->args[i]);
 				tokens->args[i] = new;

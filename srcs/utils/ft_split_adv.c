@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_adv.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/08 16:20:56 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 09:21:36 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ char	**ft_split_adv(char const *s, char c)
 			i++;
 		word_len = fancy_strlen(s, c, i) - i;
 		array[word] = ft_substr(s, i, word_len);
+		// printf("token string = %s\n", array[word]);
 		if (array[word] == NULL)
 			return (free_array_if(array));
 		i += ft_strlen(array[word]);

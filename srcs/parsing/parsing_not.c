@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/08 16:20:16 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/08 18:58:36 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ void collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	x = total_words_c(string, ' ');
 	tokens->args = ft_split_adv(string, ' ');
 	if (check_open_quotes(tokens) < 0)
+	{
+		printf("open quotes apparently\n");
 		return ;
+	}
 	expansion_parser(tokens, data);
 	pipe_collector(tokens, tokens->args);
 	tokens->array_count = x;
@@ -63,7 +66,7 @@ int send_to_forks(t_data *data)
 	else if (data->tokens->pipe_count == 0)
 	{
 		if (check_path(data->tmp->env_line, 1, data, data->i) == 0)
-			return (0);
+			return (-1);
 		set_array(data);
 		set_env_array(data);
 		if (simple_fork(data) == 0)
@@ -186,7 +189,7 @@ int	check_path(char *string, int divert, t_data *all, int x)
 	}
 	if (all->tokens->args[x][0] != '/')
 		suffix = ft_strjoin("/", all->tokens->args[x]);
-	//  ft_printf("suffix = %s\n", suffix);	
+	ft_printf("suffix = %s\n", suffix);	
 	if (suffix == NULL || cmd_len == 0)
 		return (free_extra_return_function(suffix, 0));
 	split_diversion(all, divert, string);
