@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/09 09:57:44 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/08 18:58:36 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	tokens->args = ft_split_adv(string, ' ');
 	if (check_open_quotes(tokens, 0, 0) < 0)
 		return ;
+	}
 	expansion_parser(tokens, data);
 	parse_redirections(tokens, tokens->args, 0);
 	pipe_collector(tokens, tokens->args);
@@ -61,7 +62,7 @@ int	send_to_forks(t_data *data)
 	else if (data->tokens->pipe_count == 0)
 	{
 		if (check_path(data->tmp->env_line, 1, data, data->i) == 0)
-			return (0);
+			return (-1);
 		set_array(data);
 		set_env_array(data);
 		if (simple_fork(data) == 0)
@@ -140,133 +141,3 @@ int	handle_absolute_path(t_data *all, int x, char *path)
 		return (1);
 	}
 }
-
-// int handle_dp(t_data *all, char *suffix, int i)
-// {
-// 	if (all->tmp->array[i] == NULL)
-// 		return (-1);
-// 	// free_string(all->tmp->filename);
-// 	all->tmp->filename = ft_strjoin(all->tmp->array[i], suffix);
-// 	// free_string(suffix);
-// 	if (all->tokens->pipe_count > 0)
-// 		free_array(all->tmp->array);
-// 	return (0);
-// }
-
-// int loop_paths(t_data *all, char *suffix, size_t cmd_len, int x)
-// {
-// 	int i;
-// 	// (void)cmd_len;
-// 	// (void)suffix;
-// 	// (void)x;
-// 	DIR				*dir;
-// 	struct dirent	*dp;
-
-// 	i = 0;
-// 	while (all->tmp->array[i]) {
-// 		if (check_dir(all->tmp->array[i]) == 1) {
-// 			dir = opendir(all->tmp->array[i]);
-// 			dp = readdir(dir);
-// 			while (dp != NULL) {
-// 				if (ft_strncmp(dp->d_name, all->tokens->args[x], cmd_len) == 0
-// 					&& ft_strlen(dp->d_name) == cmd_len) {
-// 					handle_dp(all, suffix, i);
-// 					closedir(dir);
-// 					return (1);
-// 				}
-// 				dp = readdir(dir);
-// 			}
-// 			// closedir(dir); this was causing a leak of some kind
-// 		}
-// 		i++;
-// 	}
-// 	// closedir(dir);
-// 	return (0);
-// }
-
-// int	check_path(char *string, int divert, t_data *all, int x) // split in two
-// {
-// 	char			*suffix;
-// 	size_t			cmd_len;
-// 	int				i;
-
-// 	i = 0;
-// 	suffix = NULL;
-// 	cmd_len = ft_strlen(all->tokens->args[x]);
-// 	if (ft_strchr(all->tokens->args[x], '/')) {
-// 		if (handle_absolute_path(all, x, NULL) == 0)
-// 			return (error("check dir", "Access"));
-// 		else
-// 			return (1);
-// 	}
-// 	if (all->tokens->args[x][0] != '/')
-// 		suffix = ft_strjoin("/", all->tokens->args[x]);
-// 	//  ft_printf("suffix = %s\n", suffix);
-// 	if (suffix == NULL || cmd_len == 0)
-// 		return (free_extra_return_function(suffix, 0));
-// 	split_diversion(all, divert, string);
-// 	loop_paths(all, suffix, cmd_len, x);
-// //	free_extra_return_function(suffix, -1);
-// 	collective_free(NULL, suffix, all->tmp->array);
-// 	return (0);
-// }
-
-// int	check_path(char *string, int divert, t_data *all, int x)
-// {
-// 	struct dirent	*dp;
-// 	DIR				*dir;
-// 	char			*suffix;
-// 	size_t			cmd_len;
-// 	int				i;
-
-// 	i = 0;
-// 	suffix = NULL;
-// 	cmd_len = ft_strlen(all->tokens->args[x]);
-// 	if (ft_strchr(all->tokens->args[x], '/'))
-// 	{
-// 		if (handle_absolute_path(all, x, NULL) == 0)
-// 		{
-// 			// error
-// 			return (0);
-// 		}
-// 		else
-// 			return (1);
-// 	}
-// 	if (all->tokens->args[x][0] != '/')
-// 		suffix = ft_strjoin("/", all->tokens->args[x]);
-// 	//  ft_printf("suffix = %s\n", suffix);
-// 	if (suffix == NULL || cmd_len == 0)
-// 		return (free_extra_return_function(suffix, 0));
-// 	split_diversion(all, divert, string);
-// 	while (all->tmp->array[i])
-// 	{
-// 		if (check_dir(all->tmp->array[i]) == 1)
-// 		{
-// 			dir = opendir(all->tmp->array[i]);
-// 			dp = readdir(dir);
-// 			while (dp != NULL)
-// 			{
-// 				if (ft_strncmp(dp->d_name, all->tokens->args[x], cmd_len) == 0
-// 					&& ft_strlen(dp->d_name) == cmd_len)
-// 				{
-// 					if (all->tmp->array[i] == NULL)
-// 						return (-1);
-// 					// free_string(all->tmp->filename);
-// 					all->tmp->filename = ft_strjoin(all->tmp->array[i], suffix);
-// 					free_string(suffix);
-// 					if (all->tokens->pipe_count > 0)
-// 						free_array(all->tmp->array);
-// 					closedir(dir);
-// 					return (1);
-// 				}
-// 				dp = readdir(dir);
-// 			}
-// 			// closedir(dir); this was causing a leak of some kind
-// 		}
-// 		i++;
-// 	}
-// 	closedir(dir);
-// 	//	free_extra_return_function(suffix, -1);
-// 	collective_free(NULL, suffix, all->tmp->array);
-// 	return (0);
-// }

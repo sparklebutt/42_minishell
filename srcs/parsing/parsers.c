@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/09 10:32:57 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 09:23:33 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	expansion_parser(t_tokens *tokens, t_data *data)
 
 	i = 0;
 	len = 0;
+
 	while (tokens->args[i])
 	{
 		len = ft_strlen(tokens->args[i]) - 1; // maybe remove

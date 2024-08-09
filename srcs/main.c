@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/09 10:49:36 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 09:14:21 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	minishell(t_data *data)
 		rl_on_new_line();
 		rl = readline(data->prompt);
 		add_history(rl);
-		if (rl) {
+		if (rl)
+    {
 			collect_cmd_array(data, data->tokens, rl);
 			if (handle_line(*data, data->tokens) == -1)
 			{
