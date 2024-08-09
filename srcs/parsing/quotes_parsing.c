@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_parsing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 15:55:36 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/09 09:17:23 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/09 12:05:55 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,15 @@ int	loop_quotes(t_tokens *tokens, int quote_count, int i, int *x)
 {
 	char	c;
 
+	c = 0;
 	if (tokens->quote == 1)
 		c = '\'';
 	else if (tokens->quote == 2)
 		c = '"';
 	(*x)++;
 	quote_count += 1;
+	if (tokens->args[i][*x] == c)
+		quote_count += 1;
 	while (tokens->args[i][*x] != '\0' && tokens->args[i][*x] != c)
 	{
 		(*x)++;
@@ -56,8 +59,6 @@ int	check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count)
 		}
 		if (s_quote_count % 2 != 0 || d_quote_count % 2 != 0)
 			return (-1);
-	//	x = 0;	
-	
 	}
 	return (1);
 }

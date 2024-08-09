@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/08 18:58:36 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/09 12:08:09 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,10 @@ void	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	tokens->args = ft_split_adv(string, ' ');
 	if (check_open_quotes(tokens, 0, 0) < 0)
 		return ;
-	}
 	expansion_parser(tokens, data);
 	parse_redirections(tokens, tokens->args, 0);
 	pipe_collector(tokens, tokens->args);
-	tokens->array_count = x;
+	tokens->array_count = x - 1;
 	if (tokens->args == NULL)
 	{
 		ft_printf("malloc fail in parsing , making of array of args\n");
@@ -128,7 +127,7 @@ int	handle_absolute_path(t_data *all, int x, char *path)
 	path = ft_calloc(sizeof(char *), len + 1);
 	path = ft_strncpy(path, all->tokens->args[x], len);
 	if (check_dir(path) == 0)
-		return (error("check dir", "File access or read"));
+		return (error("check dir", path));
 	else
 	{
 		cmd_n = ft_calloc(sizeof(char *), len + 1);

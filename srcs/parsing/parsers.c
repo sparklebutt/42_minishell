@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/09 09:23:33 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/09 12:42:35 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ bool	confirm_expansion(char *string, int len)
 	while (x <= len)
 	{
 		if (string[x] == '\'')
-			set_check(string, s, &x, '\'');
+			s = set_check(string, s, &x, '\'');
 		else if (string[x] == '"')
-			set_check(string, d, &x, '"');
+			d = set_check(string, d, &x, '"');
 		x++;
 	}
 	return ((d && !s) || (!d && !s));
@@ -76,12 +76,14 @@ void	expansion_parser(t_tokens *tokens, t_data *data)
 		{
 			if (confirm_expansion(tokens->args[i], len) == true)
 			{
+				printf("expansion true\n");
 				// tokens->args[i] = expand_args(tokens->args[i], data,data->env)
 				// add something like this
 				handle_expansion(data, len, i, new);
 			}
 			else
 			{
+				printf("expansion false\n");
 				new = clean_quotes(tokens->args[i], len, 0, 0);
 				free_string(tokens->args[i]);
 				tokens->args[i] = new;
@@ -131,20 +133,20 @@ int	redirect_helper(t_tokens *tokens, char *file, int flags, int i)
 	{
 		if (dup2(fd, STDIN_FILENO) == -1)
 			return (error("redirect", "Failed to duplicate fd"));
-		line = get_next_line(fd);
-		while (line != NULL)
-		{
-			printf("%s", line);
-			free(line);
-			line = get_next_line(fd);
-		}
-		free(line);
+		// line = get_next_line(fd);
+		// while (line != NULL)
+		// {
+		// 	printf("%s", line);
+		// 	free(line);
+		// 	line = get_next_line(fd);
+		// }
+		// free(line);
 	}
 	else
 	{
 		if (dup2(fd, STDOUT_FILENO) == -1)
 			return (error("redirect", "Failed to duplicate fd"));
-		redirect_out(tokens, i);
+		// redirect_out(tokens, i);
 	}
 	close(fd);
 	return (0);

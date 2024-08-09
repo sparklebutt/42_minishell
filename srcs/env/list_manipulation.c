@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_manipulation.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:47:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/08 17:54:37 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:44:22 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
