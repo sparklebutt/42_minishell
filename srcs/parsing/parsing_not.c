@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/09 12:08:09 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:47:44 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	expansion_parser(tokens, data);
 	parse_redirections(tokens, tokens->args, 0);
 	pipe_collector(tokens, tokens->args);
+	redirect_collector(tokens, tokens->args);
 	tokens->array_count = x - 1;
 	if (tokens->args == NULL)
 	{
@@ -62,8 +63,10 @@ int	send_to_forks(t_data *data)
 	{
 		if (check_path(data->tmp->env_line, 1, data, data->i) == 0)
 			return (-1);
+		
 		set_array(data);
 		set_env_array(data);
+		printf("this is in send forks\n"); // for testing
 		if (simple_fork(data) == 0)
 			ft_printf("test\n"); // add error handling here
 			//collective_free(data->tmp->filename, NULL, data->tmp->array);
@@ -76,6 +79,7 @@ int	send_to_forks(t_data *data)
 
 int	find_passage(t_data *all, char *string, int divert)
 {
+	printf("THIS IS IN FIND_PASSAGE\n");
 	if (null_check(all->env->key, all->env, string) != 1)
 		return (-1);
 	if (find_node(all->env, string, all) == 1 && all->tmp->env_line != NULL)
@@ -88,6 +92,7 @@ int	find_passage(t_data *all, char *string, int divert)
 		}
 		else
 		{
+			printf("check if needs to send to fork\n");
 			if (send_to_forks(all) == -1)
 				return (-1);
 			// ft_printf("end of send to forks\n");

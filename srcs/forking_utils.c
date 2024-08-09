@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/09 10:42:30 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 13:59:45 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,14 @@ int	set_array(t_data *data)
 	else
 		data->tmp->ex_arr[1] = NULL;
 	if (data->tokens->args[data->i] != NULL
-		&& data->tokens->args[data->i][0] != '|')
+		&& data->tokens->args[data->i][0] != '|') //&& 
 	{
-		data->tmp->ex_arr[1] = data->tokens->args[data->i];
+		if (is_redirect(data->tokens->args[data->i]) == 1)
+			data->tmp->ex_arr[1] = data->tokens->input_file;
+		else if (is_redirect(data->tokens->args[data->i]) == 2)
+			data->tmp->ex_arr[1] = data->tokens->output_file;
+		else
+			data->tmp->ex_arr[1] = data->tokens->args[data->i];
 		data->i++;
 	}
 	else

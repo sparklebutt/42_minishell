@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/09 10:49:00 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 16:13:30 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ int	child(t_data *data, int *fds, int prev_fd, int x, int flag)
 		return (error("fork", "first child failed"));
 	if (child == 0)
 	{
+		if (flag == 2)
+		{
+			apply_redirections(data->tokens, data->i - 2);
+			exit(0);
+		}
 		dup_fds(data, fds, prev_fd, x);
 		if (flag == 1)
 		{
@@ -58,7 +63,21 @@ int	child(t_data *data, int *fds, int prev_fd, int x, int flag)
 // pid is in struct , we can use that 
 int	send_to_child(t_data *data, int fds[2], int prev_fd, int x)
 {
-	if (is_builtins(data->tokens->args[data->i]) == 1) {
+	if (is_redirect(data->tokens->args[data->i]))	
+	{
+		child(data, fds, prev_fd, x, 2);
+		data->i++;
+		while (data->tokens->args[data->i] != NULL)
+		{
+			if (data->tokens->args[data->i][0] == '>') // add other cases
+			{
+				data->i++;
+				break ;
+			}
+			data->i++;
+		}
+	}
+	else if (is_builtins(data->tokens->args[data->i]) == 1) {
 		child(data, fds, prev_fd, x, 1);
 		data->i++;
 		while (data->tokens->args[data->i] != NULL)
@@ -117,12 +136,33 @@ int	simple_fork(t_data *data)
 	int	status;
 
 	status = 0;
+	printf("THIS IN SIMPLE FORK\n");
+	// this exits the project when tested, does correct thing though
+	// if (data->pid == 0 && is_redirect(data->tokens->args[data->i]) >= 1)
+	// {
+	// 	printf("REDIRECTS EXIST\n");
+	// 	data->pid = fork();
+	// 	if (data->pid == -1)
+	// 	{
+	// 		ft_printf("fork error\n"); // change error message
+	// 		exit(1);
+	// 	}
+	// 	apply_redirections(data->tokens, data->i);
+	// 	exit(1);
+	// }
 	data->pid = fork();
 	if (data->pid == -1) {
 		ft_printf("fork error\n"); // change error message
 		exit(1);
+	} // this stays in the loop, but prints everything else BUT what it should in the file
+	if (data->pid == 0 && is_redirect(data->tokens->args[data->i]) >= 1)
+	{
+		printf("REDIRECTS EXIST\n");
+		apply_redirections(data->tokens, data->i);
+		printf("I love you\n");
+		exit(1);
 	}
-	if (data->pid == 0)
+	else if (data->pid == 0)
 		if (execve(data->tmp->filename, data->tmp->ex_arr, data->env_array) == -1) {
 			ft_printf("exceve fail\n");
 			exit(1); // should this be different kind of error handeling

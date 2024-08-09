@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:10:09 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/09 09:47:55 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 13:34:02 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,3 +42,4 @@ void	pipe_collector(t_tokens *tokens, char **array)
 	}
 	tokens->pipe_count = count;
 }
+

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/08 17:41:39 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/09 13:31:23 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_tokens
 
 	int		array_count;
 	int		pipe_count;
+	int		redirect_count;
 
 	char	*input_file;   // For < redirection
 	char	*output_file;  // For > and >> redirection
@@ -92,6 +93,8 @@ int		check_path(char *string, int divert, t_data *all, int x);
 int		find_passage(t_data *all, char *string, int divert);
 int		parse_redirections(t_tokens *tokens, char **args, int i);
 void	apply_redirections(t_tokens *tokens, int i);
+void	redirect_collector(t_tokens *tokens, char **array);
+int is_redirect(char *arg);
 
 // ENV - - - - - - - - -
 
