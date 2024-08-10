@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/10 06:14:38 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/10 08:46:03 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ int	null_check(char *str1, t_env *str2, char *str3) // might not be needed
 /*~~ stick this in fork_utils ~~*/
 int	send_to_forks(t_data *data)
 {
+	printf("AAAAA\n");
 	if (data->tokens->pipe_count > 0)
 	{
+		printf("CCCC\n");
 		// printf("beeep\n");
 		if (pipe_fork(data) == -1)
 			return (-1);
@@ -62,14 +64,22 @@ int	send_to_forks(t_data *data)
 	}
 	else if (data->tokens->pipe_count == 0)
 	{
+		printf("BBBB\n");
+		// printf("a this is in send to forks\n");
 		if (check_path(data->tmp->env_line, 1, data, data->i) == 0)
 			return (-1);
-		set_array(data);
+		printf("hahhahahaha\n");
+		
+		// if ()
+		// {
+			set_array(data);
+		// }
+		printf("ooooooo\n");
 		set_env_array(data);
-		// printf("this is in send forks\n"); // for testing
+		printf("b this is in send to forks\n");
 		if (simple_fork(data) == 0)
-			ft_printf("");
-			// ft_printf("no fork needed\n"); // add error handling here
+			// ft_printf("");
+			ft_printf("no fork needed\n"); // add error handling here
 			//collective_free(data->tmp->filename, NULL, data->tmp->array);
 			//this free was causing double free problems
 		free_array(data->env_array);
@@ -80,7 +90,7 @@ int	send_to_forks(t_data *data)
 
 int	find_passage(t_data *all, char *string, int divert)
 {
-	// printf("THIS IS IN FIND_PASSAGE\n");
+	printf("THIS IS IN FIND_PASSAGE\n");
 	if (null_check(all->env->key, all->env, string) != 1)
 		return (-1);
 	if (find_node(all->env, string, all) == 1 && all->tmp->env_line != NULL)
@@ -93,10 +103,11 @@ int	find_passage(t_data *all, char *string, int divert)
 		}
 		else
 		{
-			// printf("check if needs to send to fork\n");
+			
+			printf("check if needs to send to fork\n");
 			if (send_to_forks(all) == -1)
 				return (-1);
-			// printf("after simple fork\n");
+			printf("after simple fork\n");
 			// ft_printf("end of send to forks\n");
 		}
 	}

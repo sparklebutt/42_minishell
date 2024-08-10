@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/09 20:22:29 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/10 06:53:41 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
 int		check_path(char *string, int divert, t_data *all, int x);
 int		find_passage(t_data *all, char *string, int divert);
 int		parse_redirections(t_tokens *tokens, char **args, int i);
-void	apply_redirections(t_tokens *tokens, int i);
+void	apply_redirections(t_data *data, t_tokens *tokens, int i);
 void	redirect_collector(t_tokens *tokens, char **array);
 int is_redirect(char *arg);
 
