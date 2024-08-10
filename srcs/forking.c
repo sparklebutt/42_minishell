@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/09 16:13:30 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/10 09:28:49 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	child(t_data *data, int *fds, int prev_fd, int x, int flag)
 	{
 		if (flag == 2)
 		{
-			apply_redirections(data->tokens, data->i - 2);
+			apply_redirections(data, data->tokens, data->i - 2);
 			exit(0);
 		}
 		dup_fds(data, fds, prev_fd, x);
@@ -136,37 +136,47 @@ int	simple_fork(t_data *data)
 	int	status;
 
 	status = 0;
-	printf("THIS IN SIMPLE FORK\n");
-	// this exits the project when tested, does correct thing though
-	// if (data->pid == 0 && is_redirect(data->tokens->args[data->i]) >= 1)
-	// {
-	// 	printf("REDIRECTS EXIST\n");
-	// 	data->pid = fork();
-	// 	if (data->pid == -1)
-	// 	{
-	// 		ft_printf("fork error\n"); // change error message
-	// 		exit(1);
-	// 	}
-	// 	apply_redirections(data->tokens, data->i);
-	// 	exit(1);
-	// }
 	data->pid = fork();
-	if (data->pid == -1) {
-		ft_printf("fork error\n"); // change error message
-		exit(1);
-	} // this stays in the loop, but prints everything else BUT what it should in the file
-	if (data->pid == 0 && is_redirect(data->tokens->args[data->i]) >= 1)
+	printf("pid = %d\n", data->pid);
+	printf("redirect_count = %d\n", data->tokens->redirect_count);
+	if (data->pid == -1)
 	{
-		printf("REDIRECTS EXIST\n");
-		apply_redirections(data->tokens, data->i);
-		printf("I love you\n");
+		ft_printf("fork error\n"); // change error message
 		exit(1);
 	}
 	else if (data->pid == 0)
-		if (execve(data->tmp->filename, data->tmp->ex_arr, data->env_array) == -1) {
+	{
+		
+		printf("NO REDIRECTS execute cmd\n");
+		printf("filename = %s\n", data->tmp->filename);
+		printf("ex_arr[0] = %s\n", data->tmp->ex_arr[0]);
+		printf("ex_arr[1] = %s\n", data->tmp->ex_arr[1]);
+		printf("ex_arr[2] = %s\n", data->tmp->ex_arr[2]);
+		printf("ex_arr[3] = %s\n", data->tmp->ex_arr[3]);
+		printf("redir count = %d\n", data->tokens->redirect_count);
+		
+		if (data->pid == 0 && data->tokens->redirect_count >= 1)
+		{
+			printf("REDIRECTS EXIST\n");
+			apply_redirections(data, data->tokens, data->i);
+
+			// exit(1);
+		}	
+		if (execve(data->tmp->filename, data->tmp->ex_arr, data->env_array) == -1)
 			ft_printf("exceve fail\n");
-			exit(1); // should this be different kind of error handeling
-		}
+		exit(1); // should this be different kind of error handelin
+	//	else if (execve(data->tmp->filename, data->tmp->ex_arr, data->env_array) == -1) {
+		//	ft_printf("exceve fail\n");
+			//exit(1); // should this be different kind of error handeling
+		// }
+		//else
+		//{
+			//printf("execve success\n");
+		//	exit(1);
+		//}
+		
+	}
+	
 	waitpid(data->pid, &status, 0);
 //	list_open_fds();
 	return (0);

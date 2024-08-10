@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/09 10:34:18 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/09 20:42:12 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 void	to_home(t_data *data, t_env *envs)
 {
+	char *temp;
+
+	temp = NULL;
 	find_passage(data, "HOME", 2);
 	//if (chdir(data->tmp->filename) == 0) ///change back
 	if(chdir(data->tmp->env_line) == 0)
@@ -27,12 +30,15 @@ void	to_home(t_data *data, t_env *envs)
 void	change_dir(t_data *data, t_env *envs, char *temp)
 {
 	t_tokens	*tokens;
+	char *temp2;
 
+	temp2 = NULL;
 	tokens = data->tokens;
 	if (check_dir(temp) && chdir(temp) == 0)
 	{
 		envs = move_list(envs, "PWD");
-		envs = fill_old_pwd(data, envs, temp);
+		temp2 = getcwd(NULL, 0);
+		envs = fill_old_pwd(data, envs, temp2);
 	}
 	else
 		cmd_error(tokens->args[data->i], tokens->args[data->i + 1]);
@@ -56,10 +62,12 @@ void	ft_cd(t_data *data, t_env *envs)
 	if (ft_strncmp(data->tokens->args[i + 1], "/", 1) != 0)
 		data->path = ft_strjoin(temp, "/");
 	free(temp);
+	printf("I LOVE CHEESE\n");
 	temp2 = ft_strdup(data->tokens->args[i + 1]);
 	temp = ft_strjoin(data->path, temp2);
-	i++; // because we used it already
+	i++;
 	free(temp2);
+	printf("temp = %s\n", temp);
 	change_dir(data, envs, temp);
 }
 

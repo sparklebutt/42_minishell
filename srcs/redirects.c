@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/09 16:17:13 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/10 14:37:20 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ void	redirect_collector(t_tokens *tokens, char **array)
 
 	i = 0;
 	count = 0;
-	printf("THIS IS IN REDIRECT_COLLECTOR\n");
+	// printf("THIS IS IN REDIRECT_COLLECTOR\n");
 	while (array[i])
 	{
 		len = ft_strlen(array[i]);
-		printf("\t\tarray[i]: %s\n", array[i]);
+		// printf("\t\tarray[i]: %s\n", array[i]);
 		if (array[i][0] == '>' || array[i][0] == '<' || ft_strncmp(array[i], ">>", 2) == 0)
 		{
-			printf("redirect found!\n");
+			// printf("redirect found!\n");
 			if (len > 2) // make this work with quotes
 				if (array[i][2])
 					printf("syntax error, too many redirects\n");
@@ -62,47 +62,53 @@ int	file_open(t_tokens *tokens, char *file, int flags)
 	return (fd);
 }
 
-void redirect_out(t_tokens *tokens, int i)
+int exec_redir_cmd(t_data *data, t_tokens *tokens, int i, int fd)
 {
-	i--;
-	if (tokens->redirect_out)
+	(void)fd;
+	// tokens->redirect_count -= 1;
+	
+	if (tokens->args[i - 1] == NULL)
+		return (error("redirect", "No command found"));
+	if (is_builtins(tokens->args[i - 1]))
 	{
-		tokens->args[i] = clean_quotes(tokens->args[i],
-			ft_strlen(tokens->args[i]), 0, 0);
-		printf("%s\n", tokens->args[i]);
+		// printf("THIS IS A BUILT IN\n");
+		// printf("exec builtins\n");
+		exec_builtins(*data, tokens->args[i - 1]);
 	}
-	else if (tokens->redirect_append)
-	{
-		tokens->args[i] = clean_quotes(tokens->args[i],
-			ft_strlen(tokens->args[i]), 0, 0);
-		printf("%s\n", tokens->args[i]);
-	}
+	return (0);
 }
 
-int	redirect_helper(t_tokens *tokens, char *file, int flags, int i)
+int	redirect_helper(t_data *data, t_tokens *tokens, int flags, int i)
 {
+	(void)data;
+	(void)i;
 	int		fd;
-	char	*line;
+	// char	*line;
 
-	fd = file_open(tokens, file, flags);
+	if (tokens->redirect_in)
+		fd = file_open(tokens, tokens->input_file, flags);
+	else if (tokens->redirect_append || tokens->redirect_out)
+		fd = file_open(tokens, tokens->output_file, flags);
+	// printf("HIS IS IN REDIRECT HELPER\n");
 	if (tokens->redirect_in)
 	{
+		// printf("THIS IS REDIRECT IN\n");
 		if (dup2(fd, STDIN_FILENO) == -1)
 			return (error("redirect", "Failed to duplicate fd"));
-		line = get_next_line(fd);
-		while (line != NULL)
-		{
-			printf("%s", line);
-			free(line);
-			line = get_next_line(fd);
-		}
-		free(line);
+		// line = get_next_line(fd);
+		// while (line != NULL)
+		// {
+		// 	printf("%s", line);
+		// 	free(line);
+		// 	line = get_next_line(fd);
+		// }
+		// free(line);
+		// tokens->redirect_in = 0;
 	}
 	else
 	{
 		if (dup2(fd, STDOUT_FILENO) == -1)
 			return (error("redirect", "Failed to duplicate fd"));
-		redirect_out(tokens, i);
 	}
 	close(fd);
 	return (0);
@@ -110,54 +116,46 @@ int	redirect_helper(t_tokens *tokens, char *file, int flags, int i)
 
 int	parse_redirections(t_tokens *tokens, char **args, int i)
 {
+	// printf("\tTHIS IS PARSE REDIRECTIONS\n");
 	while (args[i] != NULL)
 	{
 		// printf("args[i]: %s\n", args[i]); // for testing
 		if (strcmp(args[i], "<") == 0 && args[i + 1] != NULL)
 		{
-			printf("args[i]: %s\n", args[i]); // for testing
-			printf("\t\tFILL REDIRECT FILE\n");
+			// printf("args[i]: %s\n", args[i]); // for testing
+			// printf("\t\tA FILL REDIRECT IN FILE\n");
 			tokens->input_file = strdup(args[i + 1]);
 			tokens->redirect_in = 1;
 			i++;
 		}
-		else if ((strcmp(args[i], ">") == 0  || strcmp(args[i], ">>") == 0) && args[i + 1] != NULL)
+		else if ((strcmp(args[i], ">>") == 0 || strcmp(args[i], ">") == 0) && args[i + 1] != NULL)
 		{
-			printf("args[i]: %s\n", args[i]); // for testing
-			printf("\t\tFILL REDIRECT FILE\n");
+			// printf("args[i]: %s\n", args[i]); // for testing
+			// printf("\t\tB FILL REDIRECT OUT FILE\n");
 			tokens->output_file = strdup(args[i + 1]);
-			if (strcmp(args[i], ">") == 0)
-				tokens->redirect_out = 1;
-			else
+			if (strcmp(args[i], ">>") == 0)
 				tokens->redirect_append = 1;
+			else
+				tokens->redirect_out = 1;
+			// if (tokens->redirect_append) // test that bool are okay
 			i++;
 		}
-
-		//
-		// if (tokens->output_file || tokens->input_file)
-		// {
-		// 	printf("args[i]: %s\n", args[i]); // for testing
-		// 	if (i < 2)
-		// 		return (error("redirect", "Syntax error"));
-			// if (tokens->pipe_count == 0)
-			// 	apply_redirections(tokens, i - 2); // exits program for now
-		// }
 		i++;
 	}
 	return (0);
 }
 
-void	apply_redirections(t_tokens *tokens, int i)
+void	apply_redirections(t_data *data, t_tokens *tokens, int i)
 {
-	// if (tokens->redirect_in)
-	// 	redirect_helper(tokens, tokens->input_file, O_RDONLY, i);
 	printf("\t\tTHIS IS IN APPLY_REDIRECTIONS()\n");
-	if (tokens->redirect_out)
-		redirect_helper(tokens, tokens->output_file,
-			O_WRONLY | O_CREAT | O_TRUNC, i);
+	if (tokens->redirect_in)
+		redirect_helper(data, tokens, O_RDONLY, i);
+	else if (tokens->redirect_out)
+		redirect_helper(data, tokens, O_WRONLY | O_CREAT | O_TRUNC, i);
 	else if (tokens->redirect_append)
-		redirect_helper(tokens, tokens->output_file,
-			O_WRONLY | O_CREAT | O_APPEND, i);
-	exit(0);
+		redirect_helper(data, tokens, O_WRONLY | O_CREAT | O_APPEND, i);
+	// printf("\t\tthe end of redir\n");
+	// printf("- - - - - - - - - - \n");
+	// exit(0);
 }
 
