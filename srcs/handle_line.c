@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/09 14:55:45 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/10 06:11:41 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,15 @@ int	handle_line(t_data data, t_tokens *tokens)
 		return (0);
 	if (tokens->args[data.i] != NULL)
 	{
-		printf("redir count = %d\n", tokens->redirect_count);
+		// printf("redir count = %d\n", tokens->redirect_count);
 		if (tokens->pipe_count == 0 && tokens->redirect_count == 0 && is_builtins(tokens->args[data.i]) == 1)
 		{
-			printf("stepping into exec_builtins\n");
+			// printf("stepping into exec_builtins\n");
 			exec_builtins(data, tokens->args[data.i]);
 		}
 		else if (find_passage(&data, "PATH", 1) == -1)
 			call_cmd_error(tokens->args[data.i], NULL, "command not found\n", -10);
-		printf("THIS IS END OF HANDLE_LINE\n");
+		// printf("THIS IS END OF HANDLE_LINE\n");
 		data.i++;
 	}
 	return (0);

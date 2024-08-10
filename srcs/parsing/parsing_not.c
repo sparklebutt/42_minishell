@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/09 18:53:12 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/10 06:14:38 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	send_to_forks(t_data *data)
 {
 	if (data->tokens->pipe_count > 0)
 	{
-		printf("beeep\n");
+		// printf("beeep\n");
 		if (pipe_fork(data) == -1)
 			return (-1);
 		return (2);
@@ -66,9 +66,10 @@ int	send_to_forks(t_data *data)
 			return (-1);
 		set_array(data);
 		set_env_array(data);
-		printf("this is in send forks\n"); // for testing
+		// printf("this is in send forks\n"); // for testing
 		if (simple_fork(data) == 0)
-			ft_printf("test\n"); // add error handling here
+			ft_printf("");
+			// ft_printf("no fork needed\n"); // add error handling here
 			//collective_free(data->tmp->filename, NULL, data->tmp->array);
 			//this free was causing double free problems
 		free_array(data->env_array);
@@ -79,7 +80,7 @@ int	send_to_forks(t_data *data)
 
 int	find_passage(t_data *all, char *string, int divert)
 {
-	printf("THIS IS IN FIND_PASSAGE\n");
+	// printf("THIS IS IN FIND_PASSAGE\n");
 	if (null_check(all->env->key, all->env, string) != 1)
 		return (-1);
 	if (find_node(all->env, string, all) == 1 && all->tmp->env_line != NULL)
@@ -92,10 +93,10 @@ int	find_passage(t_data *all, char *string, int divert)
 		}
 		else
 		{
-			printf("check if needs to send to fork\n");
+			// printf("check if needs to send to fork\n");
 			if (send_to_forks(all) == -1)
 				return (-1);
-			printf("after simple fork\n");
+			// printf("after simple fork\n");
 			// ft_printf("end of send to forks\n");
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:47:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/09 20:38:28 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/10 06:12:57 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,23 @@ t_env	*move_list(t_env *envs, char *key)
 
 t_env	*replace_value(t_env *env, char *key, char *new_value)
 {
-	printf("bbb\n");
+	// printf("1 bbb\n");
 	env = move_list(env, key);
-	printf("bbb\n");
+	// printf("2 bbb\n");
 	while (env != NULL) {
-		printf("bbb\n");
+		// printf("3 bbb\n");
 		if (ft_strncmp(env->key, key, ft_strlen(key)) == 0) {
-			printf("does it get here?\n");
+			// printf("does it get here?\n");
 			free(env->value);
 			env->value = new_value;
 			free(key);
-			printf("I LOVE CATS\n");
+			// printf("I LOVE CATS\n");
 			return (env);
 		}
 		env = env->next;
 	}
 	free(key);
-	printf("meep\n");
+	// printf("meep\n");
 	return (NULL);
 }
 
