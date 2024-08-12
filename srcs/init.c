@@ -6,13 +6,13 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:11:00 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/09 20:42:00 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/12 09:29:17 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*create_env_list(t_data *data)
+t_env	*create_env_list(t_data *data) // double free somewhere here
 {
 	extern char **environ;
 	int i;
@@ -34,27 +34,16 @@ t_env	*create_env_list(t_data *data)
 	{
 		value = find_value(environ[i]);
 		key = find_key(environ[i]);
+		if (ft_strncmp(key, "OLDPWD", 4) == 0) // this was added
+			value = find_keys_value(env, "PWD");
 		insert_node(&env, key, value);
 		i++;
-		if (ft_strncmp(key, "PWD", 4) == 0)
-			insert_node(&env, ft_strdup("OLDPWD"), ft_strdup(value));
-		if (ft_strncmp(key, "PWD", 4) == 0)
-			i++;
+		// instead of this, which creates another OLDPWD node
+		// if (ft_strncmp(key, "PWD", 4) == 0)
+		// 	insert_node(&env, ft_strdup("OLDPWD"), ft_strdup(value));
+		// if (ft_strncmp(key, "PWD", 4) == 0)
+		// 	i++;
 	}
-	
-	// this breaks env, but we need it somehow like this in here. OLDPWD is in env twice!!!!!
-	//
-	// if (find_keys_value(env, "OLDPWD") != 0)
-	// {
-	// 	value = find_keys_value(env, "PWD");
-	// 	printf("value = %s\n", value);
-	// 	if (value == NULL)
-	// 		return NULL;
-	// 	temp_env = replace_value(env, ft_strdup("OLDPWD"), ft_strdup(value));
-	// 	return (temp_env);
-	// }
-	// else if (find_node(env, "PWD", data) == 0)
-	// 	insert_node(&env, ft_strdup("OLDPWD"), ft_strdup(value));
 	return (env);
 }
 

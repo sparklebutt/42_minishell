@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/10 09:28:49 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/12 09:29:56 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	child(t_data *data, int *fds, int prev_fd, int x, int flag)
 	{
 		if (flag == 2)
 		{
-			apply_redirections(data, data->tokens, data->i - 2);
+			apply_redirections(data->tokens);
 			exit(0);
 		}
 		dup_fds(data, fds, prev_fd, x);
@@ -158,7 +158,7 @@ int	simple_fork(t_data *data)
 		if (data->pid == 0 && data->tokens->redirect_count >= 1)
 		{
 			printf("REDIRECTS EXIST\n");
-			apply_redirections(data, data->tokens, data->i);
+			apply_redirections(data->tokens);
 
 			// exit(1);
 		}	

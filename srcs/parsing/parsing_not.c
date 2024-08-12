@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/10 08:46:03 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/12 09:19:46 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ int	null_check(char *str1, t_env *str2, char *str3) // might not be needed
 /*~~ stick this in fork_utils ~~*/
 int	send_to_forks(t_data *data)
 {
-	printf("AAAAA\n");
+	// printf("AAAAA\n");
 	if (data->tokens->pipe_count > 0)
 	{
-		printf("CCCC\n");
+		// printf("CCCC\n");
 		// printf("beeep\n");
 		if (pipe_fork(data) == -1)
 			return (-1);
@@ -64,19 +64,15 @@ int	send_to_forks(t_data *data)
 	}
 	else if (data->tokens->pipe_count == 0)
 	{
-		printf("BBBB\n");
+		// printf("BBBB\n");
 		// printf("a this is in send to forks\n");
 		if (check_path(data->tmp->env_line, 1, data, data->i) == 0)
 			return (-1);
-		printf("hahhahahaha\n");
-		
-		// if ()
-		// {
-			set_array(data);
-		// }
-		printf("ooooooo\n");
+		// printf("hahhahahaha\n");
+		set_array(data);
+		// printf("ooooooo\n");
 		set_env_array(data);
-		printf("b this is in send to forks\n");
+		// printf("b this is in send to forks\n");
 		if (simple_fork(data) == 0)
 			// ft_printf("");
 			ft_printf("no fork needed\n"); // add error handling here
