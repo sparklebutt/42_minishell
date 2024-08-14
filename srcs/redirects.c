@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/12 09:24:36 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/14 11:55:42 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*~~ needed a fucntion that does the same thing as is_redirect but took a char
+and returns the count, it is possible i over thank it ~~*/
+int is_char_redirect(char arg)
+{
+//	if (arg == '>' && arg + 1 == '>')
+//		return (2);
+//	if (arg == '<' && arg + 1 == '<')
+//		return (2);
+	if (arg == '>')
+		return (1);
+	if (arg == '<')
+		return (1);
+	return (0);
+}
 
 int is_redirect(char *arg)
 {
@@ -51,7 +66,9 @@ void	redirect_collector(t_tokens *tokens, char **array)
 int	redirect_helper(t_tokens *tokens)
 {
 	int		fd;
+	char *test;
 
+	test = NULL;
 	fd = 0;
 	if (tokens->redirect_in)
 		fd = open(tokens->input_file, O_RDONLY);
@@ -61,7 +78,7 @@ int	redirect_helper(t_tokens *tokens)
 		fd = open(tokens->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 		return (error("redirect", "Failed to open input file"));
-	if (dup2(fd, STDOUT_FILENO) == -1)
+	if (dup2(fd, STDOUT_FILENO) == -1)// && tokens->pipe_count == 0) // trying to avoid dubble duping in pipes
 		return (error("redirect", "Failed to duplicate fd"));
 	close(fd);
 	return (0);

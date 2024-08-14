@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/09 13:34:25 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/14 10:14:22 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,20 @@ bool	set_check(char *string, bool ver, int *x, char c)
 }
 
 // similar to quotes_handling (combine them?), maybe add bools into struct
+/*~~this functions handles when there are quotes straight after $symbol, i could not
+find a case where this type of syntax is expandable eg $"USER".
+it might be wise to consider if this is the case for other symbols we need to handle~~*/
+int		simple_quote_check(char *s, int i)
+{
+	while (s[i])
+	{
+		if (s[i] == '$' && (s[i + 1] == '\'' || s[i + 1] == '"'))
+			return (-1);
+		i++;
+	}
+	return (1);
+}
+
 bool	confirm_expansion(char *string, int len)
 {
 	bool	s;
@@ -33,6 +47,8 @@ bool	confirm_expansion(char *string, int len)
 	s = false;
 	d = false;
 	x = 0;
+	if (simple_quote_check(string, x) == -1)
+		return (false);
 	while (x <= len)
 	{
 		if (string[x] == '\'')

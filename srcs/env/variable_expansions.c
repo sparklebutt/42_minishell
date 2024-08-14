@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:03:23 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/09 09:19:16 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/13 17:55:36 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,11 @@ char	*replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 		return NULL;
 	ft_strncpy(temp_key, arg + start + 1, key_len);
 	temp_key[key_len] = '\0';
+	//printf("temp key = %s\n", temp_key);
 	if (find_node(envs, temp_key, data) == 1)
 	{
 		value = find_keys_value(envs, temp_key);
-
+		//printf("whats in value = %s\n", value);
 		if (value != NULL)
 			new_arg = new_str(arg, value, start, start + key_len + 1);
 		else
@@ -89,6 +90,7 @@ char	*look_if_expansions(t_data *data, t_env *envs, char *arg)
 	i = 0;
 	while (arg[i])
 	{
+		// printf("what is at rag i = %c\n", arg[i]);
 		if (arg[i] == '$')
 			arg = replace_expansion(data, envs, arg, i);
 		i++;

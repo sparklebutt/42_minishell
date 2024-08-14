@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:11:00 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/12 09:29:17 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/12 11:53:32 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*create_env_list(t_data *data) // double free somewhere here
+t_env	*create_env_list(t_data *data)
 {
 	extern char **environ;
 	int i;
@@ -34,15 +34,8 @@ t_env	*create_env_list(t_data *data) // double free somewhere here
 	{
 		value = find_value(environ[i]);
 		key = find_key(environ[i]);
-		if (ft_strncmp(key, "OLDPWD", 4) == 0) // this was added
-			value = find_keys_value(env, "PWD");
 		insert_node(&env, key, value);
 		i++;
-		// instead of this, which creates another OLDPWD node
-		// if (ft_strncmp(key, "PWD", 4) == 0)
-		// 	insert_node(&env, ft_strdup("OLDPWD"), ft_strdup(value));
-		// if (ft_strncmp(key, "PWD", 4) == 0)
-		// 	i++;
 	}
 	return (env);
 }

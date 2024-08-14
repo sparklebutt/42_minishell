@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/12 09:10:43 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/13 18:47:56 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,4 +174,8 @@ void	set_env_array(t_data *data);
 int		dup_fds(t_data *data, int *fds, int prev_fd, int x);
 bool	confirm_expansion(char *string, int len);
 
+// newly added functions seperate for clarity
+//parsers.c
+int		simple_quote_check(char *s, int i);
+int is_char_redirect(char arg);
 #endif

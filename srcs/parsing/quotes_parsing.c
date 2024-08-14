@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_parsing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 15:55:36 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/09 16:16:27 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/14 11:29:55 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count)
 	}
 	return (1);
 }
-
+/*~~ this fucntion does not seem to be used~~*/
 int	count_new_len(char *string)
 {
 	int	x;
@@ -91,6 +91,31 @@ int	count_new_len(char *string)
 	return (len);
 }
 
+/*~~ added an extra check so that $symbol wuld not be copied over if its outside quotes,
+need to check that this is ok for other cases but eg $"USER" should not print the $symbol
+may need to add other symbols it is commenetd out due to causing problems with eg $HOME""
+a fucntion is required to handle these cases , loop_quotes could potentially be re-utalized~~*/
+
+void	clean_quotes_helper(int *x, int *y, char *string, char *new)
+{
+	printf("test\n");
+	if (string[*x] == '\'')
+	{
+		printf("1 test\n");
+		(*x)++;
+		while (string[*x] != '\'')
+			new[*y++] = string[*x++];
+	}
+	else if (string[*x] == '"')
+	{
+		printf("2 test\n");
+		(*x)++;
+		while (string[*x] != '"')
+			new[*y++] = string[*x++];
+	}
+}
+
+
 char	*clean_quotes(char *string, int len, int x, int y)
 {
 	char	*new;
@@ -109,11 +134,21 @@ char	*clean_quotes(char *string, int len, int x, int y)
 		}
 		else if (string[x] == '"')
 		{
-			x++;
+				x++;
 			while (string[x] != '"')
 				new[y++] = string[x++];
 		}
-		if (string[x] != '\'' && string[x] != '"')
+		//clean_quotes_helper(&x, &y, string, new);
+		//test = loop_quotes(t_tokens *tokens, int quote_count, int i, int *x
+		if (string[x] == '$')
+		/*{
+			printf("what is the x = %d\n", x);
+			if (x == 0)
+				x++;
+			else if (string[x - 1] != '"' && string[x -1] != '\'')
+				x++;
+		}*/
+		if (string[x] != '\'' && string[x] != '"') //&& string[x] != '$')
 			new[y++] = string[x];
 		x++;	
 	}

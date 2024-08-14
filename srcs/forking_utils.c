@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/10 09:40:47 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/13 16:34:47 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	set_array(t_data *data)
 		&& data->tokens->args[data->i][0] != '|') //&& 
 	{
 		// printf("HHHHHH args: %s\n", data->tokens->args[data->i]);
-		printf("set array args[data->i] = %s\n", data->tokens->args[data->i]);
+		// printf("set array args[data->i] = %s\n", data->tokens->args[data->i]);
 		if (is_redirect(data->tokens->args[data->i]) == 1)
 			data->tmp->ex_arr[1] = data->tokens->input_file;
 		else if (is_redirect(data->tokens->args[data->i]) == 2)
@@ -49,6 +49,7 @@ int	set_array(t_data *data)
 	else
 		data->tmp->ex_arr[2] = NULL; // arguments;
 	data->tmp->ex_arr[3] = NULL; // last one is null
+	//printf();
 	return (data->i); // potential line to get rid of
 }
 
@@ -64,8 +65,8 @@ void	set_env_array(t_data *data)
 	x = 0;
 	temp2 = data->env;
 	key_full = NULL;
-	i = find_node_len(data);
-	data->env_array = malloc(i * sizeof(char *));
+	i = find_node_len(data) + 1;
+	data->env_array = malloc(i * sizeof(char *)); // changed to add 1
 	if (data->env_array == NULL)
 		return ;
 	while (temp2 != NULL)
@@ -81,6 +82,7 @@ void	set_env_array(t_data *data)
 
 int	dup_fds(t_data *data, int *fds, int prev_fd, int x)
 {
+	write(2, "duping\n", 7);
 	if (x > 0)
 	{
 		if (dup2(prev_fd, STDIN_FILENO) == -1)
@@ -91,6 +93,7 @@ int	dup_fds(t_data *data, int *fds, int prev_fd, int x)
 	}
 	if (x < data->tokens->pipe_count)
 	{
+		write(2, "dup out\n", 7);
 		if (dup2(fds[1], STDOUT_FILENO) == -1)
 		{
 			printf("dup of fds[1] failed\n"); // change error message

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/12 09:19:46 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/13 17:51:50 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	parse_redirections(tokens, tokens->args, 0);
 	pipe_collector(tokens, tokens->args);
 	redirect_collector(tokens, tokens->args);
-	tokens->array_count = x - 1;
+	tokens->array_count = x; // was - 1
 	if (tokens->args == NULL)
 	{
 		ft_printf("malloc fail in parsing , making of array of args\n");
@@ -56,30 +56,20 @@ int	send_to_forks(t_data *data)
 	// printf("AAAAA\n");
 	if (data->tokens->pipe_count > 0)
 	{
-		// printf("CCCC\n");
-		// printf("beeep\n");
 		if (pipe_fork(data) == -1)
 			return (-1);
+		// printf("exiting\n");
 		return (2);
 	}
 	else if (data->tokens->pipe_count == 0)
 	{
-		// printf("BBBB\n");
-		// printf("a this is in send to forks\n");
 		if (check_path(data->tmp->env_line, 1, data, data->i) == 0)
 			return (-1);
-		// printf("hahhahahaha\n");
 		set_array(data);
-		// printf("ooooooo\n");
 		set_env_array(data);
-		// printf("b this is in send to forks\n");
 		if (simple_fork(data) == 0)
-			// ft_printf("");
 			ft_printf("no fork needed\n"); // add error handling here
-			//collective_free(data->tmp->filename, NULL, data->tmp->array);
-			//this free was causing double free problems
 		free_array(data->env_array);
-		// free other arrays if needed / there are leaks
 	}
 	return (1);
 }
@@ -102,8 +92,11 @@ int	find_passage(t_data *all, char *string, int divert)
 			
 			printf("check if needs to send to fork\n");
 			if (send_to_forks(all) == -1)
+			{
+				//printf("here????\n");
 				return (-1);
-			printf("after simple fork\n");
+			}
+			// printf("after simple fork\n");
 			// ft_printf("end of send to forks\n");
 		}
 	}

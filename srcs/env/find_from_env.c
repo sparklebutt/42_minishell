@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_from_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:02:41 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/09 20:06:55 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:03:34 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,11 @@ int	find_node_len(t_data *data)
 	temp = data->env;
 	while (temp != NULL)
 	{
+		//printf("what is temp key = %s and our i = %d\n", temp->key, i);
 		temp = temp->next;
 		i++;
 	}
-	return (i);
+	return (i - 1);
 }
 
 int	find_node(t_env *envs, char *key, t_data *data)
