@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/13 16:34:47 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:59:22 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,12 @@ this which contains the cmd, any flag and or argument that would go with the exc
 
 int	set_array(t_data *data)
 {
+	/*int i = 0;
+	while (data->tokens->args[i] != NULL)
+	{
+		printf("tokens arg[%d] = %s\n", i, data->tokens->args[i]);
+		i++;
+	}*/
 	if (data->tmp->filename == NULL || data->tokens->args[data->i] == NULL)
 		return (-1);
 	if (data->tmp->filename != NULL)
@@ -49,7 +55,6 @@ int	set_array(t_data *data)
 	else
 		data->tmp->ex_arr[2] = NULL; // arguments;
 	data->tmp->ex_arr[3] = NULL; // last one is null
-	//printf();
 	return (data->i); // potential line to get rid of
 }
 
@@ -66,7 +71,7 @@ void	set_env_array(t_data *data)
 	temp2 = data->env;
 	key_full = NULL;
 	i = find_node_len(data) + 1;
-	data->env_array = malloc(i * sizeof(char *)); // changed to add 1
+	data->env_array = malloc(i * sizeof(char *));
 	if (data->env_array == NULL)
 		return ;
 	while (temp2 != NULL)
@@ -82,7 +87,6 @@ void	set_env_array(t_data *data)
 
 int	dup_fds(t_data *data, int *fds, int prev_fd, int x)
 {
-	write(2, "duping\n", 7);
 	if (x > 0)
 	{
 		if (dup2(prev_fd, STDIN_FILENO) == -1)
@@ -93,7 +97,6 @@ int	dup_fds(t_data *data, int *fds, int prev_fd, int x)
 	}
 	if (x < data->tokens->pipe_count)
 	{
-		write(2, "dup out\n", 7);
 		if (dup2(fds[1], STDOUT_FILENO) == -1)
 		{
 			printf("dup of fds[1] failed\n"); // change error message

@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/14 11:55:42 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:57:07 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 and returns the count, it is possible i over thank it ~~*/
 int is_char_redirect(char arg)
 {
-//	if (arg == '>' && arg + 1 == '>')
-//		return (2);
-//	if (arg == '<' && arg + 1 == '<')
-//		return (2);
+	if (arg == '>' && arg + 1 == '>')
+		return (2);
+	if (arg == '<' && arg + 1 == '<')
+		return (2);
 	if (arg == '>')
 		return (1);
 	if (arg == '<')

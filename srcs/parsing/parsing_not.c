@@ -6,16 +6,35 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/13 17:51:50 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:57:48 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	clean_rest_of_quotes(t_data *data)
+{
+	char *new;
+	int		i;
+	new = NULL;
+	i = 0;
+	while (data->tokens->args[i])
+	{
+		if (ft_strchr(data->tokens->args[i], '"') != NULL
+		|| ft_strchr(data->tokens->args[i], '\'') != NULL)
+		{
+			new = clean_quotes(data->tokens->args[i], ft_strlen(data->tokens->args[i]), 0, 0);
+			free_string(data->tokens->args[i]);
+			data->tokens->args[i] = new;
+		}
+		i++;
+	}
+}
 void	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
 	int	x;
-
+	//int i = 0;
+	//tokens->array_count = total_words_c(string, ' '); we can get rid of a line with this
 	x = total_words_c(string, ' ');
 	tokens->args = ft_split_adv(string, ' ');
 	if (check_open_quotes(tokens, 0, 0) < 0)
@@ -24,12 +43,20 @@ void	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	parse_redirections(tokens, tokens->args, 0);
 	pipe_collector(tokens, tokens->args);
 	redirect_collector(tokens, tokens->args);
+	clean_rest_of_quotes(data);
+	//printf("are we cleaaaaaaan = %s\n", tokens->args[1]);
 	tokens->array_count = x; // was - 1
 	if (tokens->args == NULL)
 	{
 		ft_printf("malloc fail in parsing , making of array of args\n");
 		return ;
 	}
+	// testing
+	/*while (tokens->args[i] != NULL)
+	{
+		printf("tokens arg[%d] = %s\n", i, tokens->args[i]);
+		i++;
+	}*/
 }
 
 int	null_check(char *str1, t_env *str2, char *str3) // might not be needed
@@ -53,6 +80,7 @@ int	null_check(char *str1, t_env *str2, char *str3) // might not be needed
 /*~~ stick this in fork_utils ~~*/
 int	send_to_forks(t_data *data)
 {
+	// int i = 0;
 	// printf("AAAAA\n");
 	if (data->tokens->pipe_count > 0)
 	{
@@ -68,7 +96,7 @@ int	send_to_forks(t_data *data)
 		set_array(data);
 		set_env_array(data);
 		if (simple_fork(data) == 0)
-			ft_printf("no fork needed\n"); // add error handling here
+			ft_printf(""); // add error handling here
 		free_array(data->env_array);
 	}
 	return (1);
@@ -76,7 +104,7 @@ int	send_to_forks(t_data *data)
 
 int	find_passage(t_data *all, char *string, int divert)
 {
-	printf("THIS IS IN FIND_PASSAGE\n");
+	//printf("THIS IS IN FIND_PASSAGE\n");
 	if (null_check(all->env->key, all->env, string) != 1)
 		return (-1);
 	if (find_node(all->env, string, all) == 1 && all->tmp->env_line != NULL)
@@ -88,16 +116,9 @@ int	find_passage(t_data *all, char *string, int divert)
 			return (1);
 		}
 		else
-		{
-			
-			printf("check if needs to send to fork\n");
+		{	
 			if (send_to_forks(all) == -1)
-			{
-				//printf("here????\n");
 				return (-1);
-			}
-			// printf("after simple fork\n");
-			// ft_printf("end of send to forks\n");
 		}
 	}
 	return (1);
@@ -143,7 +164,7 @@ int	handle_absolute_path(t_data *all, int x, char *path)
 		all->tmp->filename = all->tokens->args[x];
 		if (all->tokens->pipe_count > 0)
 			free_array(all->tmp->array);
-		printf("dir success\n"); // for testing
+		//printf("dir success\n"); // for testing
 		return (1);
 	}
 }

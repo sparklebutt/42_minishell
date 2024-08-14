@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 15:55:36 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/14 11:29:55 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:58:15 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,24 +96,22 @@ need to check that this is ok for other cases but eg $"USER" should not print th
 may need to add other symbols it is commenetd out due to causing problems with eg $HOME""
 a fucntion is required to handle these cases , loop_quotes could potentially be re-utalized~~*/
 
-void	clean_quotes_helper(int *x, int *y, char *string, char *new)
+/*void	clean_quotes_helper(int *x, int *y, char *string, char *new)
 {
 	printf("test\n");
 	if (string[*x] == '\'')
 	{
-		printf("1 test\n");
 		(*x)++;
 		while (string[*x] != '\'')
 			new[*y++] = string[*x++];
 	}
 	else if (string[*x] == '"')
 	{
-		printf("2 test\n");
 		(*x)++;
 		while (string[*x] != '"')
 			new[*y++] = string[*x++];
 	}
-}
+}*/
 
 
 char	*clean_quotes(char *string, int len, int x, int y)
@@ -140,7 +138,7 @@ char	*clean_quotes(char *string, int len, int x, int y)
 		}
 		//clean_quotes_helper(&x, &y, string, new);
 		//test = loop_quotes(t_tokens *tokens, int quote_count, int i, int *x
-		if (string[x] == '$')
+		//if (string[x] == '$')
 		/*{
 			printf("what is the x = %d\n", x);
 			if (x == 0)

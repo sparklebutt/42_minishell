@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/13 18:47:56 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:51:30 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,4 +178,5 @@ bool	confirm_expansion(char *string, int len);
 //parsers.c
 int		simple_quote_check(char *s, int i);
 int is_char_redirect(char arg);
+void	clean_rest_of_quotes(t_data *data);
 #endif

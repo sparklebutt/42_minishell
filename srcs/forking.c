@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/13 17:28:18 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:59:37 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ int	child(t_data *data, int *fds, int prev_fd, int x, int flag)
 		return (error("fork", "first child failed"));
 	if (child == 0)
 	{
-		if (flag == 2)
+		/*if (flag == 2)
 		{
 				dprintf(2, "pipes handeling redir\n");
-		}
+		}*/
 		dup_fds(data, fds, prev_fd, x);
 		if (flag == 1)
 		{
@@ -46,7 +46,6 @@ int	child(t_data *data, int *fds, int prev_fd, int x, int flag)
 		}
 		else if (flag == 0)
 		{
-			dprintf(2, "are we execute\n");
 			execve(data->tmp->filename, data->tmp->ex_arr, data->env_array);
 			ft_printf("need perror here, exceve failed in pipe fork\n");  // change error message
 			exit(1);
@@ -137,7 +136,7 @@ int	simple_fork(t_data *data)
 	{	
 		if (data->tokens->redirect_count >= 1)
 		{
-			printf("REDIRECTS EXIST\n");
+			// printf("REDIRECTS EXIST\n");
 			apply_redirections(data->tokens);
 			// exit(1);
 		}	

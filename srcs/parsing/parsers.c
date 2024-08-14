@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/14 10:14:22 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:58:58 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,15 @@ void	expansion_parser(t_tokens *tokens, t_data *data)
 		{
 			if (confirm_expansion(tokens->args[i], len) == true)
 			{
-				printf("expansion true\n");
+				// printf("expansion true\n");
 				// tokens->args[i] = expand_args(tokens->args[i], data,data->env)
 				// add something like this
 				handle_expansion(data, len, i, new);
 			}
+			/*we could maybe remove this im not sure yet*/
 			else
 			{
-				printf("expansion false\n");
+				// printf("expansion false\n");
 				new = clean_quotes(tokens->args[i], len, 0, 0);
 				free_string(tokens->args[i]);
 				tokens->args[i] = new;
