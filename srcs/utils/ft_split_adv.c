@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/14 12:03:14 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:31:47 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	fancy_strlen(char const *s, char c, int i)
 {
 	int test;
 	test = 0;
-	while (s[i] && s[i] != c) // && is_char_redirect(s[i]) == 0)
+	while (s[i] && s[i] != c) //&& is_char_redirect(s[i]) == 0)
 	{
 		if (s[i] == '"')
 		{
@@ -33,18 +33,17 @@ static int	fancy_strlen(char const *s, char c, int i)
 				i++;
 		}
 		//marking the new code###		
-/*		test = is_char_redirect(s[i]);
+		test = is_char_redirect(s[i]);
 		if (test > 0)
-		{
-
+		{			// we can do plus 1
 			printf("fancy len redir =%d i= %d i + test = %d\n", test, i, i + test);
-			return (i + test);
+			return (i - test);//test + i);
 		}
 		//marking the new code###		
-*/
+
 		i++;
 	}
-//	printf("show me i = %d\n", i);	
+	printf("show me i = %d\n", i);	
 	return (i);
 }
 
@@ -78,15 +77,15 @@ size_t	total_words_c(char const *s, char c)
 			i++;
 		}
 		//marking the new code###
-/*		else if (is_char_redirect(s[i]) > 0)
+		else if (is_char_redirect(s[i]) > 0)
 		{
-			printf("found redir\n");
+//			printf("found redir\n");
 			test++;
 			i += is_char_redirect(s[i]);
-			printf("is in found redir = %d\n", i);			
+//			printf("is in found redir = %d\n", i);			
 		}
 		//marking the new code###	
-*/
+
 		else if (s[i] != c)
 		{
 //			printf("counting len of non special\n");
@@ -95,7 +94,7 @@ size_t	total_words_c(char const *s, char c)
 //			printf("is in found no special = %d\n", i);	
 		}	
 	}
-//	printf("show me word count = %d and test should = %d word + test = %d\n", words, test, words + test);
+	printf("show me word count = %d and test should = %d word + test = %d\n", words, test, words + test);
 	return (words + test); //(words); 
 }
 
@@ -131,7 +130,7 @@ char	**ft_split_adv(char const *s, char c)
 			i++;
 		word_len = fancy_strlen(s, c, i) - i;
 		array[word] = ft_substr(s, i, word_len);
-//		printf("lets check the array word %s\n", array[word]);
+		printf("lets check the array word %s\n", array[word]);
 		if (array[word] == NULL)
 			return (free_array_if(array));
 		i += ft_strlen(array[word]);
