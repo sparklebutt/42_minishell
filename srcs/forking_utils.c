@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/14 15:59:22 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/15 12:09:43 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,45 +17,60 @@ this which contains the cmd, any flag and or argument that would go with the exc
 
 int	set_array(t_data *data)
 {
-	/*int i = 0;
-	while (data->tokens->args[i] != NULL)
+	int i = 0; // using in foorking return when redirects 
+	/*while (data->tokens->args[i] != NULL)
 	{
 		printf("tokens arg[%d] = %s\n", i, data->tokens->args[i]);
 		i++;
+	}*/
+	printf("trying to catch the damn cat befre > = %s\n", data->tokens->args[data->i]);
+	/*if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i + 1][0] == '>')
+	{
+		data->tmp->ex_arr[1] = data->tokens->output_file;
+		return (1);
 	}*/
 	if (data->tmp->filename == NULL || data->tokens->args[data->i] == NULL)
 		return (-1);
 	if (data->tmp->filename != NULL)
 	{
 		data->tmp->ex_arr[0] = data->tmp->filename;
+		i++;
 		data->i++;
 	}
 	if (data->tokens->args[data->i] != NULL
 		&& data->tokens->args[data->i][0] == '-')
 	{
 		data->tmp->ex_arr[1] = data->tokens->args[data->i];
+		i++;
 		data->i++;
 	}
 	else
 		data->tmp->ex_arr[1] = NULL;
-	// if (data->tokens->args[data->i] )
-	if (data->tokens->args[data->i] != NULL
-		&& data->tokens->args[data->i][0] != '|') //&& 
+	if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|')
 	{
-		// printf("HHHHHH args: %s\n", data->tokens->args[data->i]);
-		// printf("set array args[data->i] = %s\n", data->tokens->args[data->i]);
+		//printf("ret of is dir = %d\n");
 		if (is_redirect(data->tokens->args[data->i]) == 1)
+		{
 			data->tmp->ex_arr[1] = data->tokens->input_file;
-		else if (is_redirect(data->tokens->args[data->i]) == 2)
+		}
+		else if (is_redirect(data->tokens->args[data->i]) == 2 && data->tokens->input_file != NULL)
+		{
 			data->tmp->ex_arr[1] = data->tokens->output_file;
-		else
+		}
+		/*else if(is_redirect(data->tokens->args[data->i + 1]) == 2 && data->tokens->input_file != NULL)
+		{
+			data->tmp->ex_arr[1] = data->tokens->output_file;
+			
+		}*/
+		else if (is_redirect(data->tokens->args[data->i]) == 0)
 			data->tmp->ex_arr[1] = data->tokens->args[data->i];
+		i++;
 		data->i++;
 	}
 	else
 		data->tmp->ex_arr[2] = NULL; // arguments;
 	data->tmp->ex_arr[3] = NULL; // last one is null
-	return (data->i); // potential line to get rid of
+	return (i); // potential line to get rid of
 }
 
 /*~~~ here we tunr the envs into a null terminated array for the 3rd parameter of exceve(),
@@ -87,8 +102,11 @@ void	set_env_array(t_data *data)
 
 int	dup_fds(t_data *data, int *fds, int prev_fd, int x)
 {
+	if (x == data->tokens->pipe_count)
+		printf("we have our loackable what is data i = %d\n", data->i);
 	if (x > 0)
 	{
+		printf("dup in\n");	
 		if (dup2(prev_fd, STDIN_FILENO) == -1)
 		{
 			printf("dup of prev failed\n"); // change error message
@@ -97,6 +115,7 @@ int	dup_fds(t_data *data, int *fds, int prev_fd, int x)
 	}
 	if (x < data->tokens->pipe_count)
 	{
+		printf("dup out\n");
 		if (dup2(fds[1], STDOUT_FILENO) == -1)
 		{
 			printf("dup of fds[1] failed\n"); // change error message

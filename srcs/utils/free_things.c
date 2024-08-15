@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_things.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:59:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/09 09:41:38 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/14 17:32:58 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	free_array(char **array)
 	int	i;
 
 	i = 0;
-	while (array[i] != NULL)
+	while (array[i] != NULL) // issue?
 	{
 		free(array[i]);
 		array[i] = NULL;

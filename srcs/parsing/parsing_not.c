@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/14 15:57:48 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/15 10:26:06 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ void	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	expansion_parser(tokens, data);
 	parse_redirections(tokens, tokens->args, 0);
 	pipe_collector(tokens, tokens->args);
-	redirect_collector(tokens, tokens->args);
 	clean_rest_of_quotes(data);
+	redirect_collector(tokens, tokens->args);
+
 	//printf("are we cleaaaaaaan = %s\n", tokens->args[1]);
 	tokens->array_count = x; // was - 1
 	if (tokens->args == NULL)
@@ -95,6 +96,7 @@ int	send_to_forks(t_data *data)
 			return (-1);
 		set_array(data);
 		set_env_array(data);
+		//apply_redirections(data->tokens);
 		if (simple_fork(data) == 0)
 			ft_printf(""); // add error handling here
 		free_array(data->env_array);

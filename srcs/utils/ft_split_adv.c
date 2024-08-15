@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/14 15:51:28 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/14 17:38:26 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ char	**ft_split_adv(char const *s, char c) //lets send it a 0 for i
 
 	i = 0;
 	word = 0;
-	array = (char **)ft_calloc(sizeof(char *), testing);//(total_words_c(s, c) + 1));
+	array = (char **)ft_calloc(sizeof(char *), testing + 1);//(total_words_c(s, c) + 1));
 	if (!s || !array)
 		return (NULL);
 	while (s[i] != '\0' && word < testing) //total_words_c(s, c)) // 
