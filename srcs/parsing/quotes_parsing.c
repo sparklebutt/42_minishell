@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 15:55:36 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/14 15:58:15 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/04 14:26:51 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,57 +98,76 @@ a fucntion is required to handle these cases , loop_quotes could potentially be 
 
 /*void	clean_quotes_helper(int *x, int *y, char *string, char *new)
 {
-	printf("test\n");
+	//
+	printf("string = %s\n", string);	
+	printf("x in = %d\n", (*x));	
 	if (string[*x] == '\'')
 	{
+		printf("test1\n");
 		(*x)++;
-		while (string[*x] != '\'')
-			new[*y++] = string[*x++];
+		printf("testa\n");	
+		while (string[*x] && string[*x] != '\'')
+		{
+			printf("testb\n");	
+			new[*y++] = string[*x++];	
+			printf("testb = c =  %c\n", string[*x]);	
+			//(*x)++;
+		}
 	}
 	else if (string[*x] == '"')
 	{
+		printf("test2\n");	
 		(*x)++;
-		while (string[*x] != '"')
+		while (string[*x] && string[*x] != '"')
+		{
 			new[*y++] = string[*x++];
+			printf("testb = c =  %c\n", string[*x]);	
+			//(*x)++;
+		}
 	}
+	printf("x out = %d\n", (*x));	
 }*/
 
-
-char	*clean_quotes(char *string, int len, int x, int y)
+char	*clean_quotes(char *string, int len, int x, int y) //, t_tokens *tokens)
 {
 	char	*new;
-
+	int 	full_len;
+	int	i;
 	new = NULL;
-	new = ft_calloc(len + 1, 1);
+
+	full_len = ft_strlen(string);
+	new = ft_calloc(full_len + 1, 1);
+	i = 0;
+	
 	if (new == NULL)
 		return (NULL);
+	if (len == 0)
+		len = ft_strlen(string);
 	while (x <= len)
 	{
-		if (string[x] == '\'')
+		if (string[x] == '\'')// && test == 0)
+		{
+			/*printf("x into = %d\n", x);
+			if (string[x] == '\'' || string[x] == '"')
+				clean_quotes_helper(&x, &y, string, new);
+			printf("x after = %d\n", x);*/
+			x++;
+			while (string[x] && string[x] != '\'') //x < len && 
+				new[y++] = string[x++];
+		}
+		else if (string[x] == '"')// && test == 0)
 		{
 			x++;
-			while (string[x] != '\'')
+			while (string[x] && string[x] != '"') //x < len && 
 				new[y++] = string[x++];
 		}
-		else if (string[x] == '"')
-		{
-				x++;
-			while (string[x] != '"')
-				new[y++] = string[x++];
-		}
-		//clean_quotes_helper(&x, &y, string, new);
-		//test = loop_quotes(t_tokens *tokens, int quote_count, int i, int *x
-		//if (string[x] == '$')
-		/*{
-			printf("what is the x = %d\n", x);
-			if (x == 0)
-				x++;
-			else if (string[x - 1] != '"' && string[x -1] != '\'')
-				x++;
-		}*/
-		if (string[x] != '\'' && string[x] != '"') //&& string[x] != '$')
+		if (string[x] == '$' && (string[x + 1] == '\'' || string[x + 1] == '"'))
+			x++;
+		if (string[x] != '\'' && string[x] != '"')
 			new[y++] = string[x];
-		x++;	
+		x++;
+		if (x == len)
+			break;
 	}
 	return (*&new);
 }

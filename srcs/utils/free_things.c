@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:59:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/14 17:32:58 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/04 18:17:12 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	free_array(char **array)
 		free(array);
 		array = NULL;
 	}
+	//else
+	//	array = NULL;
 }
 
 void	free_string(char *string)
@@ -62,7 +64,9 @@ void	free_nodes(t_env *node)
 
 int	error(char *cmd, char *error)
 {
+	//printf("is it us\n");
 	ft_printf("minishell: %s: %s\n", cmd, error);
+	//free_string(error);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:11:00 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/12 11:53:32 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/22 13:15:23 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ t_env	*create_env_list(t_data *data)
 	int i;
 	char *value;
 	char *key;
-	t_env *temp_env;
+	//	t_env *temp_env;
 	t_env *env;
 
 	(void)data;
 	i = 0;
 	env = NULL;
-	temp_env = env;
+	//temp_env = env;
 	if (environ[i] == NULL)
 	{
 		insert_node(&env, "SHLVL", "1"); // change this to update number, add other default nodes into env, check "env -i ./minishell" and "env -i bash"
@@ -47,5 +47,7 @@ t_env	*init(t_data *data)
 	data->cmds = NULL;
 	data->pid = 0;
 	data->i = 0;
+
+	data->builtin_marker = false;
 	return (create_env_list(data));
 }

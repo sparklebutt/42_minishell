@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:39:13 by vkettune          #+#    #+#             */
-/*   Updated: 2024/01/03 06:23:14 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/30 09:46:21 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,13 @@ void	ft_bzero(void *s, size_t l)
 	while (l)
 	{
 		(*str = c);
+		*str = '\0';	
 		str++;
 		l--;
 	}
 }
+
+/*void	ft_bzero(void *s, size_t n)
+{
+	ft_memset(s, 0, (size_t)n);
+}*/

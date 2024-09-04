@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/14 17:38:26 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/04 13:19:42 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 /*~~ this is baisicicaly split excepet it ignores the delimeter inside quotes.
 quotes signify a full string therefore we need any and all spaces inside them ~~*/
-static int	fancy_strlen(char const *s, char c, int i)
+static int	fancy_strlen(char const *s, char c, int i, t_data *data)
 {
 	int test;
-
+	
+	if (data->i == 100)//// remove me later
+		printf("A");
 	test = 0;
 	while (s[i] && s[i] != c)
 	{
@@ -33,13 +35,15 @@ static int	fancy_strlen(char const *s, char c, int i)
 			while (s[i] && s[i] != '\'')
 				i++;
 		}
-		test = is_char_redirect(s[i]);
-		if (test > 0)
-			return (i + test);
+		else if (is_char_redirect(s[i]) > 0)
+		{
+			i++;
+			test = is_char_redirect(s[i]);
+			if (test > 0)
+				return (i += 1);
+			return(i);
+		}
 		i++;
-		test = is_char_redirect(s[i]);
-		if (test > 0)
-			return (i);
 	}
 	return (i);
 }
@@ -47,7 +51,7 @@ static int	fancy_strlen(char const *s, char c, int i)
 /*~~ leave commented code in here, i will finish this soon, it got a bit late, attempt
 to increase word count based on having no spaces but having redirects non the less, 
 will add pipes also~~*/
-size_t	total_words_c(char const *s, char c)
+size_t	total_words_c(char const *s, char c, t_data *data)
 {
 	int	words;
 	int	i;
@@ -65,9 +69,9 @@ size_t	total_words_c(char const *s, char c)
 				while (s[i] && s[i] != '"')
 					i++;
 			}
-			else if (s[i] == '\'')
+			else if (s[i] == '\'' && i++)
 			{
-				while (s[i] && s[i] != '\'' && i++)
+				while (s[i] && s[i] != '\'')
 					i++;
 			}
 			i++;
@@ -78,12 +82,18 @@ size_t	total_words_c(char const *s, char c)
 			test++;
 			i += is_char_redirect(s[i]);
 		}
+		else if (s[i] == '$')
+		{
+			words++;
+			i += fancy_strlen(s, c, i, data) - i; // - 1?		
+		}
 		//marking the new code###	
 		else if (s[i] != c)
 		{
 			words++;
-			i += fancy_strlen(s, c, i) - i;
-		}	
+			i += fancy_strlen(s, c, i, data) - i;
+		}
+		//i++;
 	}
 	return (words + test);
 }
@@ -102,17 +112,18 @@ static char	**free_array_if(char **array)
 we are missing special cases where there are no spaces yet special symbols do exist
 eg hello>world>spagett OR echo hello>banana_file|cat>spaghetti, total_words_c will also have
 to take all of this into consideration, due to atleast 1 extra use of the fucntion~~*/
-char	**ft_split_adv(char const *s, char c) //lets send it a 0 for i
+char	**ft_split_adv(char const *s, char c, t_data *data) //lets send it a 0 for i
 {
 	size_t	i;
 	size_t	x = 0;
 	char	**array;
 	size_t		word;
 	int		word_len;
-	size_t testing = total_words_c(s, c);
+	size_t testing = total_words_c(s, c, data);
 
 	i = 0;
 	word = 0;
+	word_len = 0;
 	array = (char **)ft_calloc(sizeof(char *), testing + 1);//(total_words_c(s, c) + 1));
 	if (!s || !array)
 		return (NULL);
@@ -124,7 +135,7 @@ char	**ft_split_adv(char const *s, char c) //lets send it a 0 for i
 			x++;
 		}
 		x+= word_len;
-		word_len = fancy_strlen(s, c, i) - x;		
+		word_len = fancy_strlen(s, c, i, data) - x;		
 		array[word] = ft_substr(s, i, word_len);
 		if (array[word] == NULL)
 			return (free_array_if(array));

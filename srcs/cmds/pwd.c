@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/09 19:47:02 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/27 14:56:31 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	ft_pwd(t_data *data, t_env *envs)
 	char	*temp_path;
 
 	temp_path = getcwd(NULL, 0);
+	printf("running our own pwd\n"); // dont forget me , but keep me for testing
 	if (temp_path != NULL)
 	{
 		free(data->path);

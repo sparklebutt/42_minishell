@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/14 14:51:30 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/04 14:33:10 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,14 @@
 
 # include "libft.h"
 
+/*typedef struct s_re
+{
+	int				fd;
+	char 			*file;
+	char			*direction; //in out or append 
+	struct s_re 	*next;
+}	t_re;
+*/
 typedef struct s_env
 {
 	char			*key;
@@ -37,15 +45,22 @@ typedef struct s_env
 typedef struct s_tokens
 {
 	char	*cmd;
-	char	**args;
+	char	**args; // malloced
 	int		quote; // 1 = single, 2 = double
 
 	int		array_count;
 	int		pipe_count;
 	int		redirect_count;
-
+	int		dollar_count;
+	int		dollar_num;
+	char	**input_files;  // For < redirection malloced
+	char	**output_files;  // For > and >> redirection malloced
+	int		out_array_count;
+	// above to replace lower
 	char	*input_file;   // For < redirection
 	char	*output_file;  // For > and >> redirection
+
+	bool	expandable;
 	bool	redirect_in;
 	bool	redirect_out;
 	bool	redirect_append;
@@ -59,41 +74,53 @@ typedef struct s_cmd
 
 typedef struct s_temps
 {
+
 	char	**array;
+	char	**exp_array;
 	char	*ex_arr[4];
-	char	*filename;
-	char	*suffix;
-	char	*env_line;
+	char	*filename; // malloced
+	char	*suffix; // malloced
+	char	*env_line; // malloced linked list
 	int		i;
 }	t_temps;
 
 typedef struct s_data
 {
 	int			i;
+	int			x; // this is our counter up to pipe count, "pipe_loop"
+	//int			prev_len; //maybe put in tokens
 	char		*prompt;
 	t_env		*env;
+	//t_re		*redir; //redirs linked list
 	char		**env_array; // this is needed for exceves last parameter, eg to run clear
 	t_cmd		*cmds;
 	t_tokens	*tokens;
 	t_temps		*tmp;
-	int			pid;
+
+
+	int			prev_fd;
+	int			pid; /// throw?
+	pid_t		child[10]; // new
+	int			child_i; // belongs tp child pid
 	char		*path;
+	bool		simple;
+	bool		builtin_marker; // so that we can run bultins in pies with redirects
 }	t_data;
 
 // PARSING - - - - - - - - -
 void	pipe_collector(t_tokens *tokens, char **array);
 void	expansion_parser(t_tokens *tokens, t_data *data);
 int	check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count);
-char	*clean_quotes(char *string, int len, int x, int y);
+char	*clean_quotes(char *string, int len, int x, int y); //, t_tokens *tokens);
 int		count_new_len(char *string);
 int	handle_absolute_path(t_data *all, int x, char *path);
 
-void	collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
+int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
 int		check_path(char *string, int divert, t_data *all, int x);
 int		find_passage(t_data *all, char *string, int divert);
-int		parse_redirections(t_tokens *tokens, char **args, int i);
-void	apply_redirections(t_tokens *tokens);
-void	redirect_collector(t_tokens *tokens, char **array);
+int		parse_redirections(t_tokens *tokens, char **args, int i); // t_data *data;/heloooooooooooooooooooo
+void	apply_redirections(t_data *data, t_tokens *tokens, int x);
+void	redirect_collector(t_tokens *tokens, char **array, int i);
 int is_redirect(char *arg);
 
 // ENV - - - - - - - - -
@@ -112,7 +139,7 @@ int		find_node(t_env *envs, char *key, t_data *data); // does node with x key ex
 
 // variable expansions
 char *replace_expansion(t_data *data, t_env *envs, char *arg, int i);
-char	*look_if_expansions(t_data *data, t_env *envs, char *arg);
+char	*look_if_expansions(t_data *data, t_env *envs, char *arg, int i);
 
 // CMDS - - - - - - - - -
 void	ft_unset(t_env *env, char *key_name);
@@ -120,7 +147,7 @@ int		ft_pwd(t_data *data, t_env *envs);
 t_env	*fill_old_pwd(t_data *data, t_env *env, char *temp_path);
 int		ft_exit(char *cmd, t_tokens *tokens); 
 void	ft_cd(t_data *data, t_env *envs);
-void	ft_echo(char **args);
+void	ft_echo(t_data *data, char **args);
 void	ft_env(t_data *data);
 void	ft_export(t_data *data);
 void	handle_arg(t_data *data, int arg_i, t_tokens *tokens);
@@ -147,8 +174,8 @@ void	signal_handler(int signo);
 void	set_signals(void);
 
 // ft_split_adv
-char	**ft_split_adv(char const*s, char c);
-size_t	total_words_c(char const *s, char c);
+char	**ft_split_adv(char const*s, char c, t_data *data);
+size_t	total_words_c(char const *s, char c, t_data *data);
 
 // OTHER - - - - - - - - -
 
@@ -164,19 +191,28 @@ t_env	*create_env_list(t_data *data);
 // forking
 int		simple_fork(t_data *data);
 int		pipe_fork(t_data *data);
-int		child(t_data *data, int *fds, int prev_fd, int x, int flag);
-int		send_to_child(t_data *data, int fds[2], int prev_fd, int x);
+int		child(t_data *data, int *fds, int x, int flag);
+int		send_to_child(t_data *data, int fds[2], int x);
 int send_to_forks(t_data *data);
 
 // forking utils
 int		set_array(t_data *data);
 void	set_env_array(t_data *data);
-int		dup_fds(t_data *data, int *fds, int prev_fd, int x);
-bool	confirm_expansion(char *string, int len);
+int		dup_fds(t_data *data, int *fds, int x);
+bool	confirm_expansion(char *string, int len, int x);
 
 // newly added functions seperate for clarity
 //parsers.c
 int		simple_quote_check(char *s, int i);
 int is_char_redirect(char arg);
-void	clean_rest_of_quotes(t_data *data);
+int	clean_rest_of_quotes(t_data *data, int i, int len);
+//int	simple_fork_a(t_data *data);
+//int	insert_node_re(t_re **redir, char *direction, char *file);
+int	redirect_helper(t_tokens *tokens, int x); // t_data *data;
+void create_redir_array(t_tokens *tokens);
+//char	*ft_substr_adv(t_data *data, char const *s, unsigned int start, size_t l);
+void		dollar_counter(char *string, t_tokens *tokens);
+char	**ft_split_expansions(t_tokens *tokens, char const *s); // 
+int	ft_count_exp_array(const char *s);
+//at 70 functions, lets aim for 69
 #endif

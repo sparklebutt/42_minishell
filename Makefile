@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+         #
+#    By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/08/09 19:25:21 by vkettune         ###   ########.fr        #
+#    Updated: 2024/09/03 14:28:23 by araveala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,9 +45,9 @@ ENV_FILES = find_from_env.c list_manipulation.c variable_expansions.c #list_crea
 
 PAR_FILES = parsers.c parsing_not.c pipe_parsing.c quotes_parsing.c check_path.c #parse.c parse_utils.c export_parse.c
 
-UTIL_FILES = error_handling.c free_things.c ft_split_adv.c signals.c
+UTIL_FILES = error_handling.c free_things.c ft_split_adv.c signals.c ft_split_expansions.c
 
-FILES = main.c init.c handle_line.c forking.c forking_utils.c redirects.c
+FILES = main.c init.c handle_line.c forking.c forking_utils.c redirects.c ft_substr_adv.c
 
 CMD = $(addprefix cmds/, $(CMD_FILES))
 ENV = $(addprefix env/, $(ENV_FILES))

@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:02:41 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/12 12:03:34 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/04 18:05:22 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	find_node(t_env *envs, char *key, t_data *data)
 			&& (ft_strlen(temp->key) == ft_strlen(key)))
 		{
 			// ft_printf("key found\n"); // remove
+			free_string(data->tmp->env_line); // fixed a leak
 			data->tmp->env_line = ft_strdup(temp->value); // IF REMOVED THIS BREAKS "/bin/ls"
 			return (1);
 		}

@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/13 12:15:59 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/28 08:42:39 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	exec_builtins(t_data data, char *cmd)
 	else if (ft_strncmp(cmd, "unset", 6) == 0)
 		ft_unset(&envs, tokens->args[1]);
 	else if (ft_strncmp(cmd, "echo", 5) == 0)
-		ft_echo(tokens->args);
+		ft_echo(&data, tokens->args);
 	else if (ft_strncmp(cmd, "env", 4) == 0)
 		ft_env(&data);
 	return (0);
@@ -62,6 +62,7 @@ int	handle_line(t_data data, t_tokens *tokens)
 		return (0);
 	if (tokens->args[data.i] != NULL)
 	{
+		// MARK
 		// printf("redir count = %d\n", tokens->redirect_count);
 		if (tokens->pipe_count == 0 && tokens->redirect_count == 0 && is_builtins(tokens->args[data.i]) == 1)
 		{
@@ -69,8 +70,10 @@ int	handle_line(t_data data, t_tokens *tokens)
 			exec_builtins(data, tokens->args[data.i]);
 		}
 		else if (find_passage(&data, "PATH", 1) == -1)
-			call_cmd_error(tokens->args[data.i], NULL, "command not found\n", -10);
-		// printf("THIS IS END OF HANDLE_LINE\n");
+		{
+			call_cmd_error(tokens->args[data.i], NULL, "command not found end\n", -10);
+		}
+		//printf("THIS IS END OF HANDLE_LINE\n");
 		data.i++;
 	}
 	return (0);
