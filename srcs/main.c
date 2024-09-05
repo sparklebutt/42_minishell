@@ -6,12 +6,17 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/14 17:39:44 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/04 18:24:11 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**~~ added error handeling to collect_cmd_array returns 0 on success
+ im not sure if this might be more helpfull when handleing exit codes, 
+ this is to catch if no infile at the very begining, as our code now creates all files
+ at the very begining in parsing, this way we can run error message and not go
+ through any further code , exampl cat < no > out ~~**/
 void	minishell(t_data *data)
 {
 	char	*rl;
@@ -23,15 +28,18 @@ void	minishell(t_data *data)
 		rl = readline(data->prompt);
 		add_history(rl);
 		if (rl)
-    {
-			collect_cmd_array(data, data->tokens, rl);
-			if (handle_line(*data, data->tokens) == -1)
+    	{
+			if (collect_cmd_array(data, data->tokens, rl) == 0)
 			{
-				ft_printf("error dfghjkl\n"); // change error message
-				break ;
+				if (handle_line(*data, data->tokens) == -1)
+				{
+					ft_printf("error dfghjkl\n"); // change error message
+					break ;
+				}
+				free_array(data->tokens->args);
+				//we need to go through a list of things that need to be freed maybe
+				free(rl);
 			}
-			free_array(data->tokens->args);
-			free(rl);
 		}
 		if (!rl)
 			break ;

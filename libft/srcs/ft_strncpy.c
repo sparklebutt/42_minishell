@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 09:04:20 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/07 18:28:16 by araveala         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:17:52 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*ft_strncpy(char *dest, const char *src, size_t n)
 		dest[i] = src[i];
 		i++;
 	}
+	//ft_printf("what");
+	//ft_printf("dest = %s\n", dest);
 	while (i < n)
 	{
 		dest[i] = '\0';

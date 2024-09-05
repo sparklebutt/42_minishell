@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 08:33:27 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/09 09:28:51 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:14:16 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,28 @@ void	set_signals(void)
 	sigemptyset(&sig_act.sa_mask);
 		// clearing previously set signals.
 		// although im not sure if any are actualy set at this point
-	sig_act.sa_flags = SA_RESTART;
+	//sig_act.sa_flags = SA_RESTART;
 		// this comes recomended although for
 		// signal other than SIGCHLD has no effect apparently
 	sig_act.sa_handler = &signal_handler;
 	sigaction(SIGINT, &sig_act, NULL);
 }
+/*void	parent_signal()
+{
+	
+}
+void child_signal()
+{
+	
+}
+void block_signal()
+{
+	
+}
+void	un_block_signal()
+{
+	
+}*/
 
 void	signal_handler(int signo)
 {

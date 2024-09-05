@@ -14,9 +14,9 @@
 
 void	to_home(t_data *data, t_env *envs)
 {
-	char *temp;
+  //char *temp;
 
-	temp = NULL;
+  //	temp = NULL;
 	find_passage(data, "HOME", 2);
 	//if (chdir(data->tmp->filename) == 0) ///change back
 	if(chdir(data->tmp->env_line) == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/14 15:57:07 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/05 13:12:10 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,56 +29,92 @@ int is_char_redirect(char arg)
 
 int is_redirect(char *arg)
 {
-	if (arg[0] == '>' || ft_strncmp(arg, ">>", 2) == 0)
+	if ((arg[0] == '>') || ft_strncmp(arg, ">>", 2) == 0)
 		return (2);
 	if (arg[0] == '<')
 		return (1);
 	return (0);
 }
-
-void	redirect_collector(t_tokens *tokens, char **array)
+/*~~ to collect redirect count as well as collect how many infiles and outfiles we need
+, since each pipe will value only 1 ~~*/
+void create_redir_array(t_tokens *tokens)
 {
-	int	i;
-	int	count;
-	int	len;
+	tokens->output_files = ft_calloc(sizeof(char *), tokens->pipe_count + 1);
+	if (tokens->output_files == NULL)
+	{
+		printf("malloc error\n");
+		// do we need to free anything malloced up to this point
+		exit(1);
+	}
+	// calloc nulls them	
+}
+/*~~ this has been over complicated for te fear  of needing this data 
+i do not think we will need it but its some of the easiest to remove in last moments~~*/
+void	redirect_collector(t_tokens *tokens, char **array, int i)
+{
+	int out_count = 0;
+	int in_count = 0;
+	
+	int	comparison_tool_out = 0;
+	int	comparison_tool_in = 0;	
+	int in_array_count = 0; // struct
 
-	i = 0;
-	count = 0;
-	// printf("THIS IS IN REDIRECT_COLLECTOR\n");
 	while (array[i])
 	{
-		len = ft_strlen(array[i]);
-		// printf("\t\tarray[i]: %s\n", array[i]);
-		if (array[i][0] == '>' || array[i][0] == '<' || ft_strncmp(array[i], ">>", 2) == 0)
+		if (array[i][0] == '>' || ft_strncmp(array[i], ">>", 2) == 0)
 		{
-			// printf("redirect found!\n");
-			if (len > 2) // make this work with quotes
+			if (ft_strlen(array[i]) > 2)//(len > 2)
 				if (array[i][2])
 					printf("syntax error, too many redirects\n");
-			count++;
+			out_count++;
 			// handle redirect as last chat / str
+		}
+		if (array[i][0] == '<')
+		{
+			if (ft_strlen(array[i]) > 2)//(len > 2)	
+				if (array[i][2])
+					printf("syntax error, too many redirects\n");
+			in_count++;
+			// handle redirect as last chat / str
+		}
+		if (array[i][0] == '|')
+		{
+			// maybe these could pass com tools as pointers and run this as a seperate function
+			// not sure if we need to collect append data or if collectiion of in is needed. 
+			if (comparison_tool_out < out_count)
+			{
+				tokens->out_array_count++;
+				comparison_tool_out = out_count;
+			}
+			if (comparison_tool_in < in_count)
+			{
+				in_array_count++;
+				comparison_tool_in = in_count;
+			}
 		}
 		i++;
 	}
-	tokens->redirect_count = count;
+	if (out_count > 0)
+		tokens->out_array_count += 1;	
+	//printf("does this count the right ammount of out files needed out = %d\n", tokens->out_array_count);
+	//printf("does this count the right ammount of in files needed in = %d\n", in_array_count);	
+	tokens->redirect_count = out_count + in_count;
 }
 
-int	redirect_helper(t_tokens *tokens)
+int	redirect_helper(t_tokens *tokens, int x)
 {
 	int		fd;
-	char *test;
 
-	test = NULL;
 	fd = 0;
-	if (tokens->redirect_in)
-		fd = open(tokens->input_file, O_RDONLY);
-	else if (tokens->redirect_append)
-		fd = open(tokens->output_file, O_WRONLY | O_CREAT | O_APPEND , 0644);
+	if (tokens->output_files[x] == NULL)
+		return (0);
+	if (tokens->redirect_append)
+		fd = open(tokens->output_files[x], O_WRONLY | O_CREAT | O_APPEND , 0644);
 	else if (tokens->redirect_out)
-		fd = open(tokens->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		fd = open(tokens->output_files[x], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
-		return (error("redirect", "Failed to open input file"));
-	if (dup2(fd, STDOUT_FILENO) == -1)// && tokens->pipe_count == 0) // trying to avoid dubble duping in pipes
+		return (error("redirect", "Failed to open input file MM"));
+	if (dup2(fd, STDOUT_FILENO) == -1)
 		return (error("redirect", "Failed to duplicate fd"));
 	close(fd);
 	return (0);
@@ -86,35 +122,41 @@ int	redirect_helper(t_tokens *tokens)
 
 int	parse_redirections(t_tokens *tokens, char **args, int i)
 {
+	int x;
+	int fd;
+	int here_i;
+	
+	fd = 0;
+	x = 0;
+	here_i = 0;
 	while (args[i] != NULL)
 	{
-		if (strcmp(args[i], "<") == 0 && args[i + 1] != NULL)
+		if (args[i][0] == '|')
+			x++;
+		if (ft_strncmp(tokens->args[i], "<<", 2) == 0)
 		{
-			tokens->input_file = strdup(args[i + 1]);
-			tokens->redirect_in = 1;
+			heredoc_loop(tokens, tokens->args[i + 1]);
+			// clean some quotes
+			// expand variables here
+			while(tokens->heredoc[here_i] != 0)
+			{
+				printf("heredoc[%d] = %s", here_i, tokens->heredoc[here_i]);
+				here_i++;
+			}
 			i++;
 		}
-		else if ((strcmp(args[i], ">>") == 0 || strcmp(args[i], ">") == 0) && args[i + 1] != NULL)
+		else if (args[i + 1] != NULL && strcmp(args[i], "<") == 0)
 		{
-			tokens->output_file = strdup(args[i + 1]);
-			if (strcmp(args[i], ">>") == 0)
-				tokens->redirect_append = 1;
-			else
-				tokens->redirect_out = 1;
+			input_helper(tokens, fd, i);
+			i++;
+		}
+		else if (args[i + 1] != NULL && (strcmp(args[i], ">>") == 0 || strcmp(args[i], ">") == 0))
+		{
+			output_helper(tokens, fd, i, x);
 			i++;
 		}
 		i++;
 	}
 	return (0);
-}
-
-void	apply_redirections(t_tokens *tokens)
-{
-	if (tokens->redirect_in)
-		redirect_helper(tokens);
-	else if (tokens->redirect_out)
-		redirect_helper(tokens);
-	else if (tokens->redirect_append)
-		redirect_helper(tokens);
 }
 

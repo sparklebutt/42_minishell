@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/14 17:36:09 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/04 18:21:39 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,22 @@
 int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 {
 	*cmd_len = ft_strlen(all->tokens->args[x]);
-	if (ft_strchr(all->tokens->args[x], '/'))
-		return (handle_absolute_path(all, x, NULL));
+	if (all->tokens->args[x][0] == '/')
+	{
+		//if (handle_absolute_path(all, x, NULL))
+	//if (ft_strchr(all->tokens->args[x], '/')) // messing wih oour error messages and causing leaks
+		return (handle_absolute_path(all, x, NULL)); // not allowed
+	}
 	if (all->tokens->args[x][0] != '/')
+	{
+		//free_string(*suffix);
+		//suffix = NULL; // this fixed alot of leaks but broke code.. something wrong here
+		// mnight nt be great to defrence all the time
+		//if (all->tokens->args[x] != NULL)
 		*suffix = ft_strjoin("/", all->tokens->args[x]);
+	}
 	if (*suffix == NULL || *cmd_len == 0)
-		return (free_extra_return_function(*suffix, 0));
+		return (free_extra_return_function(*suffix, 0)); // not alowed
 	return (2);
 }
 
@@ -43,6 +53,7 @@ int	iterate_and_match(char *suffix, size_t cmd_len, t_data *all, int x)
 				if (ft_strncmp(dp->d_name, all->tokens->args[x], cmd_len) == 0
 					&& ft_strlen(dp->d_name) == cmd_len)
 				{
+					free_string(all->tmp->filename); // this fixed a leak
 					all->tmp->filename = ft_strjoin(all->tmp->array[i], suffix);
 					closedir(dir);
 					return (1);
@@ -67,6 +78,12 @@ int	cleanup_and_finalize(char *suffix, t_data *all, int found)
 
 static void	split_diversion(t_data *data, int divert, char *string)
 {
+	//free_array(data->tmp->array);
+	if (data->tmp->array != NULL)
+		free_array(data->tmp->array); //fixed only 1 leak
+		//printf("array is noooot null \n");
+	//if (data->tmp->array[0][0] == '\0')
+	//	printf("array is also null \n");	
 	if (divert == 1) // PATH
 		data->tmp->array = ft_split(string, ':');
 	else if (divert == 2) // HOME
@@ -87,71 +104,20 @@ int	check_path(char *string, int divert, t_data *all, int x)
 
 	suffix = NULL;
 	cmd_len = 0;
+	// i think we need a check all clean all here to fix some leaks
+
 	res = initial_checks_and_setup(&suffix, &cmd_len, all, x);
-	if (res != 2)
-		return (res);
+	//printf("what is res = %d\n", res);
+	if (res != 2) // was if res != 2
+		return (res); /// was res
 	split_diversion(all, divert, string);
 	found = iterate_and_match(suffix, cmd_len, all, x);
+	//printf("found = %d\n", found);
+	if (found == 0) // function == 0
+	{
+		//printf("refrence of failure token = %s\n", all->tokens->args[x]);
+		return (0);
+	}
 	res = cleanup_and_finalize(suffix, all, found);
 	return (res);
 }
-
-// int	check_path(char *string, int divert, t_data *all, int x)
-// {
-// 	struct dirent	*dp;
-// 	DIR				*dir;
-// 	char			*suffix;
-// 	size_t			cmd_len;
-// 	int				i;
-
-// 	i = 0;
-// 	suffix = NULL;
-// 	cmd_len = ft_strlen(all->tokens->args[x]);
-// 	if (ft_strchr(all->tokens->args[x], '/'))
-// 	{
-// 		if (handle_absolute_path(all, x, NULL) == 0)
-// 		{
-// 			// error
-// 			return (0);
-// 		}
-// 		else
-// 			return (1);
-// 	}
-// 	if (all->tokens->args[x][0] != '/')
-// 		suffix = ft_strjoin("/", all->tokens->args[x]);
-// 	//  ft_printf("suffix = %s\n", suffix);
-// 	if (suffix == NULL || cmd_len == 0)
-// 		return (free_extra_return_function(suffix, 0));
-// 	split_diversion(all, divert, string);
-// 	while (all->tmp->array[i])
-// 	{
-// 		if (check_dir(all->tmp->array[i]) == 1)
-// 		{
-// 			dir = opendir(all->tmp->array[i]);
-// 			dp = readdir(dir);
-// 			while (dp != NULL)
-// 			{
-// 				if (ft_strncmp(dp->d_name, all->tokens->args[x], cmd_len) == 0
-// 					&& ft_strlen(dp->d_name) == cmd_len)
-// 				{
-// 					if (all->tmp->array[i] == NULL)
-// 						return (-1);
-// 					// free_string(all->tmp->filename);
-// 					all->tmp->filename = ft_strjoin(all->tmp->array[i], suffix);
-// 					free_string(suffix);
-// 					if (all->tokens->pipe_count > 0)
-// 						free_array(all->tmp->array);
-// 					closedir(dir);
-// 					return (1);
-// 				}
-// 				dp = readdir(dir);
-// 			}
-// 			// closedir(dir); this was causing a leak of some kind
-// 		}
-// 		i++;
-// 	}
-// 	closedir(dir);
-// 	//	free_extra_return_function(suffix, -1);
-// 	collective_free(NULL, suffix, all->tmp->array);
-// 	return (0);
-// }

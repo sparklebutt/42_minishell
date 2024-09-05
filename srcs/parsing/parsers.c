@@ -6,21 +6,88 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/14 15:58:58 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/04 14:55:02 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	set_check(char *string, bool ver, int *x, char c)
+/*~~ a function to take an array and turn it into a string
+and return to caller, note this should be multip-puprose, also note
+any array sent in must end in NULL~~*/
+static char *array_to_string(char **array)
+{
+	char	*new_string;
+	int		index;
+	int		new_string_len;
+	int		i;
+
+	index = 0;
+	i = 0;
+	new_string = NULL;
+	new_string_len = 0;
+	//if (array == NULL)
+	//{
+	//	printf("return error ?\n");
+	//	return (NULL);
+	//}
+	while (array[index] != NULL)
+	{
+		new_string_len += ft_strlen(array[index]);
+		index++;
+	}
+	new_string = ft_calloc(new_string_len + 1, sizeof(char));
+	index = 0;
+	while (array[index] != NULL)
+	{
+		ft_strcpy(new_string + i, array[index]);
+		index++;
+		i = ft_strlen(new_string);		
+	}	
+	return (*&new_string);
+}
+
+/*~~ using this to return a dollar count instead of using strchr so we
+can redirect the expansion parser based on if the token comes in as one
+big string instead of seperate tokens. Since the out put needs to be 
+one whole string too, this was easier than other options ~~*/
+void		dollar_counter(char *string, t_tokens *tokens)
+{
+	int	i;
+	
+	i = 0;
+	tokens->dollar_count = 0;
+	tokens->dollar_num = 0;
+	while (string[i])
+	{
+		if (string[i] == '$')
+			tokens->dollar_count++;
+		i++;
+	}
+}
+
+bool	set_check(char *string, bool ver, int *x, char c, int len) // stick the ver bool in struct
 {
 	(*x)++;
-	while (string[*x] != c)
+	while (string[*x] && string[*x] != c)
 	{
-		ver = !ver;
 		(*x)++;
+		if (string[*x] == c)
+		{
+			ver = !ver;	
+		}
+		if ((*x) == len - 1)
+			break ;
 	}
 	return (ver);
+}
+static int find_redirect(char *string) // we hve multiples of this function
+{
+	if (ft_strchr(string, '>') != NULL)
+		return (1);
+	if (ft_strchr(string, '<') != NULL)
+		return (1);
+	return (0);
 }
 
 // similar to quotes_handling (combine them?), maybe add bools into struct
@@ -29,83 +96,213 @@ find a case where this type of syntax is expandable eg $"USER".
 it might be wise to consider if this is the case for other symbols we need to handle~~*/
 int		simple_quote_check(char *s, int i)
 {
+	int x = i;
+	int counter = 0;
+	while (s[x])
+	{
+		if (s[x] == '$')
+			counter++;
+		x++;
+	}
 	while (s[i])
 	{
-		if (s[i] == '$' && (s[i + 1] == '\'' || s[i + 1] == '"'))
+		if (s[i] == '$' && (s[i + 1] == '\'' || (s[i + 1] == '"') || (counter < 2 && s[i + 1] == '$'))) //
 			return (-1);
+		if (s[i] == '$' && counter < 2)
+		{
+			if (i == 0)
+				return (0); //saftey check ?
+		 	if (s[i - 1] != '\'' && s[i - 1] != '"')
+				return (0);
+		}
 		i++;
 	}
 	return (1);
 }
 
-bool	confirm_expansion(char *string, int len)
+bool	confirm_expansion(char *string, int len, int x)
 {
 	bool	s;
 	bool	d;
-	int		x;
-
+	int		simple_ret;
 	s = false;
 	d = false;
-	x = 0;
-	if (simple_quote_check(string, x) == -1)
-		return (false);
-	while (x <= len)
+//	if (s == false && d == false)
+//		printf("both false\n");
+	//printf("checking string = %s and our len up to is = %d\n", string, len);
+	simple_ret = simple_quote_check(string, x);
+	
+	if (simple_ret == -1)
 	{
-		if (string[x] == '\'')
-			s = set_check(string, s, &x, '\'');
-		else if (string[x] == '"')
-			d = set_check(string, d, &x, '"');
-		x++;
+//		printf("simply false\n");
+		return (false);
 	}
+	if (simple_ret == 0)
+	{
+//		printf("simply true\n");		
+		return (true); 
+	}
+	while (string[x] && x < len)
+	{
+		//printf("bugu hunting 1 x = %d len = %d\n", x, len);
+		if (string[x] == '\'')
+		{
+			///printf("single \n");
+			s = set_check(string, s, &x, '\'', len);
+		}
+		else if (string[x] == '"')
+		{
+			//printf("double\n");
+			d = set_check(string, d, &x, '"', len);
+		}
+		x++;
+		//if (x == len)
+		//	return ((d && !s) || (!d && !s));// && (check2 > 0));
+	}
+	/*if (d && !s)
+		printf("d true d false\n");
+	if (!d && !s)
+		printf("both false\n");*/
+	//printf("this far we get 1 x reached = %d should equal = %d\n", x, len);
 	return ((d && !s) || (!d && !s));
 }
-
-void	handle_expansion(t_data *data, int len, int i, char *new)
+/*~~ a fucntion that redirects the input to be handled based on if we handle
+just a string or if we need to handle a newly ade array that will be later re adjusted
+to be a string in our tokens array ~~*/
+void	handle_expansion(t_data *data, int len, int i, char *new) //, int x)
 {
 	t_tokens	*tokens;
+	char		*tmp;
 
+	tmp = NULL;
 	tokens = data->tokens;
-	if (ft_strchr(tokens->args[i], '"') != NULL
-		|| ft_strchr(tokens->args[i], '\'') != NULL)
+	if (data->simple == false)
 	{
-		new = clean_quotes(tokens->args[i], len, 0, 0);
-		free_string(tokens->args[i]);
-		tokens->args[i] = look_if_expansions(data, data->env, new);
+		if (ft_strchr(data->tmp->exp_array[i], '"') != NULL
+		|| ft_strchr(data->tmp->exp_array[i], '\'') != NULL)
+		{
+			new = clean_quotes(data->tmp->exp_array[i], len, 0, 0);//, tokens);		
+			tmp = look_if_expansions(data, data->env, new, 0);
+			free_string(data->tmp->exp_array[i]);
+			data->tmp->exp_array[i] = ft_strdup((tmp));
+		}
+		else
+			data->tmp->exp_array[i] = look_if_expansions(data, data->env, data->tmp->exp_array[i], 0);
 	}
 	else
-		tokens->args[i] = look_if_expansions(data, data->env, tokens->args[i]);
+	{
+		if (ft_strchr(tokens->args[i], '"') != NULL
+		|| ft_strchr(tokens->args[i], '\'') != NULL)
+		{
+			new = clean_quotes(tokens->args[i], len, 0, 0);//, tokens);
+			free_string(tokens->args[i]);	
+			tokens->args[i] = look_if_expansions(data, data->env, new, 0);
+		}
+		else
+			tokens->args[i] = look_if_expansions(data, data->env, tokens->args[i], 0);
+	}
 }
 
 void	expansion_parser(t_tokens *tokens, t_data *data)
 {
-	int			i;
-	int			len;
-	static char	*new;
+	int				i;
+	size_t			x;
+	size_t			len;
+	int 			index;
+	static char		*new;
 
 	i = 0;
+	x = 0;
 	len = 0;
-
+	index = 0;
+	data->tmp->exp_array = NULL;
+	tokens->expandable = false;
+	data->simple = true;
 	while (tokens->args[i])
-	{
-		len = ft_strlen(tokens->args[i]) - 1; // maybe remove
-		if (ft_strchr(tokens->args[i], '$') != NULL)
+	{	
+		dollar_counter(tokens->args[i], tokens);
+		len = ft_strlen(tokens->args[i]);
+		if (tokens->dollar_count > 0)
 		{
-			if (confirm_expansion(tokens->args[i], len) == true)
+			if (tokens->dollar_count > 1)
 			{
-				// printf("expansion true\n");
-				// tokens->args[i] = expand_args(tokens->args[i], data,data->env)
-				// add something like this
-				handle_expansion(data, len, i, new);
+				data->simple = false;
+				data->tmp->exp_array = ft_split_expansions(tokens, tokens->args[i]);
+				if (data->tmp->exp_array == NULL)
+				{
+					printf("malloc fail handleing required\n");
+					return ;
+				}
+				/*while (data->tmp->exp_array[index] != NULL)
+				{
+					printf("\t\t~~whats in test = %s what is index = %d\n~~~~~~~~~", data->tmp->exp_array[index], index);
+					f++;
+				}*/
+				index = 0;
+				while (data->tmp->exp_array[index] != NULL)
+				{
+					len = ft_strlen(data->tmp->exp_array[index]);
+					if (ft_strchr(data->tmp->exp_array[index], '$') == NULL)
+					{
+						tokens->expandable = false;
+						clean_rest_of_quotes(data, index, len);
+						
+					}
+					else if (confirm_expansion(data->tmp->exp_array[index], len, 0) == true)
+					{
+						//printf("multi true\n");
+						tokens->expandable = true;
+						handle_expansion(data, len - 1, index, new);
+					}
+					else
+					{
+						//printf("multi false\n");				
+						tokens->expandable = false;
+						clean_rest_of_quotes(data, index, len);
+					}
+					index++;
+					tokens->expandable = false;
+					tokens->dollar_num++;
+				}
 			}
-			/*we could maybe remove this im not sure yet*/
-			else
+			else if (confirm_expansion(tokens->args[i], len, 0) == true)// && data->simple == true)
 			{
-				// printf("expansion false\n");
-				new = clean_quotes(tokens->args[i], len, 0, 0);
-				free_string(tokens->args[i]);
-				tokens->args[i] = new;
+				//printf("WRONG single true true\n");
+				tokens->expandable = true;
+				data->simple = true;
+				handle_expansion(data, len - 1, i, new);
 			}
+			else if (tokens->args[i])
+			{
+				//printf("WRONG single flase\n");				
+				tokens->expandable = false;
+				clean_rest_of_quotes(data, i, len);
+			}
+			data->simple = false;
+			tokens->expandable = false;	
+	
 		}
+		// **this fixed a leak
+		else if (tokens->args[i] != NULL && find_redirect(tokens->args[i]) == 0 && tokens->dollar_count == 0)
+		{
+			if (ft_strchr(tokens->args[i], '\'') != NULL || ft_strchr(tokens->args[i], '"') != NULL)
+				clean_rest_of_quotes(data, i, 0);	
+		} // **
+		if (data->simple == false && tokens->dollar_count > 1)
+		{
+			// index = 0;			
+			/*while (data->simple == false && data->tmp->exp_array[index] != NULL)
+			{
+				printf("\t\t~~whats in test cleaned = %s what is index = %d, give en = %ld\n~~~~~~~~~", data->tmp->exp_array[index], index, ft_strlen(data->tmp->exp_array[index]));
+				f++;
+			}*/	
+			free_string(tokens->args[i]);
+			tokens->args[i] = array_to_string(data->tmp->exp_array);
+			data->simple = true;
+			free_array(data->tmp->exp_array);
+			// try free_loop from ur split expans
+		}
+		tokens->expandable = false;
 		i++;
 	}
 }

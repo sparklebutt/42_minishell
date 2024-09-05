@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/15 12:09:43 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/04 14:22:15 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,23 @@
 
 /*~~~ Here we set the null terminated array for exceve()'s second parameter,
 this which contains the cmd, any flag and or argument that would go with the excecutable. ~~~*/
-
+/*static int is_fd_open(int fd) {
+	if (isatty(fd))
+	{
+		printf("fd is a terminal , so open?\n");
+		return (1);
+	}
+	else
+	{
+		printf("fd is a notterminal , so cosed?\n");	
+		return (-1);
+	}
+	return (0);
+//    return fcntl(fd, F_GETFD) != -1 || errno != EBADF;
+}*/
 int	set_array(t_data *data)
 {
-	int i = 0; // using in foorking return when redirects 
-	/*while (data->tokens->args[i] != NULL)
-	{
-		printf("tokens arg[%d] = %s\n", i, data->tokens->args[i]);
-		i++;
-	}*/
-	printf("trying to catch the damn cat befre > = %s\n", data->tokens->args[data->i]);
-	/*if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i + 1][0] == '>')
-	{
-		data->tmp->ex_arr[1] = data->tokens->output_file;
-		return (1);
-	}*/
+	int i = 0; 
 	if (data->tmp->filename == NULL || data->tokens->args[data->i] == NULL)
 		return (-1);
 	if (data->tmp->filename != NULL)
@@ -37,34 +39,49 @@ int	set_array(t_data *data)
 		i++;
 		data->i++;
 	}
-	if (data->tokens->args[data->i] != NULL
-		&& data->tokens->args[data->i][0] == '-')
+	if (data->tokens->args[data->i] != NULL && is_redirect(data->tokens->args[data->i]) > 0)
 	{
+	//	printf("ret of is dir = %d\n", is_redirect(data->tokens->args[data->i]));
+		if (is_redirect(data->tokens->args[data->i]) == 1)
+		{
+			data->tmp->ex_arr[1] = data->tokens->input_file;
+			data->i += 2;
+		}
+		else if (is_redirect(data->tokens->args[data->i]) == 2) //carefull lhere it was != null
+		{
+		 	if (data->tokens->input_file != NULL)
+			{	
+				///printf("this shouod be putting it in now = %s\n", data->tokens->args[data->i]);
+				//data->tmp->ex_arr[1] = data->tokens->args[data->i];
+				data->tmp->ex_arr[1] = data->tokens->output_files[data->x];
+				data->i += 2;
+			}
+			else
+			{
+				data->tmp->ex_arr[1] = NULL;		
+				data->i++;
+			}
+		}
+		else
+		{
+			data->tmp->ex_arr[1] = NULL;
+		}
+	}
+	else if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|' && data->tokens->args[data->i][0])
+	{
+		printf("did it do the thing = %s\n", data->tokens->args[data->i]);
 		data->tmp->ex_arr[1] = data->tokens->args[data->i];
 		i++;
 		data->i++;
 	}
 	else
+	{
 		data->tmp->ex_arr[1] = NULL;
+	}
+	///just as example 
 	if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|')
 	{
-		//printf("ret of is dir = %d\n");
-		if (is_redirect(data->tokens->args[data->i]) == 1)
-		{
-			data->tmp->ex_arr[1] = data->tokens->input_file;
-		}
-		else if (is_redirect(data->tokens->args[data->i]) == 2 && data->tokens->input_file != NULL)
-		{
-			data->tmp->ex_arr[1] = data->tokens->output_file;
-		}
-		/*else if(is_redirect(data->tokens->args[data->i + 1]) == 2 && data->tokens->input_file != NULL)
-		{
-			data->tmp->ex_arr[1] = data->tokens->output_file;
-			
-		}*/
-		else if (is_redirect(data->tokens->args[data->i]) == 0)
-			data->tmp->ex_arr[1] = data->tokens->args[data->i];
-		i++;
+		data->tmp->ex_arr[2] = data->tokens->args[data->i]; // arguments;
 		data->i++;
 	}
 	else
@@ -86,7 +103,7 @@ void	set_env_array(t_data *data)
 	temp2 = data->env;
 	key_full = NULL;
 	i = find_node_len(data) + 1;
-	data->env_array = malloc(i * sizeof(char *));
+	data->env_array = ft_calloc(i, sizeof(char *)); // was malloc
 	if (data->env_array == NULL)
 		return ;
 	while (temp2 != NULL)
@@ -100,22 +117,18 @@ void	set_env_array(t_data *data)
 	data->env_array[x - 1] = NULL;
 }
 
-int	dup_fds(t_data *data, int *fds, int prev_fd, int x)
+int	dup_fds(t_data *data, int *fds, int x)
 {
-	if (x == data->tokens->pipe_count)
-		printf("we have our loackable what is data i = %d\n", data->i);
 	if (x > 0)
 	{
-		printf("dup in\n");	
-		if (dup2(prev_fd, STDIN_FILENO) == -1)
+		if (dup2(data->prev_fd, STDIN_FILENO) == -1)
 		{
-			printf("dup of prev failed\n"); // change error message
+			perror("dup of prev failed\n");
 			exit(1);
 		}
 	}
 	if (x < data->tokens->pipe_count)
 	{
-		printf("dup out\n");
 		if (dup2(fds[1], STDOUT_FILENO) == -1)
 		{
 			printf("dup of fds[1] failed\n"); // change error message
@@ -124,7 +137,7 @@ int	dup_fds(t_data *data, int *fds, int prev_fd, int x)
 	}
 	close(fds[0]);
 	close(fds[1]);
-	if (prev_fd != -1)
-		close(prev_fd);
+	if (data->prev_fd != -1)
+		close(data->prev_fd);
 	return (0);
 }
