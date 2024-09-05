@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/28 08:42:39 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/05 13:06:28 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	exec_builtins(t_data data, char *cmd)
 	else if (ft_strncmp(cmd, "unset", 6) == 0)
 		ft_unset(&envs, tokens->args[1]);
 	else if (ft_strncmp(cmd, "echo", 5) == 0)
-		ft_echo(&data, tokens->args);
+		ft_echo(tokens->args);
 	else if (ft_strncmp(cmd, "env", 4) == 0)
 		ft_env(&data);
 	return (0);
@@ -64,7 +64,9 @@ int	handle_line(t_data data, t_tokens *tokens)
 	{
 		// MARK
 		// printf("redir count = %d\n", tokens->redirect_count);
-		if (tokens->pipe_count == 0 && tokens->redirect_count == 0 && is_builtins(tokens->args[data.i]) == 1)
+		if (data.i == 0 && tokens->args[data.i][0] == '<')
+			data.i += 2;
+		else if (tokens->pipe_count == 0 && tokens->redirect_count == 0 && is_builtins(tokens->args[data.i]) == 1)
 		{
 			// printf("stepping into exec_builtins\n");
 			exec_builtins(data, tokens->args[data.i]);
@@ -73,7 +75,6 @@ int	handle_line(t_data data, t_tokens *tokens)
 		{
 			call_cmd_error(tokens->args[data.i], NULL, "command not found end\n", -10);
 		}
-		//printf("THIS IS END OF HANDLE_LINE\n");
 		data.i++;
 	}
 	return (0);

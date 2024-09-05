@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/04 14:24:22 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/05 13:05:52 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int	child(t_data *data, int *fds, int x, int flag)
 	if (data->child[data->child_i] == 0)
 	{
 		dup_fds(data, fds, x);
-		apply_redirections(data, data->tokens, x);
+		redirect_helper(data->tokens, x);
+		// apply_redirections(data, data->tokens, x);
 		if (flag == 1)
 		{
 			exec_builtins(*data, data->tokens->args[data->i]);
@@ -54,6 +55,8 @@ int	child(t_data *data, int *fds, int x, int flag)
 
 int	send_to_child(t_data *data, int fds[2], int x)
 {
+	// if (data->tokens->args[data->i][0] == '<')
+	// 	data->i += 2; // fix segfault, if following is null, exit.
 	if (is_builtins(data->tokens->args[data->i]) == 1){
 		data->builtin_marker = true;
 		child(data, fds, x, 1);
@@ -149,9 +152,7 @@ int	pipe_fork(t_data *data)
 int	simple_fork(t_data *data)
 {
 	int	status;
-	//	int	flag;
 
-	//	flag = 0;
 	status = 0;
 	data->pid = fork();
 	if (data->pid == -1)
@@ -163,7 +164,8 @@ int	simple_fork(t_data *data)
 	{	
 		if (data->tokens->redirect_count >= 1) // define tems better?
 		{
-			apply_redirections(data, data->tokens, 0);// char redir
+			redirect_helper(data->tokens, 0);
+			// apply_redirections(data, data->tokens, 0);// char redir
 		}
 		if (execve(data->tmp->filename, data->tmp->ex_arr, data->env_array) == -1)
 			ft_printf("exceve fail\n");

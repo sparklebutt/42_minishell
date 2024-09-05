@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/04 14:33:10 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:34:35 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ typedef struct s_tokens
 	char	**args; // malloced
 	int		quote; // 1 = single, 2 = double
 
+	char **heredoc;
+	char	*here_file;
+	bool	here_check;
+
 	int		array_count;
 	int		pipe_count;
 	int		redirect_count;
@@ -58,6 +62,7 @@ typedef struct s_tokens
 	int		out_array_count;
 	// above to replace lower
 	char	*input_file;   // For < redirection
+	
 	char	*output_file;  // For > and >> redirection
 
 	bool	expandable;
@@ -147,7 +152,7 @@ int		ft_pwd(t_data *data, t_env *envs);
 t_env	*fill_old_pwd(t_data *data, t_env *env, char *temp_path);
 int		ft_exit(char *cmd, t_tokens *tokens); 
 void	ft_cd(t_data *data, t_env *envs);
-void	ft_echo(t_data *data, char **args);
+void	ft_echo(char **args);
 void	ft_env(t_data *data);
 void	ft_export(t_data *data);
 void	handle_arg(t_data *data, int arg_i, t_tokens *tokens);
@@ -187,6 +192,11 @@ int		is_builtins(char *cmd);
 int		exec_builtins(t_data data, char *cmd);
 t_env	*init(t_data *data);
 t_env	*create_env_list(t_data *data);
+int input_helper(t_tokens *tokens, int fd, int i);
+int output_helper(t_tokens *tokens, int fd, int i, int x);
+void heredoc_loop(t_tokens *tokens, char *eof);
+int parse_heredoc(char **args);
+
 
 // forking
 int		simple_fork(t_data *data);

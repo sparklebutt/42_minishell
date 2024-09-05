@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+         #
+#    By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/09/03 14:28:23 by araveala         ###   ########.fr        #
+#    Updated: 2024/09/05 11:17:08 by vkettune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ PAR_FILES = parsers.c parsing_not.c pipe_parsing.c quotes_parsing.c check_path.c
 
 UTIL_FILES = error_handling.c free_things.c ft_split_adv.c signals.c ft_split_expansions.c
 
-FILES = main.c init.c handle_line.c forking.c forking_utils.c redirects.c ft_substr_adv.c
+FILES = main.c init.c handle_line.c forking.c forking_utils.c redirects.c ft_substr_adv.c redir_helper.c heredoc.c
 
 CMD = $(addprefix cmds/, $(CMD_FILES))
 ENV = $(addprefix env/, $(ENV_FILES))
