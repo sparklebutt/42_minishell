@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   forking_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
 /*   Updated: 2024/09/06 15:43:38 by araveala         ###   ########.fr       */
@@ -12,22 +12,6 @@
 
 #include "minishell.h"
 
-/*~~~ Here we set the null terminated array for exceve()'s second parameter,
-this which contains the cmd, any flag and or argument that would go with the excecutable. ~~~*/
-/*static int is_fd_open(int fd) {
-	if (isatty(fd))
-	{
-		printf("fd is a terminal , so open?\n");
-		return (1);
-	}
-	else
-	{
-		printf("fd is a notterminal , so cosed?\n");	
-		return (-1);
-	}
-	return (0);
-//    return fcntl(fd, F_GETFD) != -1 || errno != EBADF;
-}*/
 int	set_array(t_data *data)
 {
 	int i = 0; 
@@ -39,9 +23,9 @@ int	set_array(t_data *data)
 		i++;
 		data->i++;
 	}
+	// printf("is it redir? %d\n", is_redirect(data->tokens->args[data->i]));
 	if (data->tokens->args[data->i] != NULL && is_redirect(data->tokens->args[data->i]) > 0)
 	{
-	//	printf("ret of is dir = %d\n", is_redirect(data->tokens->args[data->i]));
 		if (is_redirect(data->tokens->args[data->i]) == 1)
 		{
 			data->tmp->ex_arr[1] = data->tokens->input_file;
@@ -51,9 +35,14 @@ int	set_array(t_data *data)
 		{
 		 	if (data->tokens->input_file != NULL)
 			{	
-				///printf("this shouod be putting it in now = %s\n", data->tokens->args[data->i]);
+				//printf("this shouod be putting it in now = %s\n", data->tokens->args[data->i]);
 				//data->tmp->ex_arr[1] = data->tokens->args[data->i];
 				data->tmp->ex_arr[1] = data->tokens->output_files[data->x];
+				data->i += 2;
+			}
+			else if (data->tokens->heredoc[0] != NULL)
+			{
+				data->tmp->ex_arr[1] = data->tokens->heredoc[0]; // replace with heredoc tempfile name!!
 				data->i += 2;
 			}
 			else
@@ -63,13 +52,11 @@ int	set_array(t_data *data)
 			}
 		}
 		else
-		{
 			data->tmp->ex_arr[1] = NULL;
-		}
 	}
 	else if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|' && data->tokens->args[data->i][0])
 	{
-		printf("did it do the thing = %s\n", data->tokens->args[data->i]);
+		// printf("did it do the thing = %s\n", data->tokens->args[data->i]);
 		data->tmp->ex_arr[1] = data->tokens->args[data->i];
 		i++;
 		data->i++;

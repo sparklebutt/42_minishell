@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   find_from_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:02:41 by vkettune          #+#    #+#             */
 /*   Updated: 2024/09/06 15:20:51 by araveala         ###   ########.fr       */
@@ -19,13 +19,10 @@ char *find_keys_value(t_env *envs, char *key)
 	temp = envs;
 	while (temp != NULL)
 	{
-		// ft_printf("key: %s\n", temp->key); // remove
-		// ft_printf("value: %s\n", temp->value); // remove
 		if (ft_strncmp(temp->key, key, ft_strlen(key)) == 0)
 			return (temp->value);
 		temp = temp->next;
 	}
-	// printf("error!!!! null\n");
 	return (0);
 }
 
@@ -38,7 +35,6 @@ int	find_node_len(t_data *data)
 	temp = data->env;
 	while (temp != NULL)
 	{
-		//printf("what is temp key = %s and our i = %d\n", temp->key, i);
 		temp = temp->next;
 		i++;
 	}
@@ -58,8 +54,6 @@ int	find_node(t_env *envs, char *key, t_data *data)
 		if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) == 0
 			&& (ft_strlen(temp->key) == ft_strlen(key)))
 		{
-			// ft_printf("key found\n"); // remove
-			//free_string(data->tmp->env_line); // fixed a leak
 			data->tmp->env_line = ft_strdup(temp->value); // IF REMOVED THIS BREAKS "/bin/ls"
 			return (1);
 		}
@@ -67,7 +61,6 @@ int	find_node(t_env *envs, char *key, t_data *data)
 		if (temp == NULL)
 			break;
 	}
-	// ft_printf("key not found\n");
 	return (0);
 }
 
@@ -86,7 +79,7 @@ char	*find_key(char *str)
 		return (key);
 	}
 	else
-		printf("error in finding key name\n");
+		printf("error in finding key name\n"); // change error message
 	free(key);
 	return (NULL);
 }

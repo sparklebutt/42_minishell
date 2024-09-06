@@ -6,30 +6,14 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/05 13:05:52 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 14:49:06 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// this test fucntion shows me what fds are open this will help debugging later
-/*static void list_open_fds()
-{
-	for (int fd = 0; fd < 1024; fd++)
-	{
-		if (fcntl(fd, F_GETFD) != -1)
-		{
-			printf("FD %d is open\n", fd);
-		}
-	}
-}*/
-// will try to put all fds in array prev_fd = fd[2]
-
-// signal handeling, each child gets the same signal and paret should ignore
 int	child(t_data *data, int *fds, int x, int flag)
 {	
-  	if (flag == 100) 
-	  printf("A");
 	data->child[data->child_i] = fork();
 	if (data->child[data->child_i] == -1)
 		return (error("fork", "first child failed"));
@@ -37,12 +21,16 @@ int	child(t_data *data, int *fds, int x, int flag)
 	{
 		dup_fds(data, fds, x);
 		redirect_helper(data->tokens, x);
-		// apply_redirections(data, data->tokens, x);
 		if (flag == 1)
 		{
 			exec_builtins(*data, data->tokens->args[data->i]);
 			exit(0);
 		}
+		// printf("filename = %s\n", data->tmp->filename);
+		// printf("ex_arr[0] = %s\n", data->tmp->ex_arr[0]);
+		// printf("ex_arr[1] = %s\n", data->tmp->ex_arr[1]);
+		// printf("ex_arr[2] = %s\n", data->tmp->ex_arr[2]);
+		// printf("ex_arr[3] = %s\n", data->tmp->ex_arr[3]);
 		execve(data->tmp->filename, data->tmp->ex_arr, data->env_array);
 		exit(1);
 	}
@@ -55,8 +43,6 @@ int	child(t_data *data, int *fds, int x, int flag)
 
 int	send_to_child(t_data *data, int fds[2], int x)
 {
-	// if (data->tokens->args[data->i][0] == '<')
-	// 	data->i += 2; // fix segfault, if following is null, exit.
 	if (is_builtins(data->tokens->args[data->i]) == 1){
 		data->builtin_marker = true;
 		child(data, fds, x, 1);
@@ -84,11 +70,8 @@ int	send_to_child(t_data *data, int fds[2], int x)
 			child(data, fds, x, 2);
 			data->i += 2;
 		}
-		//if (data->builtin_marker == true)
-		//	data->builtin_marker = false;
 		else if (data->i == data->tokens->array_count - 1)
 		{
-			/*~~ this check is to see if we are on our last on the list of tokens~~*/
 			if (data->tokens->args[data->i] == NULL)
 				child(data, fds, x, 3);
 			if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] == '|')
@@ -148,33 +131,3 @@ int	pipe_fork(t_data *data)
 	return (0);
 }
 
-/*~~ this is not handleing if bultins at all ~~*/
-int	simple_fork(t_data *data)
-{
-	int	status;
-
-	status = 0;
-	data->pid = fork();
-	if (data->pid == -1)
-	{
-		ft_printf("fork error\n"); // change error message
-		exit(1);
-	}
-	if (data->pid == 0)
-	{	
-		if (data->tokens->redirect_count >= 1) // define tems better?
-		{
-			redirect_helper(data->tokens, 0);
-			// apply_redirections(data, data->tokens, 0);// char redir
-		}
-		if (execve(data->tmp->filename, data->tmp->ex_arr, data->env_array) == -1)
-			ft_printf("exceve fail\n");
-		exit(1); // should this be different kind of error handelin
-	}
-	waitpid(data->pid, &status, 0);
-	return (0);
-}
-/*~~ these may not be needed anymore ~~*/
-// if (!isatty(STDOUT_FILENO))
-// dprintf(2, "Non-interactive mode\n");
-//	list_open_fds();

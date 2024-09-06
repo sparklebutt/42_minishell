@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable_expansions.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:03:23 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/04 17:38:57 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 14:51:56 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ int	find_key_len(char *str, int start)
 	while (str[len] && !(str[len] == ' ' || str[len] == '\0'
 		|| str[len] == '"' || str[len] == '\'' || str[len] == '$'))
 		len++;
-	return (len - start - 1); // Length excluding $
+	return (len - start - 1);
 }
 
-char	*new_str(char *str, char *value, int start, int end)//, t_data *data)
+char	*new_str(char *str, char *value, int start, int end)
 {
 	int		new_len;
 	char	*new_str;
@@ -33,7 +33,6 @@ char	*new_str(char *str, char *value, int start, int end)//, t_data *data)
 		return NULL;
 	ft_strncpy(new_str, str, start);
 	ft_strcpy(new_str + start, value);
-	//data->prev_len = ft_strlen(new_str);
 	ft_strcpy(new_str + start + ft_strlen(value), str + end);
 	return (new_str);
 }
@@ -65,15 +64,11 @@ char	*replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 		return NULL;
 	ft_strncpy(temp_key, arg + start + 1, key_len);
 	temp_key[key_len] = '\0';
-	//free_string(new_arg);
 	if (find_node(envs, temp_key, data) == 1)
 	{
 		value = find_keys_value(envs, temp_key);
 		if (value != NULL)
-		{
-			// this leaks no idea why
 			new_arg = new_str(arg, value, start, start + key_len + 1);
-		}
 		else
 			new_arg = remove_key(arg, start, start + key_len + 1);
 	}
@@ -92,7 +87,7 @@ char	*look_if_expansions(t_data *data, t_env *envs, char *arg, int i)
 		{
 			arg = replace_expansion(data, envs, arg, i);
 			if (arg[i + 1] == '"' || arg[i + 1] == '\'')
-				return (arg);//scary
+				return (arg);
 		}
 		i++;
 	}
