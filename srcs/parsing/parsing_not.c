@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/06 12:31:13 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 14:53:39 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,12 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	if (check_open_quotes(tokens, 0, 0) < 0)
 		return (1);
 	expansion_parser(tokens, data);
+	// if (expansion_parser(tokens, data) == -1)
+		// free up to this point
 	pipe_collector(tokens, tokens->args);
-	create_redir_array(tokens);  // only mallocing
+	create_redir_array(tokens);
+	// if (create_redir_array(tokens) == -1) // only mallocing
+		// free up to this point  
 	redirect_collector(tokens, tokens->args, 0);
 	if (parse_redirections(data, tokens, tokens->args, 0) == 1)
 	{
@@ -96,33 +100,11 @@ int	null_check(char *str1, t_env *str2, char *str3) // might not be needed
 	return (1);
 }
 
-/*~~ stick this in fork_utils ~~*/
 int	send_to_forks(t_data *data)
 {
-	// MARK
-	//if (data->tokens->pipe_count > 0)
-	//{
-		if (pipe_fork(data) == -1)
-			return (-1);
-		return (2);
-	//}
-	/**~~ we might be able to remove the lower code completley , is it worth the work **/
-	/*else if (data->tokens->pipe_count == 0)
-	{
-		
-		//if (is_builtins(data->tokens->args[data->i]) != 1)
-	//	{		 //	exec_builtins(*data, data->tokens->args[data->i]);
-			//new code
-		if (check_path(data->tmp->env_line, 1, data, data->i) == 0)
-			return (-1);
-		set_array(data);
-	//	}
-		set_env_array(data);
-		if (simple_fork(data) == 0)
-			ft_printf(""); // add error handling here
-		free_array(data->env_array);
-	}
-	return (1);*/
+	if (pipe_fork(data) == -1)
+		return (-1);
+	return (2);
 }
 
 int	find_passage(t_data *all, char *string, int divert)

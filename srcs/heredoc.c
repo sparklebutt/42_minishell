@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 04:44:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 12:55:10 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 14:45:27 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,12 @@ int parse_heredoc(char **args) // add more args
 		if (args[i] != 0 && ft_strncmp(args[i], "<<", 2) == 0)
 		{
 			i++;
-			// create file here
-			if (args[i] != 0) // check if there is a eof
+			if (args[i] != 0)
 				return (1);
 		}
 	}
 	return (0);
 }
-
-
-// usage: heredoc_loop("eof"); 
-//  note: clean quotes before adding eof to heredoc_loop
-// e.g.: 
-// 
-// while (tokens->args[i])
-// {
-// 	if (ft_strncmp(tokens->args[i], "<<", 2) == 0)
-// 		heredoc_loop(tokens->args[i + 1]);
-// 	i++;
-// }
 
 char **set_into_heredoc_array(t_data *data, char **heredoc, char *line)
 {
@@ -60,19 +47,15 @@ char **set_into_heredoc_array(t_data *data, char **heredoc, char *line)
 		i++;
 	}
 	ft_strlcpy(line, line, ft_strlen(line));
-	// printf("line = |%s|\n", line);
 	if (ft_strchr(line, '$') != NULL)
-	{
-		// printf("does it go in here???\n");
 		new_heredoc[i] = look_if_expansions(data, data->env, ft_strdup(line), 0);
-		// printf("out = %s\n", new_heredoc[i]);
-	}
 	else
 		new_heredoc[i] = ft_strdup(line);
 	new_heredoc[i + 1] = 0;
 	free(heredoc);
 	return (new_heredoc);
 }
+
 
 void heredoc_loop(t_data *data, t_tokens *tokens, char *eof)
 {
