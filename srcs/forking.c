@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/06 14:49:06 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:48:33 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,17 @@ int	child(t_data *data, int *fds, int x, int flag)
 	if (data->child[data->child_i] == 0)
 	{
 		dup_fds(data, fds, x);
-		redirect_helper(data->tokens, x);
+		if (redirect_helper(data->tokens, x) != 0)
+			exit(exit_code(0,0));
 		if (flag == 1)
 		{
 			exec_builtins(*data, data->tokens->args[data->i]);
-			exit(0);
+			// dprintf(2, "did the exit code atleast change in here = %d\n", exit_code(0,0));
+			exit(exit_code(0, 0));
 		}
-		// printf("filename = %s\n", data->tmp->filename);
-		// printf("ex_arr[0] = %s\n", data->tmp->ex_arr[0]);
-		// printf("ex_arr[1] = %s\n", data->tmp->ex_arr[1]);
-		// printf("ex_arr[2] = %s\n", data->tmp->ex_arr[2]);
-		// printf("ex_arr[3] = %s\n", data->tmp->ex_arr[3]);
+		// printf("execution time check = %s\n", data->tmp->filename);
 		execve(data->tmp->filename, data->tmp->ex_arr, data->env_array);
-		exit(1);
+		exit(exit_code(0, 0));
 	}
 	data->child_i++;
 	if (data->prev_fd != -1)
@@ -43,9 +41,11 @@ int	child(t_data *data, int *fds, int x, int flag)
 
 int	send_to_child(t_data *data, int fds[2], int x)
 {
-	if (is_builtins(data->tokens->args[data->i]) == 1){
+	if (is_builtins(data->tokens->args[data->i]) == 1)
+	{
 		data->builtin_marker = true;
 		child(data, fds, x, 1);
+		//dprintf(2, "after child\n");
 		data->i++;
 		while (data->tokens->args[data->i] != NULL)
 		{
@@ -60,8 +60,8 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	else if (check_path(data->tmp->env_line, 1, data, data->i) != 0)
 	{
 		set_array(data);
-		if (data->builtin_marker == false && data->tokens->args[data->i - 1] != NULL && data->tokens->args[data->i - 1][0] == '>')
-		{
+		if (data->i > 0 && data->builtin_marker == false && data->tokens->args[data->i - 1] != NULL && data->tokens->args[data->i - 1][0] == '>')
+		{	
 			child(data, fds, x, 2);
 			data->i++;
 		}
@@ -89,7 +89,10 @@ int	send_to_child(t_data *data, int fds[2], int x)
 			data->i++;
 	}
 	else
+	{
+		printf("send to child -1\n");
 		return (-1);
+	}
 	return (0);
 }
 /*~~ pipes and forks , set_env_array could be moved to every instance of env manipulation instead
@@ -127,7 +130,13 @@ int	pipe_fork(t_data *data)
 		x--;
 		data->child_i--;
 	}
+	status = (status >> 8) & 0xFF;
+	exit_code(1, status);	
+	//alternative 
+//	if (status == 256)
+//		status = 1;
+	/*~~this is how to handle forced overflow for the xit code , as exit code gives bytes not an integer~~*/
+	printf("lets look at status for exit codes, pipe_fork= %d\n", status);
 	free_array(data->env_array);
 	return (0);
 }
-

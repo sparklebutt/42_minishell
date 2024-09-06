@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/04 13:19:42 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:20:41 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ size_t	total_words_c(char const *s, char c, t_data *data)
 			}
 			i++;
 		}
-		//marking the new code###
 		else if (is_char_redirect(s[i]) > 0)
 		{
 			test++;
@@ -87,13 +86,11 @@ size_t	total_words_c(char const *s, char c, t_data *data)
 			words++;
 			i += fancy_strlen(s, c, i, data) - i; // - 1?		
 		}
-		//marking the new code###	
 		else if (s[i] != c)
 		{
 			words++;
 			i += fancy_strlen(s, c, i, data) - i;
 		}
-		//i++;
 	}
 	return (words + test);
 }

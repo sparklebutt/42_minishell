@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 15:34:23 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:50:26 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,8 @@
 int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 {
 	*cmd_len = ft_strlen(all->tokens->args[x]);
-
 	if (all->tokens->args[x][0] == '.')
-	{
-		// printf("what the fuck\n");
 		return (3);
-	}
 	if (all->tokens->args[x][0] == '/')
 	{
 		//if (handle_absolute_path(all, x, NULL))
@@ -28,15 +24,9 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 		return (handle_absolute_path(all, x, NULL)); // not allowed
 	}
 	if (all->tokens->args[x][0] != '/')
-	{
-		//free_string(*suffix);
-		//suffix = NULL; // this fixed alot of leaks but broke code.. something wrong here
-		// mnight nt be great to defrence all the time
-		//if (all->tokens->args[x] != NULL)
 		*suffix = ft_strjoin("/", all->tokens->args[x]);
-	}
 	if (*suffix == NULL || *cmd_len == 0)
-		return (free_extra_return_function(*suffix, 0)); // not alowed
+		return (free_extra_return_function(*suffix, 0));//, 0); // not alowed?
 	return (2);
 }
 
@@ -96,6 +86,9 @@ static void	split_diversion(t_data *data, int divert, char *string)
 	}
 }
 
+/*~~ checking access and creating sub tokens for easy access in children
+res = 3 means we are looking into current directory so we do not need to check_dir
+but file muts be checked, this is eg so that minishell can run inside minishell~~*/
 int	check_path(char *string, int divert, t_data *all, int x)
 {
 	char	*suffix;
@@ -117,9 +110,9 @@ int	check_path(char *string, int divert, t_data *all, int x)
 		return (res);
 	split_diversion(all, divert, string);
 	found = iterate_and_match(suffix, cmd_len, all, x);
-	if (found == 0) // function == 0
+	if (found == 0)
 	{
-		//printf("refrence of failure token = %s\n", all->tokens->args[x]);
+		// printf("refrence of failure token = %s\n", all->tokens->args[x]);
 		return (0);
 	}
 	res = cleanup_and_finalize(suffix, all, found);

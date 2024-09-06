@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 15:30:23 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:52:46 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	ft_cd(t_data *data, t_env *envs)
 	char	*temp2;
 	int i = data->i; // data->i is the new iterator added during pipe handeling
 	
+	temp = NULL;
+	temp2 = NULL;
 	if (ft_strncmp(data->tokens->args[i], "cd", 3) == 0
 		&& data->tokens->args[i + 1] == NULL)
 	{
@@ -77,19 +79,28 @@ int	check_file(char *str)
 
 int	check_dir(char *str)
 {
+	//struct stat			file_dir;
 	struct dirent		*dp;
 	DIR					*test;
 
 	test = NULL;
+	
 	if (access(str, X_OK) == -1)
+	{
+		printf("access failed for string ceck dir= %s\n", str);
 		return(0);
+	}
 	else
 		test = opendir(str);
 	if (test == NULL)
+	{
+		printf("open opened null\n");
 		return (0);
+	}
 	dp = readdir(test);
 	if (dp == NULL)
 	{
+		printf("read failed = null\n");
 		closedir(test);
 		return (0);
 	}

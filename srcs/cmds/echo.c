@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:05:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/05 11:22:59 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:01:58 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ int if_break(char *str)
 int no_newline(char **args, int i)
 {
 	int j;
-	
+
 	while (args[i] && args[i][0] == '-' && args[i][1] == 'n')
 	{
 		j = 2;
-		while (args[i][j] && args[i][j] == 'n')
+		while (args[i] && args[i][j] && args[i][j] == 'n')
 			j++;
 		if (args[i][j] == '\0')
 			i++;
@@ -40,13 +40,14 @@ int no_newline(char **args, int i)
 	return (i);
 }
 
-void	ft_echo(char **args)
+void	ft_echo(t_data *data, char **args) 
 {
 	int i;
 	int nl;
 	
 	nl = no_newline(args, 1);
-	i = nl;
+	i = data->i + nl; // mui importanto, no remove!
+	/*~~ this skips past the echo itself, since we already now we have echo~~*/
 	while (args[i])
 	{
 		if (if_break(args[i]) == 1)

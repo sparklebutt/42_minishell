@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/06 15:43:38 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:43:39 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	set_array(t_data *data)
 {
 	int i = 0; 
+	
 	if (data->tmp->filename == NULL || data->tokens->args[data->i] == NULL)
 		return (-1);
 	if (data->tmp->filename != NULL)
@@ -54,7 +55,9 @@ int	set_array(t_data *data)
 		else
 			data->tmp->ex_arr[1] = NULL;
 	}
-	else if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|' && data->tokens->args[data->i][0])
+	//else if (data->tokens->args[data->i][0] == '|')
+	//	dprintf(2, "the fuck\n");
+	else if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|' && data->tokens->args[data->i][0]) // && is_redirect(data->tokens->args[data->i]) == 0)
 	{
 		// printf("did it do the thing = %s\n", data->tokens->args[data->i]);
 		data->tmp->ex_arr[1] = data->tokens->args[data->i];

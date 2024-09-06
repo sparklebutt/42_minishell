@@ -33,7 +33,7 @@ int	ft_count_exp_array(const char *s)
             }
             count++;    
         }
-        else //if (*s && *s != '\'' && *s != '"')
+        else
         {
             while (*s && *s != '\'' && *s != '"')
                 s++;
@@ -73,7 +73,6 @@ static int	ft_count_sub_len(const char *s, int sublen)
            save++;
            sublen++;
         }
-        //save++;
         sublen++;
     }
     else
@@ -89,12 +88,8 @@ static int	ft_count_sub_len(const char *s, int sublen)
 
 static char	**free_loop(char **arr, int index)
 {
-	//int	i;
-
-	//i = 0;
     while (--index)
-	//while (arr[index])
-		free(arr[index]);//[i++]);
+		free(arr[index]);
 	free(arr);
 	return (NULL);
 }

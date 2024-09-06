@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/06 14:53:39 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:51:54 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	redirect_collector(tokens, tokens->args, 0);
 	if (parse_redirections(data, tokens, tokens->args, 0) == 1)
 	{
-		//printf("following process\n");
+		printf("following process\n");
 		return (1);
 	}
 	tokens->array_count = x; // was - 1
@@ -112,7 +112,7 @@ int	find_passage(t_data *all, char *string, int divert)
 	// printf("THIS IS IN FIND_PASSAGE\n");
 	if (null_check(all->env->key, all->env, string) != 1)
 	{
-		// printf("ret - 1 null check\n");
+		printf("ret - 1 null check\n");
 		return (-1);
 	}
 	if (find_node(all->env, string, all) == 1 && all->tmp->env_line != NULL)
@@ -121,8 +121,8 @@ int	find_passage(t_data *all, char *string, int divert)
 		{
 			if (check_dir(all->tmp->env_line) == 0)
 			{
-				// printf("ret - 1 cechk dir stuff\n");	
-				return (free_extra_return_function(all->tmp->env_line, -1)); // not allowed
+				printf("ret - 1 cechk dir stuff\n");	
+				return (free_extra_return_function(all->tmp->env_line, -1));
 			}
 			return (1);
 		}
@@ -130,7 +130,7 @@ int	find_passage(t_data *all, char *string, int divert)
 		{	
 			if (send_to_forks(all) == -1)
 			{
-				// printf("ret - 1 send to forks\n");
+				printf("ret - 1 send to forks\n");
 				return (-1);
 			}
 		}

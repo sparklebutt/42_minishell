@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/27 15:08:10 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:02:16 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_env(t_data *data)
 	else
 	{
 		if (data->tokens->args[data->i + 1] != NULL && data->tokens->args[data->i + 1][0] != '|')
-		{ // what does this if statement do
+		{ 
 			if (check_dir(data->tokens->args[data->i + 1]) == 0) {
 				cmd_error("env", data->tokens->args[data->i + 1]);
 				return ;
@@ -36,7 +36,7 @@ void	ft_env(t_data *data)
 		}
 		while (env != NULL)
 		{
-			printf("%s=%s\n", env->key, env->value); // write(2, "printing env\n", 13);
+			printf("%s=%s\n", env->key, env->value);
 			env = env->next;
 		}
 	}

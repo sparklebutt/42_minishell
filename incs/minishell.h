@@ -3,15 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 12:32:06 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:54:15 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+//#endif
+//#ifndef ERROR_CODE
+//# define ERROR_CODE 0
+# define NOT_VALID "not a valid identifier\n"
+# define NO_CMD "command not found\n"
 
 # include <termios.h>
 # include <readline/readline.h>
@@ -27,14 +32,6 @@
 
 # include "libft.h"
 
-/*typedef struct s_re
-{
-	int				fd;
-	char 			*file;
-	char			*direction; //in out or append 
-	struct s_re 	*next;
-}	t_re;
-*/
 typedef struct s_env
 {
 	char			*key;
@@ -56,7 +53,7 @@ typedef struct s_tokens
 	int		pipe_count;
 	int		redirect_count;
 	int		dollar_count;
-	int		dollar_num;
+	//int		dollar_num;
 	char	**input_files;  // For < redirection malloced
 	char	**output_files;  // For > and >> redirection malloced
 	int		out_array_count;
@@ -65,7 +62,7 @@ typedef struct s_tokens
 	
 	char	*output_file;  // For > and >> redirection
 
-	bool	expandable;
+	//bool	expandable;
 	bool	redirect_in;
 	bool	redirect_out;
 	bool	redirect_append;
@@ -93,7 +90,7 @@ typedef struct s_data
 {
 	int			i;
 	int			x; // this is our counter up to pipe count, "pipe_loop"
-	//int			prev_len; //maybe put in tokens
+	int			error_code;
 	char		*prompt;
 	t_env		*env;
 	//t_re		*redir; //redirs linked list
@@ -152,7 +149,7 @@ int		ft_pwd(t_data *data, t_env *envs);
 t_env	*fill_old_pwd(t_data *data, t_env *env, char *temp_path);
 int		ft_exit(char *cmd, t_tokens *tokens); 
 void	ft_cd(t_data *data, t_env *envs);
-void	ft_echo(char **args);
+void	ft_echo(t_data *data, char **args); //t_data *data,
 void	ft_env(t_data *data);
 void	ft_export(t_data *data);
 void	handle_arg(t_data *data, int arg_i, t_tokens *tokens);
@@ -166,7 +163,8 @@ int		error(char *cmd, char *error);
 void	cmd_error(char *cmd, char *arg);
 t_env	*call_env_error(char *cmd, char *arg);
 int		call_cmd_error(char *cmd, char *arg, char *msg, int ret_value);
-void	collective_free(char *str1, char *str2, char **array);
+//void	collective_free(char *str1, char *str2, char **array);
+void	not_perror(char *cmd, char *arg, char *msg);
 
 // free things
 void	free_array(char **array);
@@ -216,14 +214,13 @@ bool	confirm_expansion(char *string, int len, int x);
 int		simple_quote_check(char *s, int i);
 int is_char_redirect(char arg);
 int	clean_rest_of_quotes(t_data *data, int i, int len);
-//int	simple_fork_a(t_data *data);
-//int	insert_node_re(t_re **redir, char *direction, char *file);
-int	redirect_helper(t_tokens *tokens, int x); // t_data *data;
+int	redirect_helper(t_tokens *tokens, int x);
 void create_redir_array(t_tokens *tokens);
-//char	*ft_substr_adv(t_data *data, char const *s, unsigned int start, size_t l);
 void		dollar_counter(char *string, t_tokens *tokens);
 char	**ft_split_expansions(t_tokens *tokens, char const *s); // 
 int	ft_count_exp_array(const char *s);
 int	check_file(char *str);
-//at 70 functions, lets aim for 69
+
+int	exit_code(int flag, int num);
+//at 79 functions, lets aim for 69
 #endif

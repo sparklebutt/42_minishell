@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:59:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/04 18:17:12 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:20:14 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	free_string(char *string)
 {
 	if (string != NULL)
 	{
+		//printf("we free string\n");
 		free(string);
 		string = NULL;
 	}
@@ -64,13 +65,13 @@ void	free_nodes(t_env *node)
 
 int	error(char *cmd, char *error)
 {
-	//printf("is it us\n");
+	exit_code(1, 1);
 	ft_printf("minishell: %s: %s\n", cmd, error);
 	//free_string(error);
 	return (1);
 }
 
-void	collective_free(char *str1, char *str2, char **array) // maybe not needed, will make function amount to be correct
+/*void	collective_free(char *str1, char *str2, char **array) // maybe not needed, will make function amount to be correct
 {
 	free_array(array);
 	free_string(str1);
@@ -78,4 +79,4 @@ void	collective_free(char *str1, char *str2, char **array) // maybe not needed, 
 	array = NULL;
 	str1 = NULL;
 	str2 = NULL;
-}
+}*/

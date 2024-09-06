@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/06 14:53:58 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:51:32 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,6 @@ static char *array_to_string(char **array)
 	i = 0;
 	new_string = NULL;
 	new_string_len = 0;
-	//if (array == NULL)
-	//{
-	//	printf("return error ?\n");
-	//	return (NULL);
-	//}
 	while (array[index] != NULL)
 	{
 		new_string_len += ft_strlen(array[index]);
@@ -57,7 +52,7 @@ void		dollar_counter(char *string, t_tokens *tokens)
 	
 	i = 0;
 	tokens->dollar_count = 0;
-	tokens->dollar_num = 0;
+	//tokens->dollar_num = 0;
 	while (string[i])
 	{
 		if (string[i] == '$')
@@ -106,7 +101,7 @@ int		simple_quote_check(char *s, int i)
 	}
 	while (s[i])
 	{
-		if (s[i] == '$' && (s[i + 1] == '\'' || (s[i + 1] == '"') || (counter < 2 && s[i + 1] == '$'))) //
+		if (s[i] == '$' && (s[i + 1] == '\'' || (s[i + 1] == '"') || (counter < 2 && s[i + 1] == '$')))
 			return (-1);
 		if (s[i] == '$' && counter < 2)
 		{
@@ -194,7 +189,6 @@ void	expansion_parser(t_tokens *tokens, t_data *data)
 	len = 0;
 	index = 0;
 	data->tmp->exp_array = NULL;
-	tokens->expandable = false;
 	data->simple = true;
 	while (tokens->args[i])
 	{	
@@ -218,38 +212,23 @@ void	expansion_parser(t_tokens *tokens, t_data *data)
 				{
 					len = ft_strlen(data->tmp->exp_array[index]);
 					if (ft_strchr(data->tmp->exp_array[index], '$') == NULL)
-					{
-						tokens->expandable = false;
 						clean_rest_of_quotes(data, index, len);
-					}
 					else if (confirm_expansion(data->tmp->exp_array[index], len, 0) == true)
-					{
-						tokens->expandable = true;
 						handle_expansion(data, len - 1, index, new);
-					}
 					else
-					{		
-						tokens->expandable = false;
 						clean_rest_of_quotes(data, index, len);
-					}
 					index++;
-					tokens->expandable = false;
-					tokens->dollar_num++;
+					//tokens->dollar_num++;
 				}
 			}
 			else if (confirm_expansion(tokens->args[i], len, 0) == true)
 			{
-				tokens->expandable = true;
 				data->simple = true;
 				handle_expansion(data, len - 1, i, new);
 			}
 			else if (tokens->args[i])
-			{		
-				tokens->expandable = false;
 				clean_rest_of_quotes(data, i, len);
-			}
 			data->simple = false;
-			tokens->expandable = false;	
 		}
 		else if (tokens->args[i] != NULL && find_redirect(tokens->args[i]) == 0 && tokens->dollar_count == 0)
 		{
@@ -263,7 +242,6 @@ void	expansion_parser(t_tokens *tokens, t_data *data)
 			data->simple = true;
 			free_array(data->tmp->exp_array);
 		}
-		tokens->expandable = false;
 		i++;
 	}
 	// return (0);
