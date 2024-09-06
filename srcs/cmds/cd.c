@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/09 20:42:12 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 15:30:23 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,24 @@ void	ft_cd(t_data *data, t_env *envs)
 		data->path = temp;
 	if (ft_strncmp(data->tokens->args[i + 1], "/", 1) != 0)
 		data->path = ft_strjoin(temp, "/");
-	free(temp);
-	printf("I LOVE CHEESE\n");
+	free_string(temp);
+	//printf("I LOVE CHEESE\n");
 	temp2 = ft_strdup(data->tokens->args[i + 1]);
 	temp = ft_strjoin(data->path, temp2);
 	i++;
 	free(temp2);
 	printf("temp = %s\n", temp);
 	change_dir(data, envs, temp);
+}
+
+int	check_file(char *str)
+{
+	if (access(str, X_OK) == -1)
+	{
+		printf("access failed for string = %s\n", str);
+		return(1);
+	}
+	return (0);	
 }
 
 int	check_dir(char *str)

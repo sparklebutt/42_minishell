@@ -1,0 +1,1 @@
+#!/bin/bash#     simple redirection and pipes tests#------------------------------------------# fill outls -l | grep .txt > outcat out#test appendingecho "helloooooooooo" >> outcat < outcat < meow.txt > outcat out

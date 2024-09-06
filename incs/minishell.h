@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/05 11:34:35 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 15:30:45 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,5 +224,6 @@ void create_redir_array(t_tokens *tokens);
 void		dollar_counter(char *string, t_tokens *tokens);
 char	**ft_split_expansions(t_tokens *tokens, char const *s); // 
 int	ft_count_exp_array(const char *s);
+int	check_file(char *str);
 //at 70 functions, lets aim for 69
 #endif
