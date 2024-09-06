@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 16:04:47 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:50:26 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	cleanup_and_finalize(char *suffix, t_data *all, int found)
 	return (0);
 }
 
-/*~~ divert 1 = PATH divert 2 = HOME , hardcoded env requirements~~*/
+/*~~ divert 1 = PATH, divert 2 = HOME~~*/
 static void	split_diversion(t_data *data, int divert, char *string)
 {
 	if (divert == 1)

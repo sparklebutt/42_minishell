@@ -3,20 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/06 16:23:27 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:48:33 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// signal handeling, each child gets the same signal and paret should ignore
 int	child(t_data *data, int *fds, int x, int flag)
 {	
-  	if (flag == 100) 
-	  printf("A");
 	data->child[data->child_i] = fork();
 	if (data->child[data->child_i] == -1)
 		return (error("fork", "first child failed"));
@@ -75,9 +72,7 @@ int	send_to_child(t_data *data, int fds[2], int x)
 		}
 		else if (data->i == data->tokens->array_count - 1)
 		{
-			
-			/*~~ this check is to see if we are on our last on the list of tokens~~*/
-			if (data->tokens->args[data->i] == NULL) // was causing sg cd
+			if (data->tokens->args[data->i] == NULL)
 				child(data, fds, x, 3);
 			if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] == '|')
 				data->i++;
@@ -143,29 +138,5 @@ int	pipe_fork(t_data *data)
 	/*~~this is how to handle forced overflow for the xit code , as exit code gives bytes not an integer~~*/
 	printf("lets look at status for exit codes, pipe_fork= %d\n", status);
 	free_array(data->env_array);
-	return (0);
-}
-
-/*~~ this is not handleing if bultins at all ~~*/
-int	simple_fork(t_data *data)
-{
-	int	status;
-
-	status = 0;
-	data->pid = fork();
-	if (data->pid == -1)
-	{
-		ft_printf("fork error\n"); // change error message
-		exit(1);
-	}
-	if (data->pid == 0)
-	{	
-		if (data->tokens->redirect_count >= 1) // define tems better?
-			redirect_helper(data->tokens, 0);
-		if (execve(data->tmp->filename, data->tmp->ex_arr, data->env_array) == -1)
-			ft_printf("exceve fail\n");
-		exit(1); // should this be different kind of error handelin
-	}
-	waitpid(data->pid, &status, 0);
 	return (0);
 }

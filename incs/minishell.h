@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 16:20:06 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:54:15 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,6 @@
 
 # include "libft.h"
 
-/*typedef struct s_re
-{
-	int				fd;
-	char 			*file;
-	char			*direction; //in out or append 
-	struct s_re 	*next;
-}	t_re;
-*/
 typedef struct s_env
 {
 	char			*key;
@@ -128,7 +120,7 @@ int	handle_absolute_path(t_data *all, int x, char *path);
 int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
 int		check_path(char *string, int divert, t_data *all, int x);
 int		find_passage(t_data *all, char *string, int divert);
-int		parse_redirections(t_tokens *tokens, char **args, int i); // t_data *data;/heloooooooooooooooooooo
+int		parse_redirections(t_data *data, t_tokens *tokens, char **args, int i); // t_data *data;/heloooooooooooooooooooo
 void	apply_redirections(t_data *data, t_tokens *tokens, int x);
 void	redirect_collector(t_tokens *tokens, char **array, int i);
 int is_redirect(char *arg);
@@ -200,7 +192,7 @@ t_env	*init(t_data *data);
 t_env	*create_env_list(t_data *data);
 int input_helper(t_tokens *tokens, int fd, int i);
 int output_helper(t_tokens *tokens, int fd, int i, int x);
-void heredoc_loop(t_tokens *tokens, char *eof);
+void heredoc_loop(t_data *data, t_tokens *tokens, char *eof);
 int parse_heredoc(char **args);
 
 
@@ -228,6 +220,7 @@ void		dollar_counter(char *string, t_tokens *tokens);
 char	**ft_split_expansions(t_tokens *tokens, char const *s); // 
 int	ft_count_exp_array(const char *s);
 int	check_file(char *str);
+
 int	exit_code(int flag, int num);
 //at 79 functions, lets aim for 69
 #endif

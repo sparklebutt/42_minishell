@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 16:01:14 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:52:46 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	to_home(t_data *data, t_env *envs)
 	if(chdir(data->tmp->env_line) == 0)
 	{
 		envs = move_list(envs, "PWD");
-		//envs = fill_old_pwd(data, envs, data->tmp->filename);///change back
+		// envs = fill_old_pwd(data, envs, data->tmp->filename);///change back
 		envs = fill_old_pwd(data, envs, data->tmp->env_line);
 	}
 }
@@ -64,9 +64,9 @@ void	ft_cd(t_data *data, t_env *envs)
 	temp = ft_strjoin(data->path, temp2);
 	i++;
 	free(temp2);
-	printf("temp = %s\n", temp);
 	change_dir(data, envs, temp);
 }
+
 int	check_file(char *str)
 {
 	if (access(str, X_OK) == -1)
@@ -76,6 +76,7 @@ int	check_file(char *str)
 	}
 	return (0);	
 }
+
 int	check_dir(char *str)
 {
 	//struct stat			file_dir;

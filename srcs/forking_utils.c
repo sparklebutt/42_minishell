@@ -3,21 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   forking_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/06 15:41:46 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:43:39 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*~~~ Here we set the null terminated array for exceve()'s second parameter,
-this which contains the cmd, any flag and or argument that would go with the excecutable. ~~~*/
-
 int	set_array(t_data *data)
 {
 	int i = 0; 
+	
 	if (data->tmp->filename == NULL || data->tokens->args[data->i] == NULL)
 		return (-1);
 	if (data->tmp->filename != NULL)
@@ -26,9 +24,9 @@ int	set_array(t_data *data)
 		i++;
 		data->i++;
 	}
+	// printf("is it redir? %d\n", is_redirect(data->tokens->args[data->i]));
 	if (data->tokens->args[data->i] != NULL && is_redirect(data->tokens->args[data->i]) > 0)
 	{
-	//	printf("ret of is dir = %d\n", is_redirect(data->tokens->args[data->i]));
 		if (is_redirect(data->tokens->args[data->i]) == 1)
 		{
 			data->tmp->ex_arr[1] = data->tokens->input_file;
@@ -38,9 +36,14 @@ int	set_array(t_data *data)
 		{
 		 	if (data->tokens->input_file != NULL)
 			{	
-				///printf("this shouod be putting it in now = %s\n", data->tokens->args[data->i]);
+				//printf("this shouod be putting it in now = %s\n", data->tokens->args[data->i]);
 				//data->tmp->ex_arr[1] = data->tokens->args[data->i];
 				data->tmp->ex_arr[1] = data->tokens->output_files[data->x];
+				data->i += 2;
+			}
+			else if (data->tokens->heredoc[0] != NULL)
+			{
+				data->tmp->ex_arr[1] = data->tokens->heredoc[0]; // replace with heredoc tempfile name!!
 				data->i += 2;
 			}
 			else
@@ -50,15 +53,13 @@ int	set_array(t_data *data)
 			}
 		}
 		else
-		{
 			data->tmp->ex_arr[1] = NULL;
-		}
 	}
 	//else if (data->tokens->args[data->i][0] == '|')
 	//	dprintf(2, "the fuck\n");
-	else if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|' && data->tokens->args[data->i][0])// && is_redirect(data->tokens->args[data->i]) == 0)
+	else if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|' && data->tokens->args[data->i][0]) // && is_redirect(data->tokens->args[data->i]) == 0)
 	{
-		printf("did it do the thing = %s\n", data->tokens->args[data->i]);
+		// printf("did it do the thing = %s\n", data->tokens->args[data->i]);
 		data->tmp->ex_arr[1] = data->tokens->args[data->i];
 		i++;
 		data->i++;
@@ -67,13 +68,13 @@ int	set_array(t_data *data)
 	{
 		data->tmp->ex_arr[1] = NULL;
 	}
-	///just as example 
+	///just as example this is where the loop maybe should start again??
 	/*if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|')
 	{
 		data->tmp->ex_arr[2] = data->tokens->args[data->i]; // arguments;
 		data->i++;
-	}*/
-	//else
+	}
+	else*/
 	data->tmp->ex_arr[2] = NULL; // arguments;
 	data->tmp->ex_arr[3] = NULL; // last one is null
 	return (i); // potential line to get rid of

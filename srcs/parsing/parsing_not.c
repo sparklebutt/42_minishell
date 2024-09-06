@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/06 16:05:13 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:51:54 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,14 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	if (check_open_quotes(tokens, 0, 0) < 0)
 		return (1);
 	expansion_parser(tokens, data);
+	// if (expansion_parser(tokens, data) == -1)
+		// free up to this point
 	pipe_collector(tokens, tokens->args);
-	create_redir_array(tokens);  // only mallocing
+	create_redir_array(tokens);
+	// if (create_redir_array(tokens) == -1) // only mallocing
+		// free up to this point  
 	redirect_collector(tokens, tokens->args, 0);
-	if (parse_redirections(tokens, tokens->args, 0) == 1)
+	if (parse_redirections(data, tokens, tokens->args, 0) == 1)
 	{
 		printf("following process\n");
 		return (1);
@@ -96,12 +100,11 @@ int	null_check(char *str1, t_env *str2, char *str3) // might not be needed
 	return (1);
 }
 
-/*~~ stick this in fork_utils ~~*/
 int	send_to_forks(t_data *data)
 {
-		if (pipe_fork(data) == -1)
-			return (-1);
-		return (2);
+	if (pipe_fork(data) == -1)
+		return (-1);
+	return (2);
 }
 
 int	find_passage(t_data *all, char *string, int divert)

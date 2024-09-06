@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 15:12:00 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:48:47 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	minishell(t_data *data)
 			{
 				handle_line(*data, data->tokens);
 				free_array(data->tokens->args);
-				//we need to go through a list of things that need to be freed maybe
+				// @@ we need to go through a list of things that need to be freed maybe @@
 				free(rl);
 			}
 		}

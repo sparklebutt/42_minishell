@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/06 16:18:12 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:51:32 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ bool	confirm_expansion(char *string, int len, int x)
 	bool	s;
 	bool	d;
 	int		simple_ret;
+	
 	s = false;
 	d = false;
 	simple_ret = simple_quote_check(string, x);
@@ -141,7 +142,7 @@ bool	confirm_expansion(char *string, int len, int x)
 /*~~ a fucntion that redirects the input to be handled based on if we handle
 just a string or if we need to handle a newly ade array that will be later re adjusted
 to be a string in our tokens array ~~*/
-void	handle_expansion(t_data *data, int len, int i, char *new) //, int x)
+void	handle_expansion(t_data *data, int len, int i, char *new)
 {
 	t_tokens	*tokens;
 	char		*tmp;
@@ -153,7 +154,7 @@ void	handle_expansion(t_data *data, int len, int i, char *new) //, int x)
 		if (ft_strchr(data->tmp->exp_array[i], '"') != NULL
 		|| ft_strchr(data->tmp->exp_array[i], '\'') != NULL)
 		{
-			new = clean_quotes(data->tmp->exp_array[i], len, 0, 0);	
+			new = clean_quotes(data->tmp->exp_array[i], len, 0, 0);
 			tmp = look_if_expansions(data, data->env, new, 0);
 			free_string(data->tmp->exp_array[i]);
 			data->tmp->exp_array[i] = ft_strdup((tmp));
@@ -197,11 +198,13 @@ void	expansion_parser(t_tokens *tokens, t_data *data)
 		{
 			if (tokens->dollar_count > 1)
 			{
+				// @@ put the contents of this if statement into one function @@
 				data->simple = false;
 				data->tmp->exp_array = ft_split_expansions(tokens, tokens->args[i]);
 				if (data->tmp->exp_array == NULL)
 				{
 					printf("malloc fail handleing required\n");
+					// return (-1);
 					return ;
 				}
 				index = 0;
@@ -227,7 +230,6 @@ void	expansion_parser(t_tokens *tokens, t_data *data)
 				clean_rest_of_quotes(data, i, len);
 			data->simple = false;
 		}
-		// **this fixed a leak
 		else if (tokens->args[i] != NULL && find_redirect(tokens->args[i]) == 0 && tokens->dollar_count == 0)
 		{
 			if (ft_strchr(tokens->args[i], '\'') != NULL || ft_strchr(tokens->args[i], '"') != NULL)
@@ -242,4 +244,5 @@ void	expansion_parser(t_tokens *tokens, t_data *data)
 		}
 		i++;
 	}
+	// return (0);
 }

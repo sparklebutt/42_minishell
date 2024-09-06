@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_from_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:02:41 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 16:03:34 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:52:05 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*find_key(char *str)
 		return (key);
 	}
 	else
-		printf("error in finding key name\n");
+		printf("error in finding key name\n"); // change error message
 	free(key);
 	return (NULL);
 }
