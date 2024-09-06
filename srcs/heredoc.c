@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 04:44:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/05 13:08:11 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 12:55:10 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int parse_heredoc(char **args) // add more args
 // 	i++;
 // }
 
-char **set_into_heredoc_array(char **heredoc, char *line)
+char **set_into_heredoc_array(t_data *data, char **heredoc, char *line)
 {
 	int		i;
 	char	**new_heredoc;
@@ -59,13 +59,22 @@ char **set_into_heredoc_array(char **heredoc, char *line)
 		new_heredoc[i] = heredoc[i];
 		i++;
 	}
-	new_heredoc[i] = ft_strdup(line);
+	ft_strlcpy(line, line, ft_strlen(line));
+	// printf("line = |%s|\n", line);
+	if (ft_strchr(line, '$') != NULL)
+	{
+		// printf("does it go in here???\n");
+		new_heredoc[i] = look_if_expansions(data, data->env, ft_strdup(line), 0);
+		// printf("out = %s\n", new_heredoc[i]);
+	}
+	else
+		new_heredoc[i] = ft_strdup(line);
 	new_heredoc[i + 1] = 0;
 	free(heredoc);
 	return (new_heredoc);
 }
 
-void heredoc_loop(t_tokens *tokens, char *eof)
+void heredoc_loop(t_data *data, t_tokens *tokens, char *eof)
 {
 	char	*line = NULL;
 	int fd = 0;
@@ -81,8 +90,7 @@ void heredoc_loop(t_tokens *tokens, char *eof)
 			free(line);
 			break ;
 		}
-		tokens->heredoc = set_into_heredoc_array(tokens->heredoc, line);
+		tokens->heredoc = set_into_heredoc_array(data, tokens->heredoc, line);
 		free(line);
 	}
 }
-

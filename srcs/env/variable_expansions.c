@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable_expansions.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:03:23 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/04 17:38:57 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 12:55:40 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ char	*replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 		return NULL;
 	ft_strncpy(temp_key, arg + start + 1, key_len);
 	temp_key[key_len] = '\0';
-	//free_string(new_arg);
 	if (find_node(envs, temp_key, data) == 1)
 	{
 		value = find_keys_value(envs, temp_key);
@@ -78,9 +77,13 @@ char	*replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 			new_arg = remove_key(arg, start, start + key_len + 1);
 	}
 	else
+	{
+		// printf("find_node failed\n");
 		new_arg = remove_key(arg, start, start + key_len + 1);
+	}
 	free_string(arg);
 	free_string(temp_key);
+	// printf("out 3: %s\n", new_arg);
 	return (new_arg);
 }
 
@@ -96,5 +99,6 @@ char	*look_if_expansions(t_data *data, t_env *envs, char *arg, int i)
 		}
 		i++;
 	}
+	// printf("out 2: %s\n", arg);
 	return (arg);
 }

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/05 13:12:10 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:00:06 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int	redirect_helper(t_tokens *tokens, int x)
 	return (0);
 }
 
-int	parse_redirections(t_tokens *tokens, char **args, int i)
+int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 {
 	int x;
 	int fd;
@@ -135,12 +135,11 @@ int	parse_redirections(t_tokens *tokens, char **args, int i)
 			x++;
 		if (ft_strncmp(tokens->args[i], "<<", 2) == 0)
 		{
-			heredoc_loop(tokens, tokens->args[i + 1]);
+			heredoc_loop(data, tokens, tokens->args[i + 1]);
 			// clean some quotes
-			// expand variables here
 			while(tokens->heredoc[here_i] != 0)
 			{
-				printf("heredoc[%d] = %s", here_i, tokens->heredoc[here_i]);
+				printf("\t\theredoc[%d] = %s\n", here_i, tokens->heredoc[here_i]);
 				here_i++;
 			}
 			i++;

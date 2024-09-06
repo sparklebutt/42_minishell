@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/05 13:06:41 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 12:31:13 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	pipe_collector(tokens, tokens->args);
 	create_redir_array(tokens);  // only mallocing
 	redirect_collector(tokens, tokens->args, 0);
-	if (parse_redirections(tokens, tokens->args, 0) == 1)
+	if (parse_redirections(data, tokens, tokens->args, 0) == 1)
 	{
 		//printf("following process\n");
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/05 13:05:52 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:02:44 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	child(t_data *data, int *fds, int x, int flag)
 			exec_builtins(*data, data->tokens->args[data->i]);
 			exit(0);
 		}
+		printf("DO YOU GO HERE 2?\n");
+		// fill heredoc into exceve here!!
 		execve(data->tmp->filename, data->tmp->ex_arr, data->env_array);
 		exit(1);
 	}
@@ -155,6 +157,7 @@ int	simple_fork(t_data *data)
 
 	status = 0;
 	data->pid = fork();
+	printf("DO YOU GO HERE?\n");
 	if (data->pid == -1)
 	{
 		ft_printf("fork error\n"); // change error message
