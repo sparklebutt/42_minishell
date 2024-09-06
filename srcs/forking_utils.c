@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/06 14:35:09 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 15:43:38 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,14 @@ int	set_array(t_data *data)
 	{
 		data->tmp->ex_arr[1] = NULL;
 	}
-	///just as example 
-	if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|')
+	///just as example this is where the loop maybe should start again??
+	/*if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|')
 	{
 		data->tmp->ex_arr[2] = data->tokens->args[data->i]; // arguments;
 		data->i++;
 	}
-	else
-		data->tmp->ex_arr[2] = NULL; // arguments;
+	else*/
+	data->tmp->ex_arr[2] = NULL; // arguments;
 	data->tmp->ex_arr[3] = NULL; // last one is null
 	return (i); // potential line to get rid of
 }
