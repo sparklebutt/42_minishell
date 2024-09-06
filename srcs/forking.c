@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/05 13:05:52 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:23:27 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// this test fucntion shows me what fds are open this will help debugging later
-/*static void list_open_fds()
-{
-	for (int fd = 0; fd < 1024; fd++)
-	{
-		if (fcntl(fd, F_GETFD) != -1)
-		{
-			printf("FD %d is open\n", fd);
-		}
-	}
-}*/
-// will try to put all fds in array prev_fd = fd[2]
 
 // signal handeling, each child gets the same signal and paret should ignore
 int	child(t_data *data, int *fds, int x, int flag)
@@ -36,15 +23,17 @@ int	child(t_data *data, int *fds, int x, int flag)
 	if (data->child[data->child_i] == 0)
 	{
 		dup_fds(data, fds, x);
-		redirect_helper(data->tokens, x);
-		// apply_redirections(data, data->tokens, x);
+		if (redirect_helper(data->tokens, x) != 0)
+			exit(exit_code(0,0));
 		if (flag == 1)
 		{
 			exec_builtins(*data, data->tokens->args[data->i]);
-			exit(0);
+			// dprintf(2, "did the exit code atleast change in here = %d\n", exit_code(0,0));
+			exit(exit_code(0, 0));
 		}
+		// printf("execution time check = %s\n", data->tmp->filename);
 		execve(data->tmp->filename, data->tmp->ex_arr, data->env_array);
-		exit(1);
+		exit(exit_code(0, 0));
 	}
 	data->child_i++;
 	if (data->prev_fd != -1)
@@ -55,11 +44,11 @@ int	child(t_data *data, int *fds, int x, int flag)
 
 int	send_to_child(t_data *data, int fds[2], int x)
 {
-	// if (data->tokens->args[data->i][0] == '<')
-	// 	data->i += 2; // fix segfault, if following is null, exit.
-	if (is_builtins(data->tokens->args[data->i]) == 1){
+	if (is_builtins(data->tokens->args[data->i]) == 1)
+	{
 		data->builtin_marker = true;
 		child(data, fds, x, 1);
+		//dprintf(2, "after child\n");
 		data->i++;
 		while (data->tokens->args[data->i] != NULL)
 		{
@@ -74,8 +63,8 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	else if (check_path(data->tmp->env_line, 1, data, data->i) != 0)
 	{
 		set_array(data);
-		if (data->builtin_marker == false && data->tokens->args[data->i - 1] != NULL && data->tokens->args[data->i - 1][0] == '>')
-		{
+		if (data->i > 0 && data->builtin_marker == false && data->tokens->args[data->i - 1] != NULL && data->tokens->args[data->i - 1][0] == '>')
+		{	
 			child(data, fds, x, 2);
 			data->i++;
 		}
@@ -84,12 +73,11 @@ int	send_to_child(t_data *data, int fds[2], int x)
 			child(data, fds, x, 2);
 			data->i += 2;
 		}
-		//if (data->builtin_marker == true)
-		//	data->builtin_marker = false;
 		else if (data->i == data->tokens->array_count - 1)
 		{
+			
 			/*~~ this check is to see if we are on our last on the list of tokens~~*/
-			if (data->tokens->args[data->i] == NULL)
+			if (data->tokens->args[data->i] == NULL) // was causing sg cd
 				child(data, fds, x, 3);
 			if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] == '|')
 				data->i++;
@@ -106,7 +94,10 @@ int	send_to_child(t_data *data, int fds[2], int x)
 			data->i++;
 	}
 	else
+	{
+		printf("send to child -1\n");
 		return (-1);
+	}
 	return (0);
 }
 /*~~ pipes and forks , set_env_array could be moved to every instance of env manipulation instead
@@ -144,6 +135,13 @@ int	pipe_fork(t_data *data)
 		x--;
 		data->child_i--;
 	}
+	status = (status >> 8) & 0xFF;
+	exit_code(1, status);	
+	//alternative 
+//	if (status == 256)
+//		status = 1;
+	/*~~this is how to handle forced overflow for the xit code , as exit code gives bytes not an integer~~*/
+	printf("lets look at status for exit codes, pipe_fork= %d\n", status);
 	free_array(data->env_array);
 	return (0);
 }
@@ -163,10 +161,7 @@ int	simple_fork(t_data *data)
 	if (data->pid == 0)
 	{	
 		if (data->tokens->redirect_count >= 1) // define tems better?
-		{
 			redirect_helper(data->tokens, 0);
-			// apply_redirections(data, data->tokens, 0);// char redir
-		}
 		if (execve(data->tmp->filename, data->tmp->ex_arr, data->env_array) == -1)
 			ft_printf("exceve fail\n");
 		exit(1); // should this be different kind of error handelin
@@ -174,7 +169,3 @@ int	simple_fork(t_data *data)
 	waitpid(data->pid, &status, 0);
 	return (0);
 }
-/*~~ these may not be needed anymore ~~*/
-// if (!isatty(STDOUT_FILENO))
-// dprintf(2, "Non-interactive mode\n");
-//	list_open_fds();

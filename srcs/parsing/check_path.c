@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/04 18:21:39 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:04:47 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 {
 	*cmd_len = ft_strlen(all->tokens->args[x]);
+	if (all->tokens->args[x][0] == '.')
+		return (3);
 	if (all->tokens->args[x][0] == '/')
 	{
 		//if (handle_absolute_path(all, x, NULL))
@@ -22,15 +24,9 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 		return (handle_absolute_path(all, x, NULL)); // not allowed
 	}
 	if (all->tokens->args[x][0] != '/')
-	{
-		//free_string(*suffix);
-		//suffix = NULL; // this fixed alot of leaks but broke code.. something wrong here
-		// mnight nt be great to defrence all the time
-		//if (all->tokens->args[x] != NULL)
 		*suffix = ft_strjoin("/", all->tokens->args[x]);
-	}
 	if (*suffix == NULL || *cmd_len == 0)
-		return (free_extra_return_function(*suffix, 0)); // not alowed
+		return (free_extra_return_function(*suffix, 0));//, 0); // not alowed?
 	return (2);
 }
 
@@ -76,17 +72,12 @@ int	cleanup_and_finalize(char *suffix, t_data *all, int found)
 	return (0);
 }
 
+/*~~ divert 1 = PATH divert 2 = HOME , hardcoded env requirements~~*/
 static void	split_diversion(t_data *data, int divert, char *string)
 {
-	//free_array(data->tmp->array);
-	if (data->tmp->array != NULL)
-		free_array(data->tmp->array); //fixed only 1 leak
-		//printf("array is noooot null \n");
-	//if (data->tmp->array[0][0] == '\0')
-	//	printf("array is also null \n");	
-	if (divert == 1) // PATH
+	if (divert == 1)
 		data->tmp->array = ft_split(string, ':');
-	else if (divert == 2) // HOME
+	else if (divert == 2)
 		data->tmp->array = ft_split(string, ' ');
 	if (data->tmp->array == NULL)
 	{
@@ -95,6 +86,9 @@ static void	split_diversion(t_data *data, int divert, char *string)
 	}
 }
 
+/*~~ checking access and creating sub tokens for easy access in children
+res = 3 means we are looking into current directory so we do not need to check_dir
+but file muts be checked, this is eg so that minishell can run inside minishell~~*/
 int	check_path(char *string, int divert, t_data *all, int x)
 {
 	char	*suffix;
@@ -104,18 +98,21 @@ int	check_path(char *string, int divert, t_data *all, int x)
 
 	suffix = NULL;
 	cmd_len = 0;
-	// i think we need a check all clean all here to fix some leaks
-
 	res = initial_checks_and_setup(&suffix, &cmd_len, all, x);
-	//printf("what is res = %d\n", res);
-	if (res != 2) // was if res != 2
-		return (res); /// was res
+	if (res == 3)
+	{
+		if (check_file(all->tokens->args[x]) == 1)
+			return (0);	
+		all->tmp->filename = ft_strdup(all->tokens->args[x]);
+		return (res);
+	}
+	if (res != 2)
+		return (res);
 	split_diversion(all, divert, string);
 	found = iterate_and_match(suffix, cmd_len, all, x);
-	//printf("found = %d\n", found);
-	if (found == 0) // function == 0
+	if (found == 0)
 	{
-		//printf("refrence of failure token = %s\n", all->tokens->args[x]);
+		// printf("refrence of failure token = %s\n", all->tokens->args[x]);
 		return (0);
 	}
 	res = cleanup_and_finalize(suffix, all, found);

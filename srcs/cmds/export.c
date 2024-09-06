@@ -3,15 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:04:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/09 11:54:53 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:02:51 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	export_syntax_check(char *string)
+{
+
+	if (ft_strchr(string, '=') == NULL)
+		return (1);
+	if (is_char_redirect(string[0]) > 0)
+	{
+		return (0);	
+	}
+	if (ft_isalpha(string[0]) == 0)
+	{
+		not_perror("export", string, NOT_VALID);
+		return (1);
+	}
+	return (0);
+}
 void	ft_export(t_data *data)
 {
 	t_tokens *tokens;
@@ -20,7 +36,7 @@ void	ft_export(t_data *data)
 	i = 1;
 	tokens = data->tokens;
 	if (tokens->args[1] == NULL) // maybe we don't need to handle this
-		ft_printf("no args\n");
+		ft_printf("no args beep boop declare -X\n");
 	if (data->tokens->array_count == 1)
 		ft_printf("print env in alphabetical order\n"); // maybe don't implement this
 	while (i < data->tokens->array_count)
@@ -38,8 +54,8 @@ void handle_arg(t_data *data, int arg_i, t_tokens *tokens)
 	
 	env = data->env;
 	arg = tokens->args[arg_i];
-	if (ft_strchr(arg, '=') == NULL)
-		return ; // check if there isn't an error here
+	if (export_syntax_check(arg) == 1)
+		return ;
 	key = ft_strtrim_front(arg, '=');
 	while (env->next != NULL)
 	{

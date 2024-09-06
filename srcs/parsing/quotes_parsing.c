@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 15:55:36 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/04 14:26:51 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:09:37 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,34 +62,6 @@ int	check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count)
 	}
 	return (1);
 }
-/*~~ this fucntion does not seem to be used~~*/
-int	count_new_len(char *string)
-{
-	int	x;
-	int	len;
-
-	x = -1;
-	len = 0;
-	while (x++ && string[x] != '\0')
-	{
-		if (string[x] == '\'')
-		{
-			x++;
-			while (string[x] != '\'' && x++)
-				len++;
-			len--;
-		}
-		else if (string[x] == '"')
-		{
-			x++;
-			while (string[x] != '"' && x++)
-				len++;
-			len--;
-		}
-		len++;
-	}
-	return (len);
-}
 
 /*~~ added an extra check so that $symbol wuld not be copied over if its outside quotes,
 need to check that this is ok for other cases but eg $"USER" should not print the $symbol
@@ -128,24 +100,21 @@ a fucntion is required to handle these cases , loop_quotes could potentially be 
 	printf("x out = %d\n", (*x));	
 }*/
 
-char	*clean_quotes(char *string, int len, int x, int y) //, t_tokens *tokens)
+char	*clean_quotes(char *string, int len, int x, int y)
 {
 	char	*new;
 	int 	full_len;
-	int	i;
 	new = NULL;
 
 	full_len = ft_strlen(string);
 	new = ft_calloc(full_len + 1, 1);
-	i = 0;
-	
 	if (new == NULL)
 		return (NULL);
-	if (len == 0)
+	if (len == 0) // this was probably a stupidity check?
 		len = ft_strlen(string);
 	while (x <= len)
 	{
-		if (string[x] == '\'')// && test == 0)
+		if (string[x] == '\'')
 		{
 			/*printf("x into = %d\n", x);
 			if (string[x] == '\'' || string[x] == '"')
@@ -155,10 +124,10 @@ char	*clean_quotes(char *string, int len, int x, int y) //, t_tokens *tokens)
 			while (string[x] && string[x] != '\'') //x < len && 
 				new[y++] = string[x++];
 		}
-		else if (string[x] == '"')// && test == 0)
+		else if (string[x] == '"')
 		{
 			x++;
-			while (string[x] && string[x] != '"') //x < len && 
+			while (string[x] && string[x] != '"')
 				new[y++] = string[x++];
 		}
 		if (string[x] == '$' && (string[x + 1] == '\'' || string[x + 1] == '"'))

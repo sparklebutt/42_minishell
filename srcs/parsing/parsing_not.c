@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/05 13:06:41 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:05:13 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	redirect_collector(tokens, tokens->args, 0);
 	if (parse_redirections(tokens, tokens->args, 0) == 1)
 	{
-		//printf("following process\n");
+		printf("following process\n");
 		return (1);
 	}
 	tokens->array_count = x; // was - 1
@@ -99,30 +99,9 @@ int	null_check(char *str1, t_env *str2, char *str3) // might not be needed
 /*~~ stick this in fork_utils ~~*/
 int	send_to_forks(t_data *data)
 {
-	// MARK
-	//if (data->tokens->pipe_count > 0)
-	//{
 		if (pipe_fork(data) == -1)
 			return (-1);
 		return (2);
-	//}
-	/**~~ we might be able to remove the lower code completley , is it worth the work **/
-	/*else if (data->tokens->pipe_count == 0)
-	{
-		
-		//if (is_builtins(data->tokens->args[data->i]) != 1)
-	//	{		 //	exec_builtins(*data, data->tokens->args[data->i]);
-			//new code
-		if (check_path(data->tmp->env_line, 1, data, data->i) == 0)
-			return (-1);
-		set_array(data);
-	//	}
-		set_env_array(data);
-		if (simple_fork(data) == 0)
-			ft_printf(""); // add error handling here
-		free_array(data->env_array);
-	}
-	return (1);*/
 }
 
 int	find_passage(t_data *all, char *string, int divert)
@@ -130,7 +109,7 @@ int	find_passage(t_data *all, char *string, int divert)
 	// printf("THIS IS IN FIND_PASSAGE\n");
 	if (null_check(all->env->key, all->env, string) != 1)
 	{
-		// printf("ret - 1 null check\n");
+		printf("ret - 1 null check\n");
 		return (-1);
 	}
 	if (find_node(all->env, string, all) == 1 && all->tmp->env_line != NULL)
@@ -139,8 +118,8 @@ int	find_passage(t_data *all, char *string, int divert)
 		{
 			if (check_dir(all->tmp->env_line) == 0)
 			{
-				// printf("ret - 1 cechk dir stuff\n");	
-				return (free_extra_return_function(all->tmp->env_line, -1)); // not allowed
+				printf("ret - 1 cechk dir stuff\n");	
+				return (free_extra_return_function(all->tmp->env_line, -1));
 			}
 			return (1);
 		}
@@ -148,7 +127,7 @@ int	find_passage(t_data *all, char *string, int divert)
 		{	
 			if (send_to_forks(all) == -1)
 			{
-				// printf("ret - 1 send to forks\n");
+				printf("ret - 1 send to forks\n");
 				return (-1);
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/04 18:24:11 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 15:12:00 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,7 @@ void	minishell(t_data *data)
     	{
 			if (collect_cmd_array(data, data->tokens, rl) == 0)
 			{
-				if (handle_line(*data, data->tokens) == -1)
-				{
-					ft_printf("error dfghjkl\n"); // change error message
-					break ;
-				}
+				handle_line(*data, data->tokens);
 				free_array(data->tokens->args);
 				//we need to go through a list of things that need to be freed maybe
 				free(rl);

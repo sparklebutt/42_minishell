@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/05 13:06:28 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/06 12:29:23 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ int	exec_builtins(t_data data, char *cmd)
 	else if (ft_strncmp(cmd, "unset", 6) == 0)
 		ft_unset(&envs, tokens->args[1]);
 	else if (ft_strncmp(cmd, "echo", 5) == 0)
-		ft_echo(tokens->args);
+		ft_echo(&data, tokens->args);
 	else if (ft_strncmp(cmd, "env", 4) == 0)
 		ft_env(&data);
+	
 	return (0);
 }
 
@@ -63,18 +64,26 @@ int	handle_line(t_data data, t_tokens *tokens)
 	if (tokens->args[data.i] != NULL)
 	{
 		// MARK
-		// printf("redir count = %d\n", tokens->redirect_count);
-		if (data.i == 0 && tokens->args[data.i][0] == '<')
-			data.i += 2;
-		else if (tokens->pipe_count == 0 && tokens->redirect_count == 0 && is_builtins(tokens->args[data.i]) == 1)
+		//printf("redir count = %d\n", tokens->redirect_count);
+		printf("exit code = %d\n", exit_code(0, 0)); // just want to retrieve it
+		/*if (data.i == 0 && tokens->args[data.i][0] == '<')
 		{
-			// printf("stepping into exec_builtins\n");
+			data.i++;
+			if (tokens->args[data.i][1] == '<')
+			data.i ++;
+		}*/
+		if (tokens->pipe_count == 0 && tokens->redirect_count == 0 && is_builtins(tokens->args[data.i]) == 1)
+		{
+			//printf("stepping into exec_builtins\n");
+			exit_code(1, 0);
 			exec_builtins(data, tokens->args[data.i]);
+			
 		}
 		else if (find_passage(&data, "PATH", 1) == -1)
 		{
-			call_cmd_error(tokens->args[data.i], NULL, "command not found end\n", -10);
+			call_cmd_error(tokens->args[data.i], NULL, NO_CMD, -10);
 		}
+		printf("exit code after = %d\n", exit_code(0, 0)); // just want to retrieve it
 		data.i++;
 	}
 	return (0);

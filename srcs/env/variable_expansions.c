@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:03:23 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/04 17:38:57 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:08:00 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ int	find_key_len(char *str, int start)
 	while (str[len] && !(str[len] == ' ' || str[len] == '\0'
 		|| str[len] == '"' || str[len] == '\'' || str[len] == '$'))
 		len++;
-	return (len - start - 1); // Length excluding $
+	return (len - start - 1);
 }
 
-char	*new_str(char *str, char *value, int start, int end)//, t_data *data)
+char	*new_str(char *str, char *value, int start, int end)
 {
 	int		new_len;
 	char	*new_str;
@@ -33,7 +33,6 @@ char	*new_str(char *str, char *value, int start, int end)//, t_data *data)
 		return NULL;
 	ft_strncpy(new_str, str, start);
 	ft_strcpy(new_str + start, value);
-	//data->prev_len = ft_strlen(new_str);
 	ft_strcpy(new_str + start + ft_strlen(value), str + end);
 	return (new_str);
 }

@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/04 14:22:15 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/06 15:41:46 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,7 @@
 
 /*~~~ Here we set the null terminated array for exceve()'s second parameter,
 this which contains the cmd, any flag and or argument that would go with the excecutable. ~~~*/
-/*static int is_fd_open(int fd) {
-	if (isatty(fd))
-	{
-		printf("fd is a terminal , so open?\n");
-		return (1);
-	}
-	else
-	{
-		printf("fd is a notterminal , so cosed?\n");	
-		return (-1);
-	}
-	return (0);
-//    return fcntl(fd, F_GETFD) != -1 || errno != EBADF;
-}*/
+
 int	set_array(t_data *data)
 {
 	int i = 0; 
@@ -67,7 +54,9 @@ int	set_array(t_data *data)
 			data->tmp->ex_arr[1] = NULL;
 		}
 	}
-	else if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|' && data->tokens->args[data->i][0])
+	//else if (data->tokens->args[data->i][0] == '|')
+	//	dprintf(2, "the fuck\n");
+	else if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|' && data->tokens->args[data->i][0])// && is_redirect(data->tokens->args[data->i]) == 0)
 	{
 		printf("did it do the thing = %s\n", data->tokens->args[data->i]);
 		data->tmp->ex_arr[1] = data->tokens->args[data->i];
@@ -79,13 +68,13 @@ int	set_array(t_data *data)
 		data->tmp->ex_arr[1] = NULL;
 	}
 	///just as example 
-	if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|')
+	/*if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|')
 	{
 		data->tmp->ex_arr[2] = data->tokens->args[data->i]; // arguments;
 		data->i++;
-	}
-	else
-		data->tmp->ex_arr[2] = NULL; // arguments;
+	}*/
+	//else
+	data->tmp->ex_arr[2] = NULL; // arguments;
 	data->tmp->ex_arr[3] = NULL; // last one is null
 	return (i); // potential line to get rid of
 }
