@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/06 16:51:32 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/09 14:37:58 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ void	handle_expansion(t_data *data, int len, int i, char *new)
 	}
 }
 
-void	expansion_parser(t_tokens *tokens, t_data *data)
+int	expansion_parser(t_tokens *tokens, t_data *data)
 {
 	int				i;
 	size_t			x;
@@ -204,8 +204,8 @@ void	expansion_parser(t_tokens *tokens, t_data *data)
 				if (data->tmp->exp_array == NULL)
 				{
 					printf("malloc fail handleing required\n");
-					// return (-1);
-					return ;
+					return (-1);
+					// return ;
 				}
 				index = 0;
 				while (data->tmp->exp_array[index] != NULL)
@@ -232,6 +232,12 @@ void	expansion_parser(t_tokens *tokens, t_data *data)
 		}
 		else if (tokens->args[i] != NULL && find_redirect(tokens->args[i]) == 0 && tokens->dollar_count == 0)
 		{
+			if (ft_strlen(tokens->args[i]) == 1 && tokens->args[i][0] == '~')
+			{
+				free(tokens->args[i]);
+				tokens->args[i] = replace_squiggly_line(data, data->env);
+			}
+			data->simple = true;
 			if (ft_strchr(tokens->args[i], '\'') != NULL || ft_strchr(tokens->args[i], '"') != NULL)
 				clean_rest_of_quotes(data, i, 0);	
 		}
@@ -244,5 +250,5 @@ void	expansion_parser(t_tokens *tokens, t_data *data)
 		}
 		i++;
 	}
-	// return (0);
+	return (0);
 }

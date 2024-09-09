@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 16:52:46 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:25:07 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,14 @@ void	change_dir(t_data *data, t_env *envs, char *temp)
 
 	temp2 = NULL;
 	tokens = data->tokens;
-	if (check_dir(temp) && chdir(temp) == 0)
+	if (check_dir(temp) && chdir(temp) == 0 && find_node(envs, "OLDPWD", data) == 1 && find_node(envs, "PWD", data) == 1)
 	{
 		envs = move_list(envs, "PWD");
 		temp2 = getcwd(NULL, 0);
 		envs = fill_old_pwd(data, envs, temp2);
 	}
+	else if (find_node(envs, "OLDPWD", data) == 0 || find_node(envs, "PWD", data) == 0)
+		return ;
 	else
 		cmd_error(tokens->args[data->i], tokens->args[data->i + 1]);
 }
@@ -48,6 +50,7 @@ void	ft_cd(t_data *data, t_env *envs)
 	
 	temp = NULL;
 	temp2 = NULL;
+	
 	if (ft_strncmp(data->tokens->args[i], "cd", 3) == 0
 		&& data->tokens->args[i + 1] == NULL)
 	{
@@ -79,7 +82,6 @@ int	check_file(char *str)
 
 int	check_dir(char *str)
 {
-	//struct stat			file_dir;
 	struct dirent		*dp;
 	DIR					*test;
 
@@ -87,7 +89,7 @@ int	check_dir(char *str)
 	
 	if (access(str, X_OK) == -1)
 	{
-		printf("access failed for string ceck dir= %s\n", str);
+		printf("\t\taccess failed for string ceck dir= %s\n", str);
 		return(0);
 	}
 	else

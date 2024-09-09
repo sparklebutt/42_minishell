@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 16:54:15 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/09 14:34:08 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ typedef struct s_temps
 
 	char	**array;
 	char	**exp_array;
-	char	*ex_arr[4];
+	// char	*ex_arr[4];
+	char **ex_arr;
 	char	*filename; // malloced
 	char	*suffix; // malloced
 	char	*env_line; // malloced linked list
@@ -111,7 +112,7 @@ typedef struct s_data
 
 // PARSING - - - - - - - - -
 void	pipe_collector(t_tokens *tokens, char **array);
-void	expansion_parser(t_tokens *tokens, t_data *data);
+int	expansion_parser(t_tokens *tokens, t_data *data);
 int	check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count);
 char	*clean_quotes(char *string, int len, int x, int y); //, t_tokens *tokens);
 int		count_new_len(char *string);
@@ -208,6 +209,7 @@ int		set_array(t_data *data);
 void	set_env_array(t_data *data);
 int		dup_fds(t_data *data, int *fds, int x);
 bool	confirm_expansion(char *string, int len, int x);
+char *replace_squiggly_line(t_data *data, t_env *envs);
 
 // newly added functions seperate for clarity
 //parsers.c
@@ -215,7 +217,7 @@ int		simple_quote_check(char *s, int i);
 int is_char_redirect(char arg);
 int	clean_rest_of_quotes(t_data *data, int i, int len);
 int	redirect_helper(t_tokens *tokens, int x);
-void create_redir_array(t_tokens *tokens);
+int create_redir_array(t_tokens *tokens);
 void		dollar_counter(char *string, t_tokens *tokens);
 char	**ft_split_expansions(t_tokens *tokens, char const *s); // 
 int	ft_count_exp_array(const char *s);

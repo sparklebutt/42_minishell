@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 14:39:36 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/09 12:30:56 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ int is_redirect(char *arg)
 }
 /*~~ to collect redirect count as well as collect how many infiles and outfiles we need
 , since each pipe will value only 1 ~~*/
-void create_redir_array(t_tokens *tokens)
+int create_redir_array(t_tokens *tokens)
 {
 	tokens->output_files = ft_calloc(sizeof(char *), tokens->pipe_count + 1);
 	if (tokens->output_files == NULL)
 	{
 		printf("malloc error\n");
-		// do we need to free anything malloced up to this point
-		exit(1);
+		return (-1);
 	}
+	return (0);
 	// calloc nulls them	
 }
 /*~~ this has been over complicated for te fear  of needing this data 
@@ -141,7 +141,7 @@ int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 			// create file and move whole of tokens->heredoc there, each divided by a newline
 			while(tokens->heredoc[here_i] != 0) // for testing
 			{
-				printf("\t\theredoc[%d] = %s\n", here_i, tokens->heredoc[here_i]);
+				printf("\t\t\theredoc[%d] = %s\n", here_i, tokens->heredoc[here_i]);
 				here_i++;
 			}
 			// delete temp file at the end of minishell loop (or earlier e.g. end of forks, find place)

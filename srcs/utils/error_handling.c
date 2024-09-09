@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 18:24:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 12:27:15 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/09 14:38:30 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int		exit_code(int flag, int num)
 	static int error_code = 0;
 	if (flag) 
 	{
-		printf("setting error code to = %d\n" ,num);
+		// printf("\t\tsetting error code to = %d\n" ,num);
 		error_code = num;
 	}// not 0
 	

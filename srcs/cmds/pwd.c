@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/27 14:56:31 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:21:29 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_pwd(t_data *data, t_env *envs)
 	char	*temp_path;
 
 	temp_path = getcwd(NULL, 0);
-	printf("running our own pwd\n"); // dont forget me , but keep me for testing
+	// printf("running our own pwd\n"); // dont forget me , but keep me for testing
 	if (temp_path != NULL)
 	{
 		free(data->path);
@@ -76,9 +76,9 @@ t_env	*fill_old_pwd(t_data *data, t_env *env, char *new_path)
 	env = move_list(temp_env, "PWD");
 	if (env->value != NULL)
 		free(env->value);
-	printf("NEW PATH = %s\n", new_path);
+	// printf("NEW PATH = %s\n", new_path);
 	env->value = ft_strdup(new_path);
-	printf("OTHER NEW PATH = %s\n", env->value);
+	// printf("OTHER NEW PATH = %s\n", env->value);
 	free(new_path);
 	return (env);
 }

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:03:23 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 16:52:15 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/09 14:37:41 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,15 +79,51 @@ char	*replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 	return (new_arg);
 }
 
+char *replace_squiggly_line(t_data *data, t_env *envs)
+{
+	char	*value = NULL;
+	char	*new_arg = NULL;
+	
+	if (find_node(envs, "HOME", data) == 1)
+	{
+		value = find_keys_value(envs, "HOME");
+		if (value != NULL)
+			new_arg = new_str("~", value, 0, 0 + 1);
+		else
+			new_arg = remove_key("~", 0, 0 + 1);
+	}
+	else
+		new_arg = remove_key("~", 0, 0 + 1);
+	return (new_arg);
+}
+
+char *replace_exitcode(char *arg, int start)
+{
+	char	*value = NULL;
+	char	*new_arg = NULL;
+	
+	value = ft_itoa(exit_code(0, 0));
+	new_arg = new_str(arg, value, start, start + 1 + 1);
+	free_string(arg);
+	return (new_arg);
+}
+
 char	*look_if_expansions(t_data *data, t_env *envs, char *arg, int i)
 {
 	while (arg[i])
 	{
 		if (arg[i] == '$')
 		{
-			arg = replace_expansion(data, envs, arg, i);
+			if (arg[i + 1] == '?')
+				arg = replace_exitcode(arg, i);
+			else
+				arg = replace_expansion(data, envs, arg, i);
 			if (arg[i + 1] == '"' || arg[i + 1] == '\'')
 				return (arg);
+		}
+		if (arg[0] == '~' && ft_strlen(arg) == 1)
+		{
+			arg = replace_squiggly_line(data, envs);
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/06 16:51:54 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/09 14:16:09 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 	new = NULL;
 	if (data->simple == false)
 	{
-		if (data->tmp->exp_array[i])
+		if (data->tmp->exp_array && data->tmp->exp_array[i])
 		{
 			if (ft_strchr(data->tmp->exp_array[i], '"') != NULL
 			|| ft_strchr(data->tmp->exp_array[i], '\'') != NULL)
@@ -60,13 +60,19 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	tokens->heredoc[0] = 0;
 	if (check_open_quotes(tokens, 0, 0) < 0)
 		return (1);
-	expansion_parser(tokens, data);
-	// if (expansion_parser(tokens, data) == -1)
+	// expansion_parser(tokens, data);
+	if (expansion_parser(tokens, data) == -1)
+	{
 		// free up to this point
+		return (1);
+	}
 	pipe_collector(tokens, tokens->args);
 	create_redir_array(tokens);
-	// if (create_redir_array(tokens) == -1) // only mallocing
-		// free up to this point  
+	if (create_redir_array(tokens) == -1) // only mallocing
+	{
+		// free up to this point
+		return (1);
+	}
 	redirect_collector(tokens, tokens->args, 0);
 	if (parse_redirections(data, tokens, tokens->args, 0) == 1)
 	{
@@ -109,10 +115,9 @@ int	send_to_forks(t_data *data)
 
 int	find_passage(t_data *all, char *string, int divert)
 {
-	// printf("THIS IS IN FIND_PASSAGE\n");
 	if (null_check(all->env->key, all->env, string) != 1)
 	{
-		printf("ret - 1 null check\n");
+		printf("\t\tret - 1 null check\n");
 		return (-1);
 	}
 	if (find_node(all->env, string, all) == 1 && all->tmp->env_line != NULL)
@@ -121,7 +126,7 @@ int	find_passage(t_data *all, char *string, int divert)
 		{
 			if (check_dir(all->tmp->env_line) == 0)
 			{
-				printf("ret - 1 cechk dir stuff\n");	
+				printf("\t\tret - 1 cechk dir stuff\n");	
 				return (free_extra_return_function(all->tmp->env_line, -1));
 			}
 			return (1);
@@ -130,7 +135,7 @@ int	find_passage(t_data *all, char *string, int divert)
 		{	
 			if (send_to_forks(all) == -1)
 			{
-				printf("ret - 1 send to forks\n");
+				printf("\t\tret - 1 send to forks\n");
 				return (-1);
 			}
 		}
@@ -179,7 +184,10 @@ int	handle_absolute_path(t_data *all, int x, char *path)
 		cmd_n = take_end(cmd_n, all->tokens->args[x], len);
 		all->tmp->filename = all->tokens->args[x];
 		if (all->tokens->pipe_count > 0)
-			free_array(all->tmp->array);
+		{
+			// free_array(all->tmp->array);
+		}
 		return (1);
 	}
+	return (0);
 }

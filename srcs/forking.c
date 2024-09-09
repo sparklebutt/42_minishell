@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/06 16:48:33 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/09 12:33:31 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	}
 	else
 	{
-		printf("send to child -1\n");
+		printf("\t\tsend to child -1\n");
 		return (-1);
 	}
 	return (0);
@@ -105,6 +105,7 @@ int	pipe_fork(t_data *data)
 
 	x = 0;
 	data->prev_fd = -1;
+	
 	set_env_array(data);
 	while (x <= data->tokens->pipe_count)
 	{
@@ -136,7 +137,7 @@ int	pipe_fork(t_data *data)
 //	if (status == 256)
 //		status = 1;
 	/*~~this is how to handle forced overflow for the xit code , as exit code gives bytes not an integer~~*/
-	printf("lets look at status for exit codes, pipe_fork= %d\n", status);
+	// printf("\t\tlets look at status for exit codes, pipe_fork= %d\n", status);
 	free_array(data->env_array);
 	return (0);
 }

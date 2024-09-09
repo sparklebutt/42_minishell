@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:02:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/05 11:38:44 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:28:36 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int output_helper(t_tokens *tokens, int fd, int i, int x)
 	{
 		tokens->output_files[x] = ft_strdup(tokens->args[i + 1]);
 		// token flushing becuase we re malloc ontop all the time , this could be handled different
-		printf("token flush ehre ?? = %s\n", tokens->output_files[x]);
+		printf("\t\ttoken flush ehre ?? = %s\n", tokens->output_files[x]);
 		// malloc fail check with free
 		fd = open(tokens->args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);	
 		close(fd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 12:29:23 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/09 14:38:25 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	exec_builtins(t_data data, char *cmd)
 		ft_echo(&data, tokens->args);
 	else if (ft_strncmp(cmd, "env", 4) == 0)
 		ft_env(&data);
-	
 	return (0);
 }
 
@@ -65,7 +64,7 @@ int	handle_line(t_data data, t_tokens *tokens)
 	{
 		// MARK
 		//printf("redir count = %d\n", tokens->redirect_count);
-		printf("exit code = %d\n", exit_code(0, 0)); // just want to retrieve it
+		// printf("\t\texit code = %d\n", exit_code(0, 0)); // just want to retrieve it
 		/*if (data.i == 0 && tokens->args[data.i][0] == '<')
 		{
 			data.i++;
@@ -77,13 +76,12 @@ int	handle_line(t_data data, t_tokens *tokens)
 			//printf("stepping into exec_builtins\n");
 			exit_code(1, 0);
 			exec_builtins(data, tokens->args[data.i]);
-			
 		}
 		else if (find_passage(&data, "PATH", 1) == -1)
 		{
 			call_cmd_error(tokens->args[data.i], NULL, NO_CMD, -10);
 		}
-		printf("exit code after = %d\n", exit_code(0, 0)); // just want to retrieve it
+		// printf("\t\texit code after = %d\n", exit_code(0, 0)); // just want to retrieve it
 		data.i++;
 	}
 	return (0);
