@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/09 11:21:29 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:07:52 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	ft_pwd(t_data *data, t_env *envs)
 			return (call_cmd_error("pwd", "OLDPWD", NULL, -1));
 	}
 	ft_printf("%s\n", data->path);
+	// free(data->path);
 	free(temp_path);
 	return (0);
 }
@@ -51,7 +52,7 @@ t_env	*update_oldpwd(t_data *data, t_env *env, char *temp)
 		free(env->value);
 	env->value = ft_strdup(temp);
 	free(temp);
-	free_string(data->tmp->env_line);
+	// free_string(data->tmp->env_line);
 	return (env);
 }
 
@@ -65,7 +66,7 @@ t_env	*fill_old_pwd(t_data *data, t_env *env, char *new_path)
 	if (find_node(env, "PWD", data) == 1)
 	{
 		temp = ft_strdup(data->tmp->env_line);
-		free_string(data->tmp->env_line);
+		// free_string(data->tmp->env_line);
 	}
 	else
 		return (call_env_error("cd", "PWD"));

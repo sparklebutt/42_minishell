@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/09 13:21:12 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/09 18:05:29 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ static int count_args(t_data *data)
 
 static int malloc_array(t_data *data, int i)
 {
-	data->tmp->ex_arr = ft_calloc(i + 1 , sizeof(char *));
+	// free_array(data->tmp->ex_arr); // nope
+	data->tmp->ex_arr = ft_calloc(i + 1, sizeof(char *)); // MALLOCED VARIABLE
 	if (data->tmp->ex_arr == NULL)
 	{
 		printf("malloc fail handle here\n");
@@ -122,8 +123,9 @@ void	set_env_array(t_data *data)
 	x = 0;
 	temp2 = data->env;
 	key_full = NULL;
-	i = find_node_len(data) + 1;
-	data->env_array = ft_calloc(i, sizeof(char *)); // was malloc
+	i = find_node_len(data);
+	free_array(data->env_array);
+	data->env_array = ft_calloc(i + 1, sizeof(char *)); // MALLOCED VARIABLE
 	if (data->env_array == NULL)
 		return ;
 	while (temp2 != NULL)
@@ -134,7 +136,8 @@ void	set_env_array(t_data *data)
 		x++;
 		temp2 = temp2->next;
 	}
-	data->env_array[x - 1] = NULL;
+	// printf("x = %d and i = %d\n", x, i);
+	data->env_array[i] = NULL;
 }
 
 int	dup_fds(t_data *data, int *fds, int x)

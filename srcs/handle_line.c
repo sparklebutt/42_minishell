@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/09 14:38:25 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:03:44 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int	handle_line(t_data data, t_tokens *tokens)
 		{
 			call_cmd_error(tokens->args[data.i], NULL, NO_CMD, -10);
 		}
+		// free_string(data.tmp->env_line);
 		// printf("\t\texit code after = %d\n", exit_code(0, 0)); // just want to retrieve it
 		data.i++;
 	}

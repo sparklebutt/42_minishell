@@ -100,14 +100,14 @@ char	**ft_split_expansions(t_tokens *tokens, char const *s) //
 	int					index;
 	char				**array;
 	int					sublen;
+	(void)tokens;
 
 	i = 0;
 	index = 0;
-    array = NULL;
-    if (s == NULL)
-        return (NULL);
-    printf("tokens dollar count = %d\n", tokens->pipe_count);
-	array = ft_calloc(ft_count_exp_array(s) + 1, sizeof(char *));
+	array = NULL;
+	if (s == NULL)
+		return (NULL);
+	array = ft_calloc(ft_count_exp_array(s) + 1, sizeof(char *)); // MALLOCED VARIABLE
 	if (array == NULL)
 		return (NULL);
 	while (i < ft_strlen(s))

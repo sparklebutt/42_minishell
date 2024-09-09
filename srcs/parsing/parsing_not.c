@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/09 14:16:09 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/09 18:15:14 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,16 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 
 	x = total_words_c(string, ' ', data);
 	tokens->args = ft_split_adv(string, ' ', data);
-	tokens->heredoc = malloc(sizeof(char *) * 1);
-	tokens->heredoc[0] = 0;
+	// tokens->heredoc = ft_calloc(sizeof(char *), 1); // MALLOCED VARIABLE move this 
+	// tokens->heredoc[0] = 0;
 	if (check_open_quotes(tokens, 0, 0) < 0)
 		return (1);
-	// expansion_parser(tokens, data);
 	if (expansion_parser(tokens, data) == -1)
 	{
 		// free up to this point
 		return (1);
 	}
 	pipe_collector(tokens, tokens->args);
-	create_redir_array(tokens);
 	if (create_redir_array(tokens) == -1) // only mallocing
 	{
 		// free up to this point
@@ -139,24 +137,25 @@ int	find_passage(t_data *all, char *string, int divert)
 				return (-1);
 			}
 		}
+		
 	}
 	return (1);
 }
 
-static char	*take_end(char *new, char *str, int start)
-{
-	size_t	i;
+// static char	*take_end(char *new, char *str, int start)
+// {
+// 	size_t	i;
 
-	i = 0;
-	while (str[start] != '\0')
-	{
-		new[i] = str[start];
-		start++;
-		i++;
-	}
-	new[i] = '\0';
-	return (&*new);
-}
+// 	i = 0;
+// 	while (str[start] != '\0')
+// 	{
+// 		new[i] = str[start];
+// 		start++;
+// 		i++;
+// 	}
+// 	new[i] = '\0';
+// 	return (&*new);
+// }
 
 int	handle_absolute_path(t_data *all, int x, char *path)
 {
@@ -180,13 +179,11 @@ int	handle_absolute_path(t_data *all, int x, char *path)
 	}
 	else
 	{
+		// ARE THESE NEEDED???? start
 		cmd_n = ft_calloc(sizeof(char *), len + 1);
 		cmd_n = take_end(cmd_n, all->tokens->args[x], len);
+		// ARE THESE NEEDED???? end
 		all->tmp->filename = all->tokens->args[x];
-		if (all->tokens->pipe_count > 0)
-		{
-			// free_array(all->tmp->array);
-		}
 		return (1);
 	}
 	return (0);

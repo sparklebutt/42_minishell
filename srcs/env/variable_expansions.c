@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:03:23 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/09 14:37:41 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:59:17 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 	if (!temp_key)
 		return NULL;
 	ft_strncpy(temp_key, arg + start + 1, key_len);
-	temp_key[key_len] = '\0';
+	// temp_key[key_len] = '\0';
 	if (find_node(envs, temp_key, data) == 1)
 	{
 		value = find_keys_value(envs, temp_key);
@@ -88,7 +88,7 @@ char *replace_squiggly_line(t_data *data, t_env *envs)
 	{
 		value = find_keys_value(envs, "HOME");
 		if (value != NULL)
-			new_arg = new_str("~", value, 0, 0 + 1);
+			new_arg = new_str(ft_strdup("~"), value, 0, 0 + 1);
 		else
 			new_arg = remove_key("~", 0, 0 + 1);
 	}

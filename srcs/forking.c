@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/09 12:33:31 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:50:27 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,12 @@ int	child(t_data *data, int *fds, int x, int flag)
 		{
 			exec_builtins(*data, data->tokens->args[data->i]);
 			// dprintf(2, "did the exit code atleast change in here = %d\n", exit_code(0,0));
+			free_array(data->tmp->ex_arr); // MALLOCED VARIABLE
 			exit(exit_code(0, 0));
 		}
 		// printf("execution time check = %s\n", data->tmp->filename);
 		execve(data->tmp->filename, data->tmp->ex_arr, data->env_array);
+		free_array(data->tmp->ex_arr); // MALLOCED VARIABLE
 		exit(exit_code(0, 0));
 	}
 	data->child_i++;
@@ -45,7 +47,6 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	{
 		data->builtin_marker = true;
 		child(data, fds, x, 1);
-		//dprintf(2, "after child\n");
 		data->i++;
 		while (data->tokens->args[data->i] != NULL)
 		{
@@ -114,8 +115,8 @@ int	pipe_fork(t_data *data)
 		if (pipe(fds) < 0){
 			error("fork", "error in pipe perror needed");
 			exit(EXIT_FAILURE);
-		} // eg example Env | grep PATH=
-		data->x = x; // this can be singled down to data->x for example
+		}
+		data->x = x;
 		if (send_to_child(data, fds, x) == -1)
 			return (-1);
 		data->prev_fd = fds[0];
@@ -123,6 +124,8 @@ int	pipe_fork(t_data *data)
 	}
 	close(fds[0]);
 	close(fds[1]);
+	free_array(data->env_array);
+	data->env_array = NULL; // Ensure the pointer is set to NULL after freeing
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
 	while (data->child_i >= 0)
@@ -133,11 +136,6 @@ int	pipe_fork(t_data *data)
 	}
 	status = (status >> 8) & 0xFF;
 	exit_code(1, status);	
-	//alternative 
-//	if (status == 256)
-//		status = 1;
-	/*~~this is how to handle forced overflow for the xit code , as exit code gives bytes not an integer~~*/
-	// printf("\t\tlets look at status for exit codes, pipe_fork= %d\n", status);
-	free_array(data->env_array);
+	// free_array(data->tokens->output_files);
 	return (0);
 }
