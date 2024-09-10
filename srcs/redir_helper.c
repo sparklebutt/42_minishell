@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:02:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/09 11:28:36 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 20:03:22 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,16 @@ int input_helper(t_tokens *tokens, int fd, int i)
 	if (fd < 0)
 		return (1);
 	close (fd);
-	if (ft_strncmp(tokens->args[i], "<<", 2) == 0)
+	if (ft_strncmp(tokens->args[i], "<<", ft_strlen(tokens->args[i]) + 1) == 0)
 	{
-		tokens->here_file = strdup(tokens->args[i + 1]);
+		free_string(tokens->here_file); // new free
+		tokens->here_file = ft_strdup(tokens->args[i + 1]);
 		tokens->here_check = 1;
 	}
 	else
 	{
-		tokens->input_file = strdup(tokens->args[i + 1]);
+		free_string(tokens->input_file); // new free
+		tokens->input_file = ft_strdup(tokens->args[i + 1]);
 		tokens->redirect_in = 1;
 	}
 	return (0);
@@ -44,16 +46,20 @@ int input_helper(t_tokens *tokens, int fd, int i)
 
 int output_helper(t_tokens *tokens, int fd, int i, int x)
 {
-	if (strcmp(tokens->args[i], ">>") == 0)
+	free_string(tokens->output_files[x]); // new free
+	tokens->output_files[x] = ft_strdup(tokens->args[i + 1]);	
+	if (ft_strncmp(tokens->args[i], ">>", ft_strlen(tokens->args[i]) + 1) == 0)
 	{
-		tokens->output_files[x] = ft_strdup(tokens->args[i + 1]);	
+		// free_string(tokens->output_files[x]);
+		// tokens->output_files[x] = ft_strdup(tokens->args[i + 1]);	
 		tokens->redirect_append = 1;
 		fd = open(tokens->args[i + 1], O_WRONLY | O_CREAT | O_APPEND , 0644);
 		close(fd);
 	}
 	else
 	{
-		tokens->output_files[x] = ft_strdup(tokens->args[i + 1]);
+		// free_string(tokens->output_files[x]);
+		// tokens->output_files[x] = ft_strdup(tokens->args[i + 1]);
 		// token flushing becuase we re malloc ontop all the time , this could be handled different
 		printf("\t\ttoken flush ehre ?? = %s\n", tokens->output_files[x]);
 		// malloc fail check with free

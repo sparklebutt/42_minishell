@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 14:51:40 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 18:52:44 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,11 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 
 int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
+
+	if (tokens->heredoc != NULL)
+		free_array(tokens->heredoc);
+	tokens->heredoc = malloc(sizeof(char *) * 1);
+	tokens->heredoc[0] = 0;
 	tokens->array_count = total_words_c(string, ' ', data);
 	tokens->args = ft_split_adv(string, ' ', data);
 	if (tokens->args == NULL)
