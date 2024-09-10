@@ -9,3 +9,5 @@ echo hello | cat
 
 #fails-------
 echo | cat
+
+cat | cat | ls
