@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 18:52:44 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 21:29:37 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 {
 	char *new;
 
+	// cut this smaller
 	new = NULL;
 	if (data->simple == false)
 	{
@@ -51,11 +52,15 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 
 int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
-
+	// cut this smaller
+	// these 4 lines need to be here for now, or else redirs will segfault.
+	// we need to change where heredocs are declared the first time, cause something needs to be there before child's are called
+	// -------------------- ------------
 	if (tokens->heredoc != NULL)
 		free_array(tokens->heredoc);
 	tokens->heredoc = malloc(sizeof(char *) * 1);
 	tokens->heredoc[0] = 0;
+	// ---------------------------------
 	tokens->array_count = total_words_c(string, ' ', data);
 	tokens->args = ft_split_adv(string, ' ', data);
 	if (tokens->args == NULL)
@@ -68,6 +73,8 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 		return (1);
 	}
 	pipe_collector(tokens, tokens->args);
+	// can we put all of the 3 redir unctions and their if statements into one sub function that handles those??? idk just an idea
+	// ----------------------------------------------------------------------
 	redirect_collector(tokens, tokens->args, 0);
 	if (tokens->redirect_count > 0 && create_redir_array(tokens) == -1) // only mallocing
 	{
@@ -79,7 +86,7 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 		printf("following process\n");
 		return (1);
 	}
-
+	// ----------------------------------------------------------------------
 	if (tokens->args == NULL)
 	{
 		ft_printf("malloc fail in parsing , making of array of args\n");
@@ -115,6 +122,7 @@ int	send_to_forks(t_data *data)
 
 int	find_passage(t_data *all, char *string, int divert)
 {
+	// cut this smaller, rewording can be enough
 	if (null_check(all->env->key, all->env, string) != 1)
 	{
 		printf("\t\tret - 1 null check\n");
@@ -126,8 +134,9 @@ int	find_passage(t_data *all, char *string, int divert)
 		{
 			if (check_dir(all->tmp->env_line) == 0)
 			{
-				printf("\t\tret - 1 cechk dir stuff\n");	
-				return (free_extra_return_function(all->tmp->env_line, -1));
+				printf("\t\tret - 1 cechk dir stuff\n");
+				return (free_extra_return_function(all->tmp->env_line, -1)); // can we hande and check things in this fucntion to save lines??
+				// like there could also be a flag given, so that it can be used "below" too to save lines
 			}
 			return (1);
 		}
@@ -135,11 +144,10 @@ int	find_passage(t_data *all, char *string, int divert)
 		{	
 			if (send_to_forks(all) == -1)
 			{
-				printf("\t\tret - 1 send to forks\n");
+				printf("\t\tret - 1 send to forks\n"); // below as in here !!!
 				return (-1);
 			}
 		}
-		
 	}
 	return (1);
 }
@@ -155,16 +163,18 @@ static char	*take_end(char *new, char *str, int start)
  		start++;
  		i++;
  	}
- 	new[i] = '\0';
- 	return (&*new);
+ 	new[i] = 0; // valgrind did not like null character '\0' here for some reasonnnnn
+ 	return (new);
  }
 
-int	handle_absolute_path(t_data *all, int x, char *path)
+int	handle_absolute_path(t_data *all, int x, char *path) // cut this smaller
 {
 	size_t	len;
 	char	*cmd_n;
 
-	cmd_n = path;
+	// cmd_n = path // old thing, but since we are only using it in one place where "path" is NULL
+	// so this didn't make sense to me
+	cmd_n = NULL;
 	len = ft_strlen(all->tokens->args[x]);
 	while (len > 0)
 	{
@@ -172,21 +182,30 @@ int	handle_absolute_path(t_data *all, int x, char *path)
 			break ;
 		len--;
 	}
-	path = ft_calloc(sizeof(char *), len + 1);
+	// if (path != NULL) // maybe not needed
+	free_string(path);// new by vilja
+	path = ft_calloc(sizeof(char), len + 1); // this has issues, 84 blcoks of deff lost memory with parsing_script.sh and most from here, viilja
 	path = ft_strncpy(path, all->tokens->args[x], len);
 	if (check_dir(path) == 0)
 	{
 		error("check dir", path);
+		free_string(path); // new by vilja
 		return (0);
 	}
 	else
 	{
-		// ARE THESE NEEDED???? start
-		cmd_n = ft_calloc(sizeof(char *), len + 1);
+		// do we need this at all?? ask alexandra cause idk, can't see the point of it
+		// you calloc into something new, but it's not in a struct and we aren't using it anywhere?
+		// --------------------------------------------------------------------
+		// if (cmd_n != NULL) // maybe not needed free
+		free_string(cmd_n); // new by vilja
+		cmd_n = ft_calloc(sizeof(char), len + 2); // adding 2 here fixed a write error, check this out. It happens on ine 158 of this file aka [new[i] = 0;]
 		cmd_n = take_end(cmd_n, all->tokens->args[x], len);
-		// ARE THESE NEEDED???? end
+		free_string(cmd_n); // new free, fixed leaks. try parsing_stript.sh and you'll see a difference
+		// --------------------------------------------------------------------
 		all->tmp->filename = all->tokens->args[x];
 		return (1);
 	}
+	free_string(path); // new by vilja
 	return (0);
 }

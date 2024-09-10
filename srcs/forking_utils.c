@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 16:42:03 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 21:20:59 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,9 @@ static int count_args(t_data *data)
 	while (data->tokens->args[i] != NULL && data->tokens->args[i][0] != '|')
 	{
 		if (is_redirect(data->tokens->args[data->i]) > 0)
-		{
 			i++;
-		}
 		arg_count++;
-		i++;    
+		i++;
 	}
 	return(arg_count);
 }
@@ -46,6 +44,7 @@ static int malloc_array(t_data *data, int i)
 
 static int fill_array(t_data *data, int i)
 {
+	// cut this smaller
 	if (data->tokens->args[data->i] != NULL && is_redirect(data->tokens->args[data->i]) > 0)
 	{
 		if (is_redirect(data->tokens->args[data->i]) == 1)
@@ -115,12 +114,11 @@ int    set_array(t_data *data)
  taken from the env linked list as is up to dat must remeber to free all this data once we are done with it ~~~*/
 char 	**set_env_array(t_data *data, int i, int x)
 {
-	//int		i;
-	//int		x;
 	t_env	*temp2;
 	char **tmp_array;
 	char	*key_full;
-	// int x = 0;
+	
+	// cut this smaller
 	tmp_array = NULL;
 	temp2 = data->env;
 	key_full = NULL;

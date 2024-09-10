@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 20:02:33 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 20:44:52 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	minishell(t_data *data)
 		}
 		free_string(rl);
 		free_array(data->tokens->args);
-		// free_array(data->tokens->output_files); // we are putting something non malloced in here, OR freeing something before this
+		free_array(data->tokens->output_files); // we are putting something non malloced in here, OR freeing something before this, by vilja
 		// free_array(data->tokens->heredoc); // this needs to be freed somewhere when it is filled properly, needs to be tested
 	}
 	ft_printf("exit\n");

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 19:57:31 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 20:54:52 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int is_redirect(char *arg)
 , since each pipe will value only 1 ~~*/
 int create_redir_array(t_tokens *tokens)
 {
-	// if (tokens->output_files != NULL) // new free
+	// if (tokens->output_files != NULL)
 	// 	free(tokens->output_files);
 	free_array(tokens->output_files); // new free
 	tokens->output_files = ft_calloc(sizeof(char *), tokens->pipe_count + 1);
@@ -51,7 +51,6 @@ int create_redir_array(t_tokens *tokens)
 		return (-1);
 	}
 	return (0);
-	// calloc nulls them	
 }
 /*~~ this has been over complicated for te fear  of needing this data 
 i do not think we will need it but its some of the easiest to remove in last moments~~*/

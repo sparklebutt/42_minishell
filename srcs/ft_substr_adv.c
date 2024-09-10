@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr_adv.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:28:39 by araveala          #+#    #+#             */
-/*   Updated: 2024/08/30 10:40:49 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 20:55:28 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,3 +40,6 @@
 		ft_strlcpy(substr, s + start, l + 1);
 	return (substr);
 }*/
+
+
+// can this be removed? new, by vilja

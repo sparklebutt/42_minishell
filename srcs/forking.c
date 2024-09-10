@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 16:43:00 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 20:54:17 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 int	child(t_data *data, int *fds, int x, int flag)
 {	
 	char **tmp;
-	//char **tmp2;
 
-	//tmp2 = NULL;
 	tmp = NULL;
 	data->child[data->child_i] = fork();
 	if (data->child[data->child_i] == -1)
@@ -43,7 +41,6 @@ int	child(t_data *data, int *fds, int x, int flag)
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
 	close(fds[1]);
-	//
 	return (0);
 }
 
@@ -113,7 +110,7 @@ int	pipe_fork(t_data *data)
 	x = 0;
 	data->prev_fd = -1;
 	
-	//set_env_array(data);
+	//set_env_array(data); // lets remove this aready
 	while (x <= data->tokens->pipe_count)
 	{
 		if (data->i > data->tokens->array_count)

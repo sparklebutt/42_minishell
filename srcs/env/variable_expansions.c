@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:03:23 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/09 17:59:17 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 21:22:44 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 	if (!temp_key)
 		return NULL;
 	ft_strncpy(temp_key, arg + start + 1, key_len);
-	// temp_key[key_len] = '\0';
+	// temp_key[key_len] = '\0'; // not needed? why was this commented?
 	if (find_node(envs, temp_key, data) == 1)
 	{
 		value = find_keys_value(envs, temp_key);
@@ -104,6 +104,7 @@ char *replace_exitcode(char *arg, int start)
 	
 	value = ft_itoa(exit_code(0, 0));
 	new_arg = new_str(arg, value, start, start + 1 + 1);
+	free_string(value); // new free by vilja, was leaking
 	free_string(arg);
 	return (new_arg);
 }
@@ -123,6 +124,7 @@ char	*look_if_expansions(t_data *data, t_env *envs, char *arg, int i)
 		}
 		if (arg[0] == '~' && ft_strlen(arg) == 1)
 		{
+			free_string(arg); // cause we don't free arg in the fucntion below, vilja
 			arg = replace_squiggly_line(data, envs);
 		}
 		i++;
