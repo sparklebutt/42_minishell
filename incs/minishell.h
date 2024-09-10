@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 10:44:08 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 13:57:55 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ typedef struct s_data
 	char		*prompt;
 	t_env		*env;
 	//t_re		*redir; //redirs linked list
-	char		**env_array; // this is needed for exceves last parameter, eg to run clear
+	//char		**env_array; // this is needed for exceves last parameter, eg to run clear
 	t_cmd		*cmds;
 	t_tokens	*tokens;
 	t_temps		*tmp;
@@ -206,7 +206,7 @@ int send_to_forks(t_data *data);
 
 // forking utils
 int		set_array(t_data *data);
-void	set_env_array(t_data *data);
+char 	**set_env_array(t_data *data, int i, int x);
 int		dup_fds(t_data *data, int *fds, int x);
 bool	confirm_expansion(char *string, int len, int x);
 char *replace_squiggly_line(t_data *data, t_env *envs);
@@ -224,5 +224,6 @@ int	ft_count_exp_array(const char *s);
 int	check_file(char *str);
 
 int	exit_code(int flag, int num);
+char	**free_loop(char **arr, int index);
 //at 79 functions, lets aim for 69
 #endif

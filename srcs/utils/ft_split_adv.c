@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_adv.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 14:16:39 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:27:50 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,5 +140,6 @@ char	**ft_split_adv(char const *s, char c, t_data *data) //lets send it a 0 for 
 		word++;
 	}
 	array[word] = NULL;
+	//printf("zzzzzzzzzzzzzzzzzzzz\n");
 	return (array);
 }

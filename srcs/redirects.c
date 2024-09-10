@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 12:57:29 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 13:18:18 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	redirect_helper(t_tokens *tokens, int x)
 	int		fd;
 
 	fd = 0;
-	if (tokens->output_files[x] == NULL)
+	if (tokens->redirect_in == false && tokens->redirect_out == false && tokens->redirect_append == false )
 		return (0);
 	if (tokens->redirect_append)
 		fd = open(tokens->output_files[x], O_WRONLY | O_CREAT | O_APPEND , 0644);
