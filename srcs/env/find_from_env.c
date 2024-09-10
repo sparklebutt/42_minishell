@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_from_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:02:41 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 12:56:26 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 13:24:38 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	find_node_len(t_data *data)
 		temp = temp->next;
 		i++;
 	}
-	return i;
+	return (i);
 }
 
 int	find_node(t_env *envs, char *key, t_data *data)

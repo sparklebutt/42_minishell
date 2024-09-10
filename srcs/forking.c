@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 13:02:05 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:41:13 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 int	child(t_data *data, int *fds, int x, int flag)
 {	
+	char **tmp;
+
+	tmp = NULL;
 	data->child[data->child_i] = fork();
 	if (data->child[data->child_i] == -1)
 		return (error("fork", "first child failed"));
@@ -25,17 +28,15 @@ int	child(t_data *data, int *fds, int x, int flag)
 		if (flag == 1)
 		{
 			exec_builtins(*data, data->tokens->args[data->i]);
-			// dprintf(2, "did the exit code atleast change in here = %d\n", exit_code(0,0));
-			//free_array(data->tmp->ex_arr); // MALLOCED VARIABLE
 			exit(exit_code(0, 0));
 		}
-		// printf("execution time check = %s\n", data->tmp->filename);
-		execve(data->tmp->filename, data->tmp->ex_arr, data->env_array);
-		//free_array(data->tmp->ex_arr); // MALLOCED VARIABLE
+		tmp = set_env_array(data, 0, 0);
+		//execve(data->tmp->filename, data->tmp->ex_arr, tmp);
+		execve(data->tmp->ex_arr[0], data->tmp->ex_arr, tmp);
+		free_array(tmp); // MALLOCED VARIABLE
 		exit(exit_code(0, 0));
 	}
 	data->child_i++;
-	
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
 	close(fds[1]);
@@ -108,7 +109,7 @@ int	pipe_fork(t_data *data)
 	x = 0;
 	data->prev_fd = -1;
 	
-	set_env_array(data);
+	//set_env_array(data);
 	while (x <= data->tokens->pipe_count)
 	{
 		if (data->i > data->tokens->array_count)
@@ -125,8 +126,6 @@ int	pipe_fork(t_data *data)
 	}
 	close(fds[0]);
 	close(fds[1]);
-	free_array(data->env_array);
-	data->env_array = NULL; // Ensure the pointer is set to NULL after freeing
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
 	while (data->child_i >= 0)
@@ -135,6 +134,7 @@ int	pipe_fork(t_data *data)
 		x--;
 		data->child_i--;
 	}
+	free(data->tmp->ex_arr);
 	status = (status >> 8) & 0xFF;
 	exit_code(1, status);	
 	return (0);

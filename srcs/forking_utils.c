@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 12:14:17 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:40:19 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int count_args(t_data *data)
 
 static int malloc_array(t_data *data, int i)
 {
-	// free_array(data->tmp->ex_arr); // nope
+	//free_array(data->tmp->ex_arr); // NEW FREE
 	data->tmp->ex_arr = ft_calloc(i + 1, sizeof(char *)); // MALLOCED VARIABLE
 	if (data->tmp->ex_arr == NULL)
 	{
@@ -113,31 +113,37 @@ int    set_array(t_data *data)
 
 /*~~~ here we tunr the envs into a null terminated array for the 3rd parameter of exceve(),
  taken from the env linked list as is up to dat must remeber to free all this data once we are done with it ~~~*/
-void	set_env_array(t_data *data)
+char 	**set_env_array(t_data *data, int i, int x)
 {
-	int		i;
-	int		x;
+	//int		i;
+	//int		x;
 	t_env	*temp2;
+	char **tmp_array;
 	char	*key_full;
-
-	x = 0;
+	// int x = 0;
+	tmp_array = NULL;
 	temp2 = data->env;
 	key_full = NULL;
 	i = find_node_len(data);
-	free_array(data->env_array);
-	data->env_array = ft_calloc(i + 1, sizeof(char *)); // MALLOCED VARIABLE
-	if (data->env_array == NULL)
-		return ;
+	tmp_array = ft_calloc(i + 1, sizeof(char *)); // MALLOCED VARIABLE
+	if (tmp_array == NULL)
+		return (NULL);
 	while (temp2 != NULL)
 	{
 		key_full = ft_strjoin(temp2->key, "=");
-		data->env_array[x] = ft_strjoin(key_full, temp2->value);
+		tmp_array[x] = ft_strjoin(key_full, temp2->value);
+		if (tmp_array[x] == NULL)
+		{
+			free_string(key_full);
+			free_loop(tmp_array, x);
+			break ;
+		}
 		free_string(key_full);
 		x++;
 		temp2 = temp2->next;
 	}
-	// printf("x = %d and i = %d\n", x, i);
-	data->env_array[i] = NULL;
+	tmp_array[x] = NULL;
+	return (tmp_array);
 }
 
 int	dup_fds(t_data *data, int *fds, int x)
