@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 11:57:41 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:15:43 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ void	handle_expansion(t_data *data, int len, int i, char *new)
 	char		*tmp;
 
 	tmp = NULL;
+	//free_string(new); // NEW FREE
 	tokens = data->tokens;
 	if (data->simple == false)
 	{
@@ -158,9 +159,13 @@ void	handle_expansion(t_data *data, int len, int i, char *new)
 			tmp = look_if_expansions(data, data->env, new, 0);
 			free_string(data->tmp->exp_array[i]);
 			data->tmp->exp_array[i] = ft_strdup((tmp));
+			//free_string(new);// NEW FREE
 		}
 		else
+		{
+			
 			data->tmp->exp_array[i] = look_if_expansions(data, data->env, data->tmp->exp_array[i], 0);
+		}
 	}
 	else
 	{
@@ -170,6 +175,7 @@ void	handle_expansion(t_data *data, int len, int i, char *new)
 			new = clean_quotes(tokens->args[i], len, 0, 0);
 			free_string(tokens->args[i]);	
 			tokens->args[i] = look_if_expansions(data, data->env, new, 0);
+			//free_string(new); // NEW FREE
 		}
 		else
 			tokens->args[i] = look_if_expansions(data, data->env, tokens->args[i], 0);
@@ -203,6 +209,7 @@ int	multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
 			clean_rest_of_quotes(data, index, len);
 		index++;
 	}
+	
 	return (0);
 }
 
@@ -210,12 +217,10 @@ int	multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
 int	expansion_parser(t_tokens *tokens, t_data *data)
 {
 	int				i;
-	//size_t			x;
 	size_t			len;
 	static char		*new;
 
 	i = 0;
-	//x = 0;
 	len = 0;
 	data->tmp->exp_array = NULL;
 	data->simple = true;

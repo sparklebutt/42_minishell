@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 11:44:55 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:13:02 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	minishell(t_data *data)
 		}
 		free_string(rl);
 		free_array(data->tokens->args);
-		free_array(data->tokens->output_files);
+		//free_array(data->tokens->output_files);
 		// free_string(data->tokens->heredoc);
-		free_string(data->tmp->env_line);
+		//free_string(data->tmp->env_line);
 	}
 	ft_printf("exit\n");
 }

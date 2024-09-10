@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 11:42:29 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:17:31 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,6 @@ int	pipe_fork(t_data *data)
 	close(fds[0]);
 	close(fds[1]);
 	free_array(data->env_array);
-	free_array(data->tmp->ex_arr); // MALLOCED VARIABLE
 	data->env_array = NULL; // Ensure the pointer is set to NULL after freeing
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
@@ -137,6 +136,7 @@ int	pipe_fork(t_data *data)
 		x--;
 		data->child_i--;
 	}
+	//free_array(data->tmp->ex_arr); // MALLOCED VARIABLE	
 	status = (status >> 8) & 0xFF;
 	exit_code(1, status);	
 	// free_array(data->tokens->output_files);
