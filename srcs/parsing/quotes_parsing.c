@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_parsing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 15:55:36 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/06 16:09:37 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/09 15:42:06 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ char	*clean_quotes(char *string, int len, int x, int y)
 	new = NULL;
 
 	full_len = ft_strlen(string);
-	new = ft_calloc(full_len + 1, 1);
+	new = ft_calloc(full_len + 1, 1); // MALLOCED VARIABLE
 	if (new == NULL)
 		return (NULL);
 	if (len == 0) // this was probably a stupidity check?

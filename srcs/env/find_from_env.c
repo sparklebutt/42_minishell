@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:02:41 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 16:52:05 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:04:43 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,12 @@ int	find_node_len(t_data *data)
 		temp = temp->next;
 		i++;
 	}
-	return (i - 1);
+	return i;
 }
 
 int	find_node(t_env *envs, char *key, t_data *data)
 {
 	t_env	*temp;
-	(void)data;
 
 	if (!envs)
 		return (0);
@@ -54,6 +53,7 @@ int	find_node(t_env *envs, char *key, t_data *data)
 		if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) == 0
 			&& (ft_strlen(temp->key) == ft_strlen(key)))
 		{
+			free_string(data->tmp->env_line);
 			data->tmp->env_line = ft_strdup(temp->value); // IF REMOVED THIS BREAKS "/bin/ls"
 			return (1);
 		}

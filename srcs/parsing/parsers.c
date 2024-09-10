@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/09 14:37:58 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:25:59 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ int	expansion_parser(t_tokens *tokens, t_data *data)
 			{
 				// @@ put the contents of this if statement into one function @@
 				data->simple = false;
-				data->tmp->exp_array = ft_split_expansions(tokens, tokens->args[i]);
+				data->tmp->exp_array = ft_split_expansions(tokens, tokens->args[i]); // MALLOCED VARIABLE
 				if (data->tmp->exp_array == NULL)
 				{
 					printf("malloc fail handleing required\n");
@@ -210,6 +210,7 @@ int	expansion_parser(t_tokens *tokens, t_data *data)
 				index = 0;
 				while (data->tmp->exp_array[index] != NULL)
 				{
+					// printf("test string = %s\n", data->tmp->exp_array[index]);
 					len = ft_strlen(data->tmp->exp_array[index]);
 					if (ft_strchr(data->tmp->exp_array[index], '$') == NULL)
 						clean_rest_of_quotes(data, index, len);
@@ -246,8 +247,8 @@ int	expansion_parser(t_tokens *tokens, t_data *data)
 			free_string(tokens->args[i]);
 			tokens->args[i] = array_to_string(data->tmp->exp_array);
 			data->simple = true;
-			free_array(data->tmp->exp_array);
 		}
+		free_array(data->tmp->exp_array); // MALLOCED VARIABLE
 		i++;
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 08:18:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/01/03 05:48:54 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/09 15:43:59 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	**ft_split(char const *s, char c)
 
 	i = 0;
 	word = 0;
-	array = (char **)ft_calloc(sizeof(char *), (total_words(s, c) + 1));
+	array = (char **)ft_calloc(sizeof(char *), (total_words(s, c) + 1)); // MALLOCED VARIABLE
 	if (!s || !array)
 		return (NULL);
 	while (s[i])
@@ -69,7 +69,7 @@ char	**ft_split(char const *s, char c)
 		else
 		{
 			word_len = fancy_strlen(s, c, i) - i;
-			array[word] = ft_substr(s, i, word_len);
+			array[word] = ft_substr(s, i, word_len); // MALLOCED VARIABLE
 			if (array[word] == NULL)
 				return (free_array_if(array));
 			word++;

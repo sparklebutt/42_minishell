@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_things.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:59:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/06 16:20:14 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:20:15 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	free_extra_return_function(char *str, int ret_value)
 {
-	free_string(str);
+	(void)str;
+	// free_string(str);
 	return (ret_value);
 }
 
@@ -23,19 +24,16 @@ void	free_array(char **array)
 	int	i;
 
 	i = 0;
-	while (array[i] != NULL) // issue?
+	if (array == NULL)
+		return ;
+	while (array[i] != NULL)
 	{
 		free(array[i]);
 		array[i] = NULL;
 		i++;
 	}
-	if (array != NULL)
-	{
-		free(array);
-		array = NULL;
-	}
-	//else
-	//	array = NULL;
+	free(array);
+	array = NULL;
 }
 
 void	free_string(char *string)

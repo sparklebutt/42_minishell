@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:04:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 16:02:51 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:26:43 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ void	ft_export(t_data *data)
 
 	i = 1;
 	tokens = data->tokens;
-	if (tokens->args[1] == NULL) // maybe we don't need to handle this
-		ft_printf("no args beep boop declare -X\n");
-	if (data->tokens->array_count == 1)
-		ft_printf("print env in alphabetical order\n"); // maybe don't implement this
+	// if (tokens->args[1] == NULL) // maybe we don't need to handle this
+	// 	ft_printf("no args beep boop declare -X\n");
+	// if (data->tokens->array_count == 1)
+	// 	ft_printf("print env in alphabetical order\n"); // maybe don't implement this
 	while (i < data->tokens->array_count)
 	{
 		handle_arg(data, i, data->tokens);
