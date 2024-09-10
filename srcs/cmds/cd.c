@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 12:57:31 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:16:06 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,8 @@
 void	to_home(t_data *data, t_env *envs)
 {
 	find_passage(data, "HOME", 2);
-	if(chdir(data->tmp->env_line) == 0)
-	{
-		// envs = move_list(envs, "PWD");
-		// envs = fill_old_pwd(data, envs, data->tmp->filename);///change back
+	if (chdir(data->tmp->env_line) == 0)
 		envs = fill_old_pwd(data, envs, data->tmp->env_line);
-	}
 }
 
 void	change_dir(t_data *data, t_env *envs, char *temp)
@@ -30,9 +26,9 @@ void	change_dir(t_data *data, t_env *envs, char *temp)
 
 	temp2 = NULL;
 	tokens = data->tokens;
+	free_string(data->path);
 	if (check_dir(temp) && chdir(temp) == 0 && find_node(envs, "OLDPWD", data) == 1 && find_node(envs, "PWD", data) == 1)
 	{
-		envs = move_list(envs, "PWD");
 		temp2 = getcwd(NULL, 0);
 		envs = fill_old_pwd(data, envs, temp2);
 	}
@@ -40,17 +36,17 @@ void	change_dir(t_data *data, t_env *envs, char *temp)
 		return ;
 	else
 		cmd_error(tokens->args[data->i], tokens->args[data->i + 1]);
+	free_string(temp2);
+	free_string(temp);
 }
 
 void	ft_cd(t_data *data, t_env *envs)
 {
 	char	*temp;
 	char	*temp2;
-	int i = data->i; // data->i is the new iterator added during pipe handeling
+	int		i;
 	
-	temp = NULL;
-	temp2 = NULL;
-	
+	i = data->i;
 	if (ft_strncmp(data->tokens->args[i], "cd", 3) == 0
 		&& data->tokens->args[i + 1] == NULL)
 	{
@@ -58,14 +54,17 @@ void	ft_cd(t_data *data, t_env *envs)
 		return ;
 	}
 	temp = getcwd(NULL, 0);
-	if (temp != NULL) // add same error handling than what pwd has
-		data->path = temp;
+	if (temp != NULL)
+		free_string(data->path);
+	if (temp != NULL)
+		data->path = ft_strdup(temp);
+	if (ft_strncmp(data->tokens->args[i + 1], "/", 1) != 0)
+		free_string(data->path);	
 	if (ft_strncmp(data->tokens->args[i + 1], "/", 1) != 0)
 		data->path = ft_strjoin(temp, "/");
 	free_string(temp);
-	temp2 = ft_strdup(data->tokens->args[i + 1]);
+	temp2 = ft_strdup(data->tokens->args[++i]);
 	temp = ft_strjoin(data->path, temp2);
-	i++;
 	free_string(temp2);
 	change_dir(data, envs, temp);
 }

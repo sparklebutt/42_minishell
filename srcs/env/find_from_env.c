@@ -50,16 +50,22 @@ int	find_node(t_env *envs, char *key, t_data *data)
 	temp = envs;
 	while (temp != NULL)
 	{
+		// printf("looking for = %s\n", key);
+		// printf("key = %s\n", temp->key);
+		// printf("value = %s\n", temp->value);
+		// printf("------------------------\n");
 		if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) == 0
 			&& (ft_strlen(temp->key) == ft_strlen(key)))
 		{
-			data->tmp->env_line = temp->value; // IF REMOVED THIS BREAKS "/bin/ls"
+			// printf("\t\tkey found!!!!\n");
+			data->tmp->env_line = temp->value;
 			return (1);
 		}
 		temp = temp->next;
 		if (temp == NULL)
 			break;
 	}
+	// printf("\t\tkey NOT found!!!!\n");
 	return (0);
 }
 
