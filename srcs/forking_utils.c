@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 14:40:19 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:42:03 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ static int count_args(t_data *data)
 
 static int malloc_array(t_data *data, int i)
 {
-	//free_array(data->tmp->ex_arr); // NEW FREE
+	if (data->tmp->ex_arr != NULL)
+		free(data->tmp->ex_arr); // NEW FREE
 	data->tmp->ex_arr = ft_calloc(i + 1, sizeof(char *)); // MALLOCED VARIABLE
 	if (data->tmp->ex_arr == NULL)
 	{
@@ -75,7 +76,6 @@ static int fill_array(t_data *data, int i)
 	}
 	else if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|')
 	{
-		// printf("sticking this = %s |||into ex_arr", data->tokens->args[data->i]);
 		data->tmp->ex_arr[i] = data->tokens->args[data->i];
 		data->i++;
 	}

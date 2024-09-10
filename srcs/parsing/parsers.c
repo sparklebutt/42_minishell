@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 13:01:44 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:34:25 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static char *array_to_string(char **array)
 	i = 0;
 	new_string = NULL;
 	new_string_len = 0;
+	if (!array)
+		return (NULL);
 	while (array[index] != NULL)
 	{
 		new_string_len += ft_strlen(array[index]);
@@ -38,7 +40,8 @@ static char *array_to_string(char **array)
 		ft_strcpy(new_string + i, array[index]);
 		index++;
 		i = ft_strlen(new_string);		
-	}	
+	}
+	//free_array(array);
 	return (*&new_string);
 }
 
@@ -181,11 +184,17 @@ void	handle_expansion(t_data *data, int len, int i, char *new)
 
 int	clean_if_multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
 {
+	//char *tmp;
+
+	//tmp = NULL;
 	if (data->simple == false && tokens->dollar_count > 1)
 	{
 		free_string(tokens->args[i]);
-		tokens->args[i] = array_to_string(data->tmp->exp_array);
+		//tmp = array_to_string(data->tmp->exp_array);
+		tokens->args[i] = array_to_string(data->tmp->exp_array);//ft_strdup(tmp);
+		//free_string(tmp);
 		data->simple = true;
+		printf("This is arrays address = %p\n", data->tmp->exp_array);
 		free_array(data->tmp->exp_array); // MALLOCED VARIABLE
 	}
 	else 
@@ -196,9 +205,9 @@ int	clean_if_multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
 int	multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
 {
 	int index;
-	int len;
+	size_t len;
 	static char		*new; // potentially not needed
-
+	//int x = 0;
 	len = 0;
 	index = 0;
 	data->simple = false;

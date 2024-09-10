@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:59:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 14:16:43 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:58:43 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	free_string(char *string)
 		free(string);
 		string = NULL;
 	}
+	//else 
+	//	string = NULL;
 }
 
 void	free_nodes(t_env *node)

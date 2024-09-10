@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 10:16:36 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/04 14:51:00 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:43:53 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t l)
 		return (ft_strdup(""));
 	if (l + start > s_len)
 		l = s_len - (size_t)start;
-	substr = (char *)malloc(sizeof(char) * (l + 1));
-	//substr = ft_calloc(l + 1, sizeof(char));
+	//substr = (char *)ft_calloc(sizeof(char) * (l + 1));
+	substr = ft_calloc(l + 1, sizeof(char));
 	if (!substr)
 		return (NULL);
 	ft_strlcpy(substr, s + start, l + 1);

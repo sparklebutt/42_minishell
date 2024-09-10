@@ -101,26 +101,29 @@ char	**ft_split_expansions(t_tokens *tokens, char const *s) //
 	char				**array;
 	int					sublen;
 	(void)tokens;
+    int size_r;
 
+    size_r = 0;
 	i = 0;
 	index = 0;
 	array = NULL;
 	if (s == NULL)
 		return (NULL);
-	array = ft_calloc(ft_count_exp_array(s) + 1, sizeof(char *)); // MALLOCED VARIABLE
+    size_r = ft_count_exp_array(s);
+	array = ft_calloc(size_r + 1, sizeof(char *)); // MALLOCED VARIABLE
 	if (array == NULL)
 		return (NULL);
-	while (i < ft_strlen(s))
+    array[size_r] = NULL;
+	while (index < size_r)//(i <= ft_strlen(s))
 	{
 		if (s[i] == '\0')
-			return (array);
-		sublen = ft_count_sub_len(s, i);
+   			return (array);
+ 		sublen = ft_count_sub_len(s, i);
 		array[index] = ft_substr(s, i, sublen);
 		if (!array[index])
 			return (free_loop(array, index));
 		i = i + sublen;
 		index++;
 	}
-    array[index] = NULL;
 	return (array);
 }

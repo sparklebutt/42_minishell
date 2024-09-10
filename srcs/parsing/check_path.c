@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 13:11:39 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 17:01:18 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,18 @@
 int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 {
 	*cmd_len = ft_strlen(all->tokens->args[x]);
+	
 	if (all->tokens->args[x][0] == '.')
 		return (3);
 	if (all->tokens->args[x][0] == '/')
-		return (handle_absolute_path(all, x, NULL)); // not allowed
+		return (handle_absolute_path(all, x, NULL));
 	if (all->tokens->args[x][0] != '/')
 	{
 		free_string(*suffix);
 		*suffix = ft_strjoin("/", all->tokens->args[x]);
 	}
 	if (*suffix == NULL || *cmd_len == 0)
-		return (free_extra_return_function(*suffix, 0));//, 0); // not alowed?
+		return (free_extra_return_function(*suffix, 0));
 	return (2);
 }
 
@@ -63,7 +64,8 @@ int	iterate_and_match(char *suffix, size_t cmd_len, t_data *all, int x)
 
 int	cleanup_and_finalize(char *suffix, t_data *all, int found)
 {
-	free_string(suffix);
+	(void)suffix;
+	//free_string(suffix);
 	free_array(all->tmp->array);
 	if (found)
 		return (1);
@@ -95,12 +97,13 @@ res = 3 means we are looking into current directory so we do not need to check_d
 but file muts be checked, this is eg so that minishell can run inside minishell~~*/
 int	check_path(char *string, int divert, t_data *all, int x)
 {
-	char	*suffix;
+	static char	*suffix;
 	size_t	cmd_len;
 	int		res;
 	int		found;
 
-	suffix = NULL;
+	//free_string(suffix);
+	// suffix = NULL;
 	cmd_len = 0;
 	res = initial_checks_and_setup(&suffix, &cmd_len, all, x);
 	if (res == 3)
