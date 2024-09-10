@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 14:41:13 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:43:00 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 int	child(t_data *data, int *fds, int x, int flag)
 {	
 	char **tmp;
+	//char **tmp2;
 
+	//tmp2 = NULL;
 	tmp = NULL;
 	data->child[data->child_i] = fork();
 	if (data->child[data->child_i] == -1)
@@ -33,6 +35,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 		tmp = set_env_array(data, 0, 0);
 		//execve(data->tmp->filename, data->tmp->ex_arr, tmp);
 		execve(data->tmp->ex_arr[0], data->tmp->ex_arr, tmp);
+		//free(data->tmp->ex_arr);
 		free_array(tmp); // MALLOCED VARIABLE
 		exit(exit_code(0, 0));
 	}
@@ -40,6 +43,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
 	close(fds[1]);
+	//
 	return (0);
 }
 
@@ -134,7 +138,11 @@ int	pipe_fork(t_data *data)
 		x--;
 		data->child_i--;
 	}
-	free(data->tmp->ex_arr);
+	if (data->tmp->ex_arr != NULL)
+	{
+		free(data->tmp->ex_arr);
+		data->tmp->ex_arr = NULL;
+	}
 	status = (status >> 8) & 0xFF;
 	exit_code(1, status);	
 	return (0);
