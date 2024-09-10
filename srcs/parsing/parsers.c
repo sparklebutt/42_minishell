@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 12:15:43 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 13:01:44 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,6 @@ void	handle_expansion(t_data *data, int len, int i, char *new)
 	char		*tmp;
 
 	tmp = NULL;
-	//free_string(new); // NEW FREE
 	tokens = data->tokens;
 	if (data->simple == false)
 	{
@@ -159,11 +158,10 @@ void	handle_expansion(t_data *data, int len, int i, char *new)
 			tmp = look_if_expansions(data, data->env, new, 0);
 			free_string(data->tmp->exp_array[i]);
 			data->tmp->exp_array[i] = ft_strdup((tmp));
-			//free_string(new);// NEW FREE
+			free_string(tmp);
 		}
 		else
 		{
-			
 			data->tmp->exp_array[i] = look_if_expansions(data, data->env, data->tmp->exp_array[i], 0);
 		}
 	}
@@ -175,11 +173,24 @@ void	handle_expansion(t_data *data, int len, int i, char *new)
 			new = clean_quotes(tokens->args[i], len, 0, 0);
 			free_string(tokens->args[i]);	
 			tokens->args[i] = look_if_expansions(data, data->env, new, 0);
-			//free_string(new); // NEW FREE
 		}
 		else
 			tokens->args[i] = look_if_expansions(data, data->env, tokens->args[i], 0);
 	}
+}
+
+int	clean_if_multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
+{
+	if (data->simple == false && tokens->dollar_count > 1)
+	{
+		free_string(tokens->args[i]);
+		tokens->args[i] = array_to_string(data->tmp->exp_array);
+		data->simple = true;
+		free_array(data->tmp->exp_array); // MALLOCED VARIABLE
+	}
+	else 
+		return (0);
+	return (0);
 }
 
 int	multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
@@ -187,6 +198,7 @@ int	multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
 	int index;
 	int len;
 	static char		*new; // potentially not needed
+
 	len = 0;
 	index = 0;
 	data->simple = false;
@@ -196,23 +208,30 @@ int	multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
 		printf("malloc fail handleing required\n"); // REWRITE
 		return (-1);
 	}
-	index = 0;
 	while (data->tmp->exp_array[index] != NULL)
 	{
-		// printf("test string = %s\n", data->tmp->exp_array[index]);
 		len = ft_strlen(data->tmp->exp_array[index]);
-		if (ft_strchr(data->tmp->exp_array[index], '$') == NULL)
-			clean_rest_of_quotes(data, index, len);
-		else if (confirm_expansion(data->tmp->exp_array[index], len, 0) == true)
+		if (confirm_expansion(data->tmp->exp_array[index], len, 0) == true)
 			handle_expansion(data, len - 1, index, new);
 		else
 			clean_rest_of_quotes(data, index, len);
 		index++;
 	}
-	
 	return (0);
 }
 
+int	 no_dollar_handle(t_tokens *tokens, t_data *data, int i)
+{
+	if (ft_strlen(tokens->args[i]) == 1 && tokens->args[i][0] == '~')
+	{
+		free(tokens->args[i]);
+		tokens->args[i] = replace_squiggly_line(data, data->env);
+	}
+	data->simple = true;
+	if (ft_strchr(tokens->args[i], '\'') != NULL || ft_strchr(tokens->args[i], '"') != NULL)
+		clean_rest_of_quotes(data, i, 0);	
+	return (0);
+}
 
 int	expansion_parser(t_tokens *tokens, t_data *data)
 {
@@ -222,7 +241,6 @@ int	expansion_parser(t_tokens *tokens, t_data *data)
 
 	i = 0;
 	len = 0;
-	data->tmp->exp_array = NULL;
 	data->simple = true;
 	while (tokens->args[i])
 	{	
@@ -242,23 +260,8 @@ int	expansion_parser(t_tokens *tokens, t_data *data)
 			data->simple = false;
 		}
 		else if (tokens->args[i] != NULL && find_redirect(tokens->args[i]) == 0 && tokens->dollar_count == 0)
-		{
-			if (ft_strlen(tokens->args[i]) == 1 && tokens->args[i][0] == '~')
-			{
-				free(tokens->args[i]);
-				tokens->args[i] = replace_squiggly_line(data, data->env);
-			}
-			data->simple = true;
-			if (ft_strchr(tokens->args[i], '\'') != NULL || ft_strchr(tokens->args[i], '"') != NULL)
-				clean_rest_of_quotes(data, i, 0);	
-		}
-		if (data->simple == false && tokens->dollar_count > 1)
-		{
-			free_string(tokens->args[i]);
-			tokens->args[i] = array_to_string(data->tmp->exp_array);
-			data->simple = true;
-		}
-		free_array(data->tmp->exp_array); // MALLOCED VARIABLE
+			no_dollar_handle(tokens, data, i);
+		clean_if_multi_dollar_handle(data, tokens, i);
 		i++;
 	}
 	return (0);

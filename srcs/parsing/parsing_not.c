@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 11:56:04 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 13:01:20 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 
 int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
-	//int	x;
-
 	tokens->array_count = total_words_c(string, ' ', data);
 	tokens->args = ft_split_adv(string, ' ', data);
 	if (tokens->args == NULL)
@@ -65,12 +63,12 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 		return (1);
 	}
 	pipe_collector(tokens, tokens->args);
-	if (create_redir_array(tokens) == -1) // only mallocing
+	redirect_collector(tokens, tokens->args, 0);
+	if (tokens->redirect_count > 0 && create_redir_array(tokens) == -1) // only mallocing
 	{
 		// free up to this point
 		return (1);
 	}
-	redirect_collector(tokens, tokens->args, 0);
 	if (parse_redirections(data, tokens, tokens->args, 0) == 1)
 	{
 		printf("following process\n");
