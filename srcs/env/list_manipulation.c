@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:47:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 12:49:57 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:33:57 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,17 @@ t_env	*move_list(t_env *envs, char *key)
 
 t_env	*replace_value(t_env *env, char *key, char *new_value)
 {
-	// printf("1 bbb\n");
 	env = move_list(env, key);
-	// printf("2 bbb\n");
 	while (env != NULL) {
-		// printf("3 bbb\n");
 		if (ft_strncmp(env->key, key, ft_strlen(key)) == 0) {
-			// printf("does it get here?\n");
 			free_string(env->value);
 			env->value = new_value;
 			free_string(key);
-			// printf("I LOVE CATS\n");
 			return (env);
 		}
 		env = env->next;
 	}
 	free_string(key);
-	// printf("meep\n");
 	return (NULL);
 }
 
@@ -60,7 +54,9 @@ int	insert_node(t_env **env_lst, char *key_name, char *value)
 	new_node->key = key_name;
 	new_node->value = value;
 	new_node->next = NULL;
-	if (*env_lst == NULL) {
+	if (*env_lst == NULL)
+	{
+
 		*env_lst = new_node;
 		return (1);
 	}

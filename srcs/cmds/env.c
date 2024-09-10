@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 16:02:16 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:45:51 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,18 @@ void	ft_env(t_data *data)
 {
 	t_env	*env;
 	int		found_key;
-	//char	*value;
 
 	env = data->env;
-	found_key = find_node(env, "PATH", data);
-	//value = 0;
-	if (found_key == 0) {
-		cmd_error("env", NULL); // returns "minishell: env: Success" ???
+	found_key = find_node(env, "PATH", data); // make sure to check if every path value given in PATH is VALID
+	
+	// this is only needed if we don't want to handle [env -i ./minishell]
+	// if (env == NULL) {
+	// 	not_perror("env", NULL, "syntax error: WE DO NOT HANDLE env -i");
+	// 	return ;
+	// }
+	
+	if (found_key == 0 || found_key == 2) {
+		not_perror("env", NULL, "No such file or directory\n");
 		return ;
 	}
 	else
@@ -40,5 +45,4 @@ void	ft_env(t_data *data)
 			env = env->next;
 		}
 	}
-	// fix with "env -i ./minishell" "env -i bash"
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_from_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:02:41 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 13:24:38 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:54:05 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char *find_keys_value(t_env *envs, char *key)
 			return (temp->value);
 		temp = temp->next;
 	}
-	return (0);
+	return (NULL);
 }
 
 int	find_node_len(t_data *data)
@@ -58,12 +58,14 @@ int	find_node(t_env *envs, char *key, t_data *data)
 			&& (ft_strlen(temp->key) == ft_strlen(key)))
 		{
 			// printf("\t\tkey found!!!!\n");
+			if (ft_strncmp("PATH", key, ft_strlen(key) + 1)	== 0 && find_keys_value(envs, "PATH") == NULL)
+				return (2);
 			data->tmp->env_line = temp->value;
 			return (1);
 		}
 		temp = temp->next;
-		if (temp == NULL)
-			break;
+		// if (temp == NULL)
+		// 	break;
 	}
 	// printf("\t\tkey NOT found!!!!\n");
 	return (0);
@@ -95,6 +97,7 @@ char	*find_value(char *arg)
 	char	*temp;
 
 	temp = ft_strchr(arg, '=');
+	temp++;
 	if (temp == NULL)
 		return (NULL);
 	value = ft_substr(temp, 1, ft_strlen(arg));

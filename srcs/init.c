@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:11:00 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 10:42:00 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:34:51 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,20 @@ t_env	*create_env_list(t_data *data)
 	int i;
 	char *value;
 	char *key;
-	//	t_env *temp_env;
+	char *temp;
 	t_env *env;
 
 	(void)data;
 	i = 0;
 	env = NULL;
-	//temp_env = env;
+	temp = NULL;
 	if (environ[i] == NULL)
 	{
-		insert_node(&env, "SHLVL", "1"); // change this to update number, add other default nodes into env, check "env -i ./minishell" and "env -i bash"
-			return (env) ;
+		temp = getcwd(NULL, 0);
+		insert_node(&env, ft_strdup("PWD"), temp);
+		insert_node(&env, ft_strdup("SHLVL"), ft_strdup("1")); // change this to update number, add other default nodes into env, check "env -i ./minishell" and "env -i bash"
+		insert_node(&env, ft_strdup("_"), ft_strdup("/usr/bin/env"));
+		return (env);
 	}
 	while (environ[i] != NULL)
 	{

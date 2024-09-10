@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 14:27:41 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:51:40 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,8 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 
 int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
-//	int x;
-
 	tokens->array_count = total_words_c(string, ' ', data);
-//	x = 
 	tokens->args = ft_split_adv(string, ' ', data);
-	printf("bug hunting 2\n");	
 	if (tokens->args == NULL)
 		return (1);
 	if (check_open_quotes(tokens, 0, 0) == -1)

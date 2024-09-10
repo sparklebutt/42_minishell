@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:04:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 12:49:28 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:34:18 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,65 @@ int	export_syntax_check(char *string)
 	}
 	return (0);
 }
+
+int compare_str(char *str1, char *str2)
+{
+	int i;
+
+	i = 0;
+	while (str1[i] == str2[i])
+		i++;	
+	if (str1[i] > str2[i])
+		return (1);
+	return (0);
+}
+
+t_env *sort_env(t_env *lst)
+{
+	t_env *start;
+	char *new_key;
+	char *new_value;
+
+  start = lst;
+	while (lst != NULL && lst->next != NULL)
+	{
+		if (compare_str(lst->key, lst->next->key) == 0)
+		{
+			new_key = lst->key;
+			lst->key = lst->next->key;
+			lst->next->key = new_key;
+			new_value = lst->value;
+			lst->value = lst->next->value;
+			lst->next->value = new_value;
+			lst = start;
+		}
+		else
+			lst = lst->next;
+	}
+	return (start);
+}
+
+void export_alphabetical(t_data *data)
+{
+	t_env *temp_env;
+	t_env *fuck_off;
+	t_env *huh;
+
+	fuck_off = data->env;
+	huh = NULL;
+	while (fuck_off != NULL)
+	{
+		insert_node(&huh, fuck_off->key, fuck_off->value);
+		fuck_off = fuck_off->next;
+	}
+	temp_env = sort_env(huh);
+	while (temp_env != NULL)
+	{
+		printf("declare -x %s=\"%s\"\n", temp_env->key, temp_env->value);
+		temp_env = temp_env->next;
+	}
+}
+
 void	ft_export(t_data *data)
 {
 	t_tokens *tokens;
@@ -35,14 +94,15 @@ void	ft_export(t_data *data)
 
 	i = 1;
 	tokens = data->tokens;
-	// if (tokens->args[1] == NULL) // maybe we don't need to handle this
-	// 	ft_printf("no args beep boop declare -X\n");
-	// if (data->tokens->array_count == 1)
-	// 	ft_printf("print env in alphabetical order\n"); // maybe don't implement this
-	while (i < data->tokens->array_count)
+	if (data->tokens->array_count == 1)
+		export_alphabetical(data);
+	else
 	{
-		handle_arg(data, i, data->tokens);
-		i++;
+		while (i < data->tokens->array_count)
+		{
+			handle_arg(data, i, data->tokens);
+			i++;
+		}
 	}
 }
 
@@ -51,16 +111,18 @@ void handle_arg(t_data *data, int arg_i, t_tokens *tokens)
 	char	*arg;
 	t_env	*env;
 	char	*key;
+	char	*value;
 	
 	env = data->env;
 	arg = tokens->args[arg_i];
+	
 	if (export_syntax_check(arg) == 1)
 		return ;
 	key = ft_strtrim_front(arg, '=');
 	while (env->next != NULL)
 	{
 		env = env->next;
-		if (ft_strncmp(env->key, key, ft_strlen(key)) == 0)
+		if (ft_strncmp(env->key, key, ft_strlen(key) + 1) == 0)
 		{
 			free_string(env->value);
 			env->value = find_value(arg);
@@ -68,7 +130,10 @@ void handle_arg(t_data *data, int arg_i, t_tokens *tokens)
 			return ;
 		}
 	}
-	insert_node(&env, key, find_value(arg));
+	value = find_value(arg);
+	if (!value[0])
+		value = NULL;
+	insert_node(&env, key, value);
 }
 
 char	*ft_strtrim_front(char *s1, char set)
