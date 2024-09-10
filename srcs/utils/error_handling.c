@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 18:24:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 12:50:16 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 13:43:41 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,14 @@ int	call_cmd_error(char *cmd, char *arg, char *msg, int ret_value)
 		exit_code(1, 127);
 		return (-1);
 	}
+	printf("call_cmd_error\n");
 	cmd_error(cmd, arg);
 	return (ret_value);
 }
 
 t_env	*call_env_error(char *cmd, char *arg)
 {
+	printf("call_env_error\n");
 	cmd_error(cmd, arg);
 	return (NULL);
 }

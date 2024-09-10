@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/09 17:53:16 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 13:11:39 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,7 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 	if (all->tokens->args[x][0] == '.')
 		return (3);
 	if (all->tokens->args[x][0] == '/')
-	{
-		//if (handle_absolute_path(all, x, NULL))
-	//if (ft_strchr(all->tokens->args[x], '/')) // messing wih oour error messages and causing leaks
 		return (handle_absolute_path(all, x, NULL)); // not allowed
-	}
 	if (all->tokens->args[x][0] != '/')
 	{
 		free_string(*suffix);

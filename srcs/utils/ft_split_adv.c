@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 12:51:20 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:16:39 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ char	**ft_split_adv(char const *s, char c, t_data *data) //lets send it a 0 for 
 	i = 0;
 	word = 0;
 	word_len = 0;
-	printf("words = %zu\n", testing);
 	array = (char **)ft_calloc(sizeof(char *), testing + 1);//(total_words_c(s, c) + 1)); // MALLOCED VARIABLE
 	if (!s || !array)
 		return (NULL);
