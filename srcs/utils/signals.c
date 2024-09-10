@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 08:33:27 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/19 18:14:16 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 11:22:00 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	set_signals(void)
 		// this comes recomended although for
 		// signal other than SIGCHLD has no effect apparently
 	sig_act.sa_handler = &signal_handler;
+
 	sigaction(SIGINT, &sig_act, NULL);
 }
 /*void	parent_signal()
@@ -46,7 +47,7 @@ void	signal_handler(int signo)
 {
 	if (signo == SIGINT)
 	{
-		ft_printf("testetstetstets\n");
+		//ft_printf("testetstetstets\n");
 		rl_on_new_line();
 		rl_redisplay();
 	}

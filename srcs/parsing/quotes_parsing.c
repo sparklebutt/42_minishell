@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_parsing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 15:55:36 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/09 15:42:06 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 11:47:53 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,11 @@ int	check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count)
 			x++;
 		}
 		if (s_quote_count % 2 != 0 || d_quote_count % 2 != 0)
+		{
+			// REWRITE ERROR
+			printf("syntax error, opened quotes\n"); // exit code+  
 			return (-1);
+		}
 	}
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/09 18:15:14 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 11:56:04 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,13 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 
 int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
-	int	x;
-	// int i = 0;
+	//int	x;
 
-	x = total_words_c(string, ' ', data);
+	tokens->array_count = total_words_c(string, ' ', data);
 	tokens->args = ft_split_adv(string, ' ', data);
-	// tokens->heredoc = ft_calloc(sizeof(char *), 1); // MALLOCED VARIABLE move this 
-	// tokens->heredoc[0] = 0;
-	if (check_open_quotes(tokens, 0, 0) < 0)
+	if (tokens->args == NULL)
+		return (1);
+	if (check_open_quotes(tokens, 0, 0) == -1)
 		return (1);
 	if (expansion_parser(tokens, data) == -1)
 	{
@@ -77,7 +76,6 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 		printf("following process\n");
 		return (1);
 	}
-	tokens->array_count = x; // was - 1
 	if (tokens->args == NULL)
 	{
 		ft_printf("malloc fail in parsing , making of array of args\n");
@@ -142,20 +140,20 @@ int	find_passage(t_data *all, char *string, int divert)
 	return (1);
 }
 
-// static char	*take_end(char *new, char *str, int start)
-// {
-// 	size_t	i;
+static char	*take_end(char *new, char *str, int start)
+{
+ 	size_t	i;
 
-// 	i = 0;
-// 	while (str[start] != '\0')
-// 	{
-// 		new[i] = str[start];
-// 		start++;
-// 		i++;
-// 	}
-// 	new[i] = '\0';
-// 	return (&*new);
-// }
+ 	i = 0;
+ 	while (str[start] != '\0')
+ 	{
+ 		new[i] = str[start];
+ 		start++;
+ 		i++;
+ 	}
+ 	new[i] = '\0';
+ 	return (&*new);
+ }
 
 int	handle_absolute_path(t_data *all, int x, char *path)
 {
