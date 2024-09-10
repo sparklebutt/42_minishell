@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/09 17:25:59 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:15:43 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ void	handle_expansion(t_data *data, int len, int i, char *new)
 	char		*tmp;
 
 	tmp = NULL;
+	//free_string(new); // NEW FREE
 	tokens = data->tokens;
 	if (data->simple == false)
 	{
@@ -158,9 +159,13 @@ void	handle_expansion(t_data *data, int len, int i, char *new)
 			tmp = look_if_expansions(data, data->env, new, 0);
 			free_string(data->tmp->exp_array[i]);
 			data->tmp->exp_array[i] = ft_strdup((tmp));
+			//free_string(new);// NEW FREE
 		}
 		else
+		{
+			
 			data->tmp->exp_array[i] = look_if_expansions(data, data->env, data->tmp->exp_array[i], 0);
+		}
 	}
 	else
 	{
@@ -170,24 +175,53 @@ void	handle_expansion(t_data *data, int len, int i, char *new)
 			new = clean_quotes(tokens->args[i], len, 0, 0);
 			free_string(tokens->args[i]);	
 			tokens->args[i] = look_if_expansions(data, data->env, new, 0);
+			//free_string(new); // NEW FREE
 		}
 		else
 			tokens->args[i] = look_if_expansions(data, data->env, tokens->args[i], 0);
 	}
 }
 
+int	multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
+{
+	int index;
+	int len;
+	static char		*new; // potentially not needed
+	len = 0;
+	index = 0;
+	data->simple = false;
+	data->tmp->exp_array = ft_split_expansions(tokens, tokens->args[i]); // MALLOCED VARIABLE
+	if (data->tmp->exp_array == NULL)
+	{
+		printf("malloc fail handleing required\n"); // REWRITE
+		return (-1);
+	}
+	index = 0;
+	while (data->tmp->exp_array[index] != NULL)
+	{
+		// printf("test string = %s\n", data->tmp->exp_array[index]);
+		len = ft_strlen(data->tmp->exp_array[index]);
+		if (ft_strchr(data->tmp->exp_array[index], '$') == NULL)
+			clean_rest_of_quotes(data, index, len);
+		else if (confirm_expansion(data->tmp->exp_array[index], len, 0) == true)
+			handle_expansion(data, len - 1, index, new);
+		else
+			clean_rest_of_quotes(data, index, len);
+		index++;
+	}
+	
+	return (0);
+}
+
+
 int	expansion_parser(t_tokens *tokens, t_data *data)
 {
 	int				i;
-	size_t			x;
 	size_t			len;
-	int 			index;
 	static char		*new;
 
 	i = 0;
-	x = 0;
 	len = 0;
-	index = 0;
 	data->tmp->exp_array = NULL;
 	data->simple = true;
 	while (tokens->args[i])
@@ -197,31 +231,7 @@ int	expansion_parser(t_tokens *tokens, t_data *data)
 		if (tokens->dollar_count > 0)
 		{
 			if (tokens->dollar_count > 1)
-			{
-				// @@ put the contents of this if statement into one function @@
-				data->simple = false;
-				data->tmp->exp_array = ft_split_expansions(tokens, tokens->args[i]); // MALLOCED VARIABLE
-				if (data->tmp->exp_array == NULL)
-				{
-					printf("malloc fail handleing required\n");
-					return (-1);
-					// return ;
-				}
-				index = 0;
-				while (data->tmp->exp_array[index] != NULL)
-				{
-					// printf("test string = %s\n", data->tmp->exp_array[index]);
-					len = ft_strlen(data->tmp->exp_array[index]);
-					if (ft_strchr(data->tmp->exp_array[index], '$') == NULL)
-						clean_rest_of_quotes(data, index, len);
-					else if (confirm_expansion(data->tmp->exp_array[index], len, 0) == true)
-						handle_expansion(data, len - 1, index, new);
-					else
-						clean_rest_of_quotes(data, index, len);
-					index++;
-					//tokens->dollar_num++;
-				}
-			}
+				multi_dollar_handle(data, tokens, i);			
 			else if (confirm_expansion(tokens->args[i], len, 0) == true)
 			{
 				data->simple = true;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/09 17:50:27 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:17:31 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,16 @@ int	child(t_data *data, int *fds, int x, int flag)
 		{
 			exec_builtins(*data, data->tokens->args[data->i]);
 			// dprintf(2, "did the exit code atleast change in here = %d\n", exit_code(0,0));
-			free_array(data->tmp->ex_arr); // MALLOCED VARIABLE
+			//free_array(data->tmp->ex_arr); // MALLOCED VARIABLE
 			exit(exit_code(0, 0));
 		}
 		// printf("execution time check = %s\n", data->tmp->filename);
 		execve(data->tmp->filename, data->tmp->ex_arr, data->env_array);
-		free_array(data->tmp->ex_arr); // MALLOCED VARIABLE
+		//free_array(data->tmp->ex_arr); // MALLOCED VARIABLE
 		exit(exit_code(0, 0));
 	}
 	data->child_i++;
+	
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
 	close(fds[1]);
@@ -121,6 +122,7 @@ int	pipe_fork(t_data *data)
 			return (-1);
 		data->prev_fd = fds[0];
 		x++;
+		
 	}
 	close(fds[0]);
 	close(fds[1]);
@@ -134,6 +136,7 @@ int	pipe_fork(t_data *data)
 		x--;
 		data->child_i--;
 	}
+	//free_array(data->tmp->ex_arr); // MALLOCED VARIABLE	
 	status = (status >> 8) & 0xFF;
 	exit_code(1, status);	
 	// free_array(data->tokens->output_files);

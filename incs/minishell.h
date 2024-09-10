@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/09 14:34:08 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 10:44:08 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ typedef struct s_temps
 	char **ex_arr;
 	char	*filename; // malloced
 	char	*suffix; // malloced
-	char	*env_line; // malloced linked list
+	char	*env_line; // malloced string
 	int		i;
 }	t_temps;
 
