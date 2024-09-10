@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 04:44:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 14:45:27 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:52:07 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,10 @@ void heredoc_loop(t_data *data, t_tokens *tokens, char *eof)
 			break ;
 		if (ft_strncmp(line, eof, ft_strlen(eof)) == 0)
 		{
-			free(line);
+			free_string(line);
 			break ;
 		}
 		tokens->heredoc = set_into_heredoc_array(data, tokens->heredoc, line);
-		free(line);
+		free_string(line);
 	}
 }

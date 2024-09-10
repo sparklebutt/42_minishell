@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:04:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/09 17:26:43 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:49:28 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ void handle_arg(t_data *data, int arg_i, t_tokens *tokens)
 		env = env->next;
 		if (ft_strncmp(env->key, key, ft_strlen(key)) == 0)
 		{
-			free(env->value);
+			free_string(env->value);
 			env->value = find_value(arg);
-			free(key);
+			free_string(key);
 			return ;
 		}
 	}

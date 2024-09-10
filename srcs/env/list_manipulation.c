@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_manipulation.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:47:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 16:03:56 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:49:57 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,15 @@ t_env	*replace_value(t_env *env, char *key, char *new_value)
 		// printf("3 bbb\n");
 		if (ft_strncmp(env->key, key, ft_strlen(key)) == 0) {
 			// printf("does it get here?\n");
-			free(env->value);
+			free_string(env->value);
 			env->value = new_value;
-			free(key);
+			free_string(key);
 			// printf("I LOVE CATS\n");
 			return (env);
 		}
 		env = env->next;
 	}
-	free(key);
+	free_string(key);
 	// printf("meep\n");
 	return (NULL);
 }

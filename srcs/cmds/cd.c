@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/09 16:08:19 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:57:31 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	to_home(t_data *data, t_env *envs)
 	find_passage(data, "HOME", 2);
 	if(chdir(data->tmp->env_line) == 0)
 	{
-		envs = move_list(envs, "PWD");
+		// envs = move_list(envs, "PWD");
 		// envs = fill_old_pwd(data, envs, data->tmp->filename);///change back
 		envs = fill_old_pwd(data, envs, data->tmp->env_line);
 	}
@@ -66,8 +66,7 @@ void	ft_cd(t_data *data, t_env *envs)
 	temp2 = ft_strdup(data->tokens->args[i + 1]);
 	temp = ft_strjoin(data->path, temp2);
 	i++;
-	free(temp2);
-	// free(data->path);
+	free_string(temp2);
 	change_dir(data, envs, temp);
 }
 

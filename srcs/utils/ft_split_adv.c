@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_adv.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 11:08:44 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:51:20 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static char	**free_array_if(char **array)
 
 	word = 0;
 	while (array[word] != NULL)
-		free(array[word++]);
+		free_string(array[word++]);
 	free(array);
 	return (NULL);
 }

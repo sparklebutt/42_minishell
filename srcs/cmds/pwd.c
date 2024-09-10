@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/09 16:07:52 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:49:40 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_pwd(t_data *data, t_env *envs)
 	// printf("running our own pwd\n"); // dont forget me , but keep me for testing
 	if (temp_path != NULL)
 	{
-		free(data->path);
+		free_string(data->path);
 		data->path = temp_path;
 	}
 	else if (temp_path == NULL)
@@ -37,8 +37,8 @@ int	ft_pwd(t_data *data, t_env *envs)
 			return (call_cmd_error("pwd", "OLDPWD", NULL, -1));
 	}
 	ft_printf("%s\n", data->path);
-	// free(data->path);
-	free(temp_path);
+	// free_string(data->path);
+	free_string(temp_path);
 	return (0);
 }
 
@@ -49,10 +49,8 @@ t_env	*update_oldpwd(t_data *data, t_env *env, char *temp)
 	temp_env = data->env;	
 	env = move_list(temp_env, "OLDPWD");
 	if (env->value != NULL)
-		free(env->value);
+		free_string(env->value);
 	env->value = ft_strdup(temp);
-	free(temp);
-	// free_string(data->tmp->env_line);
 	return (env);
 }
 
@@ -74,12 +72,14 @@ t_env	*fill_old_pwd(t_data *data, t_env *env, char *new_path)
 		env = update_oldpwd(data, env, temp);
 	else
 		return (call_env_error("cd", "OLDPWD"));
+	free_string(temp);
 	env = move_list(temp_env, "PWD");
 	if (env->value != NULL)
-		free(env->value);
+		free_string(env->value);
 	// printf("NEW PATH = %s\n", new_path);
 	env->value = ft_strdup(new_path);
 	// printf("OTHER NEW PATH = %s\n", env->value);
-	free(new_path);
+	// free_string(new_path);
+	// new_path = NULL;
 	return (env);
 }

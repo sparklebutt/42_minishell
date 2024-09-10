@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:11:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/09 10:38:14 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:49:22 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ int ft_exit( char *cmd, t_tokens *tokens)
 			cmd_error(cmd, tokens->args[1]);
 		else if (tokens->array_count > 2)
 			cmd_error(cmd, NULL);
-		free(cmd);
+		free_string(cmd);
 		exit(0);
 	}
-	free(cmd);
+	free_string(cmd);
 	exit(0);
 	return (1);
 }

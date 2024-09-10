@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 11:56:04 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:59:27 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,12 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 		return (1);
 	}
 	pipe_collector(tokens, tokens->args);
-	if (create_redir_array(tokens) == -1) // only mallocing
+	redirect_collector(tokens, tokens->args, 0);
+	if (tokens->redirect_count > 0 && create_redir_array(tokens) == -1) // only mallocing
 	{
 		// free up to this point
 		return (1);
 	}
-	redirect_collector(tokens, tokens->args, 0);
 	if (parse_redirections(data, tokens, tokens->args, 0) == 1)
 	{
 		printf("following process\n");

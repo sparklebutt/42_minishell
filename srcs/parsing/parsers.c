@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 12:15:43 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:50:02 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,7 +245,7 @@ int	expansion_parser(t_tokens *tokens, t_data *data)
 		{
 			if (ft_strlen(tokens->args[i]) == 1 && tokens->args[i][0] == '~')
 			{
-				free(tokens->args[i]);
+				free_string(tokens->args[i]);
 				tokens->args[i] = replace_squiggly_line(data, data->env);
 			}
 			data->simple = true;
