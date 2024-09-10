@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
 /*   Updated: 2024/09/10 13:01:20 by araveala         ###   ########.fr       */

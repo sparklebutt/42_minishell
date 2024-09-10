@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
 /*   Updated: 2024/09/10 13:01:44 by araveala         ###   ########.fr       */

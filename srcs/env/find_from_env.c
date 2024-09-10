@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:02:41 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/09 17:04:43 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:56:26 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ int	find_node(t_env *envs, char *key, t_data *data)
 		if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) == 0
 			&& (ft_strlen(temp->key) == ft_strlen(key)))
 		{
-			free_string(data->tmp->env_line);
-			data->tmp->env_line = ft_strdup(temp->value); // IF REMOVED THIS BREAKS "/bin/ls"
+			data->tmp->env_line = temp->value; // IF REMOVED THIS BREAKS "/bin/ls"
 			return (1);
 		}
 		temp = temp->next;
@@ -80,7 +79,7 @@ char	*find_key(char *str)
 	}
 	else
 		printf("error in finding key name\n"); // change error message
-	free(key);
+	free_string(key);
 	return (NULL);
 }
 

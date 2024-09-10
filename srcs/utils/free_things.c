@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:59:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/09 16:20:15 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:57:42 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ void	free_array(char **array)
 		return ;
 	while (array[i] != NULL)
 	{
-		free(array[i]);
-		array[i] = NULL;
+		free_string(array[i]);
 		i++;
 	}
 	free(array);
@@ -53,8 +52,8 @@ void	free_nodes(t_env *node)
 	while (node != NULL)
 	{
 		if (node->value)
-			free(node->value);
-		free(node->key);
+			free_string(node->value);
+		free_string(node->key);
 		tmp = node;
 		node = node->next;
 		free(tmp);
@@ -65,7 +64,6 @@ int	error(char *cmd, char *error)
 {
 	exit_code(1, 1);
 	ft_printf("minishell: %s: %s\n", cmd, error);
-	//free_string(error);
 	return (1);
 }
 

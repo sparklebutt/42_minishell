@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 12:13:02 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:56:16 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	minishell(t_data *data)
 		free_array(data->tokens->args);
 		//free_array(data->tokens->output_files);
 		// free_string(data->tokens->heredoc);
-		//free_string(data->tmp->env_line);
 	}
 	ft_printf("exit\n");
 }

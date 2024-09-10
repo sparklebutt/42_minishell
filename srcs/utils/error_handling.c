@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 18:24:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/09 14:38:30 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:50:16 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,12 @@ void	cmd_error(char *cmd, char *arg)
 	if (arg != NULL)
 	{
 		temp = ft_strjoin(error_msg, ": ");
-		free(error_msg);
+		free_string(error_msg);
 		error_msg = ft_strjoin(temp, arg);
 	}
 	if (temp != NULL)
-		free(temp);
+		free_string(temp);
 	perror(error_msg);
-	free(error_msg);
+	free_string(error_msg);
 	exit_code(1, 1);
 }
