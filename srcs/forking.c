@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 20:54:17 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/11 18:14:39 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,46 @@
 int	child(t_data *data, int *fds, int x, int flag)
 {	
 	char **tmp;
-
+	//int p = 0;
 	tmp = NULL;
+	/*printf("aaaaa=%s", data->tokens->output_files[data->x]);
+	if (data->tokens->action == false)
+			printf("\t\tits feckiung false\n");
+		else 
+			printf("\t\tits fecking true\n");*/
+
 	data->child[data->child_i] = fork();
 	if (data->child[data->child_i] == -1)
 		return (error("fork", "first child failed"));
 	if (data->child[data->child_i] == 0)
 	{
 		dup_fds(data, fds, x);
-		if (redirect_helper(data->tokens, x) != 0)
+		if (data->tokens->action == true && redirect_helper(data->tokens, data->x) != 0)
+		{
 			exit(exit_code(0,0));
+		}
+		//dprintf(2, "heloooo\n");		
 		if (flag == 1)
 		{
 			exec_builtins(*data, data->tokens->args[data->i]);
 			exit(exit_code(0, 0));
 		}
+		
 		tmp = set_env_array(data, 0, 0);
-		//execve(data->tmp->filename, data->tmp->ex_arr, tmp);
-		execve(data->tmp->ex_arr[0], data->tmp->ex_arr, tmp);
+		
+		//dprintf(2, "exceve tiiiiime\n");
+		/*while(data->tmp->ex_arr[p])
+		{
+			dprintf(2, "data exx ar = %s\n", data->tmp->ex_arr[p]);
+			p++;
+		}*/
+		execve(data->tmp->filename, data->tmp->ex_arr, tmp);
+		//execve(data->tmp->ex_arr[0], data->tmp->ex_arr, tmp);
 		//free(data->tmp->ex_arr);
 		free_array(tmp); // MALLOCED VARIABLE
 		exit(exit_code(0, 0));
 	}
+	data->tokens->action = false;
 	data->child_i++;
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
@@ -46,6 +64,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 
 int	send_to_child(t_data *data, int fds[2], int x)
 {
+	//int p = 0;
 	if (is_builtins(data->tokens->args[data->i]) == 1)
 	{
 		data->builtin_marker = true;
@@ -64,6 +83,13 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	else if (check_path(data->tmp->env_line, 1, data, data->i) != 0)
 	{
 		set_array(data);
+		//printf("what the actualy fcuk = %s\n", data->tokens->output_files[data->i]);
+		/*while (data->tmp->ex_arr[p])
+		{
+			printf("~~~\tex arr loc = %d, = %s\n", p, data->tmp->ex_arr[p]);
+			p++;
+		}*/
+		
 		if (data->i > 0 && data->builtin_marker == false && data->tokens->args[data->i - 1] != NULL && data->tokens->args[data->i - 1][0] == '>')
 		{	
 			child(data, fds, x, 2);
@@ -107,9 +133,9 @@ int	pipe_fork(t_data *data)
 	int	status;
 	int	x;
 
+	data->x = 0; // oth location of outfiles array
 	x = 0;
 	data->prev_fd = -1;
-	
 	//set_env_array(data); // lets remove this aready
 	while (x <= data->tokens->pipe_count)
 	{
@@ -119,7 +145,8 @@ int	pipe_fork(t_data *data)
 			error("fork", "error in pipe perror needed");
 			exit(EXIT_FAILURE);
 		}
-		data->x = x;
+		
+		//data->x = x;
 		if (send_to_child(data, fds, x) == -1)
 			return (-1);
 		data->prev_fd = fds[0];

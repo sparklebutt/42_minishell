@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/11 12:49:09 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/11 18:15:24 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 		ft_printf("malloc fail in parsing , making of array of args\n");
 		return(1);
 	}
+	//printf("\t\tfollowing the bitch ?? = %s\n", tokens->output_files[data->x]);
 	return (0);
 }
 
