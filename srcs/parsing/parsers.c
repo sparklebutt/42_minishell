@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 21:30:57 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/11 12:58:18 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,11 @@ void	handle_expansion(t_data *data, int len, int i, char *new)
 		|| ft_strchr(data->tmp->exp_array[i], '\'') != NULL)
 		{
 			new = clean_quotes(data->tmp->exp_array[i], len, 0, 0);
+			//printf("\t\tclean quotes check comp = %s and the len = %zu\n", new, ft_strlen(new));
+			// clean quotes seems not be the problem
 			tmp = look_if_expansions(data, data->env, new, 0);
+			//printf("\t\tlook if expansion check comp = %s and the len = %zu\n", tmp, ft_strlen(tmp));	
+			// the problem is in look if expansion.
 			free_string(data->tmp->exp_array[i]);
 			data->tmp->exp_array[i] = ft_strdup((tmp));
 			free_string(tmp);
@@ -211,11 +215,18 @@ int	multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
 	int index;
 	size_t len;
 	static char		*new; // potentially not needed
-
+	int x = 0; //testing
 	len = 0;
 	index = 0;
 	data->simple = false;
 	data->tmp->exp_array = ft_split_expansions(tokens, tokens->args[i]); // MALLOCED VARIABLE
+	//split connfimed not to be the problem with missing char
+	while (data->tmp->exp_array[x])
+	{
+		printf("whats in the exp array count chars = %s len = %zu\n", data->tmp->exp_array[x], ft_strlen(data->tmp->exp_array[x]));
+		x++;
+	}
+
 	if (data->tmp->exp_array == NULL)
 	{
 		printf("malloc fail handleing required\n"); // REWRITE
@@ -224,12 +235,14 @@ int	multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
 	while (data->tmp->exp_array[index] != NULL)
 	{
 		len = ft_strlen(data->tmp->exp_array[index]);
+		// len confirmwed not the problem
 		if (confirm_expansion(data->tmp->exp_array[index], len, 0) == true)
 			handle_expansion(data, len - 1, index, new);
 		else
 			clean_rest_of_quotes(data, index, len);
 		index++;
 	}
+	// problem has been caused
 	return (0);
 }
 

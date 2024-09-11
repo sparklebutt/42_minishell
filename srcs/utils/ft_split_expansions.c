@@ -113,7 +113,7 @@ char	**ft_split_expansions(t_tokens *tokens, char const *s) //
 	array = ft_calloc(size_r + 1, sizeof(char *)); // MALLOCED VARIABLE
 	if (array == NULL)
 		return (NULL);
-    array[size_r] = NULL;
+    //array[size_r] = NULL;
 	while (index < size_r)//(i <= ft_strlen(s))
 	{
 		if (s[i] == '\0')
@@ -125,5 +125,6 @@ char	**ft_split_expansions(t_tokens *tokens, char const *s) //
 		i = i + sublen;
 		index++;
 	}
+    array[index] = NULL;
 	return (array);
 }

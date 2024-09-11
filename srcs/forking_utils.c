@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 21:20:59 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/11 11:18:09 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ char 	**set_env_array(t_data *data, int i, int x)
 	// cut this smaller
 	tmp_array = NULL;
 	temp2 = data->env;
+	//printf("\t\tis it the same env = %s\n", temp2->value);
 	key_full = NULL;
 	i = find_node_len(data);
 	tmp_array = ft_calloc(i + 1, sizeof(char *)); // MALLOCED VARIABLE

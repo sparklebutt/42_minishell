@@ -7,9 +7,7 @@ echo "$ATEST"'$BTEST'
 
 echo '$ATEST'"$BTEST"
 
-export a=aaaaaa b=bbbbbbbb
-export c=cccccc d=ddddddd
-
+export a=12345 b=678 c=91011 d=121314
 echo "'$a'"$b""$c
 echo ''$a""$b"'$c'"""$d''
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable_expansions.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:03:23 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 21:22:44 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/11 12:13:31 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,29 @@ int	find_key_len(char *str, int start)
 	return (len - start - 1);
 }
 
-char	*new_str(char *str, char *value, int start, int end)
+char	*new_str(char *str, char *value, int start, size_t end)
 {
 	int		new_len;
 	char	*new_str;
-	new_len = start + strlen(value) + strlen(str + end) + 1;
-	new_str = malloc(sizeof(char) * new_len);
+	new_len = start + ft_strlen(value) + ft_strlen(str + end) + 1;
+	/*CHANGE calloc + 1*/
+	// value could be an empty string and we left no room fo that
+	new_str = ft_calloc(sizeof(char), new_len + 1);
 	if (!new_str)
 		return NULL;
+	// i do not know if this code might help somehthing else 
+//	if (start > 0)
+//	{
 	ft_strncpy(new_str, str, start);
-	ft_strcpy(new_str + start, value);
+//	}
+//	if (value && ft_strlen(value) > 0)
+//	{
+	ft_strcpy(new_str + start, value);		
+//	}
+//	if (end < ft_strlen(str))
+//	{
 	ft_strcpy(new_str + start + ft_strlen(value), str + end);
+//	}
 	return (new_str);
 }
 
@@ -59,14 +71,17 @@ char	*replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 	char	*new_arg = NULL;
 	
 	key_len = find_key_len(arg, start);
+	// not the key len
 	temp_key = ft_calloc(sizeof(char), (key_len + 1));
 	if (!temp_key)
 		return NULL;
 	ft_strncpy(temp_key, arg + start + 1, key_len);
-	// temp_key[key_len] = '\0'; // not needed? why was this commented?
+	// not this strncpy
 	if (find_node(envs, temp_key, data) == 1)
 	{
 		value = find_keys_value(envs, temp_key);
+		// problem is above
+		//printf("\t\tis it the key value %s and len = %zu\n", value, ft_strlen(value));
 		if (value != NULL)
 			new_arg = new_str(arg, value, start, start + key_len + 1);
 		else

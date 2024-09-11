@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_from_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:02:41 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 15:54:05 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/11 10:59:53 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ int	find_node(t_env *envs, char *key, t_data *data)
 			return (1);
 		}
 		temp = temp->next;
-		// if (temp == NULL)
-		// 	break;
+		//if (temp == NULL)
+		 //	break;
 	}
 	// printf("\t\tkey NOT found!!!!\n");
 	return (0);
@@ -97,7 +97,8 @@ char	*find_value(char *arg)
 	char	*temp;
 
 	temp = ft_strchr(arg, '=');
-	temp++;
+	/*CHANGE temp++*/
+	//temp++; // this was causing us to loose a character in key value
 	if (temp == NULL)
 		return (NULL);
 	value = ft_substr(temp, 1, ft_strlen(arg));

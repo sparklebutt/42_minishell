@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:04:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 16:34:18 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/11 11:28:31 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	ft_export(t_data *data)
 	int		i;
 
 	i = 1;
+
 	tokens = data->tokens;
 	if (data->tokens->array_count == 1)
 		export_alphabetical(data);
@@ -115,10 +116,13 @@ void handle_arg(t_data *data, int arg_i, t_tokens *tokens)
 	
 	env = data->env;
 	arg = tokens->args[arg_i];
-	
+	// args is correct
+	//printf("\t\tlets check that token right = %s len = %zu\n", tokens->args[arg_i], ft_strlen(tokens->args[arg_i]));
 	if (export_syntax_check(arg) == 1)
 		return ;
 	key = ft_strtrim_front(arg, '=');
+	//printf("\t\tcomp key = %s len = %zu\n", key, ft_strlen(key));
+	// key is not the issue
 	while (env->next != NULL)
 	{
 		env = env->next;
@@ -131,8 +135,11 @@ void handle_arg(t_data *data, int arg_i, t_tokens *tokens)
 		}
 	}
 	value = find_value(arg);
-	if (!value[0])
-		value = NULL;
+	/*CHANGE value=null*/
+	// adding null as value causes a problem i think because its not read as an empty string
+	// removing it we loose 1 less block and some leaks
+	//if (!value[0])
+	//	value = NULL;
 	insert_node(&env, key, value);
 }
 
