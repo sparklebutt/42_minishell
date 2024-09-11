@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/11 12:58:18 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/11 13:30:14 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,17 +215,18 @@ int	multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
 	int index;
 	size_t len;
 	static char		*new; // potentially not needed
-	int x = 0; //testing
+	//int x = 0; //testing
 	len = 0;
 	index = 0;
 	data->simple = false;
+	//printf("\t\tstring is whole right = %s\n", tokens->args[i]);
 	data->tmp->exp_array = ft_split_expansions(tokens, tokens->args[i]); // MALLOCED VARIABLE
 	//split connfimed not to be the problem with missing char
-	while (data->tmp->exp_array[x])
+	/*while (data->tmp->exp_array[x])
 	{
 		printf("whats in the exp array count chars = %s len = %zu\n", data->tmp->exp_array[x], ft_strlen(data->tmp->exp_array[x]));
 		x++;
-	}
+	}*/
 
 	if (data->tmp->exp_array == NULL)
 	{
