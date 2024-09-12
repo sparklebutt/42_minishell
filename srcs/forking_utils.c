@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/11 11:18:09 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 11:11:32 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,24 @@ static int fill_array(t_data *data, int i)
 			data->tmp->ex_arr[i] = data->tokens->input_file;
 			data->i += 2;
 		}
-		else if (is_redirect(data->tokens->args[data->i]) == 2) //carefull lhere it was != null
+		else if (is_redirect(data->tokens->args[data->i]) == 3) //carefull lhere it was != null
 		{
-			if (data->tokens->input_file != NULL)
+			printf("we found a redirect \n");
+			//if (data->tokens->output_files[data->x] != NULL)
+			data->tokens->action = true;	
+			/* frankly i dont understand this anymore myself  */
+			if (data->tokens->input_file != NULL) //what the fuck is this check?
 			{
+				printf("meow ex_arr[%d] = %s\n", i, data->tokens->output_files[data->x]);
 				data->tmp->ex_arr[i] = data->tokens->output_files[data->x];
+				// printf("\t\tdata->x = %d, out_array_count = %d\n", data->x, data->tokens->out_array_count);
+				// if (data->x < data->tokens->out_array_count)
+				// 	data->x++;
 				data->i += 2;
 			}
 			else if (data->tokens->heredoc[0] != NULL)
 			{
+				//data->tokens->action = true;
 				data->tmp->ex_arr[i] = data->tokens->heredoc[0]; // replace with heredoc tempfile name!!
 				data->i += 2;
 			}
@@ -71,15 +80,27 @@ static int fill_array(t_data *data, int i)
 			}
 		}
 		else
+		{
+			//printf("at  %d else noo redir in redir nulled \n", i);
+			//data->tokens->action = false;
 			data->tmp->ex_arr[i] = NULL;
+		}
 	}
 	else if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|')
 	{
+		//printf("at  %d else noo redir take token \n", i);	
+		//printf("at  %d truned action false \n", i);
+		//data->tokens->action = false;
 		data->tmp->ex_arr[i] = data->tokens->args[data->i];
 		data->i++;
 	}
 	else
+	{
+		//printf("at  %d else noo anything nulled \n", i);	
+		//printf("at  %d truned action false \n", i);
+		//data->tokens->action = false;
 		data->tmp->ex_arr[i] = NULL;
+	}
 	return (0);
 }
 
@@ -91,7 +112,6 @@ int    set_array(t_data *data)
 	i  = 0;
 	if (data->tmp->filename == NULL || data->tokens->args[data->i] == NULL)
 	{
-		printf("filename = NULL\n");
 		return (-1);
 	}
 	arg_count = count_args(data);
@@ -104,6 +124,7 @@ int    set_array(t_data *data)
 	}
 	while (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|')
 	{
+		//printf("what is going hre = %s\n", data->tokens->args[data->i]);
 		fill_array(data, i);
 		i++;
 	}
@@ -121,7 +142,6 @@ char 	**set_env_array(t_data *data, int i, int x)
 	// cut this smaller
 	tmp_array = NULL;
 	temp2 = data->env;
-	//printf("\t\tis it the same env = %s\n", temp2->value);
 	key_full = NULL;
 	i = find_node_len(data);
 	tmp_array = ft_calloc(i + 1, sizeof(char *)); // MALLOCED VARIABLE
@@ -147,20 +167,23 @@ char 	**set_env_array(t_data *data, int i, int x)
 
 int	dup_fds(t_data *data, int *fds, int x)
 {
-	if (x > 0)
+	//dprintf(2, "pipe count = %d, x = %d\n", data->tokens->pipe_count , x);
+	if (x > 0)// && x != data->tokens->pipe_count)
 	{
+		//dprintf(2, "dup in\n");
 		if (dup2(data->prev_fd, STDIN_FILENO) == -1)
 		{
 			perror("dup of prev failed\n");
-			exit(1);
+			exit(1); //exit code
 		}
 	}
 	if (x < data->tokens->pipe_count)
 	{
+		//dprintf(2, "dup out\n");	
 		if (dup2(fds[1], STDOUT_FILENO) == -1)
 		{
 			printf("dup of fds[1] failed\n"); // change error message
-			exit(1);
+			exit(1); //exit code
 		}
 	}
 	close(fds[0]);

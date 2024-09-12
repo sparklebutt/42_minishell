@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 13:57:55 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/11 16:24:16 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_tokens
 	char	*output_file;  // For > and >> redirection
 
 	//bool	expandable;
+	bool	action;
 	bool	redirect_in;
 	bool	redirect_out;
 	bool	redirect_append;
