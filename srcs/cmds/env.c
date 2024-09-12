@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
 /*   Updated: 2024/09/12 16:14:11 by vkettune         ###   ########.fr       */
@@ -14,11 +14,14 @@
 
 char *env_helper(t_env *env, int i, int split_count)
 {
-	char **array = NULL;
+	char **array;
 	char *value;
 	char *ret;
-	char *temp = NULL;
+	char *tmp;
 
+	tmp = NULL;
+	array = NULL;
+	ret = NULL;
 	value = find_keys_value(env, "PATH");
 	ret = NULL;
 	if (value == NULL || ft_strlen(value) == 0)
@@ -26,16 +29,18 @@ char *env_helper(t_env *env, int i, int split_count)
 	while (value[i++] != '\0')
 		split_count++;
 	array = ft_split(value, ':');
+	if (array == NULL)
+		return (NULL);
 	i = 0;
 	while (array[i] != NULL)
 	{
-		temp = ft_strnstr(array[i], "/bin", 5);
-		if (temp != NULL)
+		tmp = ft_strnstr(array[i], "/bin", 5);
+		if (tmp != NULL)
 			break ;
 		i++;
 	}
-	if (temp != NULL)
-		ret = ft_strdup(temp);
+	if (tmp != NULL)
+		ret = ft_strdup(tmp);
 	free_array(array);
 	return (ret);
 }

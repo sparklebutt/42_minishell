@@ -1,13 +1,17 @@
 {
-   <readline>
-   Memcheck:Cond
-   ...
-   fun:gdk_set_locale
-}
-
-{
-   <libpango>
+   <Readline>
    Memcheck:Leak
+   match-leak-kinds: reachable
    ...
-   obj:/usr/*lib*/libpango*
+   fun:readline
+   ...
+}
+{
+   <Readline/AddHistory>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:add_history
+   ...
 }
