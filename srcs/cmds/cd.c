@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 14:16:06 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/12 11:23:10 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int	check_dir(char *str)
 	DIR					*test;
 
 	test = NULL;
-	
 	if (access(str, X_OK) == -1)
 	{
 		printf("\t\taccess failed for string ceck dir= %s\n", str);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:05:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/06 16:01:58 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 11:23:45 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ void	ft_echo(t_data *data, char **args)
 	int nl;
 	
 	nl = no_newline(args, 1);
-	i = data->i + nl; // mui importanto, no remove!
-	/*~~ this skips past the echo itself, since we already now we have echo~~*/
+	i = data->i + nl;
 	while (args[i])
 	{
 		if (if_break(args[i]) == 1)
