@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 08:18:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/12 15:16:44 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 15:45:52 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,6 @@ char	**ft_split(char const *s, char c)
 		}
 		// array[word] = NULL;
 	}
+	// array[word + 1] = NULL;
 	return (array);
 }

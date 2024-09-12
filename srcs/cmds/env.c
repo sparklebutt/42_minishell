@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/12 15:47:41 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 16:14:11 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,13 @@ char *env_helper(t_env *env, int i, int split_count)
 	char **array;
 	char *value;
 	char *ret;
-	//char *tmp;
+	char *tmp;
 
-	//tmp = NULL;
+	tmp = NULL;
 	array = NULL;
 	ret = NULL;
 	value = find_keys_value(env, "PATH");
+	ret = NULL;
 	if (value == NULL || ft_strlen(value) == 0)
 		return (NULL);
 	while (value[i++] != '\0')
@@ -33,11 +34,14 @@ char *env_helper(t_env *env, int i, int split_count)
 	i = 0;
 	while (array[i] != NULL)
 	{
-		ret = ft_strnstr(array[i], "/bin", 5);
-		if (ret != NULL)
+		tmp = ft_strnstr(array[i], "/bin", 5);
+		if (tmp != NULL)
 			break ;
 		i++;
 	}
+	if (tmp != NULL)
+		ret = ft_strdup(tmp);
+	free_array(array);
 	return (ret);
 }
 
@@ -46,10 +50,18 @@ int check_envs_ret(char *ret)
 	if (ret == NULL || ft_strlen(ret) > 4)
 	{
 		if (ret != NULL && ft_strlen(ret) == 5 && ret[4] == '/')
-			ret[4] = '/';
+		{
+			free_string(ret);
+			return (0);
+		}
 		else
-			return (not_perror("env", NULL, "No such file or directory\n"), 1);	
+		{
+			if (ret != NULL)
+				free_string(ret);
+			return (not_perror("env", NULL, "No such file or directory\n"), 1);
+		}
 	}
+	free_string(ret);
 	return (0);
 }
 

@@ -1,4 +1,0 @@
-#!/bin/bash
-
-rm out
-#rm -R dir.dir

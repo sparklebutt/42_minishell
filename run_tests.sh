@@ -48,3 +48,14 @@ echo "00000000000000000000000000000000000000000000000"
 echo ""
 ./minishell < redirect_test.sh | grep -v minishell >> test_output.txt
 read -n1 -s -r
+
+
+echo ""
+echo "00000000000000000000000000000000000000000000000"
+echo "0                                             0"
+echo "0         Now running env_tests.sh            0"
+echo "0                                             0"
+echo "00000000000000000000000000000000000000000000000"
+echo ""
+./minishell < env_test.sh | grep -v minishell
+read -n1 -s -r
