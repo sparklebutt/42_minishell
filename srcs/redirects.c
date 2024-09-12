@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/12 10:27:46 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/12 12:57:26 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int create_redir_array(t_tokens *tokens)
 			printf("malloc error\n");
 			return (-1);
 		}
-		printf("\t\ttokens out after malloc = %d\n", tokens->out_array_count);
+		// printf("\t\ttokens out after malloc = %d\n", tokens->out_array_count);
 	}
 	return (0);
 }
@@ -118,7 +118,8 @@ int	redirect_helper(t_tokens *tokens, int x)
 	//	return (0);
 	//if (tokens->redirect_in == false && tokens->redirect_out == false && tokens->redirect_append == false )
 	//	return (0);	
-	dprintf(2, "\t\twhat is our x count = %d and the file is = %s\n", x, tokens->output_files[x]);
+	// dprintf(2, "\t\twhat is our x count = %d and the file is = %s\n", x, tokens->output_files[x]);
+	// dprintf(2, "\t\tand the infile is = %s\n", tokens->input_file);
 	if (tokens->redirect_append)
 		fd = open(tokens->output_files[x], O_WRONLY | O_CREAT | O_APPEND , 0644);
 	else if (tokens->redirect_out)
@@ -166,7 +167,7 @@ int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 			// create file and move whole of tokens->heredoc there, each divided by a newline
 			while(tokens->heredoc[here_i] != 0) // for testing
 			{
-				printf("\t\t\theredoc[%d] = %s\n", here_i, tokens->heredoc[here_i]);
+				// printf("\t\t\theredoc[%d] = %s\n", here_i, tokens->heredoc[here_i]);
 				here_i++;
 			}
 			// delete temp file at the end of minishell loop (or earlier e.g. end of forks, find place)

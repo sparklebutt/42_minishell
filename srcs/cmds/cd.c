@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 14:16:06 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:00:11 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	check_file(char *str)
 {
 	if (access(str, X_OK) == -1)
 	{
-		printf("access failed for string = %s\n", str);
+		// printf("access failed for string = %s\n", str);
 		return(1);
 	}
 	return (0);	
@@ -88,20 +88,20 @@ int	check_dir(char *str)
 	
 	if (access(str, X_OK) == -1)
 	{
-		printf("\t\taccess failed for string ceck dir= %s\n", str);
+		//printf("\t\taccess failed for string ceck dir= %s\n", str);
 		return(0);
 	}
 	else
 		test = opendir(str);
 	if (test == NULL)
 	{
-		printf("open opened null\n");
+		// printf("open opened null\n");
 		return (0);
 	}
 	dp = readdir(test);
 	if (dp == NULL)
 	{
-		printf("read failed = null\n");
+		// printf("read failed = null\n");
 		closedir(test);
 		return (0);
 	}
