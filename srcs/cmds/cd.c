@@ -85,7 +85,6 @@ int	check_dir(char *str)
 	DIR					*test;
 
 	test = NULL;
-	
 	if (access(str, X_OK) == -1)
 	{
 		//printf("\t\taccess failed for string ceck dir= %s\n", str);
