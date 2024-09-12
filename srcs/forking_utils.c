@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/12 14:10:22 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:35:28 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	fill_output_info(t_data *data, int i)
 	return (0);
 }
 
-static int fill_array(t_data *data, int i)// int arg_count)
+static int fill_array(t_data *data, int i)
 {
 	if (data->tokens->args[data->i] != NULL && is_redirect(data->tokens->args[data->i]) > 0)
 	{

@@ -117,20 +117,17 @@ char	**ft_split_expansions(t_tokens *tokens, char const *s) //
 	array = ft_calloc(size_r + 1, sizeof(char *)); // MALLOCED VARIABLE
 	if (array == NULL)
 		return (NULL);
-    //array[size_r] = NULL;
-	while (i < ft_strlen(s)) //(index < size_r)//
+ 	while (i < ft_strlen(s))
 	{
 		if (s[i] == '\0')
    			return (array);
  		sublen = ft_count_sub_len(s, i);
 		array[index] = ft_substr(s, i, sublen);
-       // printf("\n\t\tindex [%d] = %s\n", index, array[index]);
 		if (!array[index])
 			return (free_loop(array, index));
 		i = i + sublen;
 		index++;
 	}
-    //printf("whats at our index = %d and what should it not be over = %d\n", index, size_r);
     array[index] = NULL;
 	return (array);
 }

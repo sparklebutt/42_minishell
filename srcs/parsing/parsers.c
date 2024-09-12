@@ -6,14 +6,14 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/11 13:30:14 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 19:08:59 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*~~ a function to take an array and turn it into a string
-and return to caller, note this should be multip-puprose, also note
+returning to caller, note this should be multip-puprose, also note
 any array sent in must end in NULL~~*/
 static char *array_to_string(char **array)
 {
@@ -41,7 +41,6 @@ static char *array_to_string(char **array)
 		index++;
 		i = ft_strlen(new_string);		
 	}
-	//free_array(array);
 	return (*&new_string);
 }
 
@@ -55,7 +54,6 @@ void		dollar_counter(char *string, t_tokens *tokens)
 	
 	i = 0;
 	tokens->dollar_count = 0;
-	//tokens->dollar_num = 0;
 	while (string[i])
 	{
 		if (string[i] == '$')
@@ -90,8 +88,7 @@ static int find_redirect(char *string) // we hve multiples of this function
 
 // similar to quotes_handling (combine them?), maybe add bools into struct
 /*~~this functions handles when there are quotes straight after $symbol, i could not
-find a case where this type of syntax is expandable eg $"USER".
-it might be wise to consider if this is the case for other symbols we need to handle~~*/
+find a case where this type of syntax is expandable eg $"USER"~~*/
 int		simple_quote_check(char *s, int i)
 {
 	int x = i;
@@ -110,8 +107,9 @@ int		simple_quote_check(char *s, int i)
 		{
 			if (i == 0)
 				return (0); //saftey check ?
-		 	if (s[i - 1] != '\'' && s[i - 1] != '"')
-				return (0);
+			/* TEST MORE MIGHT BE OOPSIES*/
+		 	//if (s[i - 1] != '\'' && s[i - 1] != '"')
+			//	return (0);
 		}
 		i++;
 	}
@@ -127,11 +125,10 @@ bool	confirm_expansion(char *string, int len, int x)
 	s = false;
 	d = false;
 	simple_ret = simple_quote_check(string, x);
-	
 	if (simple_ret == -1)
 		return (false);
 	if (simple_ret == 0)
-		return (true); 
+		return (true);	
 	while (string[x] && x < len)
 	{
 		if (string[x] == '\'')
@@ -143,8 +140,9 @@ bool	confirm_expansion(char *string, int len, int x)
 	return ((d && !s) || (!d && !s));
 }
 /*~~ a fucntion that redirects the input to be handled based on if we handle
-just a string or if we need to handle a newly ade array that will be later re adjusted
+just a string or if we need to handle a newly added array that will be later re adjusted
 to be a string in our tokens array ~~*/
+
 void	handle_expansion(t_data *data, int len, int i, char *new)
 {
 	t_tokens	*tokens;
@@ -153,25 +151,20 @@ void	handle_expansion(t_data *data, int len, int i, char *new)
 	// cut this smaller
 	tmp = NULL;
 	tokens = data->tokens;
+	
 	if (data->simple == false)
 	{
 		if (ft_strchr(data->tmp->exp_array[i], '"') != NULL
 		|| ft_strchr(data->tmp->exp_array[i], '\'') != NULL)
 		{
 			new = clean_quotes(data->tmp->exp_array[i], len, 0, 0);
-			//printf("\t\tclean quotes check comp = %s and the len = %zu\n", new, ft_strlen(new));
-			// clean quotes seems not be the problem
 			tmp = look_if_expansions(data, data->env, new, 0);
-			//printf("\t\tlook if expansion check comp = %s and the len = %zu\n", tmp, ft_strlen(tmp));	
-			// the problem is in look if expansion.
 			free_string(data->tmp->exp_array[i]);
 			data->tmp->exp_array[i] = ft_strdup((tmp));
 			free_string(tmp);
 		}
 		else
-		{
 			data->tmp->exp_array[i] = look_if_expansions(data, data->env, data->tmp->exp_array[i], 0);
-		}
 	}
 	else
 	{
@@ -183,26 +176,17 @@ void	handle_expansion(t_data *data, int len, int i, char *new)
 			tokens->args[i] = look_if_expansions(data, data->env, new, 0);
 		}
 		else
-		{
-			// free_string(tokens->args[i]); // this breaks everything, was new but naaaah, might still be needed
 			tokens->args[i] = look_if_expansions(data, data->env, tokens->args[i], 0);
-		}
 	}
 }
 
 int	clean_if_multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
 {
-	//char *tmp;
-
-	//tmp = NULL;
 	if (data->simple == false && tokens->dollar_count > 1)
 	{
 		free_string(tokens->args[i]);
-		//tmp = array_to_string(data->tmp->exp_array);
 		tokens->args[i] = array_to_string(data->tmp->exp_array);//ft_strdup(tmp);
-		//free_string(tmp);
 		data->simple = true;
-		// printf("This is arrays address = %p\n", data->tmp->exp_array);
 		free_array(data->tmp->exp_array); // MALLOCED VARIABLE
 	}
 	else 
@@ -215,19 +199,11 @@ int	multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
 	int index;
 	size_t len;
 	static char		*new; // potentially not needed
-	//int x = 0; //testing
+
 	len = 0;
 	index = 0;
 	data->simple = false;
-	//printf("\t\tstring is whole right = %s\n", tokens->args[i]);
 	data->tmp->exp_array = ft_split_expansions(tokens, tokens->args[i]); // MALLOCED VARIABLE
-	//split connfimed not to be the problem with missing char
-	/*while (data->tmp->exp_array[x])
-	{
-		printf("whats in the exp array count chars = %s len = %zu\n", data->tmp->exp_array[x], ft_strlen(data->tmp->exp_array[x]));
-		x++;
-	}*/
-
 	if (data->tmp->exp_array == NULL)
 	{
 		printf("malloc fail handleing required\n"); // REWRITE
@@ -236,14 +212,12 @@ int	multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
 	while (data->tmp->exp_array[index] != NULL)
 	{
 		len = ft_strlen(data->tmp->exp_array[index]);
-		// len confirmwed not the problem
 		if (confirm_expansion(data->tmp->exp_array[index], len, 0) == true)
 			handle_expansion(data, len - 1, index, new);
 		else
 			clean_rest_of_quotes(data, index, len);
 		index++;
 	}
-	// problem has been caused
 	return (0);
 }
 
@@ -275,12 +249,11 @@ int	expansion_parser(t_tokens *tokens, t_data *data)
 		len = ft_strlen(tokens->args[i]);
 		if (tokens->dollar_count > 0)
 		{
-			// can everything in this if statement be put in it's own function, fyi this is 30 lines long
-			// cut this smaller
 			if (tokens->dollar_count > 1)
 				multi_dollar_handle(data, tokens, i);			
 			else if (confirm_expansion(tokens->args[i], len, 0) == true)
 			{
+				printf("action is here\n");
 				data->simple = true;
 				handle_expansion(data, len - 1, i, new);
 			}

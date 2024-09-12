@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:03:23 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/11 12:13:31 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 18:43:33 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,9 @@ char	*new_str(char *str, char *value, int start, size_t end)
 	new_str = ft_calloc(sizeof(char), new_len + 1);
 	if (!new_str)
 		return NULL;
-	// i do not know if this code might help somehthing else 
-//	if (start > 0)
-//	{
 	ft_strncpy(new_str, str, start);
-//	}
-//	if (value && ft_strlen(value) > 0)
-//	{
 	ft_strcpy(new_str + start, value);		
-//	}
-//	if (end < ft_strlen(str))
-//	{
 	ft_strcpy(new_str + start + ft_strlen(value), str + end);
-//	}
 	return (new_str);
 }
 
@@ -54,8 +44,9 @@ char	*remove_key(char *str, int start, int end)
 	int		new_len;
 	char	*new_str;
 
+	new_str = NULL;
 	new_len = start + strlen(str + end) + 1;
-	new_str = malloc(sizeof(char) * new_len);
+	new_str = malloc(sizeof(char) * new_len + 1);
 	if (!new_str)
 		return NULL;
 	ft_strncpy(new_str, str, start);
@@ -71,17 +62,13 @@ char	*replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 	char	*new_arg = NULL;
 	
 	key_len = find_key_len(arg, start);
-	// not the key len
 	temp_key = ft_calloc(sizeof(char), (key_len + 1));
 	if (!temp_key)
 		return NULL;
 	ft_strncpy(temp_key, arg + start + 1, key_len);
-	// not this strncpy
 	if (find_node(envs, temp_key, data) == 1)
 	{
 		value = find_keys_value(envs, temp_key);
-		// problem is above
-		//printf("\t\tis it the key value %s and len = %zu\n", value, ft_strlen(value));
 		if (value != NULL)
 			new_arg = new_str(arg, value, start, start + key_len + 1);
 		else
@@ -134,8 +121,10 @@ char	*look_if_expansions(t_data *data, t_env *envs, char *arg, int i)
 				arg = replace_exitcode(arg, i);
 			else
 				arg = replace_expansion(data, envs, arg, i);
-			if (arg[i + 1] == '"' || arg[i + 1] == '\'')
+			if (arg[i] != '\0' && (arg[i + 1] == '"' || arg[i + 1] == '\''))
 				return (arg);
+			if (arg[i] == '\0')
+				 return (arg);
 		}
 		if (arg[0] == '~' && ft_strlen(arg) == 1)
 		{

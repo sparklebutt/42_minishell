@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/12 13:01:25 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 18:53:04 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 		ft_printf("malloc fail in parsing , making of array of args\n");
 		return(1);
 	}
-	//printf("\t\tfollowing the bitch ?? = %s\n", tokens->output_files[data->x]);
 	return (0);
 }
 
@@ -117,41 +116,26 @@ int	null_check(char *str1, t_env *str2, char *str3) // might not be needed
 	return (1);
 }
 
-int	send_to_forks(t_data *data)
-{
-	if (pipe_fork(data) == -1)
-		return (-1);
-	return (2);
-}
-
 int	find_passage(t_data *all, char *string, int divert)
 {
-	// cut this smaller, rewording can be enough
 	if (null_check(all->env->key, all->env, string) != 1)
 	{
 		printf("\t\tret - 1 null check\n");
 		return (-1);
 	}
-	if (find_node(all->env, string, all) == 1 && all->tmp->env_line != NULL)
+	if (find_node(all->env, string, all) == 1 && all->tmp->env_line != NULL && divert == 2)
 	{
-		if (divert == 2)
+		if (check_dir(all->tmp->env_line) == 0)
 		{
-			if (check_dir(all->tmp->env_line) == 0)
-			{
-				printf("\t\tret - 1 cechk dir stuff\n");
-				return (free_extra_return_function(all->tmp->env_line, -1)); // can we hande and check things in this fucntion to save lines??
-				// like there could also be a flag given, so that it can be used "below" too to save lines
-			}
-			return (1);
+			printf("\t\tret - 1 cechk dir stuff\n");
+			return (free_extra_return_function(all->tmp->env_line, -1));
 		}
-		else
-		{	
-			if (send_to_forks(all) == -1)
-			{
-				// printf("\t\tret - 1 send to forks\n"); // below as in here !!!
-				return (-1);
-			}
-		}
+		return (1);
+	}
+	if (pipe_fork(all) == -1)
+	{
+		// printf("\t\tret - 1 send to forks\n"); // below as in here !!!
+		return (-1);
 	}
 	return (1);
 }
@@ -175,10 +159,12 @@ int	handle_absolute_path(t_data *all, int x, char *path) // cut this smaller
 {
 	size_t	len;
 	char	*cmd_n;
+//	char *tmp;
 
 	// cmd_n = path // old thing, but since we are only using it in one place where "path" is NULL
 	// so this didn't make sense to me
 	cmd_n = NULL;
+//	tmp = NULL;
 	len = ft_strlen(all->tokens->args[x]);
 	while (len > 0)
 	{
@@ -186,30 +172,27 @@ int	handle_absolute_path(t_data *all, int x, char *path) // cut this smaller
 			break ;
 		len--;
 	}
+	///// what is we need to check each dir , eg /usr/bin/ls, must split nto tiny tiny parts and chekdir
 	// if (path != NULL) // maybe not needed
-	free_string(path);// new by vilja
+	free_string(path);
 	path = ft_calloc(sizeof(char), len + 1); // this has issues, 84 blcoks of deff lost memory with parsing_script.sh and most from here, viilja
 	path = ft_strncpy(path, all->tokens->args[x], len);
 	if (check_dir(path) == 0)
 	{
 		error("check dir", path);
-		free_string(path); // new by vilja
+		free_string(path);
 		return (0);
 	}
 	else
 	{
-		// do we need this at all?? ask alexandra cause idk, can't see the point of it
-		// you calloc into something new, but it's not in a struct and we aren't using it anywhere?
-		// --------------------------------------------------------------------
-		// if (cmd_n != NULL) // maybe not needed free
-		free_string(cmd_n); // new by vilja
+		free_string(cmd_n);
 		cmd_n = ft_calloc(sizeof(char), len + 2); // adding 2 here fixed a write error, check this out. It happens on ine 158 of this file aka [new[i] = 0;]
 		cmd_n = take_end(cmd_n, all->tokens->args[x], len);
 		free_string(cmd_n); // new free, fixed leaks. try parsing_stript.sh and you'll see a difference
-		// --------------------------------------------------------------------
 		all->tmp->filename = all->tokens->args[x];
+		free_string(path);
 		return (1);
 	}
-	free_string(path); // new by vilja
+	free_string(path);
 	return (0);
 }

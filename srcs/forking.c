@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/12 16:09:42 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 18:17:35 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	}
 	else
 	{
-		// printf("\t\tsend to child -1\n");
+		//printf("\t\tsend to child -1\n");
 		return (-1);
 	}
 	return (0);

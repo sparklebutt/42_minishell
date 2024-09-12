@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/12 12:56:50 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 18:10:21 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 {
 	*cmd_len = ft_strlen(all->tokens->args[x]);
-	
 	if (all->tokens->args[x][0] == '.')
 		return (3);
 	if (all->tokens->args[x][0] == '/')
@@ -103,6 +102,7 @@ int	check_path(char *string, int divert, t_data *all, int x)
 	int		found;
 
 	cmd_len = 0;
+
 	res = initial_checks_and_setup(&suffix, &cmd_len, all, x);
 	if (res == 3)
 	{

@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:02:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/12 13:03:05 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:37:43 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int input_helper(t_tokens *tokens, int fd, int i)
 	if (fd < 0)
 		return (1);
 	close (fd);
-	if (ft_strncmp(tokens->args[i], "<<", 2) == 0)//, ft_strlen(tokens->args[i]) + 1) == 0) // is this not risky, due to len potentially being anything
+	if (ft_strncmp(tokens->args[i], "<<", 2) == 0)
 	{
 		free_string(tokens->here_file); // new free
 		tokens->here_file = ft_strdup(tokens->args[i + 1]);
@@ -46,8 +46,6 @@ int input_helper(t_tokens *tokens, int fd, int i)
 
 int output_helper(t_tokens *tokens, int fd, int i, int x)
 {
-	//free_string(tokens->output_files[x]); // new free deffinatley want to do this!
-	//tokens->output_files[x] = ft_strdup(tokens->args[i + 1]);	
 	if (ft_strncmp(tokens->args[i], ">>", ft_strlen(tokens->args[i]) + 1) == 0)
 	{
 		free_string(tokens->output_files[x]);
@@ -62,9 +60,6 @@ int output_helper(t_tokens *tokens, int fd, int i, int x)
 		free_string(tokens->output_files[x]);
 		// because we only want the last 1
 		tokens->output_files[x] = ft_strdup(tokens->args[i + 1]);
-		// token flushing becuase we re malloc ontop all the time , this could be handled different
-		// printf("\t\ttoken flush ehre ?? = %s\n", tokens->output_files[x]);
-		// malloc fail check with free
 		fd = open(tokens->output_files[x], O_WRONLY | O_CREAT | O_TRUNC, 0644);	//instead of args + 1
 		close(fd);
 		tokens->redirect_out = 1;	

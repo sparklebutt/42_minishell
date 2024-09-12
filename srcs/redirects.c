@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/12 12:57:26 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:40:15 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int create_redir_array(t_tokens *tokens)
 			printf("malloc error\n");
 			return (-1);
 		}
-		// printf("\t\ttokens out after malloc = %d\n", tokens->out_array_count);
 	}
 	return (0);
 }
@@ -104,8 +103,6 @@ void	redirect_collector(t_tokens *tokens, char **array, int i)
 	}
 	if (out_count > 0)
 		tokens->out_array_count += 1;	
-	//printf("does this count the right ammount of out files needed out = %d\n", tokens->out_array_count);
-	//printf("does this count the right ammount of in files needed in = %d\n", in_array_count);	
 	tokens->redirect_count = out_count + in_count;
 }
 
@@ -114,19 +111,10 @@ int	redirect_helper(t_tokens *tokens, int x)
 	int		fd;
 
 	fd = 0;
-	//if (!tokens->output_files[x])
-	//	return (0);
-	//if (tokens->redirect_in == false && tokens->redirect_out == false && tokens->redirect_append == false )
-	//	return (0);	
-	// dprintf(2, "\t\twhat is our x count = %d and the file is = %s\n", x, tokens->output_files[x]);
-	// dprintf(2, "\t\tand the infile is = %s\n", tokens->input_file);
 	if (tokens->redirect_append)
 		fd = open(tokens->output_files[x], O_WRONLY | O_CREAT | O_APPEND , 0644);
 	else if (tokens->redirect_out)
-	{
-		//dprintf(2, "what the fuck man \n");
 		fd = open(tokens->output_files[x], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	}
 	if (fd < 0)
 		return (error("redirect", "Failed to open input file MM"));
 	if (dup2(fd, STDOUT_FILENO) == -1)
@@ -134,13 +122,7 @@ int	redirect_helper(t_tokens *tokens, int x)
 	close(fd);
 	return (0);
 }
-/*int	reset_redirect_tokens(t_tokens *tokens)
-{
-	while ()
-	{
 
-	}	
-}*/
 int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 {
 	int x;
@@ -154,10 +136,8 @@ int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 	/*super good spot to reset all redirection things here */
 	while (args[i] != NULL)
 	{
-		// we could have a fucntion return int checks all
 		if (tokens->redirect_out == true && args[i][0] == '|')
 		{
-			// checking if we had a redirect in pipe line if not we dont move x
 			x++;
 			tokens->redirect_out = 0;
 		}
@@ -167,7 +147,6 @@ int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 			// create file and move whole of tokens->heredoc there, each divided by a newline
 			while(tokens->heredoc[here_i] != 0) // for testing
 			{
-				// printf("\t\t\theredoc[%d] = %s\n", here_i, tokens->heredoc[here_i]);
 				here_i++;
 			}
 			// delete temp file at the end of minishell loop (or earlier e.g. end of forks, find place)
@@ -181,7 +160,6 @@ int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 		// what if args[i + 1] == NULL
 		else if (args[i + 1] != NULL && (strcmp(args[i], ">>") == 0 || strcmp(args[i], ">") == 0))
 		{
-			// it was x causing an over right here because the bool was auto true upon second entry
 			output_helper(tokens, fd, i, x);
 			i++;
 		}
