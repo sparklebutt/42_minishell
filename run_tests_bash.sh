@@ -6,7 +6,7 @@ echo "0        Now running simple_tests.sh          0"
 echo "0                                             0"
 echo "00000000000000000000000000000000000000000000000"
 echo ""
-./minishell < simple_tests.sh
+bash < simple_tests.sh
 read -n1 -s -r
 
 echo ""
@@ -16,7 +16,7 @@ echo "0         Now running pipe_tests.sh           0"
 echo "0                                             0"
 echo "00000000000000000000000000000000000000000000000"
 echo ""
-./minishell < pipe_tests.sh
+bash < pipe_tests.sh
 read -n1 -s -r
 
 echo ""
@@ -26,7 +26,7 @@ echo "0         Now running quick_test.sh           0"
 echo "0                                             0"
 echo "00000000000000000000000000000000000000000000000"
 echo ""
-./minishell < quick_test.sh
+bash < quick_test.sh
 read -n1 -s -r
 
 echo ""
@@ -36,7 +36,7 @@ echo "0         Now running quote_test.sh           0"
 echo "0                                             0"
 echo "00000000000000000000000000000000000000000000000"
 echo ""
-./minishell < quotes_test.sh
+bash < quotes_test.sh
 read -n1 -s -r
 
 echo ""
@@ -46,5 +46,5 @@ echo "0       Now running redirect_test.sh          0"
 echo "0                                             0"
 echo "00000000000000000000000000000000000000000000000"
 echo ""
-./minishell < redirect_test.sh
+bash < redirect_test.sh
 read -n1 -s -r

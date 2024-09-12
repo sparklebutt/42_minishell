@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/11 18:11:49 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 11:11:32 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,17 @@ static int fill_array(t_data *data, int i)
 		}
 		else if (is_redirect(data->tokens->args[data->i]) == 3) //carefull lhere it was != null
 		{
-				printf("we found a redirect \n");
+			printf("we found a redirect \n");
 			//if (data->tokens->output_files[data->x] != NULL)
 			data->tokens->action = true;	
 			/* frankly i dont understand this anymore myself  */
 			if (data->tokens->input_file != NULL) //what the fuck is this check?
 			{
+				printf("meow ex_arr[%d] = %s\n", i, data->tokens->output_files[data->x]);
 				data->tmp->ex_arr[i] = data->tokens->output_files[data->x];
-				if (data->x < data->tokens->out_array_count)
-					data->x++;
+				// printf("\t\tdata->x = %d, out_array_count = %d\n", data->x, data->tokens->out_array_count);
+				// if (data->x < data->tokens->out_array_count)
+				// 	data->x++;
 				data->i += 2;
 			}
 			else if (data->tokens->heredoc[0] != NULL)

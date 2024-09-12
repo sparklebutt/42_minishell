@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/11 18:15:36 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 10:27:46 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int	redirect_helper(t_tokens *tokens, int x)
 	//	return (0);
 	//if (tokens->redirect_in == false && tokens->redirect_out == false && tokens->redirect_append == false )
 	//	return (0);	
-	//dprintf(2, "what is our x count = %d and the file is = %s\n", x, tokens->output_files[x]);
+	dprintf(2, "\t\twhat is our x count = %d and the file is = %s\n", x, tokens->output_files[x]);
 	if (tokens->redirect_append)
 		fd = open(tokens->output_files[x], O_WRONLY | O_CREAT | O_APPEND , 0644);
 	else if (tokens->redirect_out)

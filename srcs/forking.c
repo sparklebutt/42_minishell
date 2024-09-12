@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/11 18:14:39 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 11:12:40 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 int	child(t_data *data, int *fds, int x, int flag)
 {	
 	char **tmp;
-	//int p = 0;
+	
 	tmp = NULL;
-	/*printf("aaaaa=%s", data->tokens->output_files[data->x]);
+	printf("\t\t\taaaaa=%s\n", data->tokens->output_files[data->x]);
 	if (data->tokens->action == false)
 			printf("\t\tits feckiung false\n");
 		else 
-			printf("\t\tits fecking true\n");*/
+			printf("\t\tits fecking true\n");
 
 	data->child[data->child_i] = fork();
 	if (data->child[data->child_i] == -1)
@@ -43,11 +43,13 @@ int	child(t_data *data, int *fds, int x, int flag)
 		tmp = set_env_array(data, 0, 0);
 		
 		//dprintf(2, "exceve tiiiiime\n");
-		/*while(data->tmp->ex_arr[p])
+		int p = 0;
+		while(data->tmp->ex_arr[p])
 		{
-			dprintf(2, "data exx ar = %s\n", data->tmp->ex_arr[p]);
+			dprintf(2, "\t\t\tdata exx ar = %s\n", data->tmp->ex_arr[p]);
 			p++;
-		}*/
+		}
+		
 		execve(data->tmp->filename, data->tmp->ex_arr, tmp);
 		//execve(data->tmp->ex_arr[0], data->tmp->ex_arr, tmp);
 		//free(data->tmp->ex_arr);
@@ -59,15 +61,36 @@ int	child(t_data *data, int *fds, int x, int flag)
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
 	close(fds[1]);
+	printf("\t\tdata->x = %d, out_array_count = %d\n", data->x, data->tokens->out_array_count);
+	// if (data->tokens->output_files[data->x] != NULL) //  BREAKS CODE STUPID
+	// {
+	// 	if (data->x < data->tokens->out_array_count)
+	// 		data->x++;
+	// }
 	return (0);
 }
 
 int	send_to_child(t_data *data, int fds[2], int x)
 {
-	//int p = 0;
 	if (is_builtins(data->tokens->args[data->i]) == 1)
 	{
 		data->builtin_marker = true;
+		// put this in another func
+		// ---------------------------------
+		int p = 0;
+		p = data->i;
+		while (data->tokens->args[p][0] != '|' && data->tokens->args[p] != NULL)
+		{
+			printf("\twhat str is this? %s\n", data->tokens->args[data->i]);
+			if (is_redirect(data->tokens->args[p]) > 0) // change to 0 if input are needed too
+			{
+				printf("\tswitching to true\n");
+				data->tokens->action = true;
+				break ;
+			}
+			p++;
+		}
+		// ----------------------------------
 		child(data, fds, x, 1);
 		data->i++;
 		while (data->tokens->args[data->i] != NULL)
@@ -82,14 +105,15 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	}
 	else if (check_path(data->tmp->env_line, 1, data, data->i) != 0)
 	{
+		printf("\t\t\tbbbbb=%s\n", data->tokens->output_files[data->x]);
 		set_array(data);
+		printf("\t\t\tccccc=%s\n", data->tokens->output_files[data->x]);
 		//printf("what the actualy fcuk = %s\n", data->tokens->output_files[data->i]);
 		/*while (data->tmp->ex_arr[p])
 		{
 			printf("~~~\tex arr loc = %d, = %s\n", p, data->tmp->ex_arr[p]);
 			p++;
 		}*/
-		
 		if (data->i > 0 && data->builtin_marker == false && data->tokens->args[data->i - 1] != NULL && data->tokens->args[data->i - 1][0] == '>')
 		{	
 			child(data, fds, x, 2);

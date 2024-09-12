@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_adv.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/10 14:27:50 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 10:16:24 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ static char	**free_array_if(char **array)
 	free(array);
 	return (NULL);
 }
+
 /*~~ split string but do not remove spaces if inside quotes to input into tokesn array
 we are missing special cases where there are no spaces yet special symbols do exist
 eg hello>world>spagett OR echo hello>banana_file|cat>spaghetti, total_words_c will also have
@@ -141,5 +142,12 @@ char	**ft_split_adv(char const *s, char c, t_data *data) //lets send it a 0 for 
 	}
 	array[word] = NULL;
 	//printf("zzzzzzzzzzzzzzzzzzzz\n");
+	int p = 0;
+	while (array[p] != NULL)
+	{
+		printf("array[%d] = %s\n", p, array[p]);
+		p++;
+	}
+		
 	return (array);
 }
