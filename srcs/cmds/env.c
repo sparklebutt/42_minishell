@@ -6,43 +6,75 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 15:45:51 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/12 14:05:58 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+char *env_helper(t_env *env, int i, int split_count)
+{
+	char **array;
+	char *value;
+	char *ret;
+
+	value = find_keys_value(env, "PATH");
+	if (value == NULL || ft_strlen(value) == 0)
+		return (NULL);
+	while (value[i++] != '\0')
+		split_count++;
+	array = ft_calloc(sizeof(char *), split_count + 1);
+	if (array == NULL)
+		return (NULL);
+	array = ft_split(value, ':');
+	i = 0;
+	while (array[i] != NULL)
+	{
+		ret = ft_strnstr(array[i], "/bin", 5);
+		if (ret != NULL)
+			break ;
+		i++;
+	}
+	return (ret);
+}
+
+int check_envs_ret(char *ret)
+{
+	if (ret == NULL || ft_strlen(ret) > 4)
+	{
+		if (ret != NULL && ft_strlen(ret) == 5 && ret[4] == '/')
+			ret[4] = '/';
+		else
+			return (not_perror("env", NULL, "No such file or directory\n"), 1);	
+	}
+	return (0);
+}
+
 void	ft_env(t_data *data)
 {
 	t_env	*env;
-	int		found_key;
+	char *ret;
 
 	env = data->env;
-	found_key = find_node(env, "PATH", data); // make sure to check if every path value given in PATH is VALID
-	
-	// this is only needed if we don't want to handle [env -i ./minishell]
-	// if (env == NULL) {
-	// 	not_perror("env", NULL, "syntax error: WE DO NOT HANDLE env -i");
-	// 	return ;
-	// }
-	
-	if (found_key == 0 || found_key == 2) {
-		not_perror("env", NULL, "No such file or directory\n");
-		return ;
+	ret = NULL;
+	if (find_node(env, "PATH", data) >= 1)
+	{
+		ret = env_helper(env, 0, 0);
+		if (check_envs_ret(ret) == 1)
+			return ;
 	}
 	else
+		return (not_perror("env", NULL, "No such file or directory\n"));	
+	if (data->tokens->args[data->i + 1] != NULL && data->tokens->args[data->i + 1][0] != '|')
+	{ 
+		if (check_dir(data->tokens->args[data->i + 1]) == 0) {
+			cmd_error("env", data->tokens->args[data->i + 1]);
+			return ;
+		}
+	}
+	while (env != NULL)
 	{
-		if (data->tokens->args[data->i + 1] != NULL && data->tokens->args[data->i + 1][0] != '|')
-		{ 
-			if (check_dir(data->tokens->args[data->i + 1]) == 0) {
-				cmd_error("env", data->tokens->args[data->i + 1]);
-				return ;
-			}
-		}
-		while (env != NULL)
-		{
-			printf("%s=%s\n", env->key, env->value);
-			env = env->next;
-		}
+		printf("%s=%s\n", env->key, env->value);
+		env = env->next;
 	}
 }

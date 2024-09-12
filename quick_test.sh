@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 export ATEST=wwwweeeeeeee BTEST=woooooooooooo
