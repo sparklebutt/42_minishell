@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 08:18:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/09 15:43:59 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/12 15:16:44 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ char	**ft_split(char const *s, char c)
 			word++;
 			i += word_len;
 		}
+		// array[word] = NULL;
 	}
 	return (array);
 }

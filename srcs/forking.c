@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/12 14:10:59 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 16:09:42 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 	{
 		dup_fds(data, fds, x);
 		if (data->tokens->action == true && redirect_helper(data->tokens, data->x) != 0)
-		{
 			exit(exit_code(0,0));
-		}
 		if (flag == 1)
 		{
 			exec_builtins(*data, data->tokens->args[data->i]);
@@ -45,69 +43,49 @@ int	child(t_data *data, int *fds, int x, int flag)
 	return (0);
 }
 
+int	set_builtin_info(t_data *data, int fds[2], int x)
+{
+	int i;
+
+	i = 0;
+	i = data->i;
+	while (data->tokens->args[i] != NULL && data->tokens->args[i][0] != '|')
+	{
+		if (is_redirect(data->tokens->args[i]) > 0) // change to 0 if input are needed too
+		{
+			data->tokens->action = true;
+			break ;
+		}
+		i++;
+	}
+	child(data, fds, x, 1);
+	data->i++;
+	while (data->tokens->args[data->i] != NULL)
+	{
+		if (data->tokens->args[data->i][0] == '|')
+		{
+			data->i++;
+			break ;
+		}
+		data->i++;
+	}
+	return (0);
+}
+
 int	send_to_child(t_data *data, int fds[2], int x)
 {
 	if (is_builtins(data->tokens->args[data->i]) == 1)
-	{
-		data->builtin_marker = true;
-		// put this in another func
-		// ---------------------------------
-		int p = 0;
-		p = data->i;
-		while (data->tokens->args[p] != NULL && data->tokens->args[p][0] != '|')
-		{
-			// printf("\twhat str is this? %s\n", data->tokens->args[data->i]);
-			if (is_redirect(data->tokens->args[p]) > 0) // change to 0 if input are needed too
-			{
-				// printf("\tswitching to true\n");
-				data->tokens->action = true;
-				break ;
-			}
-			p++;
-		}
-		// ----------------------------------
-		child(data, fds, x, 1);
-		data->i++;
-		while (data->tokens->args[data->i] != NULL)
-		{
-			if (data->tokens->args[data->i][0] == '|')
-			{
-				data->i++;
-				break ;
-			}
-			data->i++;
-		}
-	}
+		set_builtin_info(data, fds, x);
 	else if (check_path(data->tmp->env_line, 1, data, data->i) != 0)
 	{
 		set_array(data);
-		if (data->i > 0 && data->builtin_marker == false && data->tokens->args[data->i - 1] != NULL && data->tokens->args[data->i - 1][0] == '>')
-		{
-			
-			child(data, fds, x, 2);
+		child(data, fds, x, 0);	
+		if (data->i > 0 && data->tokens->args[data->i - 1] != NULL && data->tokens->args[data->i - 1][0] == '>')
 			data->i++;
-		}
 		else if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] == '>')
-		{
-			child(data, fds, x, 2);
 			data->i += 2;
-		}
-		else if (data->i == data->tokens->array_count - 1)
-		{
-			
-			if (data->tokens->args[data->i] == NULL)
-				child(data, fds, x, 3);
-			if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] == '|')
-				data->i++;
+		else if (data->i == data->tokens->array_count) // || data->i == data->tokens->array_count - 1
 			return (0);
-		}
-		else if (data->i == data->tokens->array_count)
-		{
-			child(data, fds, x, 0);
-			return (0);
-		}
-		else
-			child(data, fds, x, 0);
 		if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] == '|')
 			data->i++;
 	}
@@ -118,6 +96,7 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	}
 	return (0);
 }
+
 /*~~ pipes and forks , set_env_array could be moved to every instance of env manipulation instead
 then freed at the very end of everything~~*/
 static int wait_and_close(t_data *data, int status, int fds[2], int x)
@@ -166,22 +145,5 @@ int	pipe_fork(t_data *data)
 		x++;
 	}
 	wait_and_close(data, status, fds, x);
-	/*close(fds[0]);
-	close(fds[1]);
-	if (data->prev_fd != -1)
-		close(data->prev_fd);
-	while (data->child_i >= 0)
-	{
-		waitpid(data->child[data->child_i], &status, 0);
-		x--;
-		data->child_i--;
-	}
-	if (data->tmp->ex_arr != NULL)
-	{
-		free(data->tmp->ex_arr);
-		data->tmp->ex_arr = NULL;
-	}
-	status = (status >> 8) & 0xFF;
-	exit_code(1, status);*/
 	return (0);
 }

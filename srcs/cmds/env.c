@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/12 14:05:58 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/12 15:47:41 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,19 @@ char *env_helper(t_env *env, int i, int split_count)
 	char **array;
 	char *value;
 	char *ret;
+	//char *tmp;
 
+	//tmp = NULL;
+	array = NULL;
+	ret = NULL;
 	value = find_keys_value(env, "PATH");
 	if (value == NULL || ft_strlen(value) == 0)
 		return (NULL);
 	while (value[i++] != '\0')
 		split_count++;
-	array = ft_calloc(sizeof(char *), split_count + 1);
+	array = ft_split(value, ':');
 	if (array == NULL)
 		return (NULL);
-	array = ft_split(value, ':');
 	i = 0;
 	while (array[i] != NULL)
 	{

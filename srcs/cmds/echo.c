@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:05:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/12 11:23:45 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/12 15:48:52 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_echo(t_data *data, char **args)
 		if (if_break(args[i]) == 1)
 			break;
 		ft_putstr_fd(args[i], 1);
-		if (args[i + 1] != NULL)
+		if (args[i + 1] != NULL && args[i + 1][0] != '|' && is_redirect(args[i + 1]) == 0)
 			ft_putchar_fd(' ', 1);
 		i++;
 	}
