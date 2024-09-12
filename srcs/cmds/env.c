@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/12 14:05:58 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/12 16:14:11 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,29 @@
 
 char *env_helper(t_env *env, int i, int split_count)
 {
-	char **array;
+	char **array = NULL;
 	char *value;
 	char *ret;
+	char *temp = NULL;
 
 	value = find_keys_value(env, "PATH");
+	ret = NULL;
 	if (value == NULL || ft_strlen(value) == 0)
 		return (NULL);
 	while (value[i++] != '\0')
 		split_count++;
-	array = ft_calloc(sizeof(char *), split_count + 1);
-	if (array == NULL)
-		return (NULL);
 	array = ft_split(value, ':');
 	i = 0;
 	while (array[i] != NULL)
 	{
-		ret = ft_strnstr(array[i], "/bin", 5);
-		if (ret != NULL)
+		temp = ft_strnstr(array[i], "/bin", 5);
+		if (temp != NULL)
 			break ;
 		i++;
 	}
+	if (temp != NULL)
+		ret = ft_strdup(temp);
+	free_array(array);
 	return (ret);
 }
 
@@ -43,10 +45,18 @@ int check_envs_ret(char *ret)
 	if (ret == NULL || ft_strlen(ret) > 4)
 	{
 		if (ret != NULL && ft_strlen(ret) == 5 && ret[4] == '/')
-			ret[4] = '/';
+		{
+			free_string(ret);
+			return (0);
+		}
 		else
-			return (not_perror("env", NULL, "No such file or directory\n"), 1);	
+		{
+			if (ret != NULL)
+				free_string(ret);
+			return (not_perror("env", NULL, "No such file or directory\n"), 1);
+		}
 	}
+	free_string(ret);
 	return (0);
 }
 
