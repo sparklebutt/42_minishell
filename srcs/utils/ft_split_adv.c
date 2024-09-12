@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_adv.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/12 10:16:24 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/12 12:59:02 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,12 +142,12 @@ char	**ft_split_adv(char const *s, char c, t_data *data) //lets send it a 0 for 
 	}
 	array[word] = NULL;
 	//printf("zzzzzzzzzzzzzzzzzzzz\n");
-	int p = 0;
+	/*int p = 0;
 	while (array[p] != NULL)
 	{
 		printf("array[%d] = %s\n", p, array[p]);
 		p++;
-	}
+	}*/
 		
 	return (array);
 }

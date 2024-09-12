@@ -1,4 +1,4 @@
 #!/bin/bash
 
-rm out grep_out
-rm -R dir.dir
+cat empty > test_output.txt
+cat empty > bash_output.txt

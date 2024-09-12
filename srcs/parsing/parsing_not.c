@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/11 18:15:24 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:01:25 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ int	find_passage(t_data *all, char *string, int divert)
 		{	
 			if (send_to_forks(all) == -1)
 			{
-				printf("\t\tret - 1 send to forks\n"); // below as in here !!!
+				// printf("\t\tret - 1 send to forks\n"); // below as in here !!!
 				return (-1);
 			}
 		}

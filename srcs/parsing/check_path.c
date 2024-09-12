@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 17:01:18 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/12 12:56:50 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,6 @@ int	check_path(char *string, int divert, t_data *all, int x)
 	int		res;
 	int		found;
 
-	//free_string(suffix);
-	// suffix = NULL;
 	cmd_len = 0;
 	res = initial_checks_and_setup(&suffix, &cmd_len, all, x);
 	if (res == 3)

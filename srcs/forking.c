@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/12 11:12:40 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/12 14:10:59 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,6 @@ int	child(t_data *data, int *fds, int x, int flag)
 	char **tmp;
 	
 	tmp = NULL;
-	printf("\t\t\taaaaa=%s\n", data->tokens->output_files[data->x]);
-	if (data->tokens->action == false)
-			printf("\t\tits feckiung false\n");
-		else 
-			printf("\t\tits fecking true\n");
-
 	data->child[data->child_i] = fork();
 	if (data->child[data->child_i] == -1)
 		return (error("fork", "first child failed"));
@@ -33,26 +27,13 @@ int	child(t_data *data, int *fds, int x, int flag)
 		{
 			exit(exit_code(0,0));
 		}
-		//dprintf(2, "heloooo\n");		
 		if (flag == 1)
 		{
 			exec_builtins(*data, data->tokens->args[data->i]);
 			exit(exit_code(0, 0));
 		}
-		
 		tmp = set_env_array(data, 0, 0);
-		
-		//dprintf(2, "exceve tiiiiime\n");
-		int p = 0;
-		while(data->tmp->ex_arr[p])
-		{
-			dprintf(2, "\t\t\tdata exx ar = %s\n", data->tmp->ex_arr[p]);
-			p++;
-		}
-		
 		execve(data->tmp->filename, data->tmp->ex_arr, tmp);
-		//execve(data->tmp->ex_arr[0], data->tmp->ex_arr, tmp);
-		//free(data->tmp->ex_arr);
 		free_array(tmp); // MALLOCED VARIABLE
 		exit(exit_code(0, 0));
 	}
@@ -61,12 +42,6 @@ int	child(t_data *data, int *fds, int x, int flag)
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
 	close(fds[1]);
-	printf("\t\tdata->x = %d, out_array_count = %d\n", data->x, data->tokens->out_array_count);
-	// if (data->tokens->output_files[data->x] != NULL) //  BREAKS CODE STUPID
-	// {
-	// 	if (data->x < data->tokens->out_array_count)
-	// 		data->x++;
-	// }
 	return (0);
 }
 
@@ -79,12 +54,12 @@ int	send_to_child(t_data *data, int fds[2], int x)
 		// ---------------------------------
 		int p = 0;
 		p = data->i;
-		while (data->tokens->args[p][0] != '|' && data->tokens->args[p] != NULL)
+		while (data->tokens->args[p] != NULL && data->tokens->args[p][0] != '|')
 		{
-			printf("\twhat str is this? %s\n", data->tokens->args[data->i]);
+			// printf("\twhat str is this? %s\n", data->tokens->args[data->i]);
 			if (is_redirect(data->tokens->args[p]) > 0) // change to 0 if input are needed too
 			{
-				printf("\tswitching to true\n");
+				// printf("\tswitching to true\n");
 				data->tokens->action = true;
 				break ;
 			}
@@ -105,17 +80,10 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	}
 	else if (check_path(data->tmp->env_line, 1, data, data->i) != 0)
 	{
-		printf("\t\t\tbbbbb=%s\n", data->tokens->output_files[data->x]);
 		set_array(data);
-		printf("\t\t\tccccc=%s\n", data->tokens->output_files[data->x]);
-		//printf("what the actualy fcuk = %s\n", data->tokens->output_files[data->i]);
-		/*while (data->tmp->ex_arr[p])
-		{
-			printf("~~~\tex arr loc = %d, = %s\n", p, data->tmp->ex_arr[p]);
-			p++;
-		}*/
 		if (data->i > 0 && data->builtin_marker == false && data->tokens->args[data->i - 1] != NULL && data->tokens->args[data->i - 1][0] == '>')
-		{	
+		{
+			
 			child(data, fds, x, 2);
 			data->i++;
 		}
@@ -126,6 +94,7 @@ int	send_to_child(t_data *data, int fds[2], int x)
 		}
 		else if (data->i == data->tokens->array_count - 1)
 		{
+			
 			if (data->tokens->args[data->i] == NULL)
 				child(data, fds, x, 3);
 			if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] == '|')
@@ -144,38 +113,15 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	}
 	else
 	{
-		printf("\t\tsend to child -1\n");
+		// printf("\t\tsend to child -1\n");
 		return (-1);
 	}
 	return (0);
 }
 /*~~ pipes and forks , set_env_array could be moved to every instance of env manipulation instead
 then freed at the very end of everything~~*/
-int	pipe_fork(t_data *data)
+static int wait_and_close(t_data *data, int status, int fds[2], int x)
 {
-	int	fds[2];
-	int	status;
-	int	x;
-
-	data->x = 0; // oth location of outfiles array
-	x = 0;
-	data->prev_fd = -1;
-	//set_env_array(data); // lets remove this aready
-	while (x <= data->tokens->pipe_count)
-	{
-		if (data->i > data->tokens->array_count)
-			return (error("fork", "we are somehow out of bounds"));
-		if (pipe(fds) < 0){
-			error("fork", "error in pipe perror needed");
-			exit(EXIT_FAILURE);
-		}
-		
-		//data->x = x;
-		if (send_to_child(data, fds, x) == -1)
-			return (-1);
-		data->prev_fd = fds[0];
-		x++;
-	}
 	close(fds[0]);
 	close(fds[1]);
 	if (data->prev_fd != -1)
@@ -193,5 +139,49 @@ int	pipe_fork(t_data *data)
 	}
 	status = (status >> 8) & 0xFF;
 	exit_code(1, status);	
+	return (0);
+}
+
+int	pipe_fork(t_data *data)
+{
+	int	fds[2];
+	int	status;
+	int	x;
+
+	data->x = 0;
+	x = 0;
+	data->prev_fd = -1;
+	status = 0;
+	while (x <= data->tokens->pipe_count)
+	{
+		if (data->i > data->tokens->array_count)
+			return (error("fork", "we are somehow out of bounds"));
+		if (pipe(fds) < 0){
+			error("fork", "error in pipe perror needed");
+			exit(EXIT_FAILURE);
+		}
+		if (send_to_child(data, fds, x) == -1)
+			return (-1);
+		data->prev_fd = fds[0];
+		x++;
+	}
+	wait_and_close(data, status, fds, x);
+	/*close(fds[0]);
+	close(fds[1]);
+	if (data->prev_fd != -1)
+		close(data->prev_fd);
+	while (data->child_i >= 0)
+	{
+		waitpid(data->child[data->child_i], &status, 0);
+		x--;
+		data->child_i--;
+	}
+	if (data->tmp->ex_arr != NULL)
+	{
+		free(data->tmp->ex_arr);
+		data->tmp->ex_arr = NULL;
+	}
+	status = (status >> 8) & 0xFF;
+	exit_code(1, status);*/
 	return (0);
 }
