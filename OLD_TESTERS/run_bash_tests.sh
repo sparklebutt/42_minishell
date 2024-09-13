@@ -6,7 +6,7 @@ echo "0        Now running simple_tests.sh          0"
 echo "0                                             0"
 echo "00000000000000000000000000000000000000000000000"
 echo ""
-bash < test_scripts/simple_tests.sh | grep -v minishell >> bash_output.txt
+bash < script/simple_tests.sh | grep -v minishell >> bash_output.txt
 read -n1 -s -r
 
 echo ""
@@ -16,7 +16,7 @@ echo "0         Now running pipe_tests.sh           0"
 echo "0                                             0"
 echo "00000000000000000000000000000000000000000000000"
 echo ""
-bash < test_scripts/pipe_tests.sh | grep -v minishell >> bash_output.txt
+bash < script/pipe_tests.sh | grep -v minishell >> bash_output.txt
 read -n1 -s -r
 
 echo ""
@@ -26,7 +26,7 @@ echo "0         Now running quick_test.sh           0"
 echo "0                                             0"
 echo "00000000000000000000000000000000000000000000000"
 echo ""
-bash < test_scripts/quick_test.sh | grep -v minishell >> bash_output.txt
+bash < script/quick_test.sh | grep -v minishell >> bash_output.txt
 read -n1 -s -r
 
 echo ""
@@ -36,7 +36,7 @@ echo "0         Now running quote_test.sh           0"
 echo "0                                             0"
 echo "00000000000000000000000000000000000000000000000"
 echo ""
-bash < test_scripts/quotes_test.sh | grep -v minishell >> bash_output.txt
+bash < script/quotes_test.sh | grep -v minishell >> bash_output.txt
 read -n1 -s -r
 
 echo ""
@@ -46,7 +46,7 @@ echo "0       Now running redirect_test.sh          0"
 echo "0                                             0"
 echo "00000000000000000000000000000000000000000000000"
 echo ""
-bash < test_scripts/redirect_test.sh | grep -v minishell >> bash_output.txt
+bash < script/redirect_test.sh | grep -v minishell >> bash_output.txt
 read -n1 -s -r
 
 echo ""
@@ -56,5 +56,5 @@ echo "0         Now running env_tests.sh            0"
 echo "0                                             0"
 echo "00000000000000000000000000000000000000000000000"
 echo ""
-bash < test_scripts/env_test.sh | grep -v minishell
+bash < script/env_test.sh | grep -v minishell
 read -n1 -s -r

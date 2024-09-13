@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/12 16:14:11 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/13 08:10:46 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *env_helper(t_env *env, int i, int split_count)
+// needs to work with /usr/bin and /usr/bin/
+// check what else it should be able to work with
+char *env_helper(t_env *env, int i, int split_count) // FIX THIS
 {
 	char **array;
 	char *value;

@@ -7,18 +7,42 @@
 /bin/echo ''$?''"42"
 
 /bin/echo '"$USER"'
+echo '"$USER"'
 
 /bin/echo "'$USER'"
+echo "'$USER'"
 
 /bin/echo ""'$USER'""
+echo ""'$USER'""
 
 /bin/echo '"'$USER'"'
+echo '"'$USER'"'
 
 /bin/echo "''$USER''"
+echo "''$USER''"
 
 /bin/echo "'"'$USER'"'"
+echo "'"'$USER'"'"
 
 /bin/echo '"'"$USER"'"'
+echo '"'"$USER"'"'
+
+echo $"USER"
+
+echo "$""USER"
+
+echo ""$""USER""
+
+echo '$'USER
+
+echo $HOME''
+
+cat "meow.txt"
+
+cat "'meow.txt'"
+#"cat "'meow.txt'""
+
+echo "$HOME is where the heart is"
 
 /bin/echo $"HOME"$USER
 
@@ -32,9 +56,9 @@
 
 /bin/echo "$ "
 
-/bin/echo hi >./outfile01 | /bin/echo bye
+/bin/echo hi >./test_files/out01 | /bin/echo bye
 
-/bin/echo <123 <456 hi | /bin/echo 42 ##fix this
+/bin/echo <123 <456 hi | /bin/echo 42
 
 /bin/echo '$='
 
