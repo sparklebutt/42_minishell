@@ -2,6 +2,8 @@
 
 /bin/ls
 
+///bin/ls
+
 /bin/pwd
 
 /bin/cd

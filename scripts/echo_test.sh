@@ -50,20 +50,6 @@ echo '$?'
 
 echo "'$?'"
 
-echo \$USER
-
-echo \\$USER
-
-echo \\\$USER
-
-echo \\\\$USER
-
-echo \\\\\$USER
-
-echo \\\\\\\\\$USER
-
-echo \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\$USER \$PATH \\$PWD
-
 echo "cat lol.c | cat > lol.c"
 
 echo "cat lol.c '|' cat > lol.c"
@@ -123,7 +109,6 @@ echo test1		test2
 echo $USER$TESTNOTFOUND$HOME$
 
 echo $USER$TESTNOTFOUND$HOME$WTF$PWD
-
 
 echo -n test1
 

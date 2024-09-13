@@ -16,10 +16,6 @@
 
 /bin/chmod 644 test_files/new_file.txt
 
-# /bin/hostname -I
-
-# /bin/find / -name filename
-
 /bin/mv test_files/new_file.txt test_files/newer_file.txt
 
 /bin/cp test_files/newer_file.txt test_files/file2.txt

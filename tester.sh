@@ -17,7 +17,7 @@ echo ""
 echo "-------------------------------------------------"
 ./clean_script.sh
 bash < scripts/simple_commands.sh | grep -v minishell >> bash_output.txt
-valgrind --leak-check=full --gen-suppressions=yes --log-file=./valgrind_logs/log.txt ./minishell < scripts/simple_commands.sh | grep -v minishell >> test_output.txt
+valgrind --leak-check=full --suppressions=valgrind.supressions --show-leak-kinds=all --track-origins=yes --track-fds=yes --tool=memcheck --log-file=./valgrind_logs/log.txt ./minishell < scripts/simple_commands.sh | grep -v minishell >> test_output.txt
 echo "-------------------------------------------------"
 ./find_diff.sh
 ./check_leaks.sh
@@ -32,7 +32,7 @@ echo "          🔥--🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥--"
 echo ""
 echo "-------------------------------------------------"
 bash < scripts/arguments.sh | grep -v minishell >> bash_output.txt
-valgrind --leak-check=full --gen-suppressions=yes --log-file=./valgrind_logs/log.txt ./minishell < scripts/arguments.sh | grep -v minishell >> test_output.txt
+valgrind --leak-check=full --suppressions=valgrind.supressions --show-leak-kinds=all --track-origins=yes --track-fds=yes --tool=memcheck --log-file=./valgrind_logs/log.txt ./minishell < scripts/arguments.sh | grep -v minishell >> test_output.txt
 echo "-------------------------------------------------"
 ./find_diff.sh
 ./check_leaks.sh
@@ -47,7 +47,7 @@ echo "          🔥--🔥--🔥🔥🔥🔥🔥🔥🔥🔥--"
 echo ""
 echo "-------------------------------------------------"
 bash < scripts/parsing.sh | grep -v minishell >> bash_output.txt
-valgrind --leak-check=full --gen-suppressions=yes --log-file=./valgrind_logs/log.txt ./minishell < scripts/parsing.sh | grep -v minishell >> test_output.txt
+valgrind --leak-check=full --suppressions=valgrind.supressions --show-leak-kinds=all --track-origins=yes --track-fds=yes --tool=memcheck --log-file=./valgrind_logs/log.txt ./minishell < scripts/parsing.sh | grep -v minishell >> test_output.txt
 echo "-------------------------------------------------"
 ./find_diff.sh
 ./check_leaks.sh
@@ -77,7 +77,7 @@ echo "          ----🔥--🔥🔥🔥🔥🔥--🔥🔥--"
 echo ""
 echo "-------------------------------------------------"
 bash < scripts/pipes.sh | grep -v minishell >> bash_output.txt
-valgrind --leak-check=full --gen-suppressions=yes --log-file=./valgrind_logs/log.txt ./minishell < scripts/pipes.sh | grep -v minishell >> test_output.txt
+valgrind --leak-check=full --suppressions=valgrind.supressions --show-leak-kinds=all --track-origins=yes --track-fds=yes --tool=memcheck --log-file=./valgrind_logs/log.txt ./minishell < scripts/pipes.sh | grep -v minishell >> test_output.txt
 echo "-------------------------------------------------"
 ./find_diff.sh
 ./check_leaks.sh
@@ -92,7 +92,7 @@ echo "-------------------------------------------------"
 # echo ""
 # echo "-------------------------------------------------"
 # bash < scripts/redirections.sh | grep -v minishell >> bash_output.txt
-# valgrind --leak-check=full --gen-suppressions=yes --log-file=./valgrind_logs/log.txt ./minishell < scripts/redirections.sh | grep -v minishell >> test_output.txt
+# valgrind --leak-check=full --suppressions=valgrind.supressions --show-leak-kinds=all --track-origins=yes --track-fds=yes --tool=memcheck --log-file=./valgrind_logs/log.txt ./minishell < scripts/redirections.sh | grep -v minishell >> test_output.txt
 # echo "-------------------------------------------------"
 # ./find_diff.sh
 # ./check_leaks.sh
@@ -107,7 +107,7 @@ echo "-------------------------------------------------"
 # echo ""
 # echo "-------------------------------------------------"
 # bash < scripts/env_path.sh | grep -v minishell >> bash_output.txt
-# valgrind --leak-check=full --gen-suppressions=yes --log-file=./valgrind_logs/log.txt ./minishell < scripts/env_path.sh | grep -v minishell >> test_output.txt
+# valgrind --leak-check=full --suppressions=valgrind.supressions --show-leak-kinds=all --track-origins=yes --track-fds=yes --tool=memcheck' --log-file=./valgrind_logs/log.txt ./minishell < scripts/env_path.sh | grep -v minishell >> test_output.txt
 # echo "-------------------------------------------------"
 # ./find_diff.sh
 # ./check_leaks.sh

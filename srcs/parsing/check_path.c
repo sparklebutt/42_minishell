@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/12 18:10:21 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/13 10:29:07 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,11 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 		*suffix = ft_strjoin("/", all->tokens->args[x]);
 	}
 	if (*suffix == NULL || *cmd_len == 0)
+	{
+		// free_string(*suffix);
 		return (free_extra_return_function(*suffix, 0));
+	}
+		
 	return (2);
 }
 

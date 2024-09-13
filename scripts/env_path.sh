@@ -24,7 +24,7 @@ env
 #"export PATH=/bin/env"
 
 export PATH=/usr/bin:/bin/env:
-env
+env | grep "^PATH=.*:/bin:.*"
 #"export PATH=/bin/bin:/bin/env:"
 
 export PATH=/bin/

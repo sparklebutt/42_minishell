@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/12 18:14:50 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/13 10:00:04 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,19 @@ void	to_home(t_data *data, t_env *envs)
 void	change_dir(t_data *data, t_env *envs, char *temp)
 {
 	t_tokens	*tokens;
-	char *temp2;
+	char			*temp2;
 
 	temp2 = NULL;
 	tokens = data->tokens;
 	free_string(data->path);
-	if (check_dir(temp) && chdir(temp) == 0 && find_node(envs, "OLDPWD", data) == 1 && find_node(envs, "PWD", data) == 1)
+	if (check_dir(temp) && chdir(temp) == 0
+		&& find_node(envs, "OLDPWD", data) == 1 && find_node(envs, "PWD", data) == 1)
 	{
 		temp2 = getcwd(NULL, 0);
 		envs = fill_old_pwd(data, envs, temp2);
 	}
-	else if (find_node(envs, "OLDPWD", data) == 0 || find_node(envs, "PWD", data) == 0)
+	else if (find_node(envs, "OLDPWD", data) == 0
+		|| find_node(envs, "PWD", data) == 0)
 		return ;
 	else
 		cmd_error(tokens->args[data->i], tokens->args[data->i + 1]);
