@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   find_from_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:02:41 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/11 10:59:53 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/13 13:27:22 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *find_keys_value(t_env *envs, char *key)
+char	*find_keys_value(t_env *envs, char *key)
 {
-	t_env *temp;
+	t_env	*temp;
 
 	temp = envs;
 	while (temp != NULL)
@@ -50,24 +50,17 @@ int	find_node(t_env *envs, char *key, t_data *data)
 	temp = envs;
 	while (temp != NULL)
 	{
-		// printf("looking for = %s\n", key);
-		// printf("key = %s\n", temp->key);
-		// printf("value = %s\n", temp->value);
-		// printf("------------------------\n");
 		if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) == 0
 			&& (ft_strlen(temp->key) == ft_strlen(key)))
 		{
-			// printf("\t\tkey found!!!!\n");
-			if (ft_strncmp("PATH", key, ft_strlen(key) + 1)	== 0 && find_keys_value(envs, "PATH") == NULL)
+			if (ft_strncmp("PATH", key, ft_strlen(key) + 1) == 0
+				&& find_keys_value(envs, "PATH") == NULL)
 				return (2);
 			data->tmp->env_line = temp->value;
 			return (1);
 		}
 		temp = temp->next;
-		//if (temp == NULL)
-		 //	break;
 	}
-	// printf("\t\tkey NOT found!!!!\n");
 	return (0);
 }
 
@@ -97,8 +90,6 @@ char	*find_value(char *arg)
 	char	*temp;
 
 	temp = ft_strchr(arg, '=');
-	/*CHANGE temp++*/
-	//temp++; // this was causing us to loose a character in key value
 	if (temp == NULL)
 		return (NULL);
 	value = ft_substr(temp, 1, ft_strlen(arg));
