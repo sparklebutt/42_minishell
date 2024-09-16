@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/16 09:42:03 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/16 11:05:20 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int    set_array(t_data *data)
 	int arg_count;
 	
 	i  = 0;
-	printf("\tIN SET ARRAY\n");
+	//printf("\tIN SET ARRAY\n");
 	if (data->tmp->filename == NULL || data->tokens->args[data->i] == NULL)
 		return (-1);
 	// printf("\tfilename = %s\n", data->tmp->filename);

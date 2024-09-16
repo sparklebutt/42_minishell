@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/16 10:34:42 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/16 11:51:35 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,25 +115,25 @@ int	set_builtin_info(t_data *data, int fds[2], int x)
 
 int	send_to_child(t_data *data, int fds[2], int x)
 {
-	printf("\tstepped in send_to_child\n");
+	//printf("\tstepped in send_to_child\n");
 	// dprintf(2, "value of data i:%s\n", data->tokens->args[data->i]);
-	if (data->tokens->args[data->i] == NULL)
-		return (0);
+	//if (data->tokens->args[data->i] == NULL)
+	//	return (0);
 	if (is_builtins(data->tokens->args[data->i]) == 1)
 		set_builtin_info(data, fds, x);
 	else if (check_path(data->tmp->env_line, 1, data, data->i) != 0)
 	{
-		printf("\tcheck_path was a success\n");
+		//printf("\tcheck_path was a success\n");
 		set_array(data);
-		int lol = 0;
+		/*int lol = 0;
 		while (data->tmp->ex_arr[lol] != NULL)
 		{
 			printf("\t\tA ex_arr[%d] = %s\n", lol, data->tmp->ex_arr[lol]);
 			lol++;
-		}
+		}*/
 		child(data, fds, x, 0);
-		printf("\tafter child\n");
-		free_string(data->tmp->filename); // fixed a still reachable, 14.9
+		//printf("\tafter child\n");
+		// free_string(data->tmp->filename); // fixed a still reachable, 14.9
 		if (data->i > 0 && data->tokens->args[data->i - 1] != NULL && data->tokens->args[data->i - 1][0] == '>')
 			data->i++;
 		else if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] == '>')
@@ -211,8 +211,8 @@ int	pipe_fork(t_data *data)
 		close(fds[1]);
 		x++;
 	}
-	printf("waiting and closing\n");
+	//printf("waiting and closing\n");
 	wait_and_close(data, status, fds, x);
-	printf("closed everything\n");
+	//printf("closed everything\n");
 	return (0);
 }

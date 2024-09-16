@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/14 05:12:15 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/16 13:15:18 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,14 +77,14 @@ bool	set_check(char *string, bool ver, int *x, char c, int len) // stick the ver
 	}
 	return (ver);
 }
-static int find_redirect(char *string) // we hve multiples of this function
+/*static int find_redirect(char *string) // we hve multiples of this function
 {
 	if (ft_strchr(string, '>') != NULL)
 		return (1);
 	if (ft_strchr(string, '<') != NULL)
 		return (1);
 	return (0);
-}
+}*/
 
 // similar to quotes_handling (combine them?), maybe add bools into struct
 /*~~this functions handles when there are quotes straight after $symbol, i could not
@@ -96,7 +96,13 @@ int		simple_quote_check(char *s, int i)
 	while (s[x])
 	{
 		if (s[x] == '$')
+		{
+			if (s[x + 1] && s[x + 1] == ' ')
+				return (-1); // newstuff here
+			//if (!s[x + 1])
+			//	return (-1);
 			counter++;
+		}
 		x++;
 	}
 	while (s[i])
@@ -253,18 +259,22 @@ int	expansion_parser(t_tokens *tokens, t_data *data)
 				multi_dollar_handle(data, tokens, i);			
 			else if (confirm_expansion(tokens->args[i], len, 0) == true)
 			{
-				// printf("action is here\n");
+				//printf("action is here\n");
 				data->simple = true;
 				handle_expansion(data, len - 1, i, new);
 			}
 			else if (tokens->args[i])
+			{
+				data->simple = true;
 				clean_rest_of_quotes(data, i, len);
+			}
 			data->simple = false;
 		}
-		else if (tokens->args[i] != NULL && find_redirect(tokens->args[i]) == 0 && tokens->dollar_count == 0)
+		if (tokens->args[i] != NULL && tokens->dollar_count == 0) //find_redirect(tokens->args[i]) == 0 && 
 			no_dollar_handle(tokens, data, i);
 		clean_if_multi_dollar_handle(data, tokens, i);
 		i++;
+
 	}
 	return (0);
 }

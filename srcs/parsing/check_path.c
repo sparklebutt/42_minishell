@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/16 10:36:26 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/16 11:53:31 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 		return (handle_absolute_path(all, x, NULL));
 	if (all->tokens->args[x][0] != '/')
 	{
-		// free_string(*suffix);
+	//	free_string(*suffix);
 		*suffix = ft_strjoin("/", all->tokens->args[x]);
 	}
 	if (*suffix == NULL || *cmd_len == 0)
@@ -31,7 +31,7 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 
 int	match(t_data *all, DIR *dir, char *suffix, int i)
 {
-	free_string(all->tmp->filename);
+	//free_string(all->tmp->filename);
 	all->tmp->filename = ft_strjoin(all->tmp->array[i], suffix);
 	free_string(suffix);
 	closedir(dir);
@@ -72,12 +72,12 @@ static void	split_diversion(t_data *data, int divert, char *string)
 {
 	if (divert == 1)
 	{
-		free_array(data->tmp->array);
+		//free_array(data->tmp->array);
 		data->tmp->array = ft_split(string, ':');
 	}
 	else if (divert == 2)
 	{
-		free_array(data->tmp->array);
+		//free_array(data->tmp->array);
 		data->tmp->array = ft_split(string, ' ');
 	}
 	// IS THIS NEEDED? aren't we checking this earlier and thowing an error?
@@ -93,11 +93,12 @@ res = 3 means we are looking into current directory so we do not need to check_d
 but file muts be checked, this is eg so that minishell can run inside minishell~~*/
 int	check_path(char *string, int divert, t_data *all, int x)
 {
-	static char	*suffix;
+	char	*suffix;
 	size_t	cmd_len;
 	int		res;
 
 	cmd_len = 0;
+	suffix = NULL;
 	res = initial_checks_and_setup(&suffix, &cmd_len, all, x);
 	if (res == 3)
 	{

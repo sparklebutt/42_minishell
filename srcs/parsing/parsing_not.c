@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/16 09:48:39 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/16 12:53:02 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 
 	// cut this smaller
 	new = NULL;
+	
 	if (data->simple == false)
 	{
+		//printf("yikes\n");
 		if (data->tmp->exp_array && data->tmp->exp_array[i])
 		{
 			if (ft_strchr(data->tmp->exp_array[i], '"') != NULL
@@ -37,11 +39,13 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 			}
 		}
 	}
-	else if (data->tokens->args[i])
+	else if (data->tokens->args[i] != NULL)
 	{
+		//printf("wwhat the shizz bbbbbbbb= %s\n", data->tokens->args[i]);	
 		if (ft_strchr(data->tokens->args[i], '"') != NULL
 		|| ft_strchr(data->tokens->args[i], '\'') != NULL)
 		{
+			
 			new = clean_quotes(data->tokens->args[i], len, 0, 0);
 			free_string(data->tokens->args[i]);
 			data->tokens->args[i] = new;
