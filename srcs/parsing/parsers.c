@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/12 19:08:59 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/14 05:12:15 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,7 @@ int	expansion_parser(t_tokens *tokens, t_data *data)
 				multi_dollar_handle(data, tokens, i);			
 			else if (confirm_expansion(tokens->args[i], len, 0) == true)
 			{
-				printf("action is here\n");
+				// printf("action is here\n");
 				data->simple = true;
 				handle_expansion(data, len - 1, i, new);
 			}

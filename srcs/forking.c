@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/12 18:17:35 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/16 10:34:42 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,68 @@
 int	child(t_data *data, int *fds, int x, int flag)
 {	
 	char **tmp;
+	int fd;
+	int i = 0;
 	
+	fd = 0;
 	tmp = NULL;
+	// printf("\t\tBEFORE FORK data->filename = %s\n", data->tmp->filename);
 	data->child[data->child_i] = fork();
 	if (data->child[data->child_i] == -1)
 		return (error("fork", "first child failed"));
 	if (data->child[data->child_i] == 0)
 	{
 		dup_fds(data, fds, x);
+		// dprintf(2, "\tbefore redir helper\n");
 		if (data->tokens->action == true && redirect_helper(data->tokens, data->x) != 0)
 			exit(exit_code(0,0));
+		// dprintf(2, "\tbefore create file helper\n");
+		
+		// new ----------------------------------------
+		
+		// if (data->tokens->h_action == true && create_file(data->tokens) != 0) // create and fill the temp file for heredoc
+		// 	exit(exit_code(0,0));
+		if (data->tokens->h_action == true)
+		{
+			fd = open(data->tokens->here_file, O_RDWR);
+			if (fd <= 0)
+				return (error("redirect", "Failed to open input file C"));
+			if (dup2(fd, STDIN_FILENO) == -1)
+				return (error("redirect", "Failed to duplicate fd"));
+			close(fd);
+			while (data->tokens->heredoc[i] != NULL)
+			{
+				printf("%s\n", data->tokens->heredoc[i]);
+				i++;
+			}
+			free_array(data->tokens->heredoc);
+		}
+		// --------------------------------------------
+
+		// dprintf(2, "\tbefore checking flag\n");
 		if (flag == 1)
 		{
+			// dprintf(2, "\t\texecute builtins\n");
 			exec_builtins(*data, data->tokens->args[data->i]);
 			exit(exit_code(0, 0));
 		}
+		// dprintf(2, "\tbefore setting env array\n");
 		tmp = set_env_array(data, 0, 0);
+		// dprintf(2, "\tbefore execeve\n");
+		int p = 0;
+		while (data->tmp->ex_arr[p] != NULL)
+		{
+			dprintf(2, "\t\tB data->tmp->ex_arr[%d] = %s\n", p, data->tmp->ex_arr[p]);
+			p++;
+		}
+		dprintf(2, "\t\tdata->filename = %s\n", data->tmp->filename);
 		execve(data->tmp->filename, data->tmp->ex_arr, tmp);
-		free_array(tmp); // MALLOCED VARIABLE
+		dprintf(2, "\tafter execeve\n");
+		free_array(tmp);
 		exit(exit_code(0, 0));
 	}
+	printf("stepped back into parent\n");
+	data->tokens->h_action = false;
 	data->tokens->action = false;
 	data->child_i++;
 	if (data->prev_fd != -1)
@@ -74,12 +116,25 @@ int	set_builtin_info(t_data *data, int fds[2], int x)
 
 int	send_to_child(t_data *data, int fds[2], int x)
 {
+	printf("\tstepped in send_to_child\n");
+	// dprintf(2, "value of data i:%s\n", data->tokens->args[data->i]);
+	if (data->tokens->args[data->i] == NULL)
+		return (0);
 	if (is_builtins(data->tokens->args[data->i]) == 1)
 		set_builtin_info(data, fds, x);
 	else if (check_path(data->tmp->env_line, 1, data, data->i) != 0)
 	{
+		printf("\tcheck_path was a success\n");
 		set_array(data);
-		child(data, fds, x, 0);	
+		int lol = 0;
+		while (data->tmp->ex_arr[lol] != NULL)
+		{
+			printf("\t\tA ex_arr[%d] = %s\n", lol, data->tmp->ex_arr[lol]);
+			lol++;
+		}
+		child(data, fds, x, 0);
+		printf("\tafter child\n");
+		free_string(data->tmp->filename); // fixed a still reachable, 14.9
 		if (data->i > 0 && data->tokens->args[data->i - 1] != NULL && data->tokens->args[data->i - 1][0] == '>')
 			data->i++;
 		else if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] == '>')
@@ -90,10 +145,8 @@ int	send_to_child(t_data *data, int fds[2], int x)
 			data->i++;
 	}
 	else
-	{
 		//printf("\t\tsend to child -1\n");
 		return (-1);
-	}
 	return (0);
 }
 
@@ -135,15 +188,25 @@ int	pipe_fork(t_data *data)
 	{
 		if (data->i > data->tokens->array_count)
 			return (error("fork", "we are somehow out of bounds"));
-		if (pipe(fds) < 0){
+		if (pipe(fds) < 0)
+		{
 			error("fork", "error in pipe perror needed");
 			exit(EXIT_FAILURE);
 		}
 		if (send_to_child(data, fds, x) == -1)
 			return (-1);
+		printf("after send to child\n");
 		data->prev_fd = fds[0];
+		// if (data->tokens->here_file)
+		// {
+		// 	// remove file
+		// 	free_string(data->tokens->here_file);
+		// 	return (-1);
+		// }
 		x++;
 	}
+	printf("waiting and closing\n");
 	wait_and_close(data, status, fds, x);
+	printf("closed everything\n");
 	return (0);
 }

@@ -6,15 +6,24 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:11:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 12:49:22 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/14 05:44:55 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_exit( char *cmd, t_tokens *tokens)
+// int	ft_exit(char *cmd, t_tokens *tokens)
+// {
+// 	(void)tokens;
+// 	ft_printf("exit\n");
+// 	free_string(cmd);
+// 	exit(0);
+// 	return (1);
+// }
+
+int ft_exit(char *cmd, t_tokens *tokens)
 {
-	// t_data *data,
+	// t_data *data;
 	// t_env *envs;
 	char *temp;
 

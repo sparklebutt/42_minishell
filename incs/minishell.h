@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/11 16:24:16 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/14 06:15:50 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_tokens
 
 	//bool	expandable;
 	bool	action;
+	bool	h_action;
 	bool	redirect_in;
 	bool	redirect_out;
 	bool	redirect_append;
@@ -215,16 +216,19 @@ char *replace_squiggly_line(t_data *data, t_env *envs);
 // newly added functions seperate for clarity
 //parsers.c
 int		simple_quote_check(char *s, int i);
-int is_char_redirect(char arg);
-int	clean_rest_of_quotes(t_data *data, int i, int len);
-int	redirect_helper(t_tokens *tokens, int x);
-int create_redir_array(t_tokens *tokens);
+int 	is_char_redirect(char arg);
+int		clean_rest_of_quotes(t_data *data, int i, int len);
+int		redirect_helper(t_tokens *tokens, int x);
+int 	create_redir_array(t_tokens *tokens);
 void		dollar_counter(char *string, t_tokens *tokens);
 char	**ft_split_expansions(t_tokens *tokens, char const *s); // 
-int	ft_count_exp_array(const char *s);
-int	check_file(char *str);
+int		ft_count_exp_array(const char *s);
+int		check_file(char *str);
 
-int	exit_code(int flag, int num);
+int		exit_code(int flag, int num);
 char	**free_loop(char **arr, int index);
+int		compare_str(char *str1, char *str2);
+char	*ft_strtrim_front(char *s1, char set);
+int create_file(t_tokens *tokens);
 //at 79 functions, lets aim for 69
 #endif

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+         #
+#    By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/09/12 17:45:58 by araveala         ###   ########.fr        #
+#    Updated: 2024/09/16 10:27:08 by vkettune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ CYAN = \033[0;96m
 WHITE = \033[0;97m
 #-fsanitize=address
 NAME = minishell
-FLAGS = -Wall -Wextra -Werror -g $(HEADERS)
+FLAGS = -Wall -Wextra -Werror -g $(HEADERS) -fsanitize=address
 HEADERS = -I ./incs/ # -I ~/.brew/opt/readline/include
 
 LIBS = $(READLINE) $(LIBFT)
@@ -45,7 +45,7 @@ ENV_FILES = find_from_env.c list_manipulation.c variable_expansions.c #list_crea
 
 PAR_FILES = parsers.c parsing_not.c pipe_parsing.c quotes_parsing.c check_path.c #parse.c parse_utils.c export_parse.c
 
-UTIL_FILES = error_handling.c free_things.c ft_split_adv.c signals.c ft_split_expansions.c
+UTIL_FILES = utils.c error_handling.c free_things.c ft_split_adv.c signals.c ft_split_expansions.c
 
 FILES = main.c init.c handle_line.c forking.c forking_utils.c redirects.c redir_helper.c heredoc.c
 
