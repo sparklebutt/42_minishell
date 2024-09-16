@@ -112,6 +112,7 @@ int	redirect_helper(t_tokens *tokens, int x)
 
 	dprintf(2, "\t\tsteps into redirert helper\n");
 	fd = 0;
+	// dprintf(2, "dup file\n");
 	if (tokens->redirect_append)
 		fd = open(tokens->output_files[x], O_WRONLY | O_CREAT | O_APPEND , 0644);
 	else if (tokens->redirect_out)
@@ -119,7 +120,10 @@ int	redirect_helper(t_tokens *tokens, int x)
 	if (fd < 0)
 		return (error("redirect", "Failed to open input file A"));
 	if (dup2(fd, STDOUT_FILENO) == -1)
+	{
+		close(fd); //maybe
 		return (error("redirect", "Failed to duplicate fd"));
+	}
 	close(fd);
 	return (0);
 }

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
 /*   Updated: 2024/09/14 06:41:50 by vkettune         ###   ########.fr       */
@@ -88,6 +88,7 @@ int	check_dir(char *str)
 	struct dirent		*dp;
 	DIR					*test;
 
+	//printf("string should be path not cmd = %s\n", str);
 	test = NULL;
 	if (access(str, X_OK) == -1)
 		return (0);

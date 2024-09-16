@@ -17,7 +17,7 @@
 //# define ERROR_CODE 0
 # define NOT_VALID "not a valid identifier\n"
 # define NO_CMD "command not found\n"
-
+//# define PROMPT "\x1b[95mminishell\033[0;37m$ "
 # include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -31,7 +31,8 @@
 # include <stdbool.h>
 
 # include "libft.h"
-
+extern int g_interactive_mode;
+//int g_interactive_mode;
 typedef struct s_env
 {
 	char			*key;
@@ -230,5 +231,11 @@ char	**free_loop(char **arr, int index);
 int		compare_str(char *str1, char *str2);
 char	*ft_strtrim_front(char *s1, char set);
 int create_file(t_tokens *tokens);
+void reset_signals();
+void	handle_sigquit();
+int	find_len(char *str);
 //at 79 functions, lets aim for 69
+
+// tester fucntions 
+int print_arr(char **array, char *array_name);
 #endif

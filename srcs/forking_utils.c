@@ -172,6 +172,7 @@ char 	**set_env_array(t_data *data, int i, int x)
 	temp2 = data->env;
 	key_full = NULL;
 	i = find_node_len(data);
+	
 	tmp_array = ft_calloc(i + 1, sizeof(char *)); // MALLOCED VARIABLE
 	if (tmp_array == NULL)
 		return (NULL);
@@ -189,7 +190,7 @@ char 	**set_env_array(t_data *data, int i, int x)
 		x++;
 		temp2 = temp2->next;
 	}
-	tmp_array[x] = NULL;
+	tmp_array[x] = NULL;	
 	return (tmp_array);
 }
 
@@ -202,6 +203,10 @@ int	dup_fds(t_data *data, int *fds, int x)
 		if (dup2(data->prev_fd, STDIN_FILENO) == -1)
 		{
 			perror("dup of prev failed\n");
+			close(fds[0]);//maybe
+			close(fds[1]);
+			if (data->prev_fd != -1)
+				close(data->prev_fd);
 			exit(1); //exit code
 		}
 	}
@@ -210,6 +215,10 @@ int	dup_fds(t_data *data, int *fds, int x)
 		if (dup2(fds[1], STDOUT_FILENO) == -1)
 		{
 			printf("dup of fds[1] failed\n"); // change error message
+			close(fds[0]);//maybe
+			close(fds[1]);
+			if (data->prev_fd != -1)
+				close(data->prev_fd);
 			exit(1); //exit code
 		}
 	}
@@ -219,29 +228,3 @@ int	dup_fds(t_data *data, int *fds, int x)
 		close(data->prev_fd);
 	return (0);
 }
-
-/* saftey helper */
-
-/*function parts to stick into fill_array just under fill_output_info */
-/*			data->tokens->action = true;	
-			if (data->tokens->input_file != NULL)
-			{
-				if (ft_strncmp(data->tmp->ex_arr[i - 1],  data->tokens->input_file, ft_strlen(data->tokens->input_file)) == 0)		
-					data->i++;
-				else
-				{
-					data->tmp->ex_arr[i] = data->tokens->output_files[data->x];
-					data->i += 2;
-				}
-			}
-			else if (data->tokens->heredoc[0] != NULL)
-			{
-				data->tmp->ex_arr[i] = data->tokens->heredoc[0]; // replace with heredoc tempfile name!!
-				data->i += 2;
-			}
-			else
-			{
-				data->tmp->ex_arr[i] = NULL;        
-				data->i++;
-			}
-*/

@@ -22,20 +22,17 @@ int	child(t_data *data, int *fds, int x, int flag)
 	tmp = NULL;
 	// printf("\t\tBEFORE FORK data->filename = %s\n", data->tmp->filename);
 	data->child[data->child_i] = fork();
+	//g_interactive_mode = 1;
 	if (data->child[data->child_i] == -1)
 		return (error("fork", "first child failed"));
 	if (data->child[data->child_i] == 0)
 	{
+		//close(3); // this closes valgrinds log.txt 
+		g_interactive_mode = data->child[data->child_i]; //eeep
 		dup_fds(data, fds, x);
 		// dprintf(2, "\tbefore redir helper\n");
 		if (data->tokens->action == true && redirect_helper(data->tokens, data->x) != 0)
 			exit(exit_code(0,0));
-		// dprintf(2, "\tbefore create file helper\n");
-		
-		// new ----------------------------------------
-		
-		// if (data->tokens->h_action == true && create_file(data->tokens) != 0) // create and fill the temp file for heredoc
-		// 	exit(exit_code(0,0));
 		if (data->tokens->h_action == true)
 		{
 			fd = open(data->tokens->here_file, O_RDWR);
@@ -63,25 +60,27 @@ int	child(t_data *data, int *fds, int x, int flag)
 		// dprintf(2, "\tbefore setting env array\n");
 		tmp = set_env_array(data, 0, 0);
 		// dprintf(2, "\tbefore execeve\n");
-		int p = 0;
-		while (data->tmp->ex_arr[p] != NULL)
-		{
-			dprintf(2, "\t\tB data->tmp->ex_arr[%d] = %s\n", p, data->tmp->ex_arr[p]);
-			p++;
-		}
-		dprintf(2, "\t\tdata->filename = %s\n", data->tmp->filename);
-		execve(data->tmp->filename, data->tmp->ex_arr, tmp);
-		dprintf(2, "\tafter execeve\n");
+		//int p = 0;
+		//while (data->tmp->ex_arr[p] != NULL)
+		//{
+		//	dprintf(2, "\t\tB data->tmp->ex_arr[%d] = %s\n", p, data->tmp->ex_arr[p]);
+		//	p++;
+		//}
+		//dprintf(2, "\t\tdata->filename = %s\n", data->tmp->filename);
+		reset_signals();
+		execve(data->tmp->filename, data->tmp->ex_arr, tmp);		
 		free_array(tmp);
 		exit(exit_code(0, 0));
 	}
-	printf("stepped back into parent\n");
+	//printf("stepped back into parent\n");
 	data->tokens->h_action = false;
 	data->tokens->action = false;
 	data->child_i++;
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
 	close(fds[1]);
+	//g_interactive_mode = 1;	
+	//close(3);  // this closes valgrinds log.txt
 	return (0);
 }
 
@@ -194,15 +193,22 @@ int	pipe_fork(t_data *data)
 			exit(EXIT_FAILURE);
 		}
 		if (send_to_child(data, fds, x) == -1)
+		{
+			close(fds[1]);
+			close(fds[0]);
 			return (-1);
-		printf("after send to child\n");
-		data->prev_fd = fds[0];
 		// if (data->tokens->here_file)
 		// {
 		// 	// remove file
 		// 	free_string(data->tokens->here_file);
 		// 	return (-1);
 		// }
+		}
+    //printf("after send to child\n");
+		if (data->prev_fd != -1)
+			close(data->prev_fd);
+		data->prev_fd = fds[0];
+		close(fds[1]);
 		x++;
 	}
 	printf("waiting and closing\n");

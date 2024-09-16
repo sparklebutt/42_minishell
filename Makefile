@@ -39,6 +39,8 @@ LIBFT = libft/libft.a
 OBJS_DIR = objs/
 SRCS_DIR = srcs/
 
+FILES = main.c init.c handle_line.c forking.c forking_utils.c redirects.c redir_helper.c heredoc.c testing_functions.c
+
 CMD_FILES = cd.c echo.c env.c exit.c export.c pwd.c unset.c
 
 ENV_FILES = find_from_env.c list_manipulation.c variable_expansions.c #list_creation.c
@@ -47,7 +49,7 @@ PAR_FILES = parsers.c parsing_not.c pipe_parsing.c quotes_parsing.c check_path.c
 
 UTIL_FILES = utils.c error_handling.c free_things.c ft_split_adv.c signals.c ft_split_expansions.c
 
-FILES = main.c init.c handle_line.c forking.c forking_utils.c redirects.c redir_helper.c heredoc.c
+
 
 CMD = $(addprefix cmds/, $(CMD_FILES))
 ENV = $(addprefix env/, $(ENV_FILES))
