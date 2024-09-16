@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/11 16:24:16 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/16 08:05:48 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 //# define ERROR_CODE 0
 # define NOT_VALID "not a valid identifier\n"
 # define NO_CMD "command not found\n"
-
+//# define PROMPT "\x1b[95mminishell\033[0;37m$ "
 # include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -31,7 +31,8 @@
 # include <stdbool.h>
 
 # include "libft.h"
-
+extern int g_interactive_mode;
+//int g_interactive_mode;
 typedef struct s_env
 {
 	char			*key;
@@ -226,5 +227,11 @@ int	check_file(char *str);
 
 int	exit_code(int flag, int num);
 char	**free_loop(char **arr, int index);
+void reset_signals();
+void	handle_sigquit();
+int	find_len(char *str);
 //at 79 functions, lets aim for 69
+
+// tester fucntions 
+int print_arr(char **array, char *array_name);
 #endif

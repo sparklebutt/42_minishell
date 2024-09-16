@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/12 17:40:15 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/16 06:48:35 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int	redirect_helper(t_tokens *tokens, int x)
 	int		fd;
 
 	fd = 0;
+	// dprintf(2, "dup file\n");
 	if (tokens->redirect_append)
 		fd = open(tokens->output_files[x], O_WRONLY | O_CREAT | O_APPEND , 0644);
 	else if (tokens->redirect_out)
@@ -118,7 +119,10 @@ int	redirect_helper(t_tokens *tokens, int x)
 	if (fd < 0)
 		return (error("redirect", "Failed to open input file MM"));
 	if (dup2(fd, STDOUT_FILENO) == -1)
+	{
+		close(fd); //maybe
 		return (error("redirect", "Failed to duplicate fd"));
+	}
 	close(fd);
 	return (0);
 }

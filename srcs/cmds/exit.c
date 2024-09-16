@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:11:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 12:49:22 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/13 14:12:53 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int ft_exit( char *cmd, t_tokens *tokens)
 	// add into envs $?
 	if (tokens->array_count > 1)
 	{
-		if (tokens->args[1] != NULL && atoi(tokens->args[1]) == 0)
+		if (tokens->args[1] != NULL && ft_atoi(tokens->args[1]) == 0)
 			cmd_error(cmd, tokens->args[1]);
 		else if (tokens->array_count > 2)
 			cmd_error(cmd, NULL);

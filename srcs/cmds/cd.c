@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/13 10:00:04 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/16 08:02:01 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,23 +86,24 @@ int	check_dir(char *str)
 	struct dirent		*dp;
 	DIR					*test;
 
+	//printf("string should be path not cmd = %s\n", str);
 	test = NULL;
 	if (access(str, X_OK) == -1)
 	{
-		//printf("\t\taccess failed for string ceck dir= %s\n", str);
+		//printf("\taccess failed for string ceck dir= %s\n", str);
 		return(0);
 	}
 	else
 		test = opendir(str);
 	if (test == NULL)
 	{
-		// printf("open opened null\n");
+		//printf("open opened null\n");
 		return (0);
 	}
 	dp = readdir(test);
 	if (dp == NULL)
 	{
-		// printf("read failed = null\n");
+		//printf("read failed = null\n");
 		closedir(test);
 		return (0);
 	}

@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/12 18:17:35 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/16 08:08:18 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,24 @@ int	child(t_data *data, int *fds, int x, int flag)
 	
 	tmp = NULL;
 	data->child[data->child_i] = fork();
+	//g_interactive_mode = 1;
 	if (data->child[data->child_i] == -1)
 		return (error("fork", "first child failed"));
 	if (data->child[data->child_i] == 0)
 	{
+		//close(3); // this closes valgrinds log.txt 
+		g_interactive_mode = data->child[data->child_i]; //eeep
 		dup_fds(data, fds, x);
 		if (data->tokens->action == true && redirect_helper(data->tokens, data->x) != 0)
-			exit(exit_code(0,0));
+			exit(exit_code(0,0));	
 		if (flag == 1)
 		{
 			exec_builtins(*data, data->tokens->args[data->i]);
 			exit(exit_code(0, 0));
 		}
 		tmp = set_env_array(data, 0, 0);
-		execve(data->tmp->filename, data->tmp->ex_arr, tmp);
+		reset_signals();
+		execve(data->tmp->filename, data->tmp->ex_arr, tmp);		
 		free_array(tmp); // MALLOCED VARIABLE
 		exit(exit_code(0, 0));
 	}
@@ -40,6 +44,8 @@ int	child(t_data *data, int *fds, int x, int flag)
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
 	close(fds[1]);
+	//g_interactive_mode = 1;	
+	//close(3);  // this closes valgrinds log.txt 
 	return (0);
 }
 
@@ -140,8 +146,15 @@ int	pipe_fork(t_data *data)
 			exit(EXIT_FAILURE);
 		}
 		if (send_to_child(data, fds, x) == -1)
+		{
+			close(fds[1]);
+			close(fds[0]);
 			return (-1);
+		}
+		if (data->prev_fd != -1)
+			close(data->prev_fd);
 		data->prev_fd = fds[0];
+		close(fds[1]);
 		x++;
 	}
 	wait_and_close(data, status, fds, x);

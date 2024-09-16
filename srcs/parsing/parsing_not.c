@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/12 18:53:04 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/16 08:07:39 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,42 +140,27 @@ int	find_passage(t_data *all, char *string, int divert)
 	return (1);
 }
 
-static char	*take_end(char *new, char *str, int start)
-{
- 	size_t	i;
-
- 	i = 0;
- 	while (str[start] != '\0')
- 	{
- 		new[i] = str[start];
- 		start++;
- 		i++;
- 	}
- 	new[i] = 0; // valgrind did not like null character '\0' here for some reasonnnnn
- 	return (new);
- }
-
-int	handle_absolute_path(t_data *all, int x, char *path) // cut this smaller
+int	find_len(char *str)
 {
 	size_t	len;
-	char	*cmd_n;
-//	char *tmp;
 
-	// cmd_n = path // old thing, but since we are only using it in one place where "path" is NULL
-	// so this didn't make sense to me
-	cmd_n = NULL;
-//	tmp = NULL;
-	len = ft_strlen(all->tokens->args[x]);
+	len = ft_strlen(str);
 	while (len > 0)
 	{
-		if (all->tokens->args[x][len] == '/')
+		if (str[len] == '/')
 			break ;
 		len--;
 	}
-	///// what is we need to check each dir , eg /usr/bin/ls, must split nto tiny tiny parts and chekdir
-	// if (path != NULL) // maybe not needed
+	return (len);
+}
+
+int	handle_absolute_path(t_data *all, int x, char *path)
+{
+	size_t	len;
+
+	len = find_len(all->tokens->args[x]);
 	free_string(path);
-	path = ft_calloc(sizeof(char), len + 1); // this has issues, 84 blcoks of deff lost memory with parsing_script.sh and most from here, viilja
+	path = ft_calloc(sizeof(char), len + 1);
 	path = ft_strncpy(path, all->tokens->args[x], len);
 	if (check_dir(path) == 0)
 	{
@@ -185,10 +170,6 @@ int	handle_absolute_path(t_data *all, int x, char *path) // cut this smaller
 	}
 	else
 	{
-		free_string(cmd_n);
-		cmd_n = ft_calloc(sizeof(char), len + 2); // adding 2 here fixed a write error, check this out. It happens on ine 158 of this file aka [new[i] = 0;]
-		cmd_n = take_end(cmd_n, all->tokens->args[x], len);
-		free_string(cmd_n); // new free, fixed leaks. try parsing_stript.sh and you'll see a difference
 		all->tmp->filename = all->tokens->args[x];
 		free_string(path);
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:02:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/12 17:37:43 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:07:18 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int input_helper(t_tokens *tokens, int fd, int i)
 {
 	fd = open(tokens->args[i + 1], O_RDONLY);
 	if (fd < 0)
-		return (1);
+		return (1); //exit code?
 	close (fd);
 	if (ft_strncmp(tokens->args[i], "<<", 2) == 0)
 	{
@@ -53,6 +53,8 @@ int output_helper(t_tokens *tokens, int fd, int i, int x)
 		tokens->output_files[x] = ft_strdup(tokens->args[i + 1]);	
 		tokens->redirect_append = 1;
 		fd = open(tokens->args[i + 1], O_WRONLY | O_CREAT | O_APPEND , 0644);
+//		if (fd < 0)
+//			return (1);
 		close(fd);
 	}
 	else
@@ -61,6 +63,8 @@ int output_helper(t_tokens *tokens, int fd, int i, int x)
 		// because we only want the last 1
 		tokens->output_files[x] = ft_strdup(tokens->args[i + 1]);
 		fd = open(tokens->output_files[x], O_WRONLY | O_CREAT | O_TRUNC, 0644);	//instead of args + 1
+//		if (fd < 0)
+//			return (1);
 		close(fd);
 		tokens->redirect_out = 1;	
 	}
