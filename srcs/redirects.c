@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/16 06:48:35 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/14 10:09:46 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ int	redirect_helper(t_tokens *tokens, int x)
 {
 	int		fd;
 
+	dprintf(2, "\t\tsteps into redirert helper\n");
 	fd = 0;
 	// dprintf(2, "dup file\n");
 	if (tokens->redirect_append)
@@ -117,7 +118,7 @@ int	redirect_helper(t_tokens *tokens, int x)
 	else if (tokens->redirect_out)
 		fd = open(tokens->output_files[x], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
-		return (error("redirect", "Failed to open input file MM"));
+		return (error("redirect", "Failed to open input file A"));
 	if (dup2(fd, STDOUT_FILENO) == -1)
 	{
 		close(fd); //maybe

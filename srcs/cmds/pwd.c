@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 14:01:33 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/14 05:17:53 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,19 @@
 int	ft_pwd(t_data *data, t_env *envs)
 {
 	char	*temp_path;
+	char *check;
 
+	check = find_key("OLDPWD");
 	temp_path = getcwd(NULL, 0);
 	if (temp_path != NULL)
 	{
+		free_string(check);
 		free_string(data->path);
 		data->path = temp_path;
 	}
 	else if (temp_path == NULL)
 	{
-		if (find_key("OLDPWD") != NULL)
+		if (check != NULL)
 		{
 			envs = move_list(envs, "OLDPWD");
 			if (envs->value != NULL)
@@ -44,7 +47,7 @@ t_env	*update_oldpwd(t_data *data, t_env *env, char *temp)
 {
 	t_env	*temp_env;
 
-	temp_env = data->env;	
+	temp_env = data->env;
 	env = move_list(temp_env, "OLDPWD");
 	if (env->value != NULL)
 		free_string(env->value);

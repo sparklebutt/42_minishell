@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:02:41 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/11 10:59:53 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/14 05:19:35 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char	*find_key(char *str)
 	}
 	else
 		printf("error in finding key name\n"); // change error message
-	free_string(key);
+	// free_string(key); // not needed?
 	return (NULL);
 }
 

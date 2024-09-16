@@ -6,15 +6,15 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:11:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/13 14:12:53 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/14 05:44:55 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_exit( char *cmd, t_tokens *tokens)
+int ft_exit(char *cmd, t_tokens *tokens)
 {
-	// t_data *data,
+	// t_data *data;
 	// t_env *envs;
 	char *temp;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:04:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/11 11:28:31 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/13 13:14:44 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,10 @@
 
 int	export_syntax_check(char *string)
 {
-
 	if (ft_strchr(string, '=') == NULL)
 		return (1);
 	if (is_char_redirect(string[0]) > 0)
-	{
-		return (0);	
-	}
+		return (0);
 	if (ft_isalpha(string[0]) == 0)
 	{
 		not_perror("export", string, NOT_VALID);
@@ -29,25 +26,13 @@ int	export_syntax_check(char *string)
 	return (0);
 }
 
-int compare_str(char *str1, char *str2)
+t_env	*sort_env(t_env *lst)
 {
-	int i;
+	t_env	*start;
+	char	*new_key;
+	char	*new_value;
 
-	i = 0;
-	while (str1[i] == str2[i])
-		i++;	
-	if (str1[i] > str2[i])
-		return (1);
-	return (0);
-}
-
-t_env *sort_env(t_env *lst)
-{
-	t_env *start;
-	char *new_key;
-	char *new_value;
-
-  start = lst;
+	start = lst;
 	while (lst != NULL && lst->next != NULL)
 	{
 		if (compare_str(lst->key, lst->next->key) == 0)
@@ -66,11 +51,11 @@ t_env *sort_env(t_env *lst)
 	return (start);
 }
 
-void export_alphabetical(t_data *data)
+void	export_alphabetical(t_data *data)
 {
-	t_env *temp_env;
-	t_env *fuck_off;
-	t_env *huh;
+	t_env	*temp_env;
+	t_env	*fuck_off;
+	t_env	*huh;
 
 	fuck_off = data->env;
 	huh = NULL;
@@ -89,11 +74,10 @@ void export_alphabetical(t_data *data)
 
 void	ft_export(t_data *data)
 {
-	t_tokens *tokens;
-	int		i;
+	t_tokens	*tokens;
+	int			i;
 
 	i = 1;
-
 	tokens = data->tokens;
 	if (data->tokens->array_count == 1)
 		export_alphabetical(data);
@@ -107,22 +91,18 @@ void	ft_export(t_data *data)
 	}
 }
 
-void handle_arg(t_data *data, int arg_i, t_tokens *tokens)
+void	handle_arg(t_data *data, int arg_i, t_tokens *tokens)
 {
 	char	*arg;
 	t_env	*env;
 	char	*key;
 	char	*value;
-	
+
 	env = data->env;
 	arg = tokens->args[arg_i];
-	// args is correct
-	//printf("\t\tlets check that token right = %s len = %zu\n", tokens->args[arg_i], ft_strlen(tokens->args[arg_i]));
 	if (export_syntax_check(arg) == 1)
 		return ;
 	key = ft_strtrim_front(arg, '=');
-	//printf("\t\tcomp key = %s len = %zu\n", key, ft_strlen(key));
-	// key is not the issue
 	while (env->next != NULL)
 	{
 		env = env->next;
@@ -135,30 +115,5 @@ void handle_arg(t_data *data, int arg_i, t_tokens *tokens)
 		}
 	}
 	value = find_value(arg);
-	/*CHANGE value=null*/
-	// adding null as value causes a problem i think because its not read as an empty string
-	// removing it we loose 1 less block and some leaks
-	//if (!value[0])
-	//	value = NULL;
 	insert_node(&env, key, value);
-}
-
-char	*ft_strtrim_front(char *s1, char set)
-{
-	int		i;
-	char	*trimmed_str;
-
-	i = 0;
-	if (!s1 || !set)
-		return (NULL);
-	while (ft_strchr(&s1[i], set))
-	{
-		if (s1[i] == '\0')
-				return (NULL);
-		i++;
-	}
-	trimmed_str = ft_substr(s1, 0, i - 1);
-	if (trimmed_str == NULL)
-		return (NULL);
-	return (trimmed_str);
 }

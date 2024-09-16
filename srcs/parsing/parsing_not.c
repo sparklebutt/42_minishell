@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/16 08:07:39 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/16 09:48:39 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	// these 4 lines need to be here for now, or else redirs will segfault.
 	// we need to change where heredocs are declared the first time, cause something needs to be there before child's are called
 	// -------------------- ------------
-	if (tokens->heredoc != NULL)
-		free_array(tokens->heredoc);
-	tokens->heredoc = malloc(sizeof(char *) * 1);
-	tokens->heredoc[0] = 0;
+	// if (tokens->heredoc != NULL)
+	// 	free_array(tokens->heredoc);
+	// tokens->heredoc = malloc(sizeof(char *) * 1);
+	// tokens->heredoc[0] = 0;
 	// ---------------------------------
 	tokens->array_count = total_words_c(string, ' ', data);
 	tokens->args = ft_split_adv(string, ' ', data);

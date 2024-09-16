@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/13 10:29:07 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/16 10:36:26 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,21 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 		return (handle_absolute_path(all, x, NULL));
 	if (all->tokens->args[x][0] != '/')
 	{
-		free_string(*suffix);
+		// free_string(*suffix);
 		*suffix = ft_strjoin("/", all->tokens->args[x]);
 	}
 	if (*suffix == NULL || *cmd_len == 0)
-	{
-		// free_string(*suffix);
-		return (free_extra_return_function(*suffix, 0));
-	}
-		
+		return (0);
 	return (2);
+}
+
+int	match(t_data *all, DIR *dir, char *suffix, int i)
+{
+	free_string(all->tmp->filename);
+	all->tmp->filename = ft_strjoin(all->tmp->array[i], suffix);
+	free_string(suffix);
+	closedir(dir);
+	return (1);
 }
 
 int	iterate_and_match(char *suffix, size_t cmd_len, t_data *all, int x)
@@ -51,12 +56,7 @@ int	iterate_and_match(char *suffix, size_t cmd_len, t_data *all, int x)
 			{
 				if (ft_strncmp(dp->d_name, all->tokens->args[x], cmd_len) == 0
 					&& ft_strlen(dp->d_name) == cmd_len)
-				{
-					free_string(all->tmp->filename);
-					all->tmp->filename = ft_strjoin(all->tmp->array[i], suffix);
-					closedir(dir);
-					return (1);
-				}
+					return (match(all, dir, suffix, i));
 			}
 			closedir(dir);
 		}
@@ -65,15 +65,7 @@ int	iterate_and_match(char *suffix, size_t cmd_len, t_data *all, int x)
 	return (0);
 }
 
-int	cleanup_and_finalize(char *suffix, t_data *all, int found)
-{
-	(void)suffix;
-	//free_string(suffix);
-	free_array(all->tmp->array);
-	if (found)
-		return (1);
-	return (0);
-}
+
 
 /*~~ divert 1 = PATH, divert 2 = HOME~~*/
 static void	split_diversion(t_data *data, int divert, char *string)
@@ -88,6 +80,7 @@ static void	split_diversion(t_data *data, int divert, char *string)
 		free_array(data->tmp->array);
 		data->tmp->array = ft_split(string, ' ');
 	}
+	// IS THIS NEEDED? aren't we checking this earlier and thowing an error?
 	if (data->tmp->array == NULL)
 	{
 		printf("temp[i] is null for some reason\n");
@@ -103,10 +96,8 @@ int	check_path(char *string, int divert, t_data *all, int x)
 	static char	*suffix;
 	size_t	cmd_len;
 	int		res;
-	int		found;
 
 	cmd_len = 0;
-
 	res = initial_checks_and_setup(&suffix, &cmd_len, all, x);
 	if (res == 3)
 	{
@@ -118,12 +109,10 @@ int	check_path(char *string, int divert, t_data *all, int x)
 	if (res != 2)
 		return (res);
 	split_diversion(all, divert, string);
-	found = iterate_and_match(suffix, cmd_len, all, x);
-	if (found == 0)
-	{
+	res = iterate_and_match(suffix, cmd_len, all, x);
+	if (res == 0)
 		return (0);
-	}
-	res = cleanup_and_finalize(suffix, all, found);
-	all->tmp->array = NULL;
+	free_array(all->tmp->array);
+	// all->tmp->array = NULL;
 	return (res);
 }

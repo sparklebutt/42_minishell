@@ -6,13 +6,13 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:05:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/13 09:59:10 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/13 13:19:02 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int if_break(char *str)
+int	if_break(char *str)
 {
 	if (str[0] == '|')
 		return (1);
@@ -23,9 +23,9 @@ int if_break(char *str)
 	return (0);
 }
 
-int no_newline(char **args, int i)
+int	no_newline(char **args, int i)
 {
-	int j;
+	int	j;
 
 	while (args[i] && args[i][0] == '-' && args[i][1] == 'n')
 	{
@@ -40,17 +40,17 @@ int no_newline(char **args, int i)
 	return (i);
 }
 
-void	ft_echo(t_data *data, char **args) 
+void	ft_echo(t_data *data, char **args)
 {
-	int i;
-	int nl;
-	
+	int	i;
+	int	nl;
+
 	nl = no_newline(args, 1);
 	i = data->i + nl;
 	while (args[i])
 	{
 		if (if_break(args[i]) == 1)
-			break;
+			break ;
 		ft_putstr_fd(args[i], 1);
 		if (args[i + 1] != NULL && args[i + 1][0] != '|'
 			&& is_redirect(args[i + 1]) == 0)
@@ -60,4 +60,3 @@ void	ft_echo(t_data *data, char **args)
 	if (nl == 1)
 		ft_putchar_fd('\n', 1);
 }
-
