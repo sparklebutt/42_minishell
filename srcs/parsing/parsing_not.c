@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/16 11:05:24 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/16 12:53:02 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 {
 	char *new;
 
-	// cut this smaller
 	new = NULL;
+	
 	if (data->simple == false)
 	{
 		if (data->tmp->exp_array && data->tmp->exp_array[i])
@@ -37,11 +37,12 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 			}
 		}
 	}
-	else if (data->tokens->args[i])
+	else if (data->tokens->args[i] != NULL)
 	{
 		if (ft_strchr(data->tokens->args[i], '"') != NULL
 		|| ft_strchr(data->tokens->args[i], '\'') != NULL)
 		{
+			
 			new = clean_quotes(data->tokens->args[i], len, 0, 0);
 			free_string(data->tokens->args[i]);
 			data->tokens->args[i] = new;
@@ -52,15 +53,6 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 
 int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
-	// cut this smaller
-	// these 4 lines need to be here for now, or else redirs will segfault.
-	// we need to change where heredocs are declared the first time, cause something needs to be there before child's are called
-	// -------------------- ------------
-	// if (tokens->heredoc != NULL)
-	// 	free_array(tokens->heredoc);
-	// tokens->heredoc = malloc(sizeof(char *) * 1);
-	// tokens->heredoc[0] = 0;
-	// ---------------------------------
 	tokens->array_count = total_words_c(string, ' ', data);
 	tokens->args = ft_split_adv(string, ' ', data);
 	if (tokens->args == NULL)

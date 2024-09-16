@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/16 13:34:17 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/16 11:51:35 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,10 @@ int	send_to_child(t_data *data, int fds[2], int x)
 {
 	if (data->tokens->args[data->i] == NULL) // might cause an issue later DO NOT DELETE THIS
 		return (0);
-	// printf("DOES IT GO HERE?\n");
 	if (is_builtins(data->tokens->args[data->i]) == 1)
 		set_builtin_info(data, fds, x);
 	else if (check_path(data->tmp->env_line, 1, data, data->i) != 0)
 	{
-		// printf("filename maybe? %s\n", data->tmp->filename);
 		set_array(data);
 		child(data, fds, x, 0);
 		if (data->i > 0 && data->tokens->args[data->i - 1] != NULL && data->tokens->args[data->i - 1][0] == '>')
@@ -123,11 +121,7 @@ int	send_to_child(t_data *data, int fds[2], int x)
 			data->i++;
 	}
 	else
-	{
-		// printf("FUCKING HELL\n");
 		return (-1);
-	}
-		
 	return (0);
 }
 

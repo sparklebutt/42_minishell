@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/16 13:33:53 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/16 11:53:31 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 		
 	if (all->tokens->args[x][0] != '/')
 	{
-		// printf("suffix = %s\n", *suffix);
 		free_string(*suffix);
 		*suffix = ft_strjoin("/", all->tokens->args[x]);
 	}
@@ -73,8 +72,6 @@ int	iterate_and_match(char *suffix, size_t cmd_len, t_data *all, int x)
 	return (0);
 }
 
-
-
 /*~~ divert 1 = PATH, divert 2 = HOME~~*/
 static void	split_diversion(t_data *data, int divert, char *string)
 {
@@ -82,7 +79,6 @@ static void	split_diversion(t_data *data, int divert, char *string)
 		data->tmp->array = ft_split(string, ':');
 	else if (divert == 2)
 		data->tmp->array = ft_split(string, ' ');
-	// IS THIS NEEDED? aren't we checking this earlier and thowing an error?
 	if (data->tmp->array == NULL)
 	{
 		printf("temp[i] is null for some reason\n");

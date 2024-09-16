@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:59:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/16 11:29:38 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/16 11:25:21 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,9 @@ void	free_string(char *string)
 {
 	if (string != NULL)
 	{
-		// printf("we free string = %s\n", string);
 		free(string);
 		string = NULL;
 	}
-	//else 
-	//	string = NULL;
 }
 
 void	free_nodes(t_env *node)
@@ -69,13 +66,3 @@ int	error(char *cmd, char *error)
 	ft_printf("minishell: %s: %s\n", cmd, error);
 	return (1);
 }
-
-/*void	collective_free(char *str1, char *str2, char **array) // maybe not needed, will make function amount to be correct
-{
-	free_array(array);
-	free_string(str1);
-	free_string(str2);
-	array = NULL;
-	str1 = NULL;
-	str2 = NULL;
-}*/
