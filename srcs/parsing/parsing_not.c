@@ -16,12 +16,10 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 {
 	char *new;
 
-	// cut this smaller
 	new = NULL;
 	
 	if (data->simple == false)
 	{
-		//printf("yikes\n");
 		if (data->tmp->exp_array && data->tmp->exp_array[i])
 		{
 			if (ft_strchr(data->tmp->exp_array[i], '"') != NULL
@@ -41,7 +39,6 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 	}
 	else if (data->tokens->args[i] != NULL)
 	{
-		//printf("wwhat the shizz bbbbbbbb= %s\n", data->tokens->args[i]);	
 		if (ft_strchr(data->tokens->args[i], '"') != NULL
 		|| ft_strchr(data->tokens->args[i], '\'') != NULL)
 		{
@@ -56,15 +53,6 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 
 int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
-	// cut this smaller
-	// these 4 lines need to be here for now, or else redirs will segfault.
-	// we need to change where heredocs are declared the first time, cause something needs to be there before child's are called
-	// -------------------- ------------
-	// if (tokens->heredoc != NULL)
-	// 	free_array(tokens->heredoc);
-	// tokens->heredoc = malloc(sizeof(char *) * 1);
-	// tokens->heredoc[0] = 0;
-	// ---------------------------------
 	tokens->array_count = total_words_c(string, ' ', data);
 	tokens->args = ft_split_adv(string, ' ', data);
 	if (tokens->args == NULL)
@@ -90,7 +78,7 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	}
 	if (parse_redirections(data, tokens, tokens->args, 0) == 1)
 	{
-		printf("following process\n");
+		// printf("following process\n");
 		return (1);
 	}
 	// ----------------------------------------------------------------------

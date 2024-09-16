@@ -92,28 +92,17 @@ static int	fill_output_info(t_data *data, int i)
 
 static int fill_array(t_data *data, int i)
 {
-	// printf("\t\tdata->tokens->args[%d] = %s\n", data->i, data->tokens->args[data->i]);
-	// printf("\t\tdata->i = %d\n", data->i);
 	if (data->tokens->args[data->i] != NULL && is_redirect(data->tokens->args[data->i]) > 0)
 	{
-		// printf("\t\tis it redirect?\n");
 		if (is_redirect(data->tokens->args[data->i]) == 1)
 		{
-			// printf("\t\t\tneeds input file\n");
 			data->tmp->ex_arr[i] = data->tokens->input_file;
 			data->i += 2;
 		}
 		else if (is_redirect(data->tokens->args[data->i]) >= 2) //carefull here it was != null
-		{
-			// printf("\t\t\tneeds to fill output files\n");
 			fill_output_info(data, i);
-			// printf("\t\t\tdata->tokens->args[%d] = %s\n", data->i, data->tokens->args[data->i]);
-		}
 		else
-		{
-			// printf("\t\t\tSHOULD NOT GO HERE STUPID 2\n");
 			data->tmp->ex_arr[i] = NULL;
-		}	
 	}
 	else if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|')
 	{
@@ -121,11 +110,7 @@ static int fill_array(t_data *data, int i)
 		data->i++;
 	}
 	else
-	{
-		// printf("\t\t\tSHOULD NOT GO HERE STUPID 1\n");
 		data->tmp->ex_arr[i] = NULL;
-	}
-	// printf("\t\tex_arr[%d] = %s\n", i, data->tmp->ex_arr[i]);
 	return (0);
 }
 
@@ -135,10 +120,8 @@ int    set_array(t_data *data)
 	int arg_count;
 	
 	i  = 0;
-	//printf("\tIN SET ARRAY\n");
 	if (data->tmp->filename == NULL || data->tokens->args[data->i] == NULL)
 		return (-1);
-	// printf("\tfilename = %s\n", data->tmp->filename);
 	arg_count = count_args(data);
 	malloc_array(data, arg_count);
 	if (data->tmp->filename != NULL)
@@ -155,8 +138,7 @@ int    set_array(t_data *data)
 		if (i > 10)
 			exit(1);
 	}
-	// printf("\tTHE END\n");
-	return (i); // potential line to get rid of
+	return (i);
 }
 
 /*~~~ here we tunr the envs into a null terminated array for the 3rd parameter of exceve(),
@@ -167,13 +149,12 @@ char 	**set_env_array(t_data *data, int i, int x)
 	char **tmp_array;
 	char	*key_full;
 	
-	// cut this smaller
 	tmp_array = NULL;
 	temp2 = data->env;
 	key_full = NULL;
 	i = find_node_len(data);
 	
-	tmp_array = ft_calloc(i + 1, sizeof(char *)); // MALLOCED VARIABLE
+	tmp_array = ft_calloc(i + 1, sizeof(char *));
 	if (tmp_array == NULL)
 		return (NULL);
 	while (temp2 != NULL)
@@ -202,12 +183,12 @@ int	dup_fds(t_data *data, int *fds, int x)
 	{
 		if (dup2(data->prev_fd, STDIN_FILENO) == -1)
 		{
-			perror("dup of prev failed\n");
-			close(fds[0]);//maybe
+			perror("dup of prev failed\n"); // change error message
+			close(fds[0]);
 			close(fds[1]);
 			if (data->prev_fd != -1)
 				close(data->prev_fd);
-			exit(1); //exit code
+			exit(1); // exit code
 		}
 	}
 	if (x < data->tokens->pipe_count)
@@ -215,7 +196,7 @@ int	dup_fds(t_data *data, int *fds, int x)
 		if (dup2(fds[1], STDOUT_FILENO) == -1)
 		{
 			printf("dup of fds[1] failed\n"); // change error message
-			close(fds[0]);//maybe
+			close(fds[0]);
 			close(fds[1]);
 			if (data->prev_fd != -1)
 				close(data->prev_fd);

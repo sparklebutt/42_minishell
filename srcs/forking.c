@@ -20,17 +20,13 @@ int	child(t_data *data, int *fds, int x, int flag)
 	
 	fd = 0;
 	tmp = NULL;
-	// printf("\t\tBEFORE FORK data->filename = %s\n", data->tmp->filename);
 	data->child[data->child_i] = fork();
-	//g_interactive_mode = 1;
 	if (data->child[data->child_i] == -1)
 		return (error("fork", "first child failed"));
 	if (data->child[data->child_i] == 0)
 	{
-		//close(3); // this closes valgrinds log.txt 
-		g_interactive_mode = data->child[data->child_i]; //eeep
+		g_interactive_mode = data->child[data->child_i];
 		dup_fds(data, fds, x);
-		// dprintf(2, "\tbefore redir helper\n");
 		if (data->tokens->action == true && redirect_helper(data->tokens, data->x) != 0)
 			exit(exit_code(0,0));
 		if (data->tokens->h_action == true)
@@ -48,37 +44,29 @@ int	child(t_data *data, int *fds, int x, int flag)
 			}
 			free_array(data->tokens->heredoc);
 		}
-		// --------------------------------------------
-
-		// dprintf(2, "\tbefore checking flag\n");
 		if (flag == 1)
 		{
-			// dprintf(2, "\t\texecute builtins\n");
 			exec_builtins(*data, data->tokens->args[data->i]);
 			exit(exit_code(0, 0));
 		}
-		// dprintf(2, "\tbefore setting env array\n");
 		tmp = set_env_array(data, 0, 0);
-		// dprintf(2, "\tbefore execeve\n");
-		//int p = 0;
-		//while (data->tmp->ex_arr[p] != NULL)
-		//{
-		//	dprintf(2, "\t\tB data->tmp->ex_arr[%d] = %s\n", p, data->tmp->ex_arr[p]);
-		//	p++;
-		//}
-		//dprintf(2, "\t\tdata->filename = %s\n", data->tmp->filename);
 		reset_signals();
 		execve(data->tmp->filename, data->tmp->ex_arr, tmp);		
 		free_array(tmp);
+		free_array(data->tokens->args);
+		free_nodes(data->env);
+		free(data->tmp->ex_arr);
+		close(fds[1]);
+		close(fds[0]);
 		exit(exit_code(0, 0));
 	}
-	//printf("stepped back into parent\n");
 	data->tokens->h_action = false;
 	data->tokens->action = false;
 	data->child_i++;
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
 	close(fds[1]);
+	free_string(data->tmp->filename);
 	//g_interactive_mode = 1;	
 	//close(3);  // this closes valgrinds log.txt
 	return (0);
@@ -92,7 +80,7 @@ int	set_builtin_info(t_data *data, int fds[2], int x)
 	i = data->i;
 	while (data->tokens->args[i] != NULL && data->tokens->args[i][0] != '|')
 	{
-		if (is_redirect(data->tokens->args[i]) > 0) // change to 0 if input are needed too
+		if (is_redirect(data->tokens->args[i]) > 0)
 		{
 			data->tokens->action = true;
 			break ;
@@ -115,36 +103,24 @@ int	set_builtin_info(t_data *data, int fds[2], int x)
 
 int	send_to_child(t_data *data, int fds[2], int x)
 {
-	//printf("\tstepped in send_to_child\n");
-	// dprintf(2, "value of data i:%s\n", data->tokens->args[data->i]);
-	//if (data->tokens->args[data->i] == NULL)
-	//	return (0);
+	if (data->tokens->args[data->i] == NULL) // might cause an issue later DO NOT DELETE THIS
+		return (0);
 	if (is_builtins(data->tokens->args[data->i]) == 1)
 		set_builtin_info(data, fds, x);
 	else if (check_path(data->tmp->env_line, 1, data, data->i) != 0)
 	{
-		//printf("\tcheck_path was a success\n");
 		set_array(data);
-		/*int lol = 0;
-		while (data->tmp->ex_arr[lol] != NULL)
-		{
-			printf("\t\tA ex_arr[%d] = %s\n", lol, data->tmp->ex_arr[lol]);
-			lol++;
-		}*/
 		child(data, fds, x, 0);
-		//printf("\tafter child\n");
-		// free_string(data->tmp->filename); // fixed a still reachable, 14.9
 		if (data->i > 0 && data->tokens->args[data->i - 1] != NULL && data->tokens->args[data->i - 1][0] == '>')
 			data->i++;
 		else if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] == '>')
 			data->i += 2;
-		else if (data->i == data->tokens->array_count) // || data->i == data->tokens->array_count - 1
+		else if (data->i == data->tokens->array_count)
 			return (0);
 		if (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] == '|')
 			data->i++;
 	}
 	else
-		//printf("\t\tsend to child -1\n");
 		return (-1);
 	return (0);
 }
@@ -204,15 +180,12 @@ int	pipe_fork(t_data *data)
 		// 	return (-1);
 		// }
 		}
-    //printf("after send to child\n");
 		if (data->prev_fd != -1)
 			close(data->prev_fd);
 		data->prev_fd = fds[0];
 		close(fds[1]);
 		x++;
 	}
-	//printf("waiting and closing\n");
 	wait_and_close(data, status, fds, x);
-	//printf("closed everything\n");
 	return (0);
 }
