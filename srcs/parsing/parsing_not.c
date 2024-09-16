@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/16 09:48:39 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/16 11:05:24 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	}
 	if (parse_redirections(data, tokens, tokens->args, 0) == 1)
 	{
-		printf("following process\n");
+		// printf("following process\n");
 		return (1);
 	}
 	// ----------------------------------------------------------------------

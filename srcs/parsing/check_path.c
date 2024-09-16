@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/16 10:36:26 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/16 13:33:53 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,29 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 	*cmd_len = ft_strlen(all->tokens->args[x]);
 	if (all->tokens->args[x][0] == '.')
 		return (3);
+	
 	if (all->tokens->args[x][0] == '/')
-		return (handle_absolute_path(all, x, NULL));
+	{
+		// printf("all->tokens->args[x] = %s\n", all->tokens->args[x]);
+		return (handle_absolute_path(all, x, NULL), 3);
+	}
+		
 	if (all->tokens->args[x][0] != '/')
 	{
-		// free_string(*suffix);
+		// printf("suffix = %s\n", *suffix);
+		free_string(*suffix);
 		*suffix = ft_strjoin("/", all->tokens->args[x]);
 	}
 	if (*suffix == NULL || *cmd_len == 0)
+	{
+		free_string(*suffix);
 		return (0);
+	}
 	return (2);
 }
 
 int	match(t_data *all, DIR *dir, char *suffix, int i)
 {
-	free_string(all->tmp->filename);
 	all->tmp->filename = ft_strjoin(all->tmp->array[i], suffix);
 	free_string(suffix);
 	closedir(dir);
@@ -71,15 +79,9 @@ int	iterate_and_match(char *suffix, size_t cmd_len, t_data *all, int x)
 static void	split_diversion(t_data *data, int divert, char *string)
 {
 	if (divert == 1)
-	{
-		free_array(data->tmp->array);
 		data->tmp->array = ft_split(string, ':');
-	}
 	else if (divert == 2)
-	{
-		free_array(data->tmp->array);
 		data->tmp->array = ft_split(string, ' ');
-	}
 	// IS THIS NEEDED? aren't we checking this earlier and thowing an error?
 	if (data->tmp->array == NULL)
 	{
@@ -87,18 +89,19 @@ static void	split_diversion(t_data *data, int divert, char *string)
 		// figure out what kind of error message is needed
 	}
 }
-
 /*~~ checking access and creating sub tokens for easy access in children
 res = 3 means we are looking into current directory so we do not need to check_dir
 but file muts be checked, this is eg so that minishell can run inside minishell~~*/
 int	check_path(char *string, int divert, t_data *all, int x)
 {
-	static char	*suffix;
+	char	*suffix;
 	size_t	cmd_len;
 	int		res;
 
 	cmd_len = 0;
+	suffix = NULL;
 	res = initial_checks_and_setup(&suffix, &cmd_len, all, x);
+	// printf("what is res 1? %d\n", res);
 	if (res == 3)
 	{
 		if (check_file(all->tokens->args[x]) == 1)
@@ -110,9 +113,9 @@ int	check_path(char *string, int divert, t_data *all, int x)
 		return (res);
 	split_diversion(all, divert, string);
 	res = iterate_and_match(suffix, cmd_len, all, x);
+	// printf("what is res 2? %d\n", res);
+	free_array(all->tmp->array);
 	if (res == 0)
 		return (0);
-	free_array(all->tmp->array);
-	// all->tmp->array = NULL;
 	return (res);
 }
