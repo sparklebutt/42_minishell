@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 12:09:11 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 14:40:49 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,11 @@ void	minishell(t_data *data)
 				handle_line(*data, data->tokens);
 			//g_interactive_mode = 1; // we are in interactive mode
 		}
-		//data->i = 0;
 		rl = free_string(rl);
-		free_array(data->tokens->args);	
-		// free_array(data->tokens->output_files); // we are putting something non malloced in here, OR freeing something before this, by vilja
+		free_array(data->tokens->args);
 		free(data->tokens->heredoc); // this needs to be freed somewhere when it is filled properly, needs to be tested
 	}
-	//free_array(data->tokens->args);
 	ft_printf("exit\n");
-	//free_nodes(data->env);
 }
 
 int main(int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 12:08:30 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 14:09:23 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	redirect_collector(t_tokens *tokens, char **array, int i)
 		{
 			if (ft_strlen(array[i]) > 2)//(len > 2)
 				if (array[i][2])
-					printf("syntax error, too many redirects\n");
+					printf("B syntax error, too many redirects\n");
 			out_count++;
 			// handle redirect as last chat / str
 		}
@@ -82,7 +82,7 @@ void	redirect_collector(t_tokens *tokens, char **array, int i)
 		{
 			if (ft_strlen(array[i]) > 2)//(len > 2)	
 				if (array[i][2])
-					printf("syntax error, too many redirects\n");
+					printf("A syntax error, too many redirects\n");
 			in_count++;
 			// handle redirect as last chat / str
 		}

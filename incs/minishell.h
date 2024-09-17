@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 10:53:25 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 16:06:25 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ int		find_node(t_env *envs, char *key, t_data *data); // does node with x key ex
 
 // variable expansions
 char *replace_expansion(t_data *data, t_env *envs, char *arg, int i);
-char	*look_if_expansions(t_data *data, t_env *envs, char *arg, int i);
+char	*look_if_expansions(t_data *data, t_env *envs, char *arg, int flag);
 
 // CMDS - - - - - - - - -
 void	ft_unset(t_env *env, char *key_name);

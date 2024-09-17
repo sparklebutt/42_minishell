@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:03:23 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 09:43:49 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 13:34:03 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,17 @@ char *replace_exitcode(char *arg, int start)
 	return (new_arg);
 }
 
-char	*look_if_expansions(t_data *data, t_env *envs, char *arg, int i)
+char	*look_if_expansions(t_data *data, t_env *envs, char *arg, int flag)
 {
+	int i;
+
+	i = 0;
 	while (arg[i])
 	{
 		if (arg[i] == '$')
 		{
+			if (flag == 1)
+				return (arg);
 			if (arg[i + 1] == '?')
 				arg = replace_exitcode(arg, i);
 			else

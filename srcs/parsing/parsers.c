@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/17 10:39:49 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 13:42:51 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,15 @@ bool	confirm_expansion(char *string, int len, int x)
 	}
 	return ((d && !s) || (!d && !s));
 }
+
+int check_next(char *str, size_t len)
+{
+	// printf("string in check_next = %s\n", str);
+	if (str == NULL && len == 1)
+		return (1);
+	return (0);
+}
+
 /*~~ a fucntion that redirects the input to be handled based on if we handle
 just a string or if we need to handle a newly added array that will be later re adjusted
 to be a string in our tokens array ~~*/
@@ -153,36 +162,40 @@ void	handle_expansion(t_data *data, int len, int i, char *new)
 {
 	t_tokens	*tokens;
 	char		*tmp;
+	int flag;
 
 	// cut this smaller
 	tmp = NULL;
 	tokens = data->tokens;
-	
+	 
+	flag = 0;
 	if (data->simple == false)
 	{
+		flag = check_next(data->tmp->exp_array[i + 1], ft_strlen(data->tmp->exp_array[i]));
 		if (ft_strchr(data->tmp->exp_array[i], '"') != NULL
 		|| ft_strchr(data->tmp->exp_array[i], '\'') != NULL)
 		{
 			new = clean_quotes(data->tmp->exp_array[i], len, 0, 0);
-			tmp = look_if_expansions(data, data->env, new, 0);
+			tmp = look_if_expansions(data, data->env, new, flag);
 			data->tmp->exp_array[i] = free_string(data->tmp->exp_array[i]);
 			data->tmp->exp_array[i] = ft_strdup((tmp));
 			tmp = free_string(tmp);
 		}
 		else
-			data->tmp->exp_array[i] = look_if_expansions(data, data->env, data->tmp->exp_array[i], 0);
+			data->tmp->exp_array[i] = look_if_expansions(data, data->env, data->tmp->exp_array[i], flag);
 	}
 	else
 	{
+		flag = check_next(tokens->args[i + 1], ft_strlen(tokens->args[i]));
 		if (ft_strchr(tokens->args[i], '"') != NULL
 		|| ft_strchr(tokens->args[i], '\'') != NULL)
 		{
 			new = clean_quotes(tokens->args[i], len, 0, 0);
 			tokens->args[i] = free_string(tokens->args[i]);	// maybe not needed if we free inside already but it doesn't hurt, this fixed an error, vilja
-			tokens->args[i] = look_if_expansions(data, data->env, new, 0);
+			tokens->args[i] = look_if_expansions(data, data->env, new, flag);
 		}
 		else
-			tokens->args[i] = look_if_expansions(data, data->env, tokens->args[i], 0);
+			tokens->args[i] = look_if_expansions(data, data->env, tokens->args[i], flag);
 	}
 }
 

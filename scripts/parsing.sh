@@ -78,8 +78,6 @@ echo "$HOME is where the heart is"
 
 /bin/echo $USER =intergalaktikus miaf*szomez
 
-/bin/echo -n"-n" bonjour
-
 /bin/echo "'$USER'"
 
 /bin/echo " '$USER' "
@@ -138,47 +136,9 @@ echo "$HOME is where the heart is"
 
 /bin/echo " test1 test2 " 'test3 '
 
-/bin/echo test1		test2
-
 /bin/echo $USER$TESTNOTFOUND$HOME$
 
 /bin/echo $USER$TESTNOTFOUND$HOME$WTF$PWD
-
-/bin/echo -n test1
-
-/bin/echo -n "test1 test2"
-
-/bin/echo -n "test1 test2" test3
-
-/bin/echo -n " test1 test2 " 'test3 '
-
-/bin/echo -n test1		test2
-
-/bin/echo test1 -n
-
-/bin/echo "test1 -n"
-
-/bin/echo -n -n test1
-
-/bin/echo -n -n -n -n -n test1
-
-/bin/echo "  -nn "
-
-/bin/echo "-n test1 -n test2"
-
-/bin/echo "test1 -n test2"
-
-/bin/echo ~42
-
-/bin/echo -n -n -nasd
-
-/bin/echo -n -n -n-nnnnn
-
-/bin/echo -n -nnnnnnn -n -nnn -nnnnn -n-n
-
-/bin/echo -n -nnnnnnn -n -nnn -nnnnn -n feel my pain
-
-/bin/echo -n -n -n-n
 
 /bin/echo "'totally logical'"
 

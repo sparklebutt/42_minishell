@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/17 12:08:35 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 14:09:45 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 		printf("syntax error open quotes\n");
 		return (1);
 	}
+	redirect_collector(tokens, tokens->args, 0);
 	if (expansion_parser(tokens, data) == -1)
 	{
 		// free up to this point
@@ -71,7 +72,7 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	pipe_collector(tokens, tokens->args);
 	// can we put all of the 3 redir unctions and their if statements into one sub function that handles those??? idk just an idea
 	// ----------------------------------------------------------------------
-	redirect_collector(tokens, tokens->args, 0);
+	
 	// printf("BEFORE CREATE REDIR ARRAY\n");
 	if (tokens->redirect_count > 0 && create_redir_array(tokens) == -1) // only mallocing
 	{

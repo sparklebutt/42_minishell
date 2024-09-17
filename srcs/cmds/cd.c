@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 12:36:19 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 12:50:16 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	ft_cd(t_data *data, t_env *envs)
 	if (temp != NULL)
 		data->path = free_string(data->path);
 	if (temp != NULL)
-		data->path = ft_strdup(temp);g
+		data->path = ft_strdup(temp);
 	if (ft_strncmp(data->tokens->args[i + 1], "/", 1) != 0)
 		data->path = free_string(data->path);
 	if (ft_strncmp(data->tokens->args[i + 1], "/", 1) != 0)

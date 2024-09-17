@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_from_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:02:41 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 09:19:11 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 15:33:03 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,13 @@ int	find_node(t_env *envs, char *key, t_data *data)
 	temp = envs;
 	while (temp != NULL)
 	{
-		// printf("looking for = %s\n", key);
-		// printf("key = %s\n", temp->key);
-		// printf("value = %s\n", temp->value);
-		// printf("------------------------\n");
 		if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) == 0
 			&& (ft_strlen(temp->key) == ft_strlen(key)))
 		{
 			// printf("\t\tkey found!!!!\n");
 			if (ft_strncmp("PATH", key, ft_strlen(key) + 1)	== 0 && find_keys_value(envs, "PATH") == NULL)
 				return (2);
+			// printf("not in find value\n");
 			data->tmp->env_line = temp->value;
 			return (1);
 		}

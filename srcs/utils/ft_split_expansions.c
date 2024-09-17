@@ -141,7 +141,7 @@ char	**ft_split_expansions(t_tokens *tokens, char const *s) //
 		return (NULL);
 	size_r = ft_count_exp_array(s);
 	// printf("size_r = %d\n", size_r);
-	array = ft_calloc(size_r + 1, sizeof(char *)); // MALLOCED VARIABLE
+	array = ft_calloc(size_r + 1, sizeof(char *));
 	if (array == NULL)
 		return (NULL);
 	while (i < ft_strlen(s))

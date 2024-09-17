@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 08:26:50 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 15:11:57 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@ char	*loop_array(char **array, char *tmp, char *value)
 	while (array[i] != NULL)
 	{
 		tmp_2 = ft_strnstr(array[i], "/bin", 5);
-		tmp = ft_strdup(tmp_2);
-		if (tmp != NULL)
+		if (tmp_2 != NULL)
+		{
+			tmp = ft_strdup(tmp_2);
 			break ;
+		}
 		i++;
 	}
 	free_array(array);
@@ -80,7 +82,7 @@ void	ft_env(t_data *data)
 
 	env = data->env;
 	ret = NULL;
-	if (find_node(env, "PATH", data) >= 1)
+	if (find_node(env, "PATH", data) == 1)
 	{
 		ret = env_helper(env, 0, 0);
 		if (check_envs_ret(ret) == 1)
