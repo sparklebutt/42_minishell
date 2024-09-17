@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 09:19:04 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 09:40:04 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ int	check_path(char *string, int divert, t_data *all, int x)
 	cmd_len = 0;
 	//suffix = NULL;
 	res = initial_checks_and_setup(&suffix, &cmd_len, all, x);
-	// printf("what is res 1? %d\n", res);
 	if (res == 3)
 	{
 		if (check_file(all->tokens->args[x]) == 1)
@@ -109,7 +108,6 @@ int	check_path(char *string, int divert, t_data *all, int x)
 		return (res);
 	split_diversion(all, divert, string);
 	res = iterate_and_match(suffix, cmd_len, all, x);
-	// printf("what is res 2? %d\n", res);
 	free_array(all->tmp->array);
 	if (res == 0)
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:11:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 08:19:39 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 09:20:50 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int ft_exit(char *cmd, t_tokens *tokens)
 		exit(0);
 	}
 	cmd = free_string(cmd);
+	//free_array(tokens->args);
 	exit(0);
 	return (1);
 }

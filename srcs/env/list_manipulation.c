@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:47:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 08:21:18 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 09:11:42 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	insert_node(t_env **env_lst, char *key_name, char *value)
 	t_env	*new_node;
 	t_env	*tmp;
 
-	new_node = malloc(sizeof(t_env));
+	new_node = ft_calloc(1, sizeof(t_env));
 	if (new_node == NULL) {
 		free_nodes(*env_lst);
 		return (-1);
@@ -56,7 +56,6 @@ int	insert_node(t_env **env_lst, char *key_name, char *value)
 	new_node->next = NULL;
 	if (*env_lst == NULL)
 	{
-
 		*env_lst = new_node;
 		return (1);
 	}
