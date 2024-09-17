@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 08:18:07 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 12:36:19 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,18 @@ void	change_dir(t_data *data, t_env *envs, char *temp)
 	temp = free_string(temp);
 }
 
+int is_slash(char *str)
+{
+	size_t i;
+
+	i = 0;
+	while (str[i] && str[i] == '/')
+		i++;
+	if (ft_strlen(str) == i)
+		return (1);
+	return (0);
+}
+
 void	ft_cd(t_data *data, t_env *envs)
 {
 	char	*temp;
@@ -60,16 +72,21 @@ void	ft_cd(t_data *data, t_env *envs)
 	if (temp != NULL)
 		data->path = free_string(data->path);
 	if (temp != NULL)
-		data->path = ft_strdup(temp);
+		data->path = ft_strdup(temp);g
 	if (ft_strncmp(data->tokens->args[i + 1], "/", 1) != 0)
 		data->path = free_string(data->path);
 	if (ft_strncmp(data->tokens->args[i + 1], "/", 1) != 0)
 		data->path = ft_strjoin(temp, "/");
 	temp = free_string(temp);
 	temp2 = ft_strdup(data->tokens->args[++i]);
-	temp = ft_strjoin(data->path, temp2);
-	temp2 = free_string(temp2);
-	change_dir(data, envs, temp);
+	if (is_slash(temp2) == 0)
+	{
+		temp = ft_strjoin(data->path, temp2);
+		temp2 = free_string(temp2);
+		change_dir(data, envs, temp);
+	}
+	else if (is_slash(temp2) == 1)
+		change_dir(data, envs, temp2);
 }
 
 int	check_file(char *str)

@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:11:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 09:20:50 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 12:02:05 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_exit(char *cmd, t_tokens *tokens)
+int ft_exit(t_data *data, char *cmd, t_tokens *tokens)
 {
 	// t_data *data;
+	(void)data;
 	// t_env *envs;
 	char *temp;
 
@@ -38,11 +39,11 @@ int ft_exit(char *cmd, t_tokens *tokens)
 			cmd_error(cmd, tokens->args[1]);
 		else if (tokens->array_count > 2)
 			cmd_error(cmd, NULL);
-		cmd = free_string(cmd);
-		exit(0);
 	}
-	cmd = free_string(cmd);
-	//free_array(tokens->args);
+	// cmd = free_string(cmd);
+	free_array(tokens->args);
+	free_nodes(data->env);
+	free_array(tokens->output_files);
 	exit(0);
 	return (1);
 }

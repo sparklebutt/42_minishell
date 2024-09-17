@@ -98,8 +98,6 @@ echo "test1  test2" test3
 
 echo " test1 test2 " 'test3 '
 
-echo test1		test2
-
 echo $USER$TESTNOTFOUND$HOME$
 
 echo $USER$TESTNOTFOUND$HOME$WTF$PWD

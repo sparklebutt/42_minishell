@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 09:49:33 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 12:08:30 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,10 @@ int create_redir_array(t_tokens *tokens)
 {
 	/*~CHANGE ~*/
 	// incase we want to create a input array also
+	// print_arr(tokens->args, "args");
 	if (tokens->out_array_count > 0)
 	{
+		// printf("\t\t\tDO I MALLOC AN ARRAY???\n");
 		free_array(tokens->output_files); // new free
 		tokens->output_files = ft_calloc(sizeof(char *), tokens->out_array_count + 1); // we do need + 1
 		if (tokens->output_files == NULL)
@@ -68,7 +70,7 @@ void	redirect_collector(t_tokens *tokens, char **array, int i)
 	tokens->out_array_count = 0;
 	while (array[i])
 	{
-		if (array[i][0] == '>' || ft_strncmp(array[i], ">>", 2) == 0)
+		if (array[i][0] == '>' || (array[i][0] == '>' && array[i][1] == '>'))
 		{
 			if (ft_strlen(array[i]) > 2)//(len > 2)
 				if (array[i][2])
@@ -110,7 +112,7 @@ int	redirect_helper(t_tokens *tokens, int x)
 {
 	int		fd;
 
-	dprintf(2, "\t\tsteps into redirert helper\n");
+	// dprintf(2, "\t\tsteps into redirert helper\n");
 	fd = 0;
 	// dprintf(2, "dup file\n");
 	if (tokens->redirect_append)

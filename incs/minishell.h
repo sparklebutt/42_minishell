@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 08:34:16 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 10:53:25 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ char	*look_if_expansions(t_data *data, t_env *envs, char *arg, int i);
 void	ft_unset(t_env *env, char *key_name);
 int		ft_pwd(t_data *data, t_env *envs);
 t_env	*fill_old_pwd(t_data *data, t_env *env, char *temp_path);
-int		ft_exit(char *cmd, t_tokens *tokens); 
+int		ft_exit(t_data *data, char *cmd, t_tokens *tokens); 
 void	ft_cd(t_data *data, t_env *envs);
 void	ft_echo(t_data *data, char **args); //t_data *data,
 void	ft_env(t_data *data);

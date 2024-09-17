@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/17 09:47:58 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 11:59:29 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,12 @@ int	child(t_data *data, int *fds, int x, int flag)
 		g_interactive_mode = data->child[data->child_i];
 		dup_fds(data, fds, x);
 		if (data->tokens->action == true && redirect_helper(data->tokens, data->x) != 0)
+		{
+			free_array(data->tokens->args);
+			free_nodes(data->env);
+			free_array(data->tokens->output_files);
 			exit(exit_code(0,0));
+		}
 		if (data->tokens->h_action == true) // new code
 			open_and_fill_heredoc(data->tokens);
 		if (flag == 1)
@@ -33,6 +38,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 			exec_builtins(*data, data->tokens->args[data->i]);
 			free_array(data->tokens->args);
 			free_nodes(data->env);
+			free_array(data->tokens->output_files);
 			exit(exit_code(0, 0));
 		}
 		tmp = set_env_array(data, 0, 0);
@@ -42,6 +48,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 		free_array(data->tokens->args); // we might stil have something in the args?
 		free_nodes(data->env);
 		free(data->tmp->ex_arr);
+		free_array(data->tokens->output_files);
 		close(fds[1]);
 		// close(fds[0]);
 		exit(exit_code(0, 0));
@@ -151,6 +158,9 @@ int	pipe_fork(t_data *data)
 			return (error("fork", "we are somehow out of bounds"));
 		if (pipe(fds) < 0)
 		{
+			free_array(data->tokens->args);
+			free_nodes(data->env);
+			free_array(data->tokens->output_files);
 			error("fork", "error in pipe perror needed");
 			exit(EXIT_FAILURE);
 		}

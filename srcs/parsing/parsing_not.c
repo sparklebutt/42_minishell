@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/17 08:24:18 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 12:08:35 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 
 int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
+	// printf("IT IS DOING IT ONCE\n");
 	tokens->array_count = total_words_c(string, ' ', data);
 	tokens->args = ft_split_adv(string, ' ', data);
 	if (tokens->args == NULL)
@@ -71,8 +72,10 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	// can we put all of the 3 redir unctions and their if statements into one sub function that handles those??? idk just an idea
 	// ----------------------------------------------------------------------
 	redirect_collector(tokens, tokens->args, 0);
+	// printf("BEFORE CREATE REDIR ARRAY\n");
 	if (tokens->redirect_count > 0 && create_redir_array(tokens) == -1) // only mallocing
 	{
+		printf("error in create redir\n");
 		// free up to this point
 		return (1);
 	}
