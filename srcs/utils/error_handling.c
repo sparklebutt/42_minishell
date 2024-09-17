@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 18:24:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 13:43:41 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:24:56 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ void	cmd_error(char *cmd, char *arg)
 	if (arg != NULL)
 	{
 		temp = ft_strjoin(error_msg, ": ");
-		free_string(error_msg);
+		error_msg = free_string(error_msg);
 		error_msg = ft_strjoin(temp, arg);
 	}
 	if (temp != NULL)
-		free_string(temp);
+		temp = free_string(temp);
 	perror(error_msg);
-	free_string(error_msg);
+	error_msg = free_string(error_msg);
 	exit_code(1, 1);
 }

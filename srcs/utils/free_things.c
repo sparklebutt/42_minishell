@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_things.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:59:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/16 11:25:21 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:25:32 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,20 @@ void	free_array(char **array)
 	while (array[i] != NULL)
 	{
 		//printf("cleaning up each elem in array\n");
-		free_string(array[i]);
+		array[i] = free_string(array[i]);
 		i++;
 	}
 	free(array);
 	array = NULL;
 }
 
-void	free_string(char *string)
+char	*free_string(char *string)
 {
 	if (string != NULL)
 	{
 		free(string);
-		string = NULL;
 	}
+	return (NULL);
 }
 
 void	free_nodes(t_env *node)
@@ -52,8 +52,8 @@ void	free_nodes(t_env *node)
 	while (node != NULL)
 	{
 		if (node->value)
-			free_string(node->value);
-		free_string(node->key);
+			node->value = free_string(node->value);
+		node->key = free_string(node->key);
 		tmp = node;
 		node = node->next;
 		free(tmp);

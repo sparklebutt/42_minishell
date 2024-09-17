@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/14 05:10:01 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:26:50 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,18 @@ int	check_envs_ret(char *ret)
 	if (ret == NULL || ft_strlen(ret) > 4)
 	{
 		if (ret != NULL && ft_strlen(ret) == 5 && ret[4] == '/')
-			return (free_string(ret), 0);
+		{
+			ret = free_string(ret);
+			return (0);
+		}
 		else
 		{
 			if (ret != NULL)
-				free_string(ret);
+				ret = free_string(ret);
 			return (not_perror("env", NULL, "No such file or directory\n"), 1);
 		}
 	}
-	free_string(ret);
+	ret = free_string(ret);
 	return (0);
 }
 

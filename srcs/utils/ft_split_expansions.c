@@ -93,7 +93,7 @@ static int	ft_count_sub_len(const char *s, int sublen)
 char	**free_loop(char **arr, int index)
 {
     while (--index)
-		free_string(arr[index]);
+		arr[index] = free_string(arr[index]);
 	free(arr);
 	return (NULL);
 }

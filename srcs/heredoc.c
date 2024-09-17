@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 04:44:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/16 10:10:11 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:16:14 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,11 @@ void heredoc_loop(t_data *data, t_tokens *tokens, char *eof)
 		// printf("line = |%s|, strlen = %zu\n", line, ft_strlen(line));
 		if (ft_strncmp(line, eof, ft_strlen(eof)) == 0 && ft_strlen(eof) + 1 == ft_strlen(line))
 		{
-			free_string(line);
+			line = free_string(line);
 			break ;
 		}
 		tokens->heredoc = set_into_heredoc_array(data, tokens->heredoc, line);
-		free_string(line);
+		line = free_string(line);
 	}
 	create_file(data->tokens);
 }

@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:03:23 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/12 18:43:33 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:22:10 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ char	*replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 	}
 	else
 		new_arg = remove_key(arg, start, start + key_len + 1);
-	free_string(arg);
-	free_string(temp_key);
+	arg = free_string(arg);
+	temp_key = free_string(temp_key);
 	return (new_arg);
 }
 
@@ -106,8 +106,8 @@ char *replace_exitcode(char *arg, int start)
 	
 	value = ft_itoa(exit_code(0, 0));
 	new_arg = new_str(arg, value, start, start + 1 + 1);
-	free_string(value); // new free by vilja, was leaking
-	free_string(arg);
+	value = free_string(value); // new free by vilja, was leaking
+	arg = free_string(arg);
 	return (new_arg);
 }
 
@@ -128,7 +128,7 @@ char	*look_if_expansions(t_data *data, t_env *envs, char *arg, int i)
 		}
 		if (arg[0] == '~' && ft_strlen(arg) == 1)
 		{
-			free_string(arg); // cause we don't free arg in the fucntion below, vilja
+			arg = free_string(arg); // cause we don't free arg in the fucntion below, vilja
 			arg = replace_squiggly_line(data, envs);
 		}
 		i++;

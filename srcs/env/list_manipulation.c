@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_manipulation.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:47:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 16:33:57 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:21:18 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ t_env	*replace_value(t_env *env, char *key, char *new_value)
 	env = move_list(env, key);
 	while (env != NULL) {
 		if (ft_strncmp(env->key, key, ft_strlen(key)) == 0) {
-			free_string(env->value);
+			env->value = free_string(env->value);
 			env->value = new_value;
-			free_string(key);
+			key = free_string(key);
 			return (env);
 		}
 		env = env->next;
 	}
-	free_string(key);
+	key = free_string(key);
 	return (NULL);
 }
 

@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/16 11:51:35 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:15:24 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,15 @@ int	child(t_data *data, int *fds, int x, int flag)
 		if (flag == 1)
 		{
 			exec_builtins(*data, data->tokens->args[data->i]);
+			free_array(data->tokens->args);
+			free_nodes(data->env);
 			exit(exit_code(0, 0));
 		}
 		tmp = set_env_array(data, 0, 0);
 		reset_signals();
 		execve(data->tmp->filename, data->tmp->ex_arr, tmp);		
 		free_array(tmp);
-		free_array(data->tokens->args);
+		free_array(data->tokens->args); // we might stil have something in the args?
 		free_nodes(data->env);
 		free(data->tmp->ex_arr);
 		close(fds[1]);
@@ -66,7 +68,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
 	close(fds[1]);
-	free_string(data->tmp->filename);
+	data->tmp->filename = free_string(data->tmp->filename);
 	//g_interactive_mode = 1;	
 	//close(3);  // this closes valgrinds log.txt
 	return (0);

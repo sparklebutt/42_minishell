@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/14 06:15:50 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:14:57 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ void	not_perror(char *cmd, char *arg, char *msg);
 
 // free things
 void	free_array(char **array);
-void	free_string(char *string);
+char	*free_string(char *string);
 int		free_extra_return_function(char *str, int ret_val);
 void	free_nodes(t_env *nodes);
 
