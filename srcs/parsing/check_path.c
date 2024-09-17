@@ -16,16 +16,14 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 {
 	*cmd_len = ft_strlen(all->tokens->args[x]);
 	if (*cmd_len == 0)
-		return (0); // why continue at all after this ? 
+		return (0);
 	if (all->tokens->args[x][0] == '.')
 		return (3);
-	
 	if (all->tokens->args[x][0] == '/')
 	{
 		// printf("all->tokens->args[x] = %s\n", all->tokens->args[x]);
 		return (handle_absolute_path(all, x, NULL), 3);
 	}
-		
 	if (all->tokens->args[x][0] != '/')
 	{
 		//printf("checking suffix before = %s\n", *suffix); /// after testing this is always null at this stage already
@@ -33,11 +31,8 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 		//printf("checking suffix after freed = %s\n", *suffix);	
 		*suffix = ft_strjoin("/", all->tokens->args[x]);
 	}
-	if (*suffix == NULL)// || *cmd_len == 0)
-	{
-		//free_string(*suffix); // if suffix is null there is nothing to free // this removed an issue
+	if (*suffix == NULL)
 		return (0);
-	}
 	return (2);
 }
 
@@ -102,7 +97,6 @@ int	check_path(char *string, int divert, t_data *all, int x)
 	cmd_len = 0;
 	//suffix = NULL;
 	res = initial_checks_and_setup(&suffix, &cmd_len, all, x);
-	// printf("what is res 1? %d\n", res);
 	if (res == 3)
 	{
 		if (check_file(all->tokens->args[x]) == 1)
@@ -114,7 +108,6 @@ int	check_path(char *string, int divert, t_data *all, int x)
 		return (res);
 	split_diversion(all, divert, string);
 	res = iterate_and_match(suffix, cmd_len, all, x);
-	// printf("what is res 2? %d\n", res);
 	free_array(all->tmp->array);
 	if (res == 0)
 		return (0);
