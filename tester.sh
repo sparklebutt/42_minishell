@@ -100,15 +100,15 @@ echo "-------------------------------------------------"
 echo ""
 # ///////////////////////////////////////////////////////////////
 #
-# echo "-------------------------------------------------"
-# echo ""
-# echo "          Now running env_path.sh"
-# echo "          ----🔥--🔥🔥🔥------🔥🔥--"
-# echo ""
-# echo "-------------------------------------------------"
-# bash < scripts/env_path.sh | grep -v minishell >> bash_output.txt
-# valgrind --leak-check=full --suppressions=valgrind.supressions --show-leak-kinds=all --track-origins=yes --track-fds=yes --tool=memcheck' --log-file=./valgrind_logs/log.txt ./minishell < scripts/env_path.sh | grep -v minishell >> test_output.txt
-# echo "-------------------------------------------------"
-# ./find_diff.sh
-# ./check_leaks.sh
-# ./clean_script.sh
+#echo "-------------------------------------------------"
+#echo ""
+#echo "          Now running env_path.sh"
+#echo "          ----🔥--🔥🔥🔥------🔥🔥--"
+#echo ""
+#echo "-------------------------------------------------"
+#bash < scripts/env_path.sh | grep -v minishell >> bash_output.txt
+#valgrind --leak-check=full --suppressions=valgrind.supressions --show-leak-kinds=all --track-origins=yes --track-fds=yes --tool=memcheck' --log-file=./valgrind_logs/log.txt ./minishell < scripts/env_path.sh | grep -v minishell >> test_output.txt
+#echo "-------------------------------------------------"
+#./find_diff.sh
+#./check_leaks.sh
+#./clean_script.sh

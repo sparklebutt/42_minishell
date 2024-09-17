@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:11:00 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/10 16:34:51 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 09:14:35 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ t_env	*create_env_list(t_data *data)
 	i = 0;
 	env = NULL;
 	temp = NULL;
+	key = NULL;
+	value = NULL;
 	if (environ[i] == NULL)
 	{
 		temp = getcwd(NULL, 0);
@@ -38,6 +40,8 @@ t_env	*create_env_list(t_data *data)
 		value = find_value(environ[i]);
 		key = find_key(environ[i]);
 		insert_node(&env, key, value);
+		//value = free_string(value);
+		//key = free_string(key);
 		i++;
 	}
 	return (env);

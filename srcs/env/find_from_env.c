@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:02:41 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/14 05:19:35 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 09:19:11 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,12 @@ char	*find_key(char *str)
 	if (str[i] == '=')
 	{
 		key = ft_substr(str, 0, i);
+		if (key == NULL)
+			return (NULL);
 		return (key);
 	}
 	else
 		printf("error in finding key name\n"); // change error message
-	// free_string(key); // not needed?
 	return (NULL);
 }
 
@@ -97,6 +98,7 @@ char	*find_value(char *arg)
 	char	*temp;
 
 	temp = ft_strchr(arg, '=');
+	value = NULL;
 	/*CHANGE temp++*/
 	//temp++; // this was causing us to loose a character in key value
 	if (temp == NULL)
@@ -104,5 +106,6 @@ char	*find_value(char *arg)
 	value = ft_substr(temp, 1, ft_strlen(arg));
 	if (value == NULL)
 		return (NULL);
+	//arg = free_string(arg);
 	return (value);
 }

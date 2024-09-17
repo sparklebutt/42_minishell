@@ -39,7 +39,9 @@ int	ft_count_exp_array(const char *s)
         }
         else
         {
-            while (*s && *s != '\'' && *s != '"')
+            while (*s && *s != '\'' && *s != '"' && *s != '$')
+                s++;
+            if (*s == '$')
                 s++;
             count++;       
         }
@@ -81,11 +83,17 @@ static int	ft_count_sub_len(const char *s, int sublen)
     }
     else
     {
-        while (s[save] && s[save] != '\'' && s[save] != '"')
+        if (s[save] == '$')
         {
             save++;
             sublen++;
         }
+        while (s[save] && s[save] != '\'' && s[save] != '"' && s[save] != '$')
+        {
+            save++;
+            sublen++;
+        }
+        //
     }
 	return (sublen);
 }

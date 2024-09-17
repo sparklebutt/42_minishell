@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 08:16:23 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 09:20:15 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	minishell(t_data *data)
 		//rl_on_new_line();
 		//printf("\n");
 		rl = readline(data->prompt);
-		//
 		add_history(rl);
 		if (!rl)
 			break ;
@@ -52,7 +51,9 @@ void	minishell(t_data *data)
 		//free_array(data->tokens->output_files); // we are putting something non malloced in here, OR freeing something before this, by vilja
 		free(data->tokens->heredoc); // this needs to be freed somewhere when it is filled properly, needs to be tested
 	}
+	//free_array(data->tokens->args);
 	ft_printf("exit\n");
+	//free_nodes(data->env);
 }
 
 int main(int argc, char **argv)
