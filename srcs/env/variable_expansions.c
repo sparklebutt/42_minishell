@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable_expansions.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 16:03:23 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 08:22:10 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 09:43:49 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ char	*remove_key(char *str, int start, int end)
 	char	*new_str;
 
 	new_str = NULL;
-	new_len = start + strlen(str + end) + 1;
-	new_str = malloc(sizeof(char) * new_len + 1);
+	new_len = start + ft_strlen(str + end) + 1;
+	new_str = ft_calloc(sizeof(char), new_len + 1);
 	if (!new_str)
 		return NULL;
 	ft_strncpy(new_str, str, start);
@@ -81,24 +81,6 @@ char	*replace_expansion(t_data *data, t_env *envs, char *arg, int start)
 	return (new_arg);
 }
 
-char *replace_squiggly_line(t_data *data, t_env *envs)
-{
-	char	*value = NULL;
-	char	*new_arg = NULL;
-	
-	if (find_node(envs, "HOME", data) == 1)
-	{
-		value = find_keys_value(envs, "HOME");
-		if (value != NULL)
-			new_arg = new_str(ft_strdup("~"), value, 0, 0 + 1);
-		else
-			new_arg = remove_key("~", 0, 0 + 1);
-	}
-	else
-		new_arg = remove_key("~", 0, 0 + 1);
-	return (new_arg);
-}
-
 char *replace_exitcode(char *arg, int start)
 {
 	char	*value = NULL;
@@ -126,11 +108,11 @@ char	*look_if_expansions(t_data *data, t_env *envs, char *arg, int i)
 			if (arg[i] == '\0')
 				 return (arg);
 		}
-		if (arg[0] == '~' && ft_strlen(arg) == 1)
-		{
-			arg = free_string(arg); // cause we don't free arg in the fucntion below, vilja
-			arg = replace_squiggly_line(data, envs);
-		}
+		// if (arg[0] == '~' && ft_strlen(arg) == 1)
+		// {
+		// 	arg = free_string(arg); // cause we don't free arg in the fucntion below, vilja
+		// 	arg = replace_squiggly_line(data, envs);
+		// }
 		i++;
 	}
 	return (arg);

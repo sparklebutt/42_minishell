@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 08:42:09 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 09:19:04 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,14 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 {
 	*cmd_len = ft_strlen(all->tokens->args[x]);
 	if (*cmd_len == 0)
-		return (0); // why continue at all after this ? 
+		return (0);
 	if (all->tokens->args[x][0] == '.')
 		return (3);
-	
 	if (all->tokens->args[x][0] == '/')
 	{
 		// printf("all->tokens->args[x] = %s\n", all->tokens->args[x]);
 		return (handle_absolute_path(all, x, NULL), 3);
 	}
-		
 	if (all->tokens->args[x][0] != '/')
 	{
 		//printf("checking suffix before = %s\n", *suffix); /// after testing this is always null at this stage already
@@ -33,11 +31,8 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 		//printf("checking suffix after freed = %s\n", *suffix);	
 		*suffix = ft_strjoin("/", all->tokens->args[x]);
 	}
-	if (*suffix == NULL)// || *cmd_len == 0)
-	{
-		//free_string(*suffix); // if suffix is null there is nothing to free // this removed an issue
+	if (*suffix == NULL)
 		return (0);
-	}
 	return (2);
 }
 
@@ -73,6 +68,7 @@ int	iterate_and_match(char *suffix, size_t cmd_len, t_data *all, int x)
 		}
 		i++;
 	}
+	suffix = free_string(suffix);
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/17 08:23:15 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 09:36:41 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,11 +229,6 @@ int	multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
 
 int	 no_dollar_handle(t_tokens *tokens, t_data *data, int i)
 {
-	if (ft_strlen(tokens->args[i]) == 1 && tokens->args[i][0] == '~') // some people say we don't need to handle this, but we do already?
-	{
-		tokens->args[i] = free_string(tokens->args[i]);
-		tokens->args[i] = replace_squiggly_line(data, data->env);
-	}
 	data->simple = true;
 	if (ft_strchr(tokens->args[i], '\'') != NULL || ft_strchr(tokens->args[i], '"') != NULL)
 		clean_rest_of_quotes(data, i, 0);	
