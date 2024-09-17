@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/17 08:15:24 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:38:28 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 int	child(t_data *data, int *fds, int x, int flag)
 {	
 	char **tmp;
-	int fd;
-	int i = 0;
-	
-	fd = 0;
+
 	tmp = NULL;
 	data->child[data->child_i] = fork();
 	if (data->child[data->child_i] == -1)
@@ -29,21 +26,8 @@ int	child(t_data *data, int *fds, int x, int flag)
 		dup_fds(data, fds, x);
 		if (data->tokens->action == true && redirect_helper(data->tokens, data->x) != 0)
 			exit(exit_code(0,0));
-		if (data->tokens->h_action == true)
-		{
-			fd = open(data->tokens->here_file, O_RDWR);
-			if (fd <= 0)
-				return (error("redirect", "Failed to open input file C"));
-			if (dup2(fd, STDIN_FILENO) == -1)
-				return (error("redirect", "Failed to duplicate fd"));
-			close(fd);
-			while (data->tokens->heredoc[i] != NULL)
-			{
-				printf("%s\n", data->tokens->heredoc[i]);
-				i++;
-			}
-			free_array(data->tokens->heredoc);
-		}
+		if (data->tokens->h_action == true) // new code
+			open_and_fill_heredoc(data->tokens);
 		if (flag == 1)
 		{
 			exec_builtins(*data, data->tokens->args[data->i]);
@@ -59,7 +43,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 		free_nodes(data->env);
 		free(data->tmp->ex_arr);
 		close(fds[1]);
-		close(fds[0]);
+		// close(fds[0]);
 		exit(exit_code(0, 0));
 	}
 	data->tokens->h_action = false;

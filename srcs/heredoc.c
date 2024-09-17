@@ -3,16 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 04:44:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 08:16:14 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:32:53 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int parse_heredoc(char **args) // add more args
+int open_and_fill_heredoc(t_tokens *tokens)
+{
+	int fd;
+	int i;
+
+	i = 0;
+	fd = open(tokens->here_file, O_RDWR);
+	if (fd < 0)
+		return (error("heredoc", "Failed to open input file B"));
+	if (dup2(fd, STDIN_FILENO) == -1) // if dupe fails we aren't closing fd's
+		return (error("heredoc", "Failed to duplicate fd"));
+	close(fd);
+	while (tokens->heredoc[i] != NULL)
+	{
+		printf("%s\n", tokens->heredoc[i]);
+		i++;
+	}
+	free_array(tokens->heredoc);
+	return (0);
+}
+
+int parse_heredoc(char **args)
 {
 	int		i;
 
@@ -35,7 +56,7 @@ char **set_into_heredoc_array(t_data *data, char **heredoc, char *line)
 	char	**new_heredoc;
 
 	i = 0;
-	while (heredoc[i] != NULL)
+	while (heredoc[i] != 0)
 		i++;
 	new_heredoc = malloc(sizeof(char *) * (i + 2));
 	if (new_heredoc == NULL)
@@ -59,23 +80,12 @@ char **set_into_heredoc_array(t_data *data, char **heredoc, char *line)
 int create_file(t_tokens *tokens)
 {
 	int fd;
-	int i;
 
-	i = 0;
 	fd = 0;
-	// dprintf(2, "\t\tsteps into create file AS IT SHOULD\n");
 	if (tokens->here_file != NULL)
 		fd = open(tokens->here_file, O_WRONLY | O_CREAT | O_TRUNC, 0644); 
 	if (fd <= 0)
-		return (error("redirect", "Failed to open input file B"));
-	// if (dup2(fd, STDOUT_FILENO) == -1)
-	// 	return (error("redirect", "Failed to duplicate fd"));
-	// while (tokens->heredoc[i] != NULL)
-	// {
-	// 	printf("%s\n", tokens->heredoc[i]);
-	// 	i++;
-	// }
-	// free_array(tokens->heredoc);
+		return (error("heredoc", "Failed to open input file A"));
 	close(fd);
 	return (0);
 }
@@ -85,7 +95,8 @@ void heredoc_loop(t_data *data, t_tokens *tokens, char *eof)
 	char	*line = NULL;
 	int fd = 0;
 
-	tokens->h_action = true;
+	dprintf(2, "turning heredoc flag on\n");
+	// tokens->h_action = true;
 	tokens->here_file = ft_strdup("temp_heredoc_file_that_none_know_about");
 	tokens->heredoc = malloc(sizeof(char *) * 1);
 	tokens->heredoc[0] = NULL;
@@ -95,15 +106,13 @@ void heredoc_loop(t_data *data, t_tokens *tokens, char *eof)
 		line = get_next_line(fd);
 		if (line == NULL)
 			break ;
-		// printf("eof = |%s|, strlen = %zu\n", eof, ft_strlen(eof));
-		// printf("line = |%s|, strlen = %zu\n", line, ft_strlen(line));
 		if (ft_strncmp(line, eof, ft_strlen(eof)) == 0 && ft_strlen(eof) + 1 == ft_strlen(line))
 		{
-			line = free_string(line);
+			free_string(line);
 			break ;
 		}
 		tokens->heredoc = set_into_heredoc_array(data, tokens->heredoc, line);
-		line = free_string(line);
+		free_string(line);
 	}
 	create_file(data->tokens);
 }

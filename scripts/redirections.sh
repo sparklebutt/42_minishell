@@ -1,13 +1,11 @@
-#!/bin/bash
+ls -l | grep .txt > out
+cat out
 
-ls -l | grep .txt > test_files/out
-cat test_files/out
+echo "helloooooooooo" >> out
+cat < out
 
-echo "helloooooooooo" >> test_files/out
-cat < test_files/out
-
-cat < meow.txt > test_files/out
-cat test_files/out
+cat < meow.txt > out
+cat out
 
 grep mew <./test_files/meow.txt
 

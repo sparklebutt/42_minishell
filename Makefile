@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+         #
+#    By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/09/16 11:04:19 by araveala         ###   ########.fr        #
+#    Updated: 2024/09/17 08:49:25 by vkettune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

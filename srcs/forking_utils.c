@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/17 08:14:05 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:48:36 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ static int	malloc_array(t_data *data, int i)
 
 static int	fill_output_info(t_data *data, int i)
 {
-	if (is_redirect(data->tokens->args[data->i]) != 2)
-		data->tokens->action = true;	
 	/* frankly i dont understand this anymore myself  */
 	// neither do I, should we try making it make sense? 14.9
 	// we could try using the is_redir function for these??
@@ -53,6 +51,11 @@ static int	fill_output_info(t_data *data, int i)
 	// printf("\t\t\tdata->tokens->args[%d] = %s\n", data->i, data->tokens->args[data->i]);
 
 	// if there isn't anything in input_file
+
+
+	
+	if (is_redirect(data->tokens->args[data->i]) != 2)
+		data->tokens->action = true;
 	if (data->tokens->input_file != NULL) 
 	{
 		// if ex_arr[i - 1] == input_file, then move data->i
@@ -72,12 +75,6 @@ static int	fill_output_info(t_data *data, int i)
 	{
 		// printf("\t\t\tdata->tokens->here_file = %s\n", data->tokens->here_file);
 		// data->tmp->ex_arr[i] = data->tokens->here_file; // replace with heredoc tempfile name!!
-		data->i += 2;
-	}
-	else if (is_redirect(data->tokens->args[data->i]) == 3)  // added output redir aka > handling (not sure how or if it was handled before)
-	{
-		// printf("\t\t\tdata->tokens->output_files[%d] = %s\n", data->x, data->tokens->output_files[data->x]);
-		data->tmp->ex_arr[i] = data->tokens->output_files[data->x];
 		data->i += 2;
 	}
 	// --------------------------------------------

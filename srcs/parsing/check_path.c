@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 08:29:26 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:42:09 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 	if (all->tokens->args[x][0] != '/')
 	{
 		//printf("checking suffix before = %s\n", *suffix); /// after testing this is always null at this stage already
-		*suffix = free_string(*suffix); // in theory this would mean this free does nothing
+		// *suffix = free_string(*suffix); // in theory this would mean this free does nothing
 		//printf("checking suffix after freed = %s\n", *suffix);	
 		*suffix = ft_strjoin("/", all->tokens->args[x]);
 	}
