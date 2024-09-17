@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:04:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/13 13:14:44 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:19:52 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,9 @@ void	handle_arg(t_data *data, int arg_i, t_tokens *tokens)
 		env = env->next;
 		if (ft_strncmp(env->key, key, ft_strlen(key) + 1) == 0)
 		{
-			free_string(env->value);
+			env->value = free_string(env->value);
 			env->value = find_value(arg);
-			free_string(key);
+			key = free_string(key);
 			return ;
 		}
 	}

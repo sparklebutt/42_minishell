@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:02:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/13 11:07:18 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:17:17 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ int input_helper(t_tokens *tokens, int fd, int i)
 	close (fd);
 	if (ft_strncmp(tokens->args[i], "<<", 2) == 0)
 	{
-		free_string(tokens->here_file); // new free
+		tokens->here_file = free_string(tokens->here_file); // new free
 		tokens->here_file = ft_strdup(tokens->args[i + 1]);
 		tokens->here_check = 1;
 	}
 	else
 	{
-		free_string(tokens->input_file); // new free
+		tokens->input_file = free_string(tokens->input_file); // new free
 		tokens->input_file = ft_strdup(tokens->args[i + 1]);
 		tokens->redirect_in = 1;
 	}
@@ -48,7 +48,7 @@ int output_helper(t_tokens *tokens, int fd, int i, int x)
 {
 	if (ft_strncmp(tokens->args[i], ">>", ft_strlen(tokens->args[i]) + 1) == 0)
 	{
-		free_string(tokens->output_files[x]);
+		tokens->output_files[x] = free_string(tokens->output_files[x]);
 		// because we only want the last 1
 		tokens->output_files[x] = ft_strdup(tokens->args[i + 1]);	
 		tokens->redirect_append = 1;
@@ -59,7 +59,7 @@ int output_helper(t_tokens *tokens, int fd, int i, int x)
 	}
 	else
 	{
-		free_string(tokens->output_files[x]);
+		tokens->output_files[x] = free_string(tokens->output_files[x]);
 		// because we only want the last 1
 		tokens->output_files[x] = ft_strdup(tokens->args[i + 1]);
 		fd = open(tokens->output_files[x], O_WRONLY | O_CREAT | O_TRUNC, 0644);	//instead of args + 1

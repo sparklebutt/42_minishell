@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/16 13:07:00 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:28:18 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,10 @@ static char	**free_array_if(char **array)
 
 	word = 0;
 	while (array[word] != NULL)
-		free_string(array[word++]);
+	{
+		array[word] = free_string(array[word]);
+		word++;
+	}
 	free(array);
 	return (NULL);
 }

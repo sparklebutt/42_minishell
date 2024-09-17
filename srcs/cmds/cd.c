@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/14 06:41:50 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:18:07 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	change_dir(t_data *data, t_env *envs, char *temp)
 
 	temp2 = NULL;
 	tokens = data->tokens;
-	free_string(data->path);
+	data->path = free_string(data->path);
 	if (check_dir(temp) && chdir(temp) == 0
 		&& find_node(envs, "OLDPWD", data) == 1
 		&& find_node(envs, "PWD", data) == 1)
@@ -39,8 +39,8 @@ void	change_dir(t_data *data, t_env *envs, char *temp)
 		return ;
 	else
 		cmd_error(tokens->args[data->i], tokens->args[data->i + 1]);
-	free_string(temp2);
-	free_string(temp);
+	temp2 = free_string(temp2);
+	temp = free_string(temp);
 }
 
 void	ft_cd(t_data *data, t_env *envs)
@@ -58,17 +58,17 @@ void	ft_cd(t_data *data, t_env *envs)
 	}
 	temp = getcwd(NULL, 0);
 	if (temp != NULL)
-		free_string(data->path);
+		data->path = free_string(data->path);
 	if (temp != NULL)
 		data->path = ft_strdup(temp);
 	if (ft_strncmp(data->tokens->args[i + 1], "/", 1) != 0)
-		free_string(data->path);
+		data->path = free_string(data->path);
 	if (ft_strncmp(data->tokens->args[i + 1], "/", 1) != 0)
 		data->path = ft_strjoin(temp, "/");
-	free_string(temp);
+	temp = free_string(temp);
 	temp2 = ft_strdup(data->tokens->args[++i]);
 	temp = ft_strjoin(data->path, temp2);
-	free_string(temp2);
+	temp2 = free_string(temp2);
 	change_dir(data, envs, temp);
 }
 

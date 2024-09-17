@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/16 11:53:31 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:29:26 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 {
 	*cmd_len = ft_strlen(all->tokens->args[x]);
+	if (*cmd_len == 0)
+		return (0); // why continue at all after this ? 
 	if (all->tokens->args[x][0] == '.')
 		return (3);
 	
@@ -26,12 +28,14 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 		
 	if (all->tokens->args[x][0] != '/')
 	{
-		free_string(*suffix);
+		//printf("checking suffix before = %s\n", *suffix); /// after testing this is always null at this stage already
+		*suffix = free_string(*suffix); // in theory this would mean this free does nothing
+		//printf("checking suffix after freed = %s\n", *suffix);	
 		*suffix = ft_strjoin("/", all->tokens->args[x]);
 	}
-	if (*suffix == NULL || *cmd_len == 0)
+	if (*suffix == NULL)// || *cmd_len == 0)
 	{
-		free_string(*suffix);
+		//free_string(*suffix); // if suffix is null there is nothing to free // this removed an issue
 		return (0);
 	}
 	return (2);
@@ -40,7 +44,7 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len, t_data *all, int x)
 int	match(t_data *all, DIR *dir, char *suffix, int i)
 {
 	all->tmp->filename = ft_strjoin(all->tmp->array[i], suffix);
-	free_string(suffix);
+	suffix = free_string(suffix);
 	closedir(dir);
 	return (1);
 }
@@ -95,7 +99,7 @@ int	check_path(char *string, int divert, t_data *all, int x)
 	int		res;
 
 	cmd_len = 0;
-	suffix = NULL;
+	//suffix = NULL;
 	res = initial_checks_and_setup(&suffix, &cmd_len, all, x);
 	// printf("what is res 1? %d\n", res);
 	if (res == 3)

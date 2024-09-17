@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/16 12:53:02 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:24:18 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 			|| ft_strchr(data->tmp->exp_array[i], '\'') != NULL)
 			{
 				new = clean_quotes(data->tmp->exp_array[i], len, 0, 0);
-				free_string(data->tmp->exp_array[i]);
+				data->tmp->exp_array[i] = free_string(data->tmp->exp_array[i]);
 				data->tmp->exp_array[i] = new;
 			}
 			else
 			{
 				new = clean_quotes(data->tmp->exp_array[i], len, 0, 0);
-				free_string(data->tmp->exp_array[i]);
+				data->tmp->exp_array[i]= free_string(data->tmp->exp_array[i]);
 				data->tmp->exp_array[i] = new;
 			}
 		}
@@ -44,7 +44,7 @@ int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
 		{
 			
 			new = clean_quotes(data->tokens->args[i], len, 0, 0);
-			free_string(data->tokens->args[i]);
+			data->tokens->args[i] = free_string(data->tokens->args[i]);
 			data->tokens->args[i] = new;
 		}
 	}
@@ -151,21 +151,22 @@ int	handle_absolute_path(t_data *all, int x, char *path)
 	size_t	len;
 
 	len = find_len(all->tokens->args[x]);
-	free_string(path);
+	path = free_string(path);
 	path = ft_calloc(sizeof(char), len + 1);
 	path = ft_strncpy(path, all->tokens->args[x], len);
 	if (check_dir(path) == 0)
 	{
 		error("check dir", path);
-		free_string(path);
+		path = free_string(path);
 		return (0);
 	}
 	else
 	{
+		//free?
 		all->tmp->filename = all->tokens->args[x];
-		free_string(path);
+		path = free_string(path);
 		return (1);
 	}
-	free_string(path);
+	path = free_string(path);
 	return (0);
 }

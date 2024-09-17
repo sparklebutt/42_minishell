@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/14 05:17:53 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:20:28 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	ft_pwd(t_data *data, t_env *envs)
 	temp_path = getcwd(NULL, 0);
 	if (temp_path != NULL)
 	{
-		free_string(check);
-		free_string(data->path);
+		check = free_string(check);
+		data->path = free_string(data->path);
 		data->path = temp_path;
 	}
 	else if (temp_path == NULL)
@@ -39,7 +39,7 @@ int	ft_pwd(t_data *data, t_env *envs)
 			return (call_cmd_error("pwd", "OLDPWD", NULL, -1));
 	}
 	ft_printf("%s\n", data->path);
-	free_string(temp_path);
+	temp_path = free_string(temp_path);
 	return (0);
 }
 
@@ -50,7 +50,7 @@ t_env	*update_oldpwd(t_data *data, t_env *env, char *temp)
 	temp_env = data->env;
 	env = move_list(temp_env, "OLDPWD");
 	if (env->value != NULL)
-		free_string(env->value);
+		env->value = free_string(env->value);
 	env->value = ft_strdup(temp);
 	return (env);
 }
@@ -72,7 +72,7 @@ t_env	*fill_old_pwd(t_data *data, t_env *env, char *new_path)
 		return (call_env_error("cd", "OLDPWD"));
 	env = move_list(temp_env, "PWD");
 	if (env->value != NULL)
-		free_string(env->value);
+		env->value = free_string(env->value);
 	env->value = ft_strdup(new_path);
 	return (env);
 }

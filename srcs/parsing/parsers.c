@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/16 13:15:18 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:23:15 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,9 +165,9 @@ void	handle_expansion(t_data *data, int len, int i, char *new)
 		{
 			new = clean_quotes(data->tmp->exp_array[i], len, 0, 0);
 			tmp = look_if_expansions(data, data->env, new, 0);
-			free_string(data->tmp->exp_array[i]);
+			data->tmp->exp_array[i] = free_string(data->tmp->exp_array[i]);
 			data->tmp->exp_array[i] = ft_strdup((tmp));
-			free_string(tmp);
+			tmp = free_string(tmp);
 		}
 		else
 			data->tmp->exp_array[i] = look_if_expansions(data, data->env, data->tmp->exp_array[i], 0);
@@ -178,7 +178,7 @@ void	handle_expansion(t_data *data, int len, int i, char *new)
 		|| ft_strchr(tokens->args[i], '\'') != NULL)
 		{
 			new = clean_quotes(tokens->args[i], len, 0, 0);
-			free_string(tokens->args[i]);	// maybe not needed if we free inside already but it doesn't hurt, this fixed an error, vilja
+			tokens->args[i] = free_string(tokens->args[i]);	// maybe not needed if we free inside already but it doesn't hurt, this fixed an error, vilja
 			tokens->args[i] = look_if_expansions(data, data->env, new, 0);
 		}
 		else
@@ -190,7 +190,7 @@ int	clean_if_multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
 {
 	if (data->simple == false && tokens->dollar_count > 1)
 	{
-		free_string(tokens->args[i]);
+		tokens->args[i] = free_string(tokens->args[i]);
 		tokens->args[i] = array_to_string(data->tmp->exp_array);//ft_strdup(tmp);
 		data->simple = true;
 		free_array(data->tmp->exp_array); // MALLOCED VARIABLE
@@ -231,7 +231,7 @@ int	 no_dollar_handle(t_tokens *tokens, t_data *data, int i)
 {
 	if (ft_strlen(tokens->args[i]) == 1 && tokens->args[i][0] == '~') // some people say we don't need to handle this, but we do already?
 	{
-		free_string(tokens->args[i]);
+		tokens->args[i] = free_string(tokens->args[i]);
 		tokens->args[i] = replace_squiggly_line(data, data->env);
 	}
 	data->simple = true;

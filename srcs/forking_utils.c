@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/16 11:05:20 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:14:05 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	fill_output_info(t_data *data, int i)
 		// if ex_arr[i - 1] == input_file, then move data->i
 		if (ft_strncmp(data->tmp->ex_arr[i - 1],
 			data->tokens->input_file, ft_strlen(data->tokens->input_file)) == 0)	
-			data->i++;
+		data->i++;
 		else
 		{
 			// else put the "output" (I'm assuming) into this ex_arr[i]
@@ -72,7 +72,7 @@ static int	fill_output_info(t_data *data, int i)
 	{
 		// printf("\t\t\tdata->tokens->here_file = %s\n", data->tokens->here_file);
 		// data->tmp->ex_arr[i] = data->tokens->here_file; // replace with heredoc tempfile name!!
-		data->i += 1;
+		data->i += 2;
 	}
 	else if (is_redirect(data->tokens->args[data->i]) == 3)  // added output redir aka > handling (not sure how or if it was handled before)
 	{
@@ -130,13 +130,10 @@ int    set_array(t_data *data)
 		i++;
 		data->i++;
 	}
-	
 	while (data->tokens->args[data->i] != NULL && data->tokens->args[data->i][0] != '|')
 	{
 		fill_array(data, i);
 		i++;
-		if (i > 10)
-			exit(1);
 	}
 	return (i);
 }
@@ -163,11 +160,11 @@ char 	**set_env_array(t_data *data, int i, int x)
 		tmp_array[x] = ft_strjoin(key_full, temp2->value);
 		if (tmp_array[x] == NULL)
 		{
-			free_string(key_full);
+			key_full = free_string(key_full);
 			free_loop(tmp_array, x);
 			break ;
 		}
-		free_string(key_full);
+		key_full = free_string(key_full);
 		x++;
 		temp2 = temp2->next;
 	}

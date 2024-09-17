@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:56:54 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/13 13:09:53 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:20:53 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	free_node(t_env *env)
 {
-	free_string(env->key);
-	free_string(env->value);
+	env->key = free_string(env->key);
+	env->value = free_string(env->value);
 	free(env);
 }
 

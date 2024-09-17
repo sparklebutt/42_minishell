@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/16 09:44:03 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/17 08:16:23 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	minishell(t_data *data)
 			//g_interactive_mode = 1; // we are in interactive mode
 		}
 		//data->i = 0;
-		free_string(rl);
+		rl = free_string(rl);
 		free_array(data->tokens->args);
 		//free_array(data->tokens->output_files); // we are putting something non malloced in here, OR freeing something before this, by vilja
 		free(data->tokens->heredoc); // this needs to be freed somewhere when it is filled properly, needs to be tested
