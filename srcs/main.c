@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 14:40:49 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 11:54:27 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	minishell(t_data *data)
 			break ;
 		if (rl)
     {
-			//printf("before collect cmd\n");
 			//g_interactive_mode = 0; // we are not in interactive mode
 			if (collect_cmd_array(data, data->tokens, rl) == 0)
 				handle_line(*data, data->tokens);
@@ -47,7 +46,10 @@ void	minishell(t_data *data)
 		}
 		rl = free_string(rl);
 		free_array(data->tokens->args);
-		free(data->tokens->heredoc); // this needs to be freed somewhere when it is filled properly, needs to be tested
+		free(data->tokens->heredoc);
+		free_string(data->tokens->input_file);
+		free_array(data->tokens->output_files);
+		data->tokens->output_files = NULL;
 	}
 	ft_printf("exit\n");
 }

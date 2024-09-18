@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 04:44:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 13:28:20 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 10:57:17 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char **set_into_heredoc_array(t_data *data, char **heredoc, char *line)
 	}
 	ft_strlcpy(line, line, ft_strlen(line));
 	if (ft_strchr(line, '$') != NULL)
-		new_heredoc[i] = look_if_expansions(data, data->env, ft_strdup(line), 0);
+		new_heredoc[i] = look_if_expans(data, data->env, ft_strdup(line), 0);
 	else
 		new_heredoc[i] = ft_strdup(line);
 	new_heredoc[i + 1] = NULL;

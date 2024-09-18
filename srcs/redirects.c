@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 07:49:23 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/18 10:13:44 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,14 @@ int is_redirect(char *arg)
 }
 /*~~ to collect redirect count as well as collect how many infiles and outfiles we need
 , since each pipe will value only 1 ~~*/
-int create_redir_array(t_tokens *tokens)
+int	create_redir_array(t_tokens *tokens)
 {
-	/*~CHANGE ~*/
-	// incase we want to create a input array also
-	// print_arr(tokens->args, "args");
 	if (tokens->out_array_count > 0)
 	{
-		// printf("\t\t\tDO I MALLOC AN ARRAY???\n");
-		free_array(tokens->output_files); // new free
-		tokens->output_files = ft_calloc(sizeof(char *), tokens->out_array_count + 1); // we do need + 1
+		free_array(tokens->output_files);
+		tokens->output_files = ft_calloc(sizeof(char *), tokens->out_array_count + 1);
 		if (tokens->output_files == NULL)
-		{
-			printf("malloc error\n");
 			return (-1);
-		}
 	}
 	return (0);
 }
@@ -74,18 +67,11 @@ int	redirect_collector(t_tokens *tokens, char **array, int i)
 		if (is_char_redirect(tokens->args[i][0]) != 0)
 		{
 			if (tokens->args[i + 1] == NULL)
-			{
-				error("synntax error", "redir needs a file"); //exit_code
-				return (-1);
-			}
+				return (not_perror("synntax error", NULL, "redirect needs a file A"), -1);
 			if (tokens->args[i + 1] != NULL)
 			{
 				if (tokens->args[i + 1][0] == '|' || tokens->args[i + 1][0] == '\0' || is_char_redirect(tokens->args[i + 1][0]) > 0)
-				{
-					error("synntax error", "redir needs a file");
-					return (-1);
-				}
-
+					return (not_perror("synntax error", NULL, "redirect needs a file B"), -1);
 			}
 		}
 		// eg echo > echo > > echo > |
@@ -130,11 +116,9 @@ int	redirect_collector(t_tokens *tokens, char **array, int i)
 
 int	redirect_helper(t_tokens *tokens, int x)
 {
-	int		fd;
+	int	fd;
 
-	// dprintf(2, "\t\tsteps into redirert helper\n");
 	fd = 0;
-	// dprintf(2, "dup file\n");
 	if (tokens->redirect_append)
 		fd = open(tokens->output_files[x], O_WRONLY | O_CREAT | O_APPEND , 0644);
 	else if (tokens->redirect_out)
@@ -143,7 +127,7 @@ int	redirect_helper(t_tokens *tokens, int x)
 		return (error("redirect", "Failed to open input file A"));
 	if (dup2(fd, STDOUT_FILENO) == -1)
 	{
-		close(fd); //maybe
+		close(fd);
 		return (error("redirect", "Failed to duplicate fd"));
 	}
 	close(fd);
@@ -155,18 +139,14 @@ int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 	int x;
 	int fd;
 	int here_i;
-	//int temp_index;
 	
 	fd = 0;
 	x = 0;
 	here_i = 0;
-	//temp_index = 0;
 	tokens->redirect_out = false;
 	/*super good spot to reset all redirection things here */
 	while (args[i] != NULL)
 	{
-		
-		//printf("result = %d\n", is_char_redirect(tokens->args[i][0]));
 		if (tokens->redirect_out == true && args[i][0] == '|')
 		{
 			x++;
@@ -174,12 +154,9 @@ int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 		}
 		if (ft_strncmp(tokens->args[i], "<<", 2) == 0)
 		{
-			heredoc_loop(data, tokens, tokens->args[i + 1]); // run this function
-			// create file and move whole of tokens->heredoc there, each divided by a newline
-			while(tokens->heredoc[here_i] != 0) // for testing
-			{
+			heredoc_loop(data, tokens, tokens->args[i + 1]);
+			while (tokens->heredoc[here_i] != 0) // for testing
 				here_i++;
-			}
 			// delete temp file at the end of minishell loop (or earlier e.g. end of forks, find place)
 			i++;
 		}
@@ -188,13 +165,13 @@ int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 			input_helper(tokens, fd, i);
 			i++;
 		}
-		// what if args[i + 1] == NULL
 		else if (args[i + 1] != NULL && (strcmp(args[i], ">>") == 0 || strcmp(args[i], ">") == 0))
 		{
 			output_helper(tokens, fd, i, x);
 			i++;
 		}
-		i++;
+		if (args[i] != NULL)
+			i++;
 	}
 	if (tokens->out_array_count > 0)
 		tokens->redirect_out = 1;

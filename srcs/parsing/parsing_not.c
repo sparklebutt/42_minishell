@@ -3,140 +3,90 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 07:47:09 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/18 11:59:04 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	clean_rest_of_quotes(t_data *data, int i, int len)// int x)
+int	check_extra_special_echo_case(t_tokens *tokens)
 {
-	char *new;
+	int		i;
+	int		x;
+	char	*temp;
 
-	new = NULL;
-	
-	if (data->simple == false)
+	x = 0;
+	i = 0;
+	temp = NULL;
+	while (tokens->args[i] != NULL)
 	{
-		if (data->tmp->exp_array && data->tmp->exp_array[i])
+		if (tokens->args[i][0] == '"' || tokens->args[i][0] == '\'')
 		{
-			if (ft_strchr(data->tmp->exp_array[i], '"') != NULL
-			|| ft_strchr(data->tmp->exp_array[i], '\'') != NULL)
+			while (tokens->args[i][x] && (tokens->args[i][x] == '"'
+				|| tokens->args[i][x] == '\''))
+				x++;
+			if (tokens->args[i][x] == '|' || is_char_redirect(tokens->args[i][x]) > 0)
 			{
-				new = clean_quotes(data->tmp->exp_array[i], len, 0, 0);
-				data->tmp->exp_array[i] = free_string(data->tmp->exp_array[i]);
-				data->tmp->exp_array[i] = new;
+				x = ft_strlen(tokens->args[i])  + 2;
+				temp = ft_calloc(x, sizeof(char));
+				if (temp == NULL)
+				{
+					// malloc fail exit_code and clean.
+					return (-1); //for now , should be ft-exit
+				}
+				temp[0] = 0x06;
+				ft_strcpy(temp + 1, tokens->args[i]);
+				free_string(tokens->args[i]);
+				tokens->args[i] = ft_strdup(temp);
+				free_string(temp);
+				i++;
+				x = 0;
+				continue;
 			}
-			else
-			{
-				new = clean_quotes(data->tmp->exp_array[i], len, 0, 0);
-				data->tmp->exp_array[i]= free_string(data->tmp->exp_array[i]);
-				data->tmp->exp_array[i] = new;
-			}
+			i++;
+			continue;
 		}
-	}
-	else if (data->tokens->args[i] != NULL)
-	{
-		if (ft_strchr(data->tokens->args[i], '"') != NULL
-		|| ft_strchr(data->tokens->args[i], '\'') != NULL)
-		{
-			
-			new = clean_quotes(data->tokens->args[i], len, 0, 0);
-			data->tokens->args[i] = free_string(data->tokens->args[i]);
-			data->tokens->args[i] = new;
-		}
+		i++;
 	}
 	return (0);
 }
 
 int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
-	// printf("IT IS DOING IT ONCE\n");
 	tokens->array_count = total_words_c(string, ' ', data);
 	tokens->args = ft_split_adv(string, ' ', data);
 	if (tokens->args == NULL)
 		return (1);
-	if (check_open_quotes(tokens, 0, 0) == -1)
-	{
-		printf("syntax error open quotes\n");
+	if (check_open_quotes(tokens, 0, 0) == -1
+		|| redirect_collector(tokens, tokens->args, 0) == -1)
 		return (1);
-	}
-	if (redirect_collector(tokens, tokens->args, 0) == -1)
-	{
-		printf("redir syntax error printf\n");
-		return (1);
-	}
-	if (expansion_parser(tokens, data) == -1)
-	{
-		// free up to this point
-		return (1);
-	}
+	expansion_parser(tokens, data);
 	pipe_collector(tokens, tokens->args);
-	// can we put all of the 3 redir unctions and their if statements into one sub function that handles those??? idk just an idea
-	// ----------------------------------------------------------------------
-	
-	// printf("BEFORE CREATE REDIR ARRAY\n");
-	if (tokens->redirect_count > 0 && create_redir_array(tokens) == -1) // only mallocing
-	{
-		printf("error in create redir\n");
-		// free up to this point
+	if (tokens->redirect_count > 0 && create_redir_array(tokens) == -1)
+		return (not_perror("redirect", NULL, "malloc fail"), 1);
+	if (parse_redirections(data, tokens, tokens->args, 0) == -1)
 		return (1);
-	}
-	if (parse_redirections(data, tokens, tokens->args, 0) == 1)
-	{
-		// printf("following process\n");
-		return (1);
-	}
-	// ----------------------------------------------------------------------
 	if (tokens->args == NULL)
-	{
-		ft_printf("malloc fail in parsing , making of array of args\n");
-		return(1);
-	}
+		return (not_perror("parsing", NULL, "malloc fail"), 1);
 	return (0);
-}
-
-int	null_check(char *str1, t_env *str2, char *str3) // might not be needed
-{
-	if (str1 == NULL || str2 == NULL)
-	{
-		if (str1 == NULL)
-			ft_printf("ENVS KEY NULL \n");
-		else if (str2 == NULL)
-			ft_printf("ENVS IS NULL\n");
-		return (0);
-	}
-	if (str3 == NULL)
-	{
-		ft_printf("STRING IS NULL");
-		return (-1);
-	}
-	return (1);
 }
 
 int	find_passage(t_data *all, char *string, int divert)
 {
 	if (null_check(all->env->key, all->env, string) != 1)
-	{
-		printf("\t\tret - 1 null check\n");
 		return (-1);
-	}
-	if (find_node(all->env, string, all) == 1 && all->tmp->env_line != NULL && divert == 2)
+	if (find_node(all->env, string, all) == 1
+		&& all->tmp->env_line != NULL && divert == 2)
 	{
 		if (check_dir(all->tmp->env_line) == 0)
-		{
-			printf("\t\tret - 1 cechk dir stuff\n");
-			return (free_extra_return_function(all->tmp->env_line, -1));
-		}
+			return (-1);
 		return (1);
 	}
 	if (pipe_fork(all) == -1)
-	{
-		// printf("\t\tret - 1 send to forks\n"); // below as in here !!!
 		return (-1);
-	}
 	return (1);
 }
 
@@ -170,7 +120,6 @@ int	handle_absolute_path(t_data *all, int x, char *path)
 	}
 	else
 	{
-		//free?
 		all->tmp->filename = all->tokens->args[x];
 		path = free_string(path);
 		return (1);

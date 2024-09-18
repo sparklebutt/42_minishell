@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_parsing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 15:55:36 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/16 12:33:56 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/18 10:17:21 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,89 +58,70 @@ int	check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count)
 			x++;
 		}
 		if (s_quote_count % 2 != 0 || d_quote_count % 2 != 0)
-		{
-			// REWRITE ERROR
-			printf("syntax error, opened quotes\n"); // exit code+  
-			return (-1);
-		}
+			return (not_perror("syntax error", NULL, "open quotes"), -1);
 	}
 	return (1);
 }
 
-/*~~ added an extra check so that $symbol wuld not be copied over if its outside quotes,
-need to check that this is ok for other cases but eg $"USER" should not print the $symbol
-may need to add other symbols it is commenetd out due to causing problems with eg $HOME""
-a fucntion is required to handle these cases , loop_quotes could potentially be re-utalized~~*/
-
-/*void	clean_quotes_helper(int *x, int *y, char *string, char *new)
+void	help_clean_quotes(char *new, char *string, int *x, int *y)
 {
-	//
-	printf("string = %s\n", string);	
-	printf("x in = %d\n", (*x));	
 	if (string[*x] == '\'')
 	{
-		printf("test1\n");
 		(*x)++;
-		printf("testa\n");	
 		while (string[*x] && string[*x] != '\'')
-		{
-			printf("testb\n");	
-			new[*y++] = string[*x++];	
-			printf("testb = c =  %c\n", string[*x]);	
-			//(*x)++;
-		}
+			new[(*y)++] = string[(*x)++];
 	}
 	else if (string[*x] == '"')
 	{
-		printf("test2\n");	
 		(*x)++;
 		while (string[*x] && string[*x] != '"')
-		{
-			new[*y++] = string[*x++];
-			printf("testb = c =  %c\n", string[*x]);	
-			//(*x)++;
-		}
+			new[(*y)++] = string[(*x)++];
 	}
-	printf("x out = %d\n", (*x));	
-}*/
+}
 
 char	*clean_quotes(char *string, int len, int x, int y)
 {
 	char	*new;
-	int 	full_len;
-	new = NULL;
+	int		full_len;
 
 	full_len = ft_strlen(string);
-	new = ft_calloc(full_len + 1, 1); // MALLOCED VARIABLE
+	new = ft_calloc(full_len + 1, 1);
 	if (new == NULL)
 		return (NULL);
-	if (len == 0) // this was probably a stupidity check?
+	if (len == 0)
 		len = ft_strlen(string);
 	while (x <= len)
 	{
-		if (string[x] == '\'')
-		{
-			/*printf("x into = %d\n", x);
-			if (string[x] == '\'' || string[x] == '"')
-				clean_quotes_helper(&x, &y, string, new);
-			printf("x after = %d\n", x);*/
-			x++;
-			while (string[x] && string[x] != '\'') //x < len && 
-				new[y++] = string[x++];
-		}
-		else if (string[x] == '"')
-		{
-			x++;
-			while (string[x] && string[x] != '"')
-				new[y++] = string[x++];
-		}
+		help_clean_quotes(new, string, &x, &y);
 		if (string[x] == '$' && (string[x + 1] == '\'' || string[x + 1] == '"'))
 			x++;
 		if (string[x] != '\'' && string[x] != '"')
 			new[y++] = string[x];
 		x++;
 		if (x == len)
-			break;
+			break ;
 	}
 	return (*&new);
+}
+
+// should work without quote check, but if it breaks the add it back
+int	clean_rest_of_quotes(t_data *data, int i, int len)
+{
+	char	*new;
+
+	new = NULL;
+	if (data->simple == false
+		&& data->tmp->exp_array && data->tmp->exp_array[i])
+	{
+		new = clean_quotes(data->tmp->exp_array[i], len, 0, 0);
+		data->tmp->exp_array[i] = free_string(data->tmp->exp_array[i]);
+		data->tmp->exp_array[i] = new;
+	}
+	else if (data->tokens->args[i] != NULL)
+	{
+		new = clean_quotes(data->tokens->args[i], len, 0, 0);
+		data->tokens->args[i] = free_string(data->tokens->args[i]);
+		data->tokens->args[i] = new;
+	}
+	return (0);
 }

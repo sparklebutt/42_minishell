@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:12:32 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/13 13:14:03 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 11:00:37 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,54 @@ char	*ft_strtrim_front(char *s1, char set)
 	while (ft_strchr(&s1[i], set))
 	{
 		if (s1[i] == '\0')
-				return (NULL);
+			return (NULL);
 		i++;
 	}
 	trimmed_str = ft_substr(s1, 0, i - 1);
 	if (trimmed_str == NULL)
 		return (NULL);
 	return (trimmed_str);
+}
+
+/*~~ using this to return a dollar count instead of using strchr so we
+can redirect the expansion parser based on if the token comes in as one
+big string instead of seperate tokens. Since the out put needs to be 
+one whole string too, this was easier than other options ~~*/
+void	dollar_counter(char *string, t_tokens *tokens)
+{
+	int	i;
+	
+	i = 0;
+	tokens->dollar_count = 0;
+	while (string[i])
+	{
+		if (string[i] == '$')
+			tokens->dollar_count++;
+		i++;
+	}
+}
+
+int	check_next(char *str, size_t len)
+{
+	if (str == NULL && len == 1)
+		return (1);
+	return (0);
+}
+
+int	null_check(char *str1, t_env *str2, char *str3)
+{
+	if (str1 == NULL || str2 == NULL)
+	{
+		if (str1 == NULL)
+			ft_printf("ENVS KEY NULL \n");
+		else if (str2 == NULL)
+			ft_printf("ENVS IS NULL\n");
+		return (0);
+	}
+	if (str3 == NULL)
+	{
+		ft_printf("STRING IS NULL");
+		return (-1);
+	}
+	return (1);
 }

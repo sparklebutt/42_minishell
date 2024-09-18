@@ -6,33 +6,27 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:11:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 12:02:05 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 08:09:03 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_exit(t_data *data, char *cmd, t_tokens *tokens)
+void	ft_exit(t_data *data, char *cmd, t_tokens *tokens)
 {
-	// t_data *data;
-	(void)data;
-	// t_env *envs;
-	char *temp;
+	char	*temp;
 
+	(void)data;
 	temp = NULL;
-	// envs = data->env;
 	ft_printf("exit\n");
 	if (tokens->args[1] != NULL && ft_strchr(tokens->args[1], '$') != 0)
 	{
-		// get $key from tokens->args[1]
-		// and replace that value into tokens->args[1]
 		if (temp == NULL)
 		{
 			temp = ft_strdup(tokens->args[1]);
 			temp = ft_strchr(tokens->args[1], '$');
 		}
 	}
-	// add into envs $?
 	if (tokens->array_count > 1)
 	{
 		if (tokens->args[1] != NULL && ft_atoi(tokens->args[1]) == 0)
@@ -40,10 +34,9 @@ int ft_exit(t_data *data, char *cmd, t_tokens *tokens)
 		else if (tokens->array_count > 2)
 			cmd_error(cmd, NULL);
 	}
-	// cmd = free_string(cmd);
+	// cmd = free_string(cmd); // maybe needed
 	free_array(tokens->args);
 	free_nodes(data->env);
 	free_array(tokens->output_files);
-	exit(0);
-	return (1);
+	exit(exit_code(0, 0));
 }

@@ -6,18 +6,11 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 12:50:16 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 08:21:15 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	to_home(t_data *data, t_env *envs)
-{
-	find_passage(data, "HOME", 2);
-	if (chdir(data->tmp->env_line) == 0)
-		envs = fill_old_pwd(data, envs, data->tmp->env_line);
-}
 
 void	change_dir(t_data *data, t_env *envs, char *temp)
 {
@@ -43,9 +36,9 @@ void	change_dir(t_data *data, t_env *envs, char *temp)
 	temp = free_string(temp);
 }
 
-int is_slash(char *str)
+int	is_slash(char *str)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (str[i] && str[i] == '/')
@@ -55,28 +48,15 @@ int is_slash(char *str)
 	return (0);
 }
 
-void	ft_cd(t_data *data, t_env *envs)
+void	handle_cd_input(t_data *data, t_env *envs, int i, char *temp)
 {
-	char	*temp;
 	char	*temp2;
-	int		i;
 
-	i = data->i;
-	if (ft_strncmp(data->tokens->args[i], "cd", 3) == 0
-		&& data->tokens->args[i + 1] == NULL)
+	if (ft_strncmp(data->tokens->args[i + 1], "/", 1) != 0)
 	{
-		to_home(data, envs);
-		return ;
-	}
-	temp = getcwd(NULL, 0);
-	if (temp != NULL)
 		data->path = free_string(data->path);
-	if (temp != NULL)
-		data->path = ft_strdup(temp);
-	if (ft_strncmp(data->tokens->args[i + 1], "/", 1) != 0)
-		data->path = free_string(data->path);
-	if (ft_strncmp(data->tokens->args[i + 1], "/", 1) != 0)
 		data->path = ft_strjoin(temp, "/");
+	}
 	temp = free_string(temp);
 	temp2 = ft_strdup(data->tokens->args[++i]);
 	if (is_slash(temp2) == 0)
@@ -85,37 +65,29 @@ void	ft_cd(t_data *data, t_env *envs)
 		temp2 = free_string(temp2);
 		change_dir(data, envs, temp);
 	}
-	else if (is_slash(temp2) == 1)
+	else
 		change_dir(data, envs, temp2);
 }
 
-int	check_file(char *str)
+void	ft_cd(t_data *data, t_env *envs)
 {
-	if (access(str, X_OK) == -1)
+	char	*temp;
+	int		i;
+
+	i = data->i;
+	if (ft_strncmp(data->tokens->args[i], "cd", 3) == 0
+		&& data->tokens->args[i + 1] == NULL)
 	{
-		// printf("access not ok WHY?????\n");
-		return (1);
+		find_passage(data, "HOME", 2);
+		if (chdir(data->tmp->env_line) == 0)
+			envs = fill_old_pwd(data, envs, data->tmp->env_line);
+		return ;
 	}
-	// printf("everything OK\n");
-	return (0);
-}
-
-int	check_dir(char *str)
-{
-	struct dirent		*dp;
-	DIR					*test;
-
-	//printf("string should be path not cmd = %s\n", str);
-	test = NULL;
-	if (access(str, X_OK) == -1)
-		return (0);
-	else
-		test = opendir(str);
-	if (test == NULL)
-		return (0);
-	dp = readdir(test);
-	if (dp == NULL)
-		return (closedir(test), 0);
-	closedir(test);
-	return (1);
+	temp = getcwd(NULL, 0);
+	if (temp != NULL)
+	{
+		data->path = free_string(data->path);
+		data->path = ft_strdup(temp);
+	}
+	handle_cd_input(data, envs, i, temp);
 }

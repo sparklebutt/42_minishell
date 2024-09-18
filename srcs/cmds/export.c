@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:04:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 14:39:21 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 08:03:18 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	export_syntax_check(char *string)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (ft_strchr(string, '=') == NULL || ft_isalpha(string[0]) == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 07:44:23 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/18 11:21:55 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,13 +145,13 @@ int		find_node(t_env *envs, char *key, t_data *data); // does node with x key ex
 
 // variable expansions
 char *replace_expansion(t_data *data, t_env *envs, char *arg, int i);
-char	*look_if_expansions(t_data *data, t_env *envs, char *arg, int flag);
+char	*look_if_expans(t_data *data, t_env *envs, char *arg, int flag);
 
 // CMDS - - - - - - - - -
 void	ft_unset(t_env *env, char *key_name);
 int		ft_pwd(t_data *data, t_env *envs);
 t_env	*fill_old_pwd(t_data *data, t_env *env, char *temp_path);
-int		ft_exit(t_data *data, char *cmd, t_tokens *tokens); 
+void	ft_exit(t_data *data, char *cmd, t_tokens *tokens); 
 void	ft_cd(t_data *data, t_env *envs);
 void	ft_echo(t_data *data, char **args); //t_data *data,
 void	ft_env(t_data *data);
@@ -222,7 +222,7 @@ int		clean_rest_of_quotes(t_data *data, int i, int len);
 int		redirect_helper(t_tokens *tokens, int x);
 int 	create_redir_array(t_tokens *tokens);
 void		dollar_counter(char *string, t_tokens *tokens);
-char	**ft_split_expansions(t_tokens *tokens, char const *s); // 
+char	**ft_split_expansions(t_tokens *tokens, char const *s);
 int		ft_count_exp_array(const char *s);
 int		check_file(char *str);
 
@@ -234,9 +234,21 @@ int create_file(t_tokens *tokens);
 void reset_signals();
 void	handle_sigquit();
 int	find_len(char *str);
+char	*new_str(char *str, char *value, int start, size_t end);
+char	*replace_exitcode(char *arg, int start);
 //at 79 functions, lets aim for 69
 
 // tester fucntions 
 int print_arr(char **array, char *array_name);
 int open_and_fill_heredoc(t_tokens *tokens);
+bool	confirm_expansion(char *string, int len, int x);
+bool	set_check(char *string, bool ver, int *x, char c);
+int	 no_dollar_handle(t_tokens *tokens, t_data *data, int i);
+int	multi_dollar_handle(t_data *data, t_tokens *tokens, int i);
+int	clean_if_multi_dollar_handle(t_data *data, t_tokens *tokens, int i);
+int	check_next(char *str, size_t len);
+void	dollar_counter(char *string, t_tokens *tokens);
+void	handle_expansion(t_data *data, int len, int i, char *new);
+int	null_check(char *str1, t_env *str2, char *str3);
+void simple_flagged(t_data *data, char *new, int len, int i);
 #endif

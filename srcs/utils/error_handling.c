@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 18:24:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 08:24:56 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/18 08:45:37 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int		exit_code(int flag, int num)
-{
-	static int error_code = 0;
-	if (flag) 
-	{
-		// printf("\t\tsetting error code to = %d\n" ,num);
-		error_code = num;
-	}// not 0
-	
-	return (error_code);
-}
 
 void	not_perror(char *cmd, char *arg, char *msg)
 {
@@ -35,7 +23,7 @@ void	not_perror(char *cmd, char *arg, char *msg)
 	}
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(msg, 2);
-	exit_code(1,1);
+	exit_code(1, 1);
 }
 
 int	call_cmd_error(char *cmd, char *arg, char *msg, int ret_value)

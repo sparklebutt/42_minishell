@@ -3,19 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 08:20:28 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/18 08:21:48 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	path_is_null(t_data *data, t_env *envs, char *check)
+{
+	if (check != NULL)
+	{
+		check = free_string(check);
+		envs = move_list(envs, "OLDPWD");
+		if (envs->value != NULL)
+			data->path = ft_strdup(envs->value);
+		else
+			return (call_cmd_error("pwd", "OLDPWD", NULL, -1));
+	}
+	else
+		return (call_cmd_error("pwd", "OLDPWD", NULL, -1));
+	return (0);
+}
+
 int	ft_pwd(t_data *data, t_env *envs)
 {
 	char	*temp_path;
-	char *check;
+	char	*check;
 
 	check = find_key("OLDPWD");
 	temp_path = getcwd(NULL, 0);
@@ -27,16 +43,8 @@ int	ft_pwd(t_data *data, t_env *envs)
 	}
 	else if (temp_path == NULL)
 	{
-		if (check != NULL)
-		{
-			envs = move_list(envs, "OLDPWD");
-			if (envs->value != NULL)
-				data->path = ft_strdup(envs->value);
-			else
-				return (call_cmd_error("pwd", "OLDPWD", NULL, -1));
-		}
-		else
-			return (call_cmd_error("pwd", "OLDPWD", NULL, -1));
+		if (path_is_null(data, envs, check) == 1)
+			return (1);
 	}
 	ft_printf("%s\n", data->path);
 	temp_path = free_string(temp_path);
