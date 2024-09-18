@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/17 14:09:45 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 07:47:09 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,11 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 		printf("syntax error open quotes\n");
 		return (1);
 	}
-	redirect_collector(tokens, tokens->args, 0);
+	if (redirect_collector(tokens, tokens->args, 0) == -1)
+	{
+		printf("redir syntax error printf\n");
+		return (1);
+	}
 	if (expansion_parser(tokens, data) == -1)
 	{
 		// free up to this point

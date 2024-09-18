@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 16:06:25 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 07:44:23 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int		check_path(char *string, int divert, t_data *all, int x);
 int		find_passage(t_data *all, char *string, int divert);
 int		parse_redirections(t_data *data, t_tokens *tokens, char **args, int i); // t_data *data;/heloooooooooooooooooooo
 void	apply_redirections(t_data *data, t_tokens *tokens, int x);
-void	redirect_collector(t_tokens *tokens, char **array, int i);
+int	redirect_collector(t_tokens *tokens, char **array, int i);
 int is_redirect(char *arg);
 
 // ENV - - - - - - - - -

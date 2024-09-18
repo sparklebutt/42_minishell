@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 14:09:23 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 07:49:23 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int create_redir_array(t_tokens *tokens)
 }
 /*~~ this has been over complicated for te fear  of needing this data 
 i do not think we will need it but its some of the easiest to remove in last moments~~*/
-void	redirect_collector(t_tokens *tokens, char **array, int i)
+int	redirect_collector(t_tokens *tokens, char **array, int i)
 {
 	int out_count = 0;
 	int in_count = 0;
@@ -70,6 +70,25 @@ void	redirect_collector(t_tokens *tokens, char **array, int i)
 	tokens->out_array_count = 0;
 	while (array[i])
 	{
+		//syntax check functn?
+		if (is_char_redirect(tokens->args[i][0]) != 0)
+		{
+			if (tokens->args[i + 1] == NULL)
+			{
+				error("synntax error", "redir needs a file"); //exit_code
+				return (-1);
+			}
+			if (tokens->args[i + 1] != NULL)
+			{
+				if (tokens->args[i + 1][0] == '|' || tokens->args[i + 1][0] == '\0' || is_char_redirect(tokens->args[i + 1][0]) > 0)
+				{
+					error("synntax error", "redir needs a file");
+					return (-1);
+				}
+
+			}
+		}
+		// eg echo > echo > > echo > |
 		if (array[i][0] == '>' || (array[i][0] == '>' && array[i][1] == '>'))
 		{
 			if (ft_strlen(array[i]) > 2)//(len > 2)
@@ -106,6 +125,7 @@ void	redirect_collector(t_tokens *tokens, char **array, int i)
 	if (out_count > 0)
 		tokens->out_array_count += 1;	
 	tokens->redirect_count = out_count + in_count;
+	return (0);
 }
 
 int	redirect_helper(t_tokens *tokens, int x)
@@ -135,14 +155,18 @@ int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 	int x;
 	int fd;
 	int here_i;
+	//int temp_index;
 	
 	fd = 0;
 	x = 0;
 	here_i = 0;
+	//temp_index = 0;
 	tokens->redirect_out = false;
 	/*super good spot to reset all redirection things here */
 	while (args[i] != NULL)
 	{
+		
+		//printf("result = %d\n", is_char_redirect(tokens->args[i][0]));
 		if (tokens->redirect_out == true && args[i][0] == '|')
 		{
 			x++;
