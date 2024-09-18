@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 08:18:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/12 15:45:52 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 13:48:51 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	fancy_strlen(char const *s, char c, int i)
+int	fancy_strlen_a(char const *s, char c, int i)
 {
 	while (s[i] != c && s[i])
 		i++;
@@ -33,7 +33,7 @@ size_t	total_words(char const *s, char c)
 		else if (s[i] != c)
 		{
 			words++;
-			i += fancy_strlen(s, c, i) - i;
+			i += fancy_strlen_a(s, c, i) - i;
 		}
 	}
 	return (words);
@@ -68,7 +68,7 @@ char	**ft_split(char const *s, char c)
 			i++;
 		else
 		{
-			word_len = fancy_strlen(s, c, i) - i;
+			word_len = fancy_strlen_a(s, c, i) - i;
 			array[word] = ft_substr(s, i, word_len); // MALLOCED VARIABLE
 			if (array[word] == NULL)
 				return (free_array_if(array));

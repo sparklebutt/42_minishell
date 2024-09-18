@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_expansions.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:33:28 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 13:34:01 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:42:13 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	lol(int *save, int *sublen)
+void	lol(int *x, int *y)
 {
-	(*save)++;
-	(*sublen)++;
+	(*x)++;
+	(*y)++;
 }
 
 int	ft_count_exp_array(const char *s)

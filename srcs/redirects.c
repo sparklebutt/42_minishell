@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 10:13:44 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 15:39:06 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*~~ needed a fucntion that does the same thing as is_redirect but took a char
 and returns the count, it is possible i over thank it ~~*/
-int is_char_redirect(char arg)
+int	is_char_redir(char arg)
 {
 	if (arg == '>' && arg + 1 == '>')
 		return (2);
@@ -27,7 +27,7 @@ int is_char_redirect(char arg)
 	return (0);
 }
 
-int is_redirect(char *arg)
+int	is_redirect(char *arg)
 {
 	if ((arg[0] == '>') || ft_strncmp(arg, ">>", 2) == 0)
 		return (3);
@@ -37,8 +37,9 @@ int is_redirect(char *arg)
 		return (1);
 	return (0);
 }
-/*~~ to collect redirect count as well as collect how many infiles and outfiles we need
-, since each pipe will value only 1 ~~*/
+
+/*~~ to collect redirect count as well as collect how many infiles and outfiles
+ we need, since each pipe will value only 1 ~~*/
 int	create_redir_array(t_tokens *tokens)
 {
 	if (tokens->out_array_count > 0)
@@ -64,13 +65,13 @@ int	redirect_collector(t_tokens *tokens, char **array, int i)
 	while (array[i])
 	{
 		//syntax check functn?
-		if (is_char_redirect(tokens->args[i][0]) != 0)
+		if (is_char_redir(tokens->args[i][0]) != 0)
 		{
 			if (tokens->args[i + 1] == NULL)
 				return (not_perror("synntax error", NULL, "redirect needs a file A"), -1);
 			if (tokens->args[i + 1] != NULL)
 			{
-				if (tokens->args[i + 1][0] == '|' || tokens->args[i + 1][0] == '\0' || is_char_redirect(tokens->args[i + 1][0]) > 0)
+				if (tokens->args[i + 1][0] == '|' || tokens->args[i + 1][0] == '\0' || is_char_redir(tokens->args[i + 1][0]) > 0)
 					return (not_perror("synntax error", NULL, "redirect needs a file B"), -1);
 			}
 		}
@@ -157,7 +158,6 @@ int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 			heredoc_loop(data, tokens, tokens->args[i + 1]);
 			while (tokens->heredoc[here_i] != 0) // for testing
 				here_i++;
-			// delete temp file at the end of minishell loop (or earlier e.g. end of forks, find place)
 			i++;
 		}
 		else if (args[i + 1] != NULL && strcmp(args[i], "<") == 0)
@@ -177,4 +177,3 @@ int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 		tokens->redirect_out = 1;
 	return (0);
 }
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 13:30:30 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/18 15:44:46 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,15 @@ typedef struct s_tokens
 	int		redirect_count;
 	int		dollar_count;
 	//int		dollar_num;
-	char	**input_files;  // For < redirection malloced
-	char	**output_files;  // For > and >> redirection malloced
-	int		out_array_count;
-	// above to replace lower
-	char	*input_file;   // For < redirection
 	
-	char	*output_file;  // For > and >> redirection
+	char	*input_file;   // For < redirection
+	char	**output_files;  // For > and >> redirection malloced
+	
+	int		out_array_count;
+	int		in_array_count;
+	
+	// char	**input_files;  // For < redirection malloced
+	// char	*output_file;  // For > and >> redirection
 
 	//bool	expandable;
 	bool	action;
@@ -182,12 +184,18 @@ void	set_signals(void);
 
 // ft_split_adv
 char	**ft_split_adv(char const*s, char c, t_data *data);
-size_t	total_words_c(char const *s, char c, t_data *data);
+size_t	total_words_c(char const *s, char c);
 
 // string_loopers
 const char	*exp_loop(char c, int *i, const char *s, int *count);
 void	sublen_loop(char c, int *sublen, int *save, const char *s);
 int	loop_quotes(t_tokens *tokens, int quote_count, int i, int *x);
+void fancy_loop(const char *s, int *i, char c);
+void	stupid_if_statement(const char *s, int *i);
+int	special_echo_loop(char **args, int *x, int *i);
+
+void	lol(int *x, int *y);
+
 // OTHER - - - - - - - - -
 
 // handle_line, main & init
@@ -221,7 +229,7 @@ char *replace_squiggly_line(t_data *data, t_env *envs);
 // newly added functions seperate for clarity
 //parsers.c
 int		simple_quote_check(char *s, int i);
-int 	is_char_redirect(char arg);
+int 	is_char_redir(char arg);
 int		clean_rest_of_quotes(t_data *data, int i, int len);
 int		redirect_helper(t_tokens *tokens, int x);
 int 	create_redir_array(t_tokens *tokens);

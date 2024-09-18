@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:12:32 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 11:00:37 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 13:38:07 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ one whole string too, this was easier than other options ~~*/
 void	dollar_counter(char *string, t_tokens *tokens)
 {
 	int	i;
-	
+
 	i = 0;
 	tokens->dollar_count = 0;
 	while (string[i])

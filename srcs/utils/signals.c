@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 08:33:27 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 12:42:14 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/18 13:43:20 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,24 @@ void	set_signals(void)
 }
 
 /*set to default*/
-void	handle_cc()
+void	handle_cc(int signo)
 {
+	(void)signo;
 	signal(SIGINT, SIG_DFL);
 	kill(g_interactive_mode, SIGINT);
 }
 
-void	handle_sigquit()
+void	handle_sigquit(int signo)
 {
+	(void)signo;
 	write(STDOUT_FILENO, "Quit (core dumped because you asked it too)\n", 45);
 	signal(SIGQUIT, SIG_DFL);
 	kill(g_interactive_mode, SIGQUIT);
 }
 
-void	reset_signals()
+void	reset_signals(int signo)
 {
+	(void)signo;
 	signal(SIGINT, handle_cc);
 	signal(SIGQUIT, handle_sigquit);
 }

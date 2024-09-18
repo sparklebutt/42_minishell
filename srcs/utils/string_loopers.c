@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_loopers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:08:22 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 13:10:33 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:58:10 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,26 @@ int	loop_quotes(t_tokens *tokens, int quote_count, int i, int *x)
 			quote_count += 1;
 	}
 	return (quote_count);
+}
+
+void	fancy_loop(const char *s, int *i, char c)
+{
+	(*i)++;
+	while (s[*i] && s[*i] != c)
+		(*i)++;
+}
+
+void	stupid_if_statement(const char *s, int *i)
+{
+	if (s[*i] == '"' && (*i)++)
+	{
+		while (s[*i] && s[*i] != '"')
+			(*i)++;
+	}
+	else if (s[*i] == '\'' && (*i)++)
+	{
+		while (s[*i] && s[*i] != '\'')
+			(*i)++;
+	}
+	(*i)++;
 }

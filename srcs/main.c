@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 11:54:27 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 15:51:14 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	minishell(t_data *data)
 		rl = free_string(rl);
 		free_array(data->tokens->args);
 		free(data->tokens->heredoc);
-		free_string(data->tokens->input_file);
+		data->tokens->input_file = free_string(data->tokens->input_file);
 		free_array(data->tokens->output_files);
 		data->tokens->output_files = NULL;
 	}

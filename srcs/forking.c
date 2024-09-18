@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/17 14:41:57 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 15:33:46 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 	data->tmp->filename = free_string(data->tmp->filename);
 	//g_interactive_mode = 1;	
 	//close(3);  // this closes valgrinds log.txt
+	// delete temp file at the end of minishell loop (or earlier e.g. end of forks, find place)
 	return (0);
 }
 

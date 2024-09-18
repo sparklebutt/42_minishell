@@ -6,48 +6,36 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 11:59:04 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 15:19:58 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_extra_special_echo_case(t_tokens *tokens)
+int	check_extra_special_echo_case(char **args)
 {
 	int		i;
 	int		x;
-	char	*temp;
+	char	**temp;
 
 	x = 0;
 	i = 0;
 	temp = NULL;
-	while (tokens->args[i] != NULL)
+	while (args[i] != NULL)
 	{
-		if (tokens->args[i][0] == '"' || tokens->args[i][0] == '\'')
+		if (args[i][0] == '"' || args[i][0] == '\'')
 		{
-			while (tokens->args[i][x] && (tokens->args[i][x] == '"'
-				|| tokens->args[i][x] == '\''))
+			while (args[i][x] && (args[i][x] == '"'
+				|| args[i][x] == '\''))
 				x++;
-			if (tokens->args[i][x] == '|' || is_char_redirect(tokens->args[i][x]) > 0)
+			if (args[i][x] == '|' || is_char_redir(args[i][x]) > 0)
 			{
-				x = ft_strlen(tokens->args[i])  + 2;
-				temp = ft_calloc(x, sizeof(char));
-				if (temp == NULL)
-				{
-					// malloc fail exit_code and clean.
-					return (-1); //for now , should be ft-exit
-				}
-				temp[0] = 0x06;
-				ft_strcpy(temp + 1, tokens->args[i]);
-				free_string(tokens->args[i]);
-				tokens->args[i] = ft_strdup(temp);
-				free_string(temp);
-				i++;
-				x = 0;
-				continue;
+				if (special_echo_loop(args, &x, &i) == -1)
+					return (-1);
+				continue ;
 			}
 			i++;
-			continue;
+			continue ;
 		}
 		i++;
 	}
@@ -56,13 +44,14 @@ int	check_extra_special_echo_case(t_tokens *tokens)
 
 int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
-	tokens->array_count = total_words_c(string, ' ', data);
+	tokens->array_count = total_words_c(string, ' ');
 	tokens->args = ft_split_adv(string, ' ', data);
 	if (tokens->args == NULL)
 		return (1);
 	if (check_open_quotes(tokens, 0, 0) == -1
 		|| redirect_collector(tokens, tokens->args, 0) == -1)
 		return (1);
+	check_extra_special_echo_case(tokens->args);
 	expansion_parser(tokens, data);
 	pipe_collector(tokens, tokens->args);
 	if (tokens->redirect_count > 0 && create_redir_array(tokens) == -1)
