@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:56:54 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 16:09:57 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 18:53:25 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,20 @@ void	free_node(t_env *env)
 	}
 }
 
-void	ft_unset(t_env *env, char *key_name)
+void	ft_unset(t_env **env, char *key_name)
 {
 	t_env	*current_env;
 	t_env	*prev_env;
 	int		len;
 	
-	current_env = env;
+	current_env = *env;
 	prev_env = NULL;
 	len = ft_strlen(key_name);
 	if (current_env != NULL && ft_strncmp(current_env->key, key_name, len) == 0)
 	//if (*env != NULL && ft_strncmp((*env)->key, key_name, len) == 0)
 	{	
 			//*env = (*env)->next;
-			env = current_env->next;
+			*env = current_env->next;
 			free_node(current_env);
 			return ;
 

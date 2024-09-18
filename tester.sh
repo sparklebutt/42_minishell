@@ -21,6 +21,7 @@ valgrind --leak-check=full --suppressions=valgrind.supressions --show-leak-kinds
 echo "-------------------------------------------------"
 ./find_diff.sh
 ./check_leaks.sh
+echo "-------------------------------------------------"
 ./clean_script.sh
 echo ""
 # # ///////////////////////////////////////////////////////////////
@@ -36,6 +37,7 @@ valgrind --leak-check=full --suppressions=valgrind.supressions --show-leak-kinds
 echo "-------------------------------------------------"
 ./find_diff.sh
 ./check_leaks.sh
+echo "-------------------------------------------------"
 ./clean_script.sh
 echo ""
 # # ///////////////////////////////////////////////////////////////
@@ -51,6 +53,7 @@ valgrind --leak-check=full --suppressions=valgrind.supressions --show-leak-kinds
 echo "-------------------------------------------------"
 ./find_diff.sh
 ./check_leaks.sh
+echo "-------------------------------------------------"
 ./clean_script.sh
 echo ""
 # # ///////////////////////////////////////////////////////////////
@@ -66,6 +69,7 @@ echo ""
 # echo "-------------------------------------------------"
 # ./find_diff.sh
 # ./check_leaks.sh
+# echo "-------------------------------------------------"
 # ./clean_script.sh
 # echo ""
 # ///////////////////////////////////////////////////////////////
@@ -81,23 +85,25 @@ valgrind --leak-check=full --suppressions=valgrind.supressions --show-leak-kinds
 echo "-------------------------------------------------"
 ./find_diff.sh
 ./check_leaks.sh
+echo "-------------------------------------------------"
 ./clean_script.sh
 echo ""
 # ///////////////////////////////////////////////////////////////
 
-#echo "-------------------------------------------------"
-#echo ""
-#echo "            Now running redirections.sh"
-#echo "        🔥----🔥--🔥🔥🔥🔥----🔥🔥--🔥"
-#echo ""
-#echo "-------------------------------------------------"
-#bash < scripts/redirections.sh | grep -v minishell >> bash_output.txt
-#valgrind --leak-check=full --suppressions=valgrind.supressions --show-leak-kinds=all --track-origins=yes --track-fds=yes --tool=memcheck --log-file=./valgrind_logs/log.txt ./minishell < scripts/redirections.sh | grep -v minishell >> test_output.txt
-#echo "-------------------------------------------------"
-#./find_diff.sh
-#./check_leaks.sh
-#./clean_script.sh
-#echo ""
+echo "-------------------------------------------------"
+echo ""
+echo "            Now running redirections.sh"
+echo "        🔥----🔥--🔥🔥🔥🔥----🔥🔥--🔥"
+echo ""
+echo "-------------------------------------------------"
+bash < scripts/redirections.sh | grep -v minishell >> bash_output.txt
+valgrind --leak-check=full --suppressions=valgrind.supressions --show-leak-kinds=all --track-origins=yes --track-fds=yes --tool=memcheck --log-file=./valgrind_logs/log.txt ./minishell < scripts/redirections.sh | grep -v minishell >> test_output.txt
+echo "-------------------------------------------------"
+./find_diff.sh
+./check_leaks.sh
+echo "-------------------------------------------------"
+./clean_script.sh
+echo ""
 # ///////////////////////////////////////////////////////////////
 
 # echo "-------------------------------------------------"
@@ -111,4 +117,5 @@ echo ""
 # echo "-------------------------------------------------"
 # ./find_diff.sh
 # ./check_leaks.sh
+# echo "-------------------------------------------------"
 # ./clean_script.sh

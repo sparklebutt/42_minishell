@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 15:44:46 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 18:55:45 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ char *replace_expansion(t_data *data, t_env *envs, char *arg, int i);
 char	*look_if_expans(t_data *data, t_env *envs, char *arg, int flag);
 
 // CMDS - - - - - - - - -
-void	ft_unset(t_env *env, char *key_name);
+void	ft_unset(t_env **env, char *key_name);
 int		ft_pwd(t_data *data, t_env *envs);
 t_env	*fill_old_pwd(t_data *data, t_env *env, char *temp_path);
 void	ft_exit(t_data *data, char *cmd, t_tokens *tokens); 
@@ -193,6 +193,7 @@ int	loop_quotes(t_tokens *tokens, int quote_count, int i, int *x);
 void fancy_loop(const char *s, int *i, char c);
 void	stupid_if_statement(const char *s, int *i);
 int	special_echo_loop(char **args, int *x, int *i);
+void	parse_redir_loop(t_data *data, int *i, int *x);
 
 void	lol(int *x, int *y);
 
@@ -203,7 +204,7 @@ int		main(int argc, char **argv);
 void	minishell(t_data *data);
 int		handle_line(t_data data, t_tokens *tokens);
 int		is_builtins(char *cmd);
-int		exec_builtins(t_data data, char *cmd);
+int		exec_builtins(t_data data, char *cmd, t_env *envs);
 t_env	*init(t_data *data);
 t_env	*create_env_list(t_data *data);
 int input_helper(t_tokens *tokens, int fd, int i);

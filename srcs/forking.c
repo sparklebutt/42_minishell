@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 15:33:46 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 18:56:50 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 			open_and_fill_heredoc(data->tokens);
 		if (flag == 1)
 		{
-			exec_builtins(*data, data->tokens->args[data->i]);
+			exec_builtins(*data, data->tokens->args[data->i], data->env);
 			free_array(data->tokens->args);
 			free_nodes(data->env);
 			free_array(data->tokens->output_files);

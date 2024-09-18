@@ -50,6 +50,8 @@ echo "cat lol.c | cat > lol.c"
 
 echo "cat lol.c '|' cat > lol.c"
 
+echo ">> > | || & % $ ! << < , . ?"
+
 echo '$USER' "$USER" "text  ' text"
 
 echo $USER =intergalaktikus miaf*szomez

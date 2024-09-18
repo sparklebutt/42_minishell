@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:08:22 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 15:05:23 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 16:51:31 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,3 +29,23 @@ int	special_echo_loop(char **args, int *x, int *i)
 	(*x) = 0;
 	return (0);
 }
+
+void	parse_redir_loop(t_data *data, int *i, int *x)
+{
+	char **args;
+	int fd;
+
+	fd = 0;
+	args = data->tokens->args;
+	if (ft_strncmp(args[*i], "<<", 2) == 0)
+	{
+		heredoc_loop(data, data->tokens, args[*i + 1]);
+		(*i)++;
+	}
+	else if (args[*i + 1] != NULL && strcmp(args[*i], "<") == 0)
+		input_helper(data->tokens, fd, *i++);
+	else if (args[*i + 1] != NULL && (strcmp(args[*i], ">>") == 0 || strcmp(args[*i], ">") == 0))
+		output_helper(data->tokens, fd, *i++, *x);
+}
+
+

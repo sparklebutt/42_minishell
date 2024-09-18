@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 15:39:06 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 16:57:07 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,21 +64,21 @@ int	redirect_collector(t_tokens *tokens, char **array, int i)
 	tokens->out_array_count = 0;
 	while (array[i])
 	{
-		//syntax check functn?
 		if (is_char_redir(tokens->args[i][0]) != 0)
 		{
 			if (tokens->args[i + 1] == NULL)
-				return (not_perror("synntax error", NULL, "redirect needs a file A"), -1);
-			if (tokens->args[i + 1] != NULL)
-			{
-				if (tokens->args[i + 1][0] == '|' || tokens->args[i + 1][0] == '\0' || is_char_redir(tokens->args[i + 1][0]) > 0)
-					return (not_perror("synntax error", NULL, "redirect needs a file B"), -1);
-			}
+				return (not_perror("redirect", NULL, "synntax error\n"), -1);
+			if (tokens->args[i + 1] != NULL && (tokens->args[i + 1][0] == '|'
+				|| tokens->args[i + 1][0] == '\0' || is_char_redir(tokens->args[i + 1][0]) > 0))
+			// {
+			// 	if (tokens->args[i + 1][0] == '|' || tokens->args[i + 1][0] == '\0' || is_char_redir(tokens->args[i + 1][0]) > 0)
+					return (not_perror("redirect", NULL, "synntax error\n"), -1);
+			// }
 		}
 		// eg echo > echo > > echo > |
 		if (array[i][0] == '>' || (array[i][0] == '>' && array[i][1] == '>'))
 		{
-			if (ft_strlen(array[i]) > 2)//(len > 2)
+			if (ft_strlen(array[i]) > 2)
 				if (array[i][2])
 					printf("B syntax error, too many redirects\n");
 			out_count++;
@@ -139,11 +139,9 @@ int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 {
 	int x;
 	int fd;
-	int here_i;
 	
 	fd = 0;
 	x = 0;
-	here_i = 0;
 	tokens->redirect_out = false;
 	/*super good spot to reset all redirection things here */
 	while (args[i] != NULL)
@@ -153,23 +151,7 @@ int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 			x++;
 			tokens->redirect_out = 0;
 		}
-		if (ft_strncmp(tokens->args[i], "<<", 2) == 0)
-		{
-			heredoc_loop(data, tokens, tokens->args[i + 1]);
-			while (tokens->heredoc[here_i] != 0) // for testing
-				here_i++;
-			i++;
-		}
-		else if (args[i + 1] != NULL && strcmp(args[i], "<") == 0)
-		{
-			input_helper(tokens, fd, i);
-			i++;
-		}
-		else if (args[i + 1] != NULL && (strcmp(args[i], ">>") == 0 || strcmp(args[i], ">") == 0))
-		{
-			output_helper(tokens, fd, i, x);
-			i++;
-		}
+		parse_redir_loop(data, &i, &x);
 		if (args[i] != NULL)
 			i++;
 	}
