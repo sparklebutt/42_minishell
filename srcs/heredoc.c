@@ -6,22 +6,23 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 04:44:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 10:57:17 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 00:01:07 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int open_and_fill_heredoc(t_tokens *tokens)
+// if dupe fails we aren't closing fd's
+int	open_and_fill_heredoc(t_tokens *tokens)
 {
-	int fd;
-	int i;
+	int	fd;
+	int	i;
 
 	i = 0;
 	fd = open(tokens->here_file, O_RDWR);
 	if (fd < 0)
 		return (error("heredoc", "Failed to open input file B"));
-	if (dup2(fd, STDIN_FILENO) == -1) // if dupe fails we aren't closing fd's
+	if (dup2(fd, STDIN_FILENO) == -1)
 		return (error("heredoc", "Failed to duplicate fd"));
 	close(fd);
 	while (tokens->heredoc[i] != NULL)
@@ -33,9 +34,9 @@ int open_and_fill_heredoc(t_tokens *tokens)
 	return (0);
 }
 
-int parse_heredoc(char **args)
+int	parse_heredoc(char **args)
 {
-	int		i;
+	int	i;
 
 	i = -1;
 	while (args[++i] != 0)
@@ -50,7 +51,7 @@ int parse_heredoc(char **args)
 	return (0);
 }
 
-char **set_into_heredoc_array(t_data *data, char **heredoc, char *line)
+char	**set_into_heredoc_array(t_data *data, char **heredoc, char *line)
 {
 	int		i;
 	char	**new_heredoc;
@@ -77,26 +78,27 @@ char **set_into_heredoc_array(t_data *data, char **heredoc, char *line)
 	return (new_heredoc);
 }
 
-int create_file(t_tokens *tokens)
+int	create_file(t_tokens *tokens)
 {
-	int fd;
+	int	fd;
 
 	fd = 0;
 	if (tokens->here_file != NULL)
-		fd = open(tokens->here_file, O_WRONLY | O_CREAT | O_TRUNC, 0644); 
+		fd = open(tokens->here_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd <= 0)
 		return (error("heredoc", "Failed to open input file A"));
 	close(fd);
 	return (0);
 }
 
-void heredoc_loop(t_data *data, t_tokens *tokens, char *eof)
+// add tokens->h_action = true; in the beginning if heredocs stop working
+void	heredoc_loop(t_data *data, t_tokens *tokens, char *eof)
 {
-	char	*line = NULL;
-	int fd = 0;
+	char	*line;
+	int		fd;
 
-	dprintf(2, "turning heredoc flag on\n");
-	// tokens->h_action = true;
+	fd = 0;
+	line = NULL;
 	tokens->here_file = ft_strdup("temp_heredoc_file_that_none_know_about");
 	tokens->heredoc = malloc(sizeof(char *) * 1);
 	tokens->heredoc[0] = NULL;
@@ -106,7 +108,8 @@ void heredoc_loop(t_data *data, t_tokens *tokens, char *eof)
 		line = get_next_line(fd);
 		if (line == NULL)
 			break ;
-		if (ft_strncmp(line, eof, ft_strlen(eof)) == 0 && ft_strlen(eof) + 1 == ft_strlen(line))
+		if (ft_strncmp(line, eof, ft_strlen(eof)) == 0
+			&& ft_strlen(eof) + 1 == ft_strlen(line))
 		{
 			free_string(line);
 			break ;

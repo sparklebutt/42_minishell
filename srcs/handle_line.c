@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 20:56:06 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 23:56:08 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int	handle_line(t_data data, t_tokens *tokens, t_env **env)
 		return (0);
 	if (tokens->args[data.i] != NULL)
 	{
-		if (tokens->pipe_count == 0 && tokens->redirect_count == 0 && is_builtins(tokens->args[data.i]) == 1)
+		if (tokens->pipe_count == 0 && tokens->redirect_count == 0
+			&& is_builtins(tokens->args[data.i]) == 1)
 		{
 			exit_code(1, 0);
 			exec_builtins(data, tokens->args[data.i], env);

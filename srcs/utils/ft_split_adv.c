@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 15:44:56 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 22:21:31 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,7 @@ size_t	total_words_c(char const *s, char c)
 	while (s[i] != '\0')
 	{
 		if (s[i] == c)
-		{
-			// stupid_if_statement(s, &i);
-			if (s[i] == '"' && i++)
-			{
-				while (s[i] && s[i] != '"')
-					i++;
-			}
-			else if (s[i] == '\'' && i++)
-			{
-				while (s[i] && s[i] != '\'')
-					i++;
-			}
-			i++;
-		}
+			stupid_if_statement(s, &i);
 		else if (is_char_redir(s[i]) > 0)
 		{
 			test++;
@@ -87,7 +74,7 @@ char	**adv_loop(char **array, const char *s, int x, char c)
 {
 	int			word_len;
 	size_t		word;
-	int		i;
+	int			i;
 	size_t		total_words;
 
 	word_len = 0;
@@ -119,7 +106,7 @@ char	**ft_split_adv(char const *s, char c, t_data *data)
 {
 	char	**array;
 	int		word_len;
-	int	x;
+	int		x;
 	size_t	testing;
 
 	x = 0;

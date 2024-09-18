@@ -6,7 +6,7 @@
 #    By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/09/18 16:06:32 by vkettune         ###   ########.fr        #
+#    Updated: 2024/09/19 00:38:22 by vkettune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,15 +39,19 @@ LIBFT = libft/libft.a
 OBJS_DIR = objs/
 SRCS_DIR = srcs/
 
-FILES = main.c init.c handle_line.c forking.c forking_utils.c redirects.c redir_helper.c heredoc.c testing_functions.c
+FILES = main.c init.c handle_line.c forking.c forking_utils.c redirects.c \
+redir_helper.c heredoc.c testing_functions.c
 
 CMD_FILES = cd.c echo.c env.c exit.c export.c pwd.c unset.c
 
 ENV_FILES = find_from_env.c list_manipulation.c variable_expansions.c
 
-PAR_FILES = parsers.c parsing_not.c pipe_parsing.c quotes_parsing.c check_path.c parsing_helpers.c expansion_helper.c
+PAR_FILES = parsers.c parsing_not.c pipe_parsing.c quotes_parsing.c check_path.c \
+parsing_helpers.c expansion_helper.c
 
-UTIL_FILES = utils.c error_handling.c free_things.c ft_split_adv.c signals.c ft_split_expansions.c check_dir.c exit_code.c string_loopers.c string_loopers_2.c
+UTIL_FILES = utils.c error_handling.c free_things.c ft_split_adv.c signals.c \
+ft_split_expansions.c check_dir.c exit_code.c string_loopers.c string_loopers_2.c \
+string_loopers_3.c
 
 
 

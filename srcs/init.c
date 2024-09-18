@@ -6,32 +6,27 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:11:00 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 19:42:05 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 23:55:38 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*create_env_list(t_data *data)
+// change SHLVL to update the number, add other default nodes into env,
+// check "env -i ./minishell" and "env -i bash"
+t_env	*create_env_list(char *value, char *key, char *temp)
 {
-	extern char **environ;
-	int i;
-	char *value;
-	char *key;
-	char *temp;
-	t_env *env;
+	extern char	**environ;
+	int			i;
+	t_env		*env;
 
-	(void)data;
 	i = 0;
 	env = NULL;
-	temp = NULL;
-	key = NULL;
-	value = NULL;
 	if (environ[i] == NULL)
 	{
 		temp = getcwd(NULL, 0);
 		insert_node(&env, ft_strdup("PWD"), temp);
-		insert_node(&env, ft_strdup("SHLVL"), ft_strdup("1")); // change this to update number, add other default nodes into env, check "env -i ./minishell" and "env -i bash"
+		insert_node(&env, ft_strdup("SHLVL"), ft_strdup("1"));
 		insert_node(&env, ft_strdup("_"), ft_strdup("/usr/bin/env"));
 		return (env);
 	}
@@ -40,8 +35,6 @@ t_env	*create_env_list(t_data *data)
 		value = find_value(environ[i]);
 		key = find_key(environ[i]);
 		insert_node(&env, key, value);
-		//value = free_string(value);
-		//key = free_string(key);
 		i++;
 	}
 	return (env);
@@ -54,7 +47,6 @@ t_env	*init(t_data *data)
 	data->cmds = NULL;
 	data->pid = 0;
 	data->i = 0;
-
 	data->builtin_marker = false;
-	return (create_env_list(data));
+	return (create_env_list(NULL, NULL, NULL));
 }

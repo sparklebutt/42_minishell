@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 08:40:21 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 11:57:07 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 00:35:38 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,24 @@ char	*replace_exitcode(char *arg, int start)
 	value = free_string(value);
 	arg = free_string(arg);
 	return (new_arg);
+}
+
+void	free_n_exit(t_data *data, int *fds, int flag)
+{
+	if (flag == 1)
+		close(fds[1]);
+	else if (flag == 2)
+	{
+		close(fds[0]);
+		close(fds[1]);
+		if (data->prev_fd != -1)
+			close(data->prev_fd);
+	}
+	if (flag == 1 || flag == 0)
+	{
+		free_array(data->tokens->args);
+		free_nodes(data->env);
+		free_array(data->tokens->output_files);
+	}
+	exit(exit_code(0, 0));
 }

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 15:19:58 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 00:04:28 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@ int	check_extra_special_echo_case(char **args)
 {
 	int		i;
 	int		x;
-	char	**temp;
 
 	x = 0;
 	i = 0;
-	temp = NULL;
 	while (args[i] != NULL)
 	{
 		if (args[i][0] == '"' || args[i][0] == '\'')
@@ -49,7 +47,7 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	if (tokens->args == NULL)
 		return (1);
 	if (check_open_quotes(tokens, 0, 0) == -1
-		|| redirect_collector(tokens, tokens->args, 0) == -1)
+		|| redirect_collector(tokens, tokens->args, 0, 0) == -1)
 		return (1);
 	check_extra_special_echo_case(tokens->args);
 	expansion_parser(tokens, data);
@@ -74,7 +72,7 @@ int	find_passage(t_data *all, char *string, int divert)
 			return (-1);
 		return (1);
 	}
-	if (pipe_fork(all) == -1)
+	if (pipe_fork(all, 0, 0) == -1)
 		return (-1);
 	return (1);
 }

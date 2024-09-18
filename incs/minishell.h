@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 20:53:03 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 00:07:15 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,13 @@ typedef struct s_tokens
 	int		pipe_count;
 	int		redirect_count;
 	int		dollar_count;
-	//int		dollar_num;
-	
+
 	char	*input_file;   // For < redirection
 	char	**output_files;  // For > and >> redirection malloced
-	
-	int		out_array_count;
-	int		in_array_count;
-	
-	// char	**input_files;  // For < redirection malloced
-	// char	*output_file;  // For > and >> redirection
 
-	//bool	expandable;
+	int		out_a_count;
+	int		in_a_count;
+	
 	bool	action;
 	bool	h_action;
 	bool	redirect_in;
@@ -84,11 +79,10 @@ typedef struct s_temps
 
 	char	**array;
 	char	**exp_array;
-	// char	*ex_arr[4];
 	char **ex_arr;
-	char	*filename; // malloced
-	char	*suffix; // malloced
-	char	*env_line; // malloced string
+	char	*filename;
+	char	*suffix;
+	char	*env_line;
 	int		i;
 }	t_temps;
 
@@ -99,17 +93,14 @@ typedef struct s_data
 	int			error_code;
 	char		*prompt;
 	t_env		*env;
-	//t_re		*redir; //redirs linked list
-	//char		**env_array; // this is needed for exceves last parameter, eg to run clear
 	t_cmd		*cmds;
 	t_tokens	*tokens;
 	t_temps		*tmp;
 
-
 	int			prev_fd;
 	int			pid; /// throw?
-	pid_t		child[10]; // new
-	int			child_i; // belongs tp child pid
+	pid_t		child[10];
+	int			child_i;
 	char		*path;
 	bool		simple;
 	bool		builtin_marker; // so that we can run bultins in pies with redirects
@@ -121,14 +112,14 @@ int	expansion_parser(t_tokens *tokens, t_data *data);
 int	check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count);
 char	*clean_quotes(char *string, int len, int x, int y); //, t_tokens *tokens);
 int		count_new_len(char *string);
-int	handle_absolute_path(t_data *all, int x, char *path);
+int	handle_absolute_path(t_data *data, int x, char *path);
 
 int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
-int		check_path(char *string, int divert, t_data *all, int x);
-int		find_passage(t_data *all, char *string, int divert);
+int		check_path(char *string, int divert, t_data *data, int x);
+int		find_passage(t_data *data, char *string, int divert);
 int		parse_redirections(t_data *data, t_tokens *tokens, char **args, int i); // t_data *data;/heloooooooooooooooooooo
 void	apply_redirections(t_data *data, t_tokens *tokens, int x);
-int	redirect_collector(t_tokens *tokens, char **array, int i);
+int	redirect_collector(t_tokens *tokens, char **array, int i, int in_count);
 int is_redirect(char *arg);
 
 // ENV - - - - - - - - -
@@ -194,8 +185,10 @@ void fancy_loop(const char *s, int *i, char c);
 void	stupid_if_statement(const char *s, int *i);
 int	special_echo_loop(char **args, int *x, int *i);
 void	parse_redir_loop(t_data *data, int *i, int *x);
+void	redir_collect_loop(char **array, int i, int *count);
 
 void	lol(int *x, int *y);
+void	add_redir_count(int token_count, int *count, int *comp_count);
 
 // OTHER - - - - - - - - -
 
@@ -206,7 +199,6 @@ int		handle_line(t_data data, t_tokens *tokens, t_env **env);
 int		is_builtins(char *cmd);
 int		exec_builtins(t_data data, char *cmd, t_env **envs);
 t_env	*init(t_data *data);
-t_env	*create_env_list(t_data *data);
 int input_helper(t_tokens *tokens, int fd, int i);
 int output_helper(t_tokens *tokens, int fd, int i, int x);
 void heredoc_loop(t_data *data, t_tokens *tokens, char *eof);
@@ -215,7 +207,7 @@ int parse_heredoc(char **args);
 
 // forking
 int		simple_fork(t_data *data);
-int		pipe_fork(t_data *data);
+int		pipe_fork(t_data *data, int x, int status);
 int		child(t_data *data, int *fds, int x, int flag);
 int		send_to_child(t_data *data, int fds[2], int x);
 int send_to_forks(t_data *data);
@@ -264,4 +256,6 @@ void	dollar_counter(char *string, t_tokens *tokens);
 void	handle_expansion(t_data *data, int len, int i, char *new);
 int	null_check(char *str1, t_env *str2, char *str3);
 void simple_flagged(t_data *data, char *new, int len, int i);
+void free_n_exit(t_data *data, int *fds, int flag);
+t_env	*create_env_list(char *value, char *key, char *temp);
 #endif

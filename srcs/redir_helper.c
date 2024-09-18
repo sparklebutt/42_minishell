@@ -6,13 +6,39 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:02:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 10:14:15 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 23:28:06 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int input_helper(t_tokens *tokens, int fd, int i)
+/*~~ needed a fucntion that does the same thing as is_redirect but took a char
+and returns the count, it is possible i over thank it ~~*/
+int	is_char_redir(char arg)
+{
+	if (arg == '>' && arg + 1 == '>')
+		return (2);
+	if (arg == '<' && arg + 1 == '<')
+		return (2);
+	if (arg == '>')
+		return (1);
+	if (arg == '<')
+		return (1);
+	return (0);
+}
+
+int	is_redirect(char *arg)
+{
+	if ((arg[0] == '>') || ft_strncmp(arg, ">>", 2) == 0)
+		return (3);
+	if (ft_strncmp(arg, "<<", 2) == 0)
+		return (2);
+	if (arg[0] == '<')
+		return (1);
+	return (0);
+}
+
+int	input_helper(t_tokens *tokens, int fd, int i)
 {
 	fd = open(tokens->args[i + 1], O_RDONLY);
 	if (fd < 0)
@@ -33,14 +59,14 @@ int input_helper(t_tokens *tokens, int fd, int i)
 	return (0);
 }
 
-int output_helper(t_tokens *tokens, int fd, int i, int x)
+int	output_helper(t_tokens *tokens, int fd, int i, int x)
 {
 	if (ft_strncmp(tokens->args[i], ">>", ft_strlen(tokens->args[i]) + 1) == 0)
 	{
 		tokens->output_files[x] = free_string(tokens->output_files[x]);
-		tokens->output_files[x] = ft_strdup(tokens->args[i + 1]);	
+		tokens->output_files[x] = ft_strdup(tokens->args[i + 1]);
 		tokens->redirect_append = 1;
-		fd = open(tokens->args[i + 1], O_WRONLY | O_CREAT | O_APPEND , 0644);
+		fd = open(tokens->args[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (fd < 0)
 			return (1);
 		close(fd);
@@ -53,8 +79,7 @@ int output_helper(t_tokens *tokens, int fd, int i, int x)
 		if (fd < 0)
 			return (1);
 		close(fd);
-		tokens->redirect_out = 1;	
+		tokens->redirect_out = 1;
 	}
 	return (0);
 }
-
