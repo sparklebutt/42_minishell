@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 18:55:45 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 20:53:03 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,9 +202,9 @@ void	lol(int *x, int *y);
 // handle_line, main & init
 int		main(int argc, char **argv);
 void	minishell(t_data *data);
-int		handle_line(t_data data, t_tokens *tokens);
+int		handle_line(t_data data, t_tokens *tokens, t_env **env);
 int		is_builtins(char *cmd);
-int		exec_builtins(t_data data, char *cmd, t_env *envs);
+int		exec_builtins(t_data data, char *cmd, t_env **envs);
 t_env	*init(t_data *data);
 t_env	*create_env_list(t_data *data);
 int input_helper(t_tokens *tokens, int fd, int i);

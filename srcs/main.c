@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 15:51:14 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 21:11:58 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,19 @@ void	minishell(t_data *data)
 		//printf("\n");
 		rl = readline(data->prompt);
 		add_history(rl);
+		// printf("aaaaaa rl = %s\n", rl);
 		if (!rl)
 			break ;
 		if (rl)
     {
 			//g_interactive_mode = 0; // we are not in interactive mode
+			// printf("aaaaaa rl = %s\n", rl);
 			if (collect_cmd_array(data, data->tokens, rl) == 0)
-				handle_line(*data, data->tokens);
+				handle_line(*data, data->tokens, &data->env);
 			//g_interactive_mode = 1; // we are in interactive mode
 		}
+		// data->i = 0;
+		// printf("\t\tresetting data i!!!!!\n");
 		rl = free_string(rl);
 		free_array(data->tokens->args);
 		free(data->tokens->heredoc);

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:02:41 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 08:25:56 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 20:45:36 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	find_node(t_env *envs, char *key, t_data *data)
 	temp = envs;
 	while (temp != NULL)
 	{
+		// printf("data->env->key 2 = %s\n", data->env->key);
+		// printf("data->env->next->key 2 = %s\n", data->env->next->key);
 		if (ft_strncmp(temp->key, key, ft_strlen(key) + 1) == 0
 			&& (ft_strlen(temp->key) == ft_strlen(key)))
 		{

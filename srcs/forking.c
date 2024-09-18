@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 18:56:50 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 21:34:50 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,18 @@ int	child(t_data *data, int *fds, int x, int flag)
 	char **tmp;
 
 	tmp = NULL;
+	// printf("data->child_i = %d\n", data->child_i);
 	data->child[data->child_i] = fork();
 	if (data->child[data->child_i] == -1)
 		return (error("fork", "first child failed"));
 	if (data->child[data->child_i] == 0)
 	{
+		// printf("check that it steps in here\n");
 		g_interactive_mode = data->child[data->child_i];
 		dup_fds(data, fds, x);
 		if (data->tokens->action == true && redirect_helper(data->tokens, data->x) != 0)
 		{
+			// printf("check 1\n");
 			free_array(data->tokens->args);
 			free_nodes(data->env);
 			free_array(data->tokens->output_files);
@@ -35,7 +38,8 @@ int	child(t_data *data, int *fds, int x, int flag)
 			open_and_fill_heredoc(data->tokens);
 		if (flag == 1)
 		{
-			exec_builtins(*data, data->tokens->args[data->i], data->env);
+			// printf("check 2\n");
+			exec_builtins(*data, data->tokens->args[data->i], &data->env);
 			free_array(data->tokens->args);
 			free_nodes(data->env);
 			free_array(data->tokens->output_files);
@@ -53,6 +57,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 		// close(fds[0]);
 		exit(exit_code(0, 0));
 	}
+	// printf("steps out of child\n");
 	data->tokens->h_action = false;
 	data->tokens->action = false;
 	data->child_i++;

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/17 15:11:57 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 20:16:04 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ void	ft_env(t_data *data)
 
 	env = data->env;
 	ret = NULL;
+	// printf("data->env->key = %s\n", data->env->key);
+	// printf("data->env->next->key = %s\n", data->env->next->key);
 	if (find_node(env, "PATH", data) == 1)
 	{
 		ret = env_helper(env, 0, 0);
