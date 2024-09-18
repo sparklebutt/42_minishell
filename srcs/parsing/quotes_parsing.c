@@ -3,36 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_parsing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 15:55:36 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 10:17:21 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 13:11:02 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	loop_quotes(t_tokens *tokens, int quote_count, int i, int *x)
-{
-	char	c;
-
-	c = 0;
-	if (tokens->quote == 1)
-		c = '\'';
-	else if (tokens->quote == 2)
-		c = '"';
-	(*x)++;
-	quote_count += 1;
-	if (tokens->args[i][*x] == c)
-		quote_count += 1;
-	while (tokens->args[i][*x] != '\0' && tokens->args[i][*x] != c)
-	{
-		(*x)++;
-		if (tokens->args[i][*x] == c)
-			quote_count += 1;
-	}
-	return (quote_count);
-}
 
 int	check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count)
 {

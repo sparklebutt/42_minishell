@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 11:21:55 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 13:30:30 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,10 @@ void	set_signals(void);
 char	**ft_split_adv(char const*s, char c, t_data *data);
 size_t	total_words_c(char const *s, char c, t_data *data);
 
+// string_loopers
+const char	*exp_loop(char c, int *i, const char *s, int *count);
+void	sublen_loop(char c, int *sublen, int *save, const char *s);
+int	loop_quotes(t_tokens *tokens, int quote_count, int i, int *x);
 // OTHER - - - - - - - - -
 
 // handle_line, main & init
@@ -222,7 +226,7 @@ int		clean_rest_of_quotes(t_data *data, int i, int len);
 int		redirect_helper(t_tokens *tokens, int x);
 int 	create_redir_array(t_tokens *tokens);
 void		dollar_counter(char *string, t_tokens *tokens);
-char	**ft_split_expansions(t_tokens *tokens, char const *s);
+char	**ft_split_expansions(t_tokens *tokens, char const *s, int index); // 
 int		ft_count_exp_array(const char *s);
 int		check_file(char *str);
 

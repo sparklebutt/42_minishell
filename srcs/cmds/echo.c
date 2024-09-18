@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:05:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 08:09:59 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:49:22 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	if_break(char *str)
 {
+	if (str[0] == 0x06)
+		return (0);
 	if (ft_strlen(str) > 2)
 		return (0);
 	if (str[0] == '|')

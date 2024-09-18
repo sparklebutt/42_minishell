@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   free_things.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:59:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/17 11:01:58 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 13:06:50 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	free_extra_return_function(char *str, int ret_value)
+char	**free_loop(char **arr, int index)
 {
-	(void)str;
-	// free_string(str);
-	return (ret_value);
+	while (--index)
+		arr[index] = free_string(arr[index]);
+	free(arr);
+	return (NULL);
 }
 
 void	free_array(char **array)

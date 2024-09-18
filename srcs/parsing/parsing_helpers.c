@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 11:49:07 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/18 13:30:47 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
 	len = 0;
 	index = 0;
 	data->simple = false;
-	data->tmp->exp_array = ft_split_expansions(tokens, tokens->args[i]);
+	data->tmp->exp_array = ft_split_expansions(tokens, tokens->args[i], 0);
 	if (data->tmp->exp_array == NULL)
 		return (not_perror("parsing", NULL, "malloc fail"), -1);
 	while (data->tmp->exp_array[index] != NULL)

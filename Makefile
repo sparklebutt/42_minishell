@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+         #
+#    By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/09/18 11:21:39 by vkettune         ###   ########.fr        #
+#    Updated: 2024/09/18 13:11:25 by araveala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ ENV_FILES = find_from_env.c list_manipulation.c variable_expansions.c
 
 PAR_FILES = parsers.c parsing_not.c pipe_parsing.c quotes_parsing.c check_path.c parsing_helpers.c expansion_helper.c
 
-UTIL_FILES = utils.c error_handling.c free_things.c ft_split_adv.c signals.c ft_split_expansions.c check_dir.c exit_code.c
+UTIL_FILES = utils.c error_handling.c free_things.c ft_split_adv.c signals.c ft_split_expansions.c check_dir.c exit_code.c string_loopers.c
 
 
 
