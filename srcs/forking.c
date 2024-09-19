@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 11:35:20 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:36:29 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 		g_interactive_mode = data->child[data->child_i];
 		dup_fds(data, fds, x);
 		if (data->tokens->action == true
-				&& redirect_helper(data->tokens, data->x) != 0)
+			&& redirect_helper(data->tokens, data->x) != 0)
 			free_n_exit(data, fds, 1);
 		if (data->tokens->h_action == true)
 			open_and_fill_heredoc(data->tokens);
@@ -50,7 +50,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 		close(data->prev_fd);
 	close(fds[1]);
 	data->tmp->filename = free_string(data->tmp->filename);
-	return (exit_code(1, 0));
+	return (0);//exit_code(1, 0));
 }
 
 int	set_builtin_info(t_data *data, int fds[2], int x)
@@ -84,7 +84,7 @@ int	set_builtin_info(t_data *data, int fds[2], int x)
 
 int	send_to_child(t_data *data, int fds[2], int x)
 {
-	char **args;
+	char	**args;
 
 	args = data->tokens->args;
 	if (args[data->i] == NULL) // might cause an issue later DO NOT DELETE THIS
@@ -95,7 +95,7 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	{
 		set_array(data);
 		child(data, fds, x, 0);
-		if (data->i > 0 && args[data->i-1] != NULL && args[data->i-1][0] == '>')
+		if (data->i > 0 && args[data->i - 1] && args[data->i - 1][0] == '>')
 			data->i++;
 		else if (args[data->i] != NULL && args[data->i][0] == '>')
 			data->i += 2;
@@ -129,7 +129,7 @@ static int	wait_and_close(t_data *data, int status, int fds[2], int x)
 		data->tmp->ex_arr = NULL;
 	}
 	status = (status >> 8) & 0xFF;
-	exit_code(1, status);	
+	exit_code(1, status);
 	return (0);
 }
 
@@ -152,7 +152,6 @@ int	pipe_fork(t_data *data, int x, int status)
 		{
 			if (data->prev_fd != -1)
 				close(data->prev_fd);
-
 			close(fds[1]);
 			close(fds[0]);
 			return (-1);

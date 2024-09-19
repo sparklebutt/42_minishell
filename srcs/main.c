@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 10:06:03 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:13:50 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,8 @@ void	minishell(t_data *data)
 			break ;
 		if (rl)
 		{
-			//printf("%d\n", collect_cmd_array(data, data->tokens, rl));
 			if (collect_cmd_array(data, data->tokens, rl) == 0)
 				handle_line(*data, data->tokens, &data->env);
-			//printf("lololol\n");
 		}
 		rl = free_string(rl);
 		free_array(data->tokens->args);

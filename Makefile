@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+         #
+#    By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/09/19 00:38:22 by vkettune         ###   ########.fr        #
+#    Updated: 2024/09/19 13:20:48 by araveala         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ CYAN = \033[0;96m
 WHITE = \033[0;97m
 #-fsanitize=address
 NAME = minishell
-FLAGS = -Wall -Wextra -Werror -g $(HEADERS)
+FLAGS = -Wall -Wextra -Werror -g $(HEADERS) #-fsanitize=address
 HEADERS = -I ./incs/ # -I ~/.brew/opt/readline/include
 
 LIBS = $(READLINE) $(LIBFT)

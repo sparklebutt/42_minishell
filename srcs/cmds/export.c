@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:04:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 14:54:21 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:54:48 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ int	export_syntax_check(char *string)
 	int	i;
 
 	i = 0;
-	if (ft_strchr(string, '=') == NULL || ft_isalpha(string[0]) == 0)
+	if (ft_strchr(string, '=') == NULL)
+		return (1);
+	if (ft_isalpha(string[0]) == 0)
 	{
 		not_perror("export", string, NOT_VALID);
 		return (1);

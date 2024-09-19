@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 15:55:36 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 11:24:25 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:16:06 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count)
 			else if (tokens->args[i][x] == '"')
 			{
 				tokens->quote = 2;
-				if ((int)ft_strlen(tokens->args[i]) > 1)	
+				if ((int)ft_strlen(tokens->args[i]) > 1)
 					d_quote_count = loop_quotes(tokens, d_quote_count, i, &x);
 			}
 			x++;

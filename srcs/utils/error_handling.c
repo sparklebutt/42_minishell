@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 18:24:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 09:27:48 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:21:05 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ int	call_cmd_error(char *cmd, char *arg, char *msg, int ret_value)
 		exit_code(1, 127);
 		return (-1);
 	}
-	printf("call_cmd_error\n");
+	printf("call_cmd_error\n"); //?
 	cmd_error(cmd, arg);
 	return (ret_value);
 }
 
 t_env	*call_env_error(char *cmd, char *arg)
 {
-	printf("call_env_error\n");
+	printf("call_env_error\n"); //?
 	cmd_error(cmd, arg);
 	return (NULL);
 }

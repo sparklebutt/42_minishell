@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 11:50:09 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:33:12 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 		return (1);
 	if (check_open_quotes(tokens, 0, 0) == -1)
 		return (1);
-	if(redirect_collector(tokens, tokens->args, 0, 0) == -1)
+	if (redirect_collector(tokens, tokens->args, 0, 0) == -1)
 		return (1);
 	check_extra_special_echo_case(tokens->args);
 	expansion_parser(tokens, data);
@@ -59,7 +59,7 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 		return (1);
 	if (tokens->args == NULL)
 		return (not_perror("parsing", NULL, "malloc fail"), 1);
-	return (exit_code(1, 0));
+	return (0);//exit_code(1, 0));
 }
 
 int	find_passage(t_data *all, char *string, int divert)
@@ -104,7 +104,7 @@ int	handle_absolute_path(t_data *all, int x, char *path)
 	{
 		error("check dir", path);
 		path = free_string(path);
-		return (exit_code(1, 0));
+		return (0);//(exit_code(1, 0));
 	}
 	else
 	{
@@ -113,5 +113,5 @@ int	handle_absolute_path(t_data *all, int x, char *path)
 		return (1);
 	}
 	path = free_string(path);
-	return (exit_code(1, 0));
+	return (0);//exit_code(1, 0));
 }

@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 11:15:15 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:10:21 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ size_t	total_words_c(char const *s, char c)
 	words = 0;
 	i = 0;
 	if (ft_strlen(s) == 1)
-		return(1);
+		return (1);
 	while (s[i] != '\0')
 	{
 		if (s[i] == c)
