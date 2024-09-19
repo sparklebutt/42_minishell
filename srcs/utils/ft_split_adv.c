@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_adv.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 14:21:09 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:32:29 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,10 @@ int	fancy_strlen(char const *s, char c, int i)
 			if (test > 0)
 				return (i += 1);
 			return (i);
+		}
+		else if (i > 0 && s[i - 1] != 32 && s[i + 1] && s[i + 1] != 32 && s[i] == '|')
+		{
+			return(i); //=1
 		}
 		i++;
 	}
@@ -61,7 +65,16 @@ size_t	total_words_c(char const *s, char c)
 		else if (is_char_redir(s[i]) > 0)
 		{
 			test++;
+			i++;
+			if (s[i] && is_char_redir(s[i]) > 0)
+				i++;
 			i += is_char_redir(s[i]);
+		}
+		else if (s[i] == '|')
+		{
+			//new
+			words++;
+			i += 1;
 		}
 		else if (s[i] == '$' || s[i] != c)
 		{
@@ -82,7 +95,7 @@ char	**adv_loop(char **array, const char *s, int x, char c)
 	word_len = 0;
 	word = 0;
 	i = 0;
-	total_words = total_words_c(s, c);
+	total_words = total_words_c(s, c) + 1;
 	while (s[i] != '\0' && word < total_words)
 	{
 		while (s[i] == c)
@@ -93,8 +106,17 @@ char	**adv_loop(char **array, const char *s, int x, char c)
 		if (array[word] == NULL)
 			return (free_array(array), NULL);
 		i += ft_strlen(array[word]);
-		word++;
+		if (s[word_len] == '|' && s[i])
+		{
+			word++;
+			i++;
+			x++;
+			array[word] = ft_substr(s, word_len, 1);
+		}
+		if (word < total_words)
+			word++;
 	}
+	//print_arr(array, "the shitter");
 	array[word] = NULL;
 	return (array);
 }
@@ -113,6 +135,7 @@ char	**ft_split_adv(char const *s, char c, t_data *data)
 
 	x = 0;
 	testing = total_words_c(s, c);
+	//printf("words = %zu\n", testing);
 	(void)data;
 	word_len = 0;
 	array = NULL;

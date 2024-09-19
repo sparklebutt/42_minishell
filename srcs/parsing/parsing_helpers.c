@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 15:02:16 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:13:47 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ int	multi_dollar_handle(t_data *data, t_tokens *tokens, int i)
 	index = 0;
 	data->simple = false;
 	data->tmp->exp_array = ft_split_expansions(tokens, tokens->args[i], 0);
-	//print_arr(data->tmp->exp_array, "exp array");
 	if (data->tmp->exp_array == NULL)
 		return (not_perror("parsing", NULL, "malloc fail\n"), -1);
 	while (data->tmp->exp_array[index] != NULL)
