@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 13:37:07 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:36:00 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	handle_line(t_data data, t_tokens *tokens, t_env **env)
 		if (tokens->pipe_count == 0 && tokens->redirect_count == 0
 			&& is_builtins(tokens->args[data.i]) == 1)
 		{
-			//exit_code(1, 0);
+			exit_code(1, 0);
 			exec_builtins(data, tokens->args[data.i], env);
 		}
 		else if (find_passage(&data, "PATH", 1) == -1)

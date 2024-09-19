@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:04:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 13:54:48 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:47:30 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	export_alphabetical(t_data *data)
 	huh = NULL;
 	while (fuck_off != NULL)
 	{
-		insert_node(&huh, fuck_off->key, fuck_off->value);
+		insert_node(&huh, ft_strdup(fuck_off->key), ft_strdup(fuck_off->value));
 		fuck_off = fuck_off->next;
 	}
 	temp_env = sort_env(huh);
@@ -80,6 +80,7 @@ void	export_alphabetical(t_data *data)
 		printf("declare -x %s=\"%s\"\n", temp_env->key, temp_env->value);
 		temp_env = temp_env->next;
 	}
+	free_nodes(huh);
 }
 
 void	ft_export(t_data *data)

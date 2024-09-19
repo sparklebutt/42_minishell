@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 14:19:34 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:34:47 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,11 @@ int	set_builtin_info(t_data *data, int fds[2], int x)
 	return (0);
 }
 
-void	send_to_child_help(t_data *data, int fds[2], int x)
+int	send_to_child_help(t_data *data, int fds[2], int x)
 {
+	char **args;
+
+	args = data->tokens->args;
 	set_array(data);
 	child(data, fds, x, 0);
 	if (data->i > 0 && args[data->i-1] != NULL && args[data->i-1][0] == '>')
@@ -91,9 +94,10 @@ void	send_to_child_help(t_data *data, int fds[2], int x)
 	else if (args[data->i] != NULL && args[data->i][0] == '>')
 		data->i += 2;
 	else if (data->i == data->tokens->array_count)
-		return (0);
+		return (1);
 	if (args[data->i] != NULL && args[data->i][0] == '|')
 		data->i++;
+	return (0);
 }
 
 int	send_to_child(t_data *data, int fds[2], int x)
@@ -107,19 +111,23 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	{
 		if (data->i == 0 && is_redirect(args[data->i]) == 3)
 		{
-			data->tokens->action = true
+			data->tokens->action = true;
 			data->i += 2;
 		}
 		else if (data->i == 0 && is_redirect(args[data->i]) == 1)
 			data->i += 2;
 		if (check_path(data->tmp->env_line, 1, data, data->i) == 0)
 			return (-1);
-		send_to_child_help(data, fds, x);
+		if (send_to_child_help(data, fds, x) == 1)
+			return (0);
 	}
 	if (is_builtins(args[data->i]) == 1)
 		set_builtin_info(data, fds, x);
 	else if (check_path(data->tmp->env_line, 1, data, data->i) != 0)
-		send_to_child_help(data, fds, x);
+	{
+		if (send_to_child_help(data, fds, x) == 1)
+			return (0);
+	}	
 	else
 		return (-1);
 	return (0);
