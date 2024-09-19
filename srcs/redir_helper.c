@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_helper.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:02:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 14:20:13 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:39:17 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 and returns the count, it is possible i over thank it ~~*/
 int	is_char_redir(char arg)
 {
-	if (arg == '>' && arg + 1 == '>')
-		return (2);
-	if (arg == '<' && arg + 1 == '<')
-		return (2);
+	//if (arg == '>' && arg + 1 == '>')
+	//	return (2);
+	//if (arg == '<' && arg + 1 == '<')
+	//	return (2);
 	if (arg == '>')
 		return (1);
 	if (arg == '<')
