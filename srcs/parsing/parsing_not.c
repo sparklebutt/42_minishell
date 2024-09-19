@@ -46,8 +46,9 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	tokens->args = ft_split_adv(string, ' ', data);
 	if (tokens->args == NULL)
 		return (1);
-	if (check_open_quotes(tokens, 0, 0) == -1
-		|| redirect_collector(tokens, tokens->args, 0, 0) == -1)
+	if (check_open_quotes(tokens, 0, 0) == -1)
+		return (1);
+	if (redirect_collector(tokens, tokens->args, 0, 0) == -1)
 		return (1);
 	check_extra_special_echo_case(tokens->args);
 	expansion_parser(tokens, data);
@@ -103,7 +104,7 @@ int	handle_absolute_path(t_data *all, int x, char *path)
 	{
 		error("check dir", path);
 		path = free_string(path);
-		return (0);
+		return (0);//(exit_code(1, 0));
 	}
 	else
 	{
@@ -112,5 +113,5 @@ int	handle_absolute_path(t_data *all, int x, char *path)
 		return (1);
 	}
 	path = free_string(path);
-	return (0);
+	return (0);//exit_code(1, 0));
 }

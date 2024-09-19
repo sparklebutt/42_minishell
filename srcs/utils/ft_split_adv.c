@@ -52,6 +52,8 @@ size_t	total_words_c(char const *s, char c)
 	test = 0;
 	words = 0;
 	i = 0;
+	if (ft_strlen(s) == 1)
+		return (1);
 	while (s[i] != '\0')
 	{
 		if (s[i] == c)
@@ -113,6 +115,7 @@ char	**ft_split_adv(char const *s, char c, t_data *data)
 	testing = total_words_c(s, c);
 	(void)data;
 	word_len = 0;
+	array = NULL;
 	if (!*s || !s)
 		return (NULL);
 	array = (char **)ft_calloc(sizeof(char *), total_words_c(s, c) + 1);
@@ -120,7 +123,7 @@ char	**ft_split_adv(char const *s, char c, t_data *data)
 		return (NULL);
 	if (testing == 1)
 	{
-		array[0] = ft_substr(s, 0, ft_strlen(s));
+		array[0] = ft_substr(s, 0, ft_strlen(s) + 1); // if this throws a fit, remove +1
 		array[1] = NULL;
 		return (array);
 	}

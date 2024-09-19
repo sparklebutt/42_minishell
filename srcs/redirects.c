@@ -44,7 +44,7 @@ int	redir_syntax(char **args, int i, int *out_count, int *in_count)
 		redir_collect_loop(args, i, out_count);
 	if (args[i][0] == '<')
 		redir_collect_loop(args, i, in_count);
-	return (0);
+	return (0);//exit_code(1, 0));
 }
 
 /*~~ this has been over complicated for te fear  of needing this data 

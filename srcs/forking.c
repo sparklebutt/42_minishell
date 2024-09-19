@@ -28,7 +28,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 		dup_fds(data, fds, x);
 		if (data->tokens->action == true
 				&& redirect_helper(data->tokens, data->x) != 0)
-				free_n_exit(data, fds, 1);
+			free_n_exit(data, fds, 1);
 		if (data->tokens->h_action == true)
 			open_and_fill_heredoc(data->tokens);
 		if (flag == 1)
@@ -50,7 +50,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 		close(data->prev_fd);
 	close(fds[1]);
 	data->tmp->filename = free_string(data->tmp->filename);
-	return (0);
+	return (0);//exit_code(1, 0));
 }
 
 int	set_builtin_info(t_data *data, int fds[2], int x)
@@ -98,7 +98,7 @@ void	send_to_child_help(t_data *data, int fds[2], int x)
 
 int	send_to_child(t_data *data, int fds[2], int x)
 {
-	char **args;
+	char	**args;
 
 	args = data->tokens->args;
 	if (args[data->i] == NULL)
@@ -107,7 +107,7 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	{
 		if (data->i == 0 && is_redirect(args[data->i]) == 3)
 		{
-			data->tokens->action = true;
+			data->tokens->action = true
 			data->i += 2;
 		}
 		else if (data->i == 0 && is_redirect(args[data->i]) == 1)
@@ -145,7 +145,7 @@ static int	wait_and_close(t_data *data, int status, int fds[2], int x)
 		data->tmp->ex_arr = NULL;
 	}
 	status = (status >> 8) & 0xFF;
-	exit_code(1, status);	
+	exit_code(1, status);
 	return (0);
 }
 

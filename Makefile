@@ -29,7 +29,7 @@ CYAN = \033[0;96m
 WHITE = \033[0;97m
 #-fsanitize=address
 NAME = minishell
-FLAGS = -Wall -Wextra -Werror -g $(HEADERS)
+FLAGS = -Wall -Wextra -Werror -g $(HEADERS) #-fsanitize=address
 HEADERS = -I ./incs/ # -I ~/.brew/opt/readline/include
 
 LIBS = $(READLINE) $(LIBFT)

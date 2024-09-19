@@ -18,7 +18,7 @@ int	check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count)
 	int	i;
 
 	i = -1;
-	while (tokens->args[++i])
+	while (tokens->args[i + 1] != NULL && tokens->args[++i])
 	{
 		x = 0;
 		while (tokens->args[i][x] != '\0')
@@ -26,12 +26,14 @@ int	check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count)
 			if (tokens->args[i][x] == '\'')
 			{
 				tokens->quote = 1;
-				s_quote_count = loop_quotes(tokens, s_quote_count, i, &x);
+				if ((int)ft_strlen(tokens->args[i]) > 1)
+					s_quote_count = loop_quotes(tokens, s_quote_count, i, &x);
 			}
 			else if (tokens->args[i][x] == '"')
 			{
 				tokens->quote = 2;
-				d_quote_count = loop_quotes(tokens, d_quote_count, i, &x);
+				if ((int)ft_strlen(tokens->args[i]) > 1)
+					d_quote_count = loop_quotes(tokens, d_quote_count, i, &x);
 			}
 			x++;
 		}
