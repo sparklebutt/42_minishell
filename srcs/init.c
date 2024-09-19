@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:11:00 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 23:55:38 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 07:00:18 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ t_env	*init(t_data *data)
 {
 	data->prompt = "\x1b[95mminishell\033[0;37m$ ";
 	data->path = NULL;
-	data->cmds = NULL;
-	data->pid = 0;
+	//data->cmds = NULL;
+	//data->pid = 0;
 	data->i = 0;
-	data->builtin_marker = false;
+	//data->builtin_marker = false;
 	return (create_env_list(NULL, NULL, NULL));
 }

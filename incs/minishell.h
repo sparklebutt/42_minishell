@@ -3,28 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 00:07:15 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 08:24:38 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-//#endif
-//#ifndef ERROR_CODE
-//# define ERROR_CODE 0
 # define NOT_VALID "not a valid identifier\n"
 # define NO_CMD "command not found\n"
-//# define PROMPT "\x1b[95mminishell\033[0;37m$ "
 # include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
 # include <signal.h>
 # include <dirent.h>
-#include <stdio.h>
+# include <stdio.h> // dont need to remove
 # include <errno.h>
 # include <sys/param.h>
 # include <sys/wait.h>
@@ -32,7 +28,7 @@
 
 # include "libft.h"
 extern int g_interactive_mode;
-//int g_interactive_mode;
+
 typedef struct s_env
 {
 	char			*key;
@@ -43,10 +39,10 @@ typedef struct s_env
 typedef struct s_tokens
 {
 	char	*cmd;
-	char	**args; // malloced
-	int		quote; // 1 = single, 2 = double
+	char	**args;
+	int		quote;
 
-	char **heredoc;
+	char	**heredoc;
 	char	*here_file;
 	bool	here_check;
 
@@ -55,8 +51,8 @@ typedef struct s_tokens
 	int		redirect_count;
 	int		dollar_count;
 
-	char	*input_file;   // For < redirection
-	char	**output_files;  // For > and >> redirection malloced
+	char	*input_file;
+	char	**output_files;
 
 	int		out_a_count;
 	int		in_a_count;
@@ -68,18 +64,12 @@ typedef struct s_tokens
 	bool	redirect_append;
 }	t_tokens;
 
-typedef struct s_cmd
-{
-	char	*cmd;
-	char	**args;
-}	t_cmd;
-
 typedef struct s_temps
 {
 
 	char	**array;
 	char	**exp_array;
-	char **ex_arr;
+	char 	**ex_arr;
 	char	*filename;
 	char	*suffix;
 	char	*env_line;
@@ -93,34 +83,52 @@ typedef struct s_data
 	int			error_code;
 	char		*prompt;
 	t_env		*env;
-	t_cmd		*cmds;
 	t_tokens	*tokens;
 	t_temps		*tmp;
 
 	int			prev_fd;
-	int			pid; /// throw?
-	pid_t		child[10];
+	pid_t		child[100]; // not another array?
 	int			child_i;
 	char		*path;
 	bool		simple;
-	bool		builtin_marker; // so that we can run bultins in pies with redirects
 }	t_data;
 
 // PARSING - - - - - - - - -
-void	pipe_collector(t_tokens *tokens, char **array);
-int	expansion_parser(t_tokens *tokens, t_data *data);
-int	check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count);
-char	*clean_quotes(char *string, int len, int x, int y); //, t_tokens *tokens);
-int		count_new_len(char *string);
-int	handle_absolute_path(t_data *data, int x, char *path);
-
-int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
-int		check_path(char *string, int divert, t_data *data, int x);
+// ~~~~~in parsing_not.c
+int		collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
 int		find_passage(t_data *data, char *string, int divert);
-int		parse_redirections(t_data *data, t_tokens *tokens, char **args, int i); // t_data *data;/heloooooooooooooooooooo
-void	apply_redirections(t_data *data, t_tokens *tokens, int x);
-int	redirect_collector(t_tokens *tokens, char **array, int i, int in_count);
-int is_redirect(char *arg);
+int		find_len(char *str);
+int		handle_absolute_path(t_data *data, int x, char *path);
+// ~~~~~in parsers.c
+int		clean_if_multi_dollar_handle(t_data *data, t_tokens *tokens, int i);
+void	handle_expansion(t_data *data, int len, int i, char *new);
+int		expansion_parser(t_tokens *tokens, t_data *data);
+// ~~~~~in quotes_parsing.c
+int		check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count);
+char	*clean_quotes(char *string, int len, int x, int y);
+int		clean_rest_of_quotes(t_data *data, int i, int len);
+// ~~~~~in check_path.c
+int		check_path(char *string, int divert, t_data *data, int x);
+// ~~~~~in pipe_parsing.c
+void	pipe_collector(t_tokens *tokens, char **array);
+// ~~~~~in expansion_helper.c
+void	 simple_flagged(t_data *data, char *new, int len, int i);
+// ~~~~~in prasing_helpers.c
+bool	set_check(char *string, bool ver, int *x, char c);
+int		simple_quote_check(char *s, int i);
+bool	confirm_expansion(char *string, int len, int x);
+int		multi_dollar_handle(t_data *data, t_tokens *tokens, int i);
+
+// ~~~~~in redirects.c
+int 	create_redir_array(t_tokens *tokens);
+int		redirect_collector(t_tokens *tokens, char **array, int i, int in_count);
+int		redirect_helper(t_tokens *tokens, int x);
+int		parse_redirections(t_data *data, t_tokens *tokens, char **args, int i);
+// ~~~~~in redir_helper.c
+int 	is_char_redir(char arg);
+int 	is_redirect(char *arg);
+int 	input_helper(t_tokens *tokens, int fd, int i);
+int 	output_helper(t_tokens *tokens, int fd, int i, int x);
 
 // ENV - - - - - - - - -
 
@@ -131,13 +139,13 @@ t_env	*move_list(t_env *envs, char *key);
 
 // find from env
 char	*find_key(char *str);
-char	*find_value(char *arg); // with = e.g. in export
+char	*find_value(char *arg);
 char	*find_keys_value(t_env *envs, char *key); // from key value from env
-int		find_node_len(t_data *data); // how many nodes
+int		find_node_len(t_data *data);
 int		find_node(t_env *envs, char *key, t_data *data); // does node with x key exist in env
 
 // variable expansions
-char *replace_expansion(t_data *data, t_env *envs, char *arg, int i);
+char 	*replace_expansion(t_data *data, t_env *envs, char *arg, int i);
 char	*look_if_expans(t_data *data, t_env *envs, char *arg, int flag);
 
 // CMDS - - - - - - - - -
@@ -146,7 +154,7 @@ int		ft_pwd(t_data *data, t_env *envs);
 t_env	*fill_old_pwd(t_data *data, t_env *env, char *temp_path);
 void	ft_exit(t_data *data, char *cmd, t_tokens *tokens); 
 void	ft_cd(t_data *data, t_env *envs);
-void	ft_echo(t_data *data, char **args); //t_data *data,
+void	ft_echo(t_data *data, char **args);
 void	ft_env(t_data *data);
 void	ft_export(t_data *data);
 void	handle_arg(t_data *data, int arg_i, t_tokens *tokens);
@@ -160,18 +168,19 @@ int		error(char *cmd, char *error);
 void	cmd_error(char *cmd, char *arg);
 t_env	*call_env_error(char *cmd, char *arg);
 int		call_cmd_error(char *cmd, char *arg, char *msg, int ret_value);
-//void	collective_free(char *str1, char *str2, char **array);
 void	not_perror(char *cmd, char *arg, char *msg);
 
 // free things
 void	free_array(char **array);
 char	*free_string(char *string);
-int		free_extra_return_function(char *str, int ret_val);
 void	free_nodes(t_env *nodes);
+char	**free_loop(char **arr, int index);
 
 // signals
 void	signal_handler(int signo);
 void	set_signals(void);
+void 	reset_signals();
+void	handle_sigquit();
 
 // ft_split_adv
 char	**ft_split_adv(char const*s, char c, t_data *data);
@@ -179,16 +188,16 @@ size_t	total_words_c(char const *s, char c);
 
 // string_loopers
 const char	*exp_loop(char c, int *i, const char *s, int *count);
-void	sublen_loop(char c, int *sublen, int *save, const char *s);
-int	loop_quotes(t_tokens *tokens, int quote_count, int i, int *x);
-void fancy_loop(const char *s, int *i, char c);
-void	stupid_if_statement(const char *s, int *i);
-int	special_echo_loop(char **args, int *x, int *i);
-void	parse_redir_loop(t_data *data, int *i, int *x);
-void	redir_collect_loop(char **array, int i, int *count);
+void		sublen_loop(char c, int *sublen, int *save, const char *s);
+int			loop_quotes(t_tokens *tokens, int quote_count, int i, int *x);
+void 		fancy_loop(const char *s, int *i, char c);
+void		stupid_if_statement(const char *s, int *i);
+int			special_echo_loop(char **args, int *x, int *i);
+void		parse_redir_loop(t_data *data, int *i, int *x);
+void		redir_collect_loop(char **array, int i, int *count);
 
-void	lol(int *x, int *y);
-void	add_redir_count(int token_count, int *count, int *comp_count);
+void		lol(int *x, int *y);
+void		add_redir_count(int token_count, int *count, int *comp_count);
 
 // OTHER - - - - - - - - -
 
@@ -199,63 +208,39 @@ int		handle_line(t_data data, t_tokens *tokens, t_env **env);
 int		is_builtins(char *cmd);
 int		exec_builtins(t_data data, char *cmd, t_env **envs);
 t_env	*init(t_data *data);
-int input_helper(t_tokens *tokens, int fd, int i);
-int output_helper(t_tokens *tokens, int fd, int i, int x);
-void heredoc_loop(t_data *data, t_tokens *tokens, char *eof);
-int parse_heredoc(char **args);
+void 	heredoc_loop(t_data *data, t_tokens *tokens, char *eof);
+int 	parse_heredoc(char **args);
 
 
 // forking
-int		simple_fork(t_data *data);
 int		pipe_fork(t_data *data, int x, int status);
 int		child(t_data *data, int *fds, int x, int flag);
 int		send_to_child(t_data *data, int fds[2], int x);
-int send_to_forks(t_data *data);
+void 	free_n_exit(t_data *data, int *fds, int flag);
 
 // forking utils
 int		set_array(t_data *data);
 char 	**set_env_array(t_data *data, int i, int x);
 int		dup_fds(t_data *data, int *fds, int x);
-bool	confirm_expansion(char *string, int len, int x);
-char *replace_squiggly_line(t_data *data, t_env *envs);
 
-// newly added functions seperate for clarity
 //parsers.c
-int		simple_quote_check(char *s, int i);
-int 	is_char_redir(char arg);
-int		clean_rest_of_quotes(t_data *data, int i, int len);
-int		redirect_helper(t_tokens *tokens, int x);
-int 	create_redir_array(t_tokens *tokens);
-void		dollar_counter(char *string, t_tokens *tokens);
-char	**ft_split_expansions(t_tokens *tokens, char const *s, int index); // 
+void	dollar_counter(char *string, t_tokens *tokens);
+char	**ft_split_expansions(t_tokens *tokens, char const *s, int index);
 int		ft_count_exp_array(const char *s);
 int		check_file(char *str);
 
 int		exit_code(int flag, int num);
-char	**free_loop(char **arr, int index);
+
 int		compare_str(char *str1, char *str2);
-char	*ft_strtrim_front(char *s1, char set);
-int create_file(t_tokens *tokens);
-void reset_signals();
-void	handle_sigquit();
-int	find_len(char *str);
+int 	create_file(t_tokens *tokens);
 char	*new_str(char *str, char *value, int start, size_t end);
 char	*replace_exitcode(char *arg, int start);
-//at 79 functions, lets aim for 69
 
 // tester fucntions 
-int print_arr(char **array, char *array_name);
-int open_and_fill_heredoc(t_tokens *tokens);
-bool	confirm_expansion(char *string, int len, int x);
-bool	set_check(char *string, bool ver, int *x, char c);
-int	 no_dollar_handle(t_tokens *tokens, t_data *data, int i);
-int	multi_dollar_handle(t_data *data, t_tokens *tokens, int i);
-int	clean_if_multi_dollar_handle(t_data *data, t_tokens *tokens, int i);
-int	check_next(char *str, size_t len);
-void	dollar_counter(char *string, t_tokens *tokens);
-void	handle_expansion(t_data *data, int len, int i, char *new);
-int	null_check(char *str1, t_env *str2, char *str3);
-void simple_flagged(t_data *data, char *new, int len, int i);
-void free_n_exit(t_data *data, int *fds, int flag);
+int 	print_arr(char **array, char *array_name); //tester fucntion can get rid
+int 	open_and_fill_heredoc(t_tokens *tokens);
+int	 	no_dollar_handle(t_tokens *tokens, t_data *data, int i);
+int		check_next(char *str, size_t len);
+int		null_check(char *str1, t_env *str2, char *str3);
 t_env	*create_env_list(char *value, char *key, char *temp);
 #endif

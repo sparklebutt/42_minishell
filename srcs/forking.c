@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 00:47:17 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 08:29:07 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,9 @@ int	pipe_fork(t_data *data, int x, int status)
 		}
 		if (send_to_child(data, fds, x) == -1)
 		{
+			if (data->prev_fd != -1)
+				close(data->prev_fd);
+
 			close(fds[1]);
 			close(fds[0]);
 			return (-1);

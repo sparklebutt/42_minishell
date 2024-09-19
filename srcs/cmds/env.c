@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 22:24:53 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 08:42:12 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ char	*env_helper(t_env *env, int i, int split_count)
 		split_count++;
 	tmp = loop_array(NULL, tmp, value);
 	if (tmp != NULL)
+	{
 		ret = ft_strdup(tmp);
+		free_string(tmp);
+	}
 	return (ret);
 }
 
