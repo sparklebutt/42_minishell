@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 09:18:23 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:20:35 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	check_extra_special_echo_case(char **args)
 
 int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
-	//exit_code(1, 0);
 	tokens->array_count = total_words_c(string, ' ');
 	tokens->args = ft_split_adv(string, ' ', data);
 	if (tokens->args == NULL)
@@ -54,11 +53,11 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	expansion_parser(tokens, data);
 	pipe_collector(tokens, tokens->args);
 	if (tokens->redirect_count > 0 && create_redir_array(tokens) == -1)
-		return (not_perror("redirect", NULL, "malloc fail"), 1);
+		return (not_perror("redirect", NULL, "malloc fail\n"), 1);
 	if (parse_redirections(data, tokens, tokens->args, 0) == -1)
 		return (1);
 	if (tokens->args == NULL)
-		return (not_perror("parsing", NULL, "malloc fail"), 1);
+		return (not_perror("parsing", NULL, "malloc fail\n"), 1);
 	return (0);
 }
 

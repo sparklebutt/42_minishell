@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:11:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 14:58:32 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 10:12:42 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,5 @@ void	ft_exit(t_data *data, char *cmd, t_tokens *tokens)
 		else if (tokens->array_count > 2)
 			cmd_error(cmd, NULL);
 	}
-	free_array(tokens->args);
-	free_nodes(data->env);
-	free_array(tokens->output_files);
-	exit(exit_code(0, 0));
+	free_n_exit(data, 0, 0);
 }

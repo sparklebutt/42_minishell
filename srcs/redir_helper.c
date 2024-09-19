@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_helper.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:02:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 23:28:06 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:20:13 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	input_helper(t_tokens *tokens, int fd, int i)
 	if (fd < 0)
 		return (1);
 	close (fd);
-	if (ft_strncmp(tokens->args[i], "<<", 2) == 0)
+	if (ft_strncmp(tokens->args[i], "<<", ft_strlen(tokens->args[i]) + 1) == 0)
 	{
 		tokens->here_file = free_string(tokens->here_file);
 		tokens->here_file = ft_strdup(tokens->args[i + 1]);

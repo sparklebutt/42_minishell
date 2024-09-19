@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 09:13:56 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:20:19 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len,
 	if (args[x][0] != '/')
 		*suffix = ft_strjoin("/", args[x]);
 	if (*suffix == NULL)
-		return (not_perror("check path", NULL, "mdataoc fail A"), 0);
+		return (not_perror("check path", NULL, "malloc fail A\n"), 0);
 	return (2);
 }
 
@@ -84,7 +84,7 @@ void	split_diversion(t_temps *tmp, int divert, char *string)
 	else if (divert == 2)
 		tmp->array = ft_split(string, ' ');
 	if (tmp->array == NULL)
-		not_perror("check path", NULL, "mdataoc fail B");
+		not_perror("check path", NULL, "malloc fail B\n");
 }
 
 /* checking access and creating sub tokens for easy access 

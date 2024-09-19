@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 08:29:07 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:19:34 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 		dup_fds(data, fds, x);
 		if (data->tokens->action == true
 				&& redirect_helper(data->tokens, data->x) != 0)
-			free_n_exit(data, fds, 1);
+				free_n_exit(data, fds, 1);
 		if (data->tokens->h_action == true)
 			open_and_fill_heredoc(data->tokens);
 		if (flag == 1)
@@ -38,9 +38,9 @@ int	child(t_data *data, int *fds, int x, int flag)
 		}
 		tmp = set_env_array(data, 0, 0);
 		reset_signals();
-		execve(data->tmp->filename, data->tmp->ex_arr, tmp);
+		if (data->tmp->filename != NULL)
+			execve(data->tmp->filename, data->tmp->ex_arr, tmp);
 		free_array(tmp);
-		free(data->tmp->ex_arr);
 		free_n_exit(data, fds, 1);
 	}
 	data->tokens->h_action = false;
@@ -82,28 +82,44 @@ int	set_builtin_info(t_data *data, int fds[2], int x)
 	return (0);
 }
 
+void	send_to_child_help(t_data *data, int fds[2], int x)
+{
+	set_array(data);
+	child(data, fds, x, 0);
+	if (data->i > 0 && args[data->i-1] != NULL && args[data->i-1][0] == '>')
+		data->i++;
+	else if (args[data->i] != NULL && args[data->i][0] == '>')
+		data->i += 2;
+	else if (data->i == data->tokens->array_count)
+		return (0);
+	if (args[data->i] != NULL && args[data->i][0] == '|')
+		data->i++;
+}
+
 int	send_to_child(t_data *data, int fds[2], int x)
 {
 	char **args;
 
 	args = data->tokens->args;
-	if (args[data->i] == NULL) // might cause an issue later DO NOT DELETE THIS
+	if (args[data->i] == NULL)
 		return (0);
+	if (data->i == 0 && is_char_redir(args[data->i][0]) > 0)
+	{
+		if (data->i == 0 && is_redirect(args[data->i]) == 3)
+		{
+			data->tokens->action = true;
+			data->i += 2;
+		}
+		else if (data->i == 0 && is_redirect(args[data->i]) == 1)
+			data->i += 2;
+		if (check_path(data->tmp->env_line, 1, data, data->i) == 0)
+			return (-1);
+		send_to_child_help(data, fds, x);
+	}
 	if (is_builtins(args[data->i]) == 1)
 		set_builtin_info(data, fds, x);
 	else if (check_path(data->tmp->env_line, 1, data, data->i) != 0)
-	{
-		set_array(data);
-		child(data, fds, x, 0);
-		if (data->i > 0 && args[data->i-1] != NULL && args[data->i-1][0] == '>')
-			data->i++;
-		else if (args[data->i] != NULL && args[data->i][0] == '>')
-			data->i += 2;
-		else if (data->i == data->tokens->array_count)
-			return (0);
-		if (args[data->i] != NULL && args[data->i][0] == '|')
-			data->i++;
-	}
+		send_to_child_help(data, fds, x);
 	else
 		return (-1);
 	return (0);
@@ -152,17 +168,10 @@ int	pipe_fork(t_data *data, int x, int status)
 		{
 			if (data->prev_fd != -1)
 				close(data->prev_fd);
-
 			close(fds[1]);
 			close(fds[0]);
 			return (-1);
 		}
-		// if (data->tokens->here_file)
-		// {
-		// 	// remove file
-		// 	free_string(data->tokens->here_file);
-		// 	return (-1);
-		// }
 		if (data->prev_fd != -1)
 			close(data->prev_fd);
 		data->prev_fd = fds[0];

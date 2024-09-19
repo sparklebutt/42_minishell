@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+         #
+#    By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/09/19 00:38:22 by vkettune         ###   ########.fr        #
+#    Updated: 2024/09/19 12:37:47 by vkettune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,8 +52,6 @@ parsing_helpers.c expansion_helper.c
 UTIL_FILES = utils.c error_handling.c free_things.c ft_split_adv.c signals.c \
 ft_split_expansions.c check_dir.c exit_code.c string_loopers.c string_loopers_2.c \
 string_loopers_3.c
-
-
 
 CMD = $(addprefix cmds/, $(CMD_FILES))
 ENV = $(addprefix env/, $(ENV_FILES))
