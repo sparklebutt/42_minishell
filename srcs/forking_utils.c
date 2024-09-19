@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 00:32:35 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 11:34:50 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	malloc_array(t_data *data, int i)
 		printf("malloc fail handle here\n");
 		return (1);
 	}
-	return (0);
+	return (exit_code(1, 0));
 }
 
 /* frankly i dont understand this anymore myself 

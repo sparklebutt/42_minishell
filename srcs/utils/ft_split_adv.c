@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_adv.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 22:21:31 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 11:15:15 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ size_t	total_words_c(char const *s, char c)
 	test = 0;
 	words = 0;
 	i = 0;
+	if (ft_strlen(s) == 1)
+		return(1);
 	while (s[i] != '\0')
 	{
 		if (s[i] == c)
@@ -113,9 +115,18 @@ char	**ft_split_adv(char const *s, char c, t_data *data)
 	testing = total_words_c(s, c);
 	(void)data;
 	word_len = 0;
+	array = NULL;
+	if (!*s || !s)
+		return (NULL);
 	array = (char **)ft_calloc(sizeof(char *), total_words_c(s, c) + 1);
 	if (!s || !array)
 		return (NULL);
+	if (testing == 1)
+	{
+		array[0] = ft_substr(s, 0, ft_strlen(s) + 1);
+		array[1] = NULL;
+		return (array);
+	}
 	array = adv_loop(array, s, x, c);
 	return (array);
 }

@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 15:55:36 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 13:11:02 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 11:24:25 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count)
 	int	i;
 
 	i = -1;
-	while (tokens->args[++i])
+	while (tokens->args[i + 1] != NULL && tokens->args[++i])
 	{
 		x = 0;
 		while (tokens->args[i][x] != '\0')
@@ -26,17 +26,19 @@ int	check_open_quotes(t_tokens *tokens, int s_quote_count, int d_quote_count)
 			if (tokens->args[i][x] == '\'')
 			{
 				tokens->quote = 1;
-				s_quote_count = loop_quotes(tokens, s_quote_count, i, &x);
+				if ((int)ft_strlen(tokens->args[i]) > 1)
+					s_quote_count = loop_quotes(tokens, s_quote_count, i, &x);
 			}
 			else if (tokens->args[i][x] == '"')
 			{
 				tokens->quote = 2;
-				d_quote_count = loop_quotes(tokens, d_quote_count, i, &x);
+				if ((int)ft_strlen(tokens->args[i]) > 1)	
+					d_quote_count = loop_quotes(tokens, d_quote_count, i, &x);
 			}
 			x++;
 		}
 		if (s_quote_count % 2 != 0 || d_quote_count % 2 != 0)
-			return (not_perror("syntax error", NULL, "open quotes"), -1);
+			return (not_perror("syntax error", NULL, "open quotes\n"), -1);
 	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 09:16:28 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 11:34:00 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	redir_syntax(char **args, int i, int *out_count, int *in_count)
 		redir_collect_loop(args, i, out_count);
 	if (args[i][0] == '<')
 		redir_collect_loop(args, i, in_count);
-	return (0);
+	return (exit_code(1, 0));
 }
 
 /*~~ this has been over complicated for te fear  of needing this data 

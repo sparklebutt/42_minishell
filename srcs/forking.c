@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 08:29:07 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 11:35:20 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 		close(data->prev_fd);
 	close(fds[1]);
 	data->tmp->filename = free_string(data->tmp->filename);
-	return (0);
+	return (exit_code(1, 0));
 }
 
 int	set_builtin_info(t_data *data, int fds[2], int x)
