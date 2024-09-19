@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 08:25:14 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 09:17:40 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	minishell(t_data *data)
 		data->tokens->input_file = free_string(data->tokens->input_file);
 		free_array(data->tokens->output_files);
 		data->tokens->output_files = NULL;
-		exit_code(1, 0);
 	}
 	ft_printf("exit\n");
 }

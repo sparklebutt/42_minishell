@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 08:32:06 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 09:16:28 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,13 @@ int	redir_syntax(char **args, int i, int *out_count, int *in_count)
 	if (is_char_redir(args[i][0]) != 0)
 	{
 		if (args[i + 1] == NULL)
-			return (not_perror("redirect", NULL, "synntax error\n"), -1);
+		{
+			exit_code(1, 2);
+			return (not_perror("redirect", NULL, "syntax error\n"), -1);
+		}
 		if (args[i + 1] != NULL && (args[i + 1][0] == '|'
 			|| args[i + 1][0] == '\0' || is_char_redir(args[i + 1][0]) > 0))
-			return (not_perror("redirect", NULL, "synntax error\n"), -1);
+			return (not_perror("redirect", NULL, "syntax error\n"), -1);
 	}
 	if (args[i][0] == '>' || (args[i][0] == '>' && args[i][1] == '>'))
 		redir_collect_loop(args, i, out_count);
@@ -59,7 +62,7 @@ int	redirect_collector(t_tokens *tokens, char **args, int i, int in_count)
 	while (args[i])
 	{
 		if (redir_syntax(args, i, &out_count, &in_count) != 0)
-			return (1);
+			return (-1);
 		if (args[i][0] == '|')
 		{
 			if (comp_out < out_count)

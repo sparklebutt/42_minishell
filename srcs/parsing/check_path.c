@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 23:10:35 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 09:13:56 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@ int	initial_checks_and_setup(char **suffix, size_t *cmd_len,
 	if (*cmd_len == 0)
 		return (0);
 	if (args[x][0] == '.')
+	{
+		if (ft_strlen(args[x]) < 2)
+			return (0);
 		return (3);
+	}
 	if (args[x][0] == '/')
 		return (handle_absolute_path(data, x, NULL), 3);
 	if (args[x][0] != '/')

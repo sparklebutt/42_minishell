@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 00:04:28 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 09:18:23 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	check_extra_special_echo_case(char **args)
 
 int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
+	//exit_code(1, 0);
 	tokens->array_count = total_words_c(string, ' ');
 	tokens->args = ft_split_adv(string, ' ', data);
 	if (tokens->args == NULL)

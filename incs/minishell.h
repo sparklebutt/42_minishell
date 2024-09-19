@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 08:24:38 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 09:14:00 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 # define NOT_VALID "not a valid identifier\n"
 # define NO_CMD "command not found\n"
+//# define NO_FNAME "filename argument required\n"
 # include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
