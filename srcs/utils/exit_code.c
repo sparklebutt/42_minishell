@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_code.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 08:40:21 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 07:33:15 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:35:32 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,26 @@ char	*replace_exitcode(char *arg, int start)
 	return (new_arg);
 }
 
+
+void free_stuff(t_data *data, int flag)
+{
+	if (flag == 0 || flag == 1)
+	{
+		free_array(data->tokens->args);
+		free_array(data->tokens->output_files);
+		data->tokens->output_files = NULL;
+	}
+	if (flag == 1)
+		free_nodes(data->env);
+}
+
 void	free_n_exit(t_data *data, int *fds, int flag)
 {
 	if (flag == 1)
+	{
+		free(data->tmp->ex_arr);
 		close(fds[1]);
+	}
 	else if (flag == 2)
 	{
 		close(fds[0]);
@@ -50,5 +66,10 @@ void	free_n_exit(t_data *data, int *fds, int flag)
 		free_nodes(data->env);
 		free_array(data->tokens->output_files);
 	}
+	// if (data->tokens->here_file != NULL)
+	// {
+	// 	unlink(data->tokens->here_file);
+	// 	data->tokens->here_file = free_string(data->tokens->here_file);
+	// }
 	exit(exit_code(0, 0));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 13:33:12 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:20:35 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,12 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	expansion_parser(tokens, data);
 	pipe_collector(tokens, tokens->args);
 	if (tokens->redirect_count > 0 && create_redir_array(tokens) == -1)
-		return (not_perror("redirect", NULL, "malloc fail"), 1);
+		return (not_perror("redirect", NULL, "malloc fail\n"), 1);
 	if (parse_redirections(data, tokens, tokens->args, 0) == -1)
 		return (1);
 	if (tokens->args == NULL)
-		return (not_perror("parsing", NULL, "malloc fail"), 1);
-	return (0);//exit_code(1, 0));
+		return (not_perror("parsing", NULL, "malloc fail\n"), 1);
+	return (0);
 }
 
 int	find_passage(t_data *all, char *string, int divert)

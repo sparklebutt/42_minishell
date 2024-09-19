@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_adv.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 13:10:21 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:21:09 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	**adv_loop(char **array, const char *s, int x, char c)
 	word_len = 0;
 	word = 0;
 	i = 0;
-	total_words = total_words_c(s, c) + 1;
+	total_words = total_words_c(s, c);
 	while (s[i] != '\0' && word < total_words)
 	{
 		while (s[i] == c)
@@ -123,7 +123,7 @@ char	**ft_split_adv(char const *s, char c, t_data *data)
 		return (NULL);
 	if (testing == 1)
 	{
-		array[0] = ft_substr(s, 0, ft_strlen(s) + 1);
+		array[0] = ft_substr(s, 0, ft_strlen(s) + 1); // if this throws a fit, remove +1
 		array[1] = NULL;
 		return (array);
 	}

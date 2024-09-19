@@ -18,6 +18,8 @@ echo "'"'$USER'"'"
 
 echo '"'"$USER"'"'
 
+echo "'$''USER'" '"$""USER"' '$"USER"' "$'USER'"
+
 echo $"HOME"$USER
 
 echo $"HOM"E$USER

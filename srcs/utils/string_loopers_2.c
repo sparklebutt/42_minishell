@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_loopers_2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:08:22 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 22:53:47 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/19 14:19:49 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	special_echo_loop(char **args, int *x, int *i)
 	(*x) = ft_strlen(args[*i]) + 2;
 	temp = ft_calloc(*x, sizeof(char));
 	if (temp == NULL)
-		return (not_perror("echo", NULL, "malloc fail"), -1);
+		return (not_perror("echo", NULL, "malloc fail\n"), -1);
 	temp[0] = 0x06;
 	ft_strcpy(temp + 1, args[*i]);
 	free_string(args[*i]);
@@ -43,10 +43,16 @@ void	parse_redir_loop(t_data *data, int *i, int *x)
 		(*i)++;
 	}
 	else if (args[*i + 1] != NULL && strcmp(args[*i], "<") == 0)
-		input_helper(data->tokens, fd, *i++);
+	{
+		input_helper(data->tokens, fd, *i);
+		i++;
+	}	
 	else if (args[*i + 1] != NULL && (strcmp(args[*i], ">>") == 0
 			|| strcmp(args[*i], ">") == 0))
-		output_helper(data->tokens, fd, *i++, *x);
+	{
+		output_helper(data->tokens, fd, *i, *x);
+		i++;
+	}
 }
 
 // make sure this works as expected
@@ -56,7 +62,7 @@ void	redir_collect_loop(char **array, int i, int *count)
 	if (ft_strlen(array[i]) > 2)
 	{
 		if (array[i][2])
-			not_perror("syntax error", NULL, "too many redirects");
+			not_perror("syntax error", NULL, "too many redirects\n");
 	}
 	(*count)++;
 }
