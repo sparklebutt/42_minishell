@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 13:56:20 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/20 07:58:26 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ typedef struct s_tokens
 
 typedef struct s_temps
 {
-
 	char	**array;
 	char	**exp_array;
 	char 	**ex_arr;
@@ -75,6 +74,10 @@ typedef struct s_temps
 	char	*suffix;
 	char	*env_line;
 	int		i;
+	int		x;
+	int		word_len;
+	int		check;
+	int		flag;
 }	t_temps;
 
 typedef struct s_data

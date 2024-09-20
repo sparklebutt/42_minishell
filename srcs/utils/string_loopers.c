@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_loopers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:08:22 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 14:58:10 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/20 08:07:36 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,3 +84,10 @@ void	stupid_if_statement(const char *s, int *i)
 	}
 	(*i)++;
 }
+
+// char *stupid_function(size_t *word, t_temps *tmp, char **array, char *s)
+// {
+// 	(*word)++;
+// 	lol(&tmp->i, &tmp->x);
+// 	return (ft_substr(s, tmp->word_len, 1))
+// }

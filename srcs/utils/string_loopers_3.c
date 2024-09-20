@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_loopers_3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 23:16:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 00:40:31 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/20 07:37:50 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,3 +80,15 @@ int	dup_fds(t_data *data, int *fds, int x)
 		close(data->prev_fd);
 	return (0);
 }
+
+// int	get_word_len(int *check, int *x)
+// {
+// 	int	word_len;
+
+// 	word_len = 0;
+// 	if (check > x)
+// 		word_len =  check - x;
+// 	else
+// 		word_len =  x - check;
+// 	return (word_len);
+// }

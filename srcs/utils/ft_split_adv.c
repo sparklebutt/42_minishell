@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/20 06:58:37 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/20 08:25:21 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,16 @@ int	fancy_strlen(char const *s, char c, int i)
 	return (i);
 }
 
+void stupid_function_2(int *words, int *i, const char *s, char c)
+{
+	(*words)++;
+	(*i) += fancy_strlen(s, c, *i) - (*i);
+	if (s[*i] && is_char_redir(s[*i - 1]) > 0 && is_char_redir(s[*i - 2]) == 0)
+		(*i)--;
+	else if (s[*i] && is_char_redir(s[*i - 1]) > 0 && is_char_redir(s[*i - 2]) > 0)
+		(*i)-=2;
+}
+
 /*~~ leave commented code in here, i will finish this soon,
 it got a bit late, attempt to increase word count based on
 having no spaces but having redirects non the less, 
@@ -69,116 +79,88 @@ size_t	total_words_c(char const *s, char c)
 	i = 0;
 	if (ft_strlen(s) == 1)
 		return (1);
-	// printf("------------- TOTAL_WORDS_C -------------\n");
 	while (s[i] != '\0')
 	{
-		// printf("\tCHECK THIS s[i] = %c\n", s[i]);
 		if (s[i] == c)
-		{
-			// printf("\t\twe found a space!\n");
 			stupid_if_statement(s, &i);
-		}
 		else if (is_char_redir(s[i]) > 0)
 		{
-			// printf("\tIT IS A REDIRECT!\n");
-			words++;
-			// printf("\twords = %d\n", words);
 			if (s[i + 1] && is_char_redir(s[i + 1]) > 0)
-			{
-				// printf("\t\tTHE NEXT ONE IS ALSO A REDIRECT!\n");
 				i++;
-				// printf("\tNEW s[i] = %c\n", s[i]);
-			}
-			i++;
-			// printf("\tNEW s[i] = %c\n", s[i]);
+			lol(&words, &i);
 		}
 		else if (s[i] == '|')
-		{
-			words++;
-			// printf("\twords = %d\n", words);
-			i++;
-			// printf("\tNEW s[i] = %c\n", s[i]);
-		}
+			lol(&words, &i);
 		else if (s[i] == '$' || s[i] != c)
-		{
-			words++;
-			// printf("\twords = %d\n", words);
-			// printf("\tBEFORE FANCY_STRLEN s[i] = %c\n", s[i]);
-			i += fancy_strlen(s, c, i) - i;
-			if (s[i] && is_char_redir(s[i - 1]) > 0 && is_char_redir(s[i - 2]) == 0)
-				i--;
-			else if (s[i] && is_char_redir(s[i - 1]) > 0 && is_char_redir(s[i - 2]) > 0) // maybe not needed
-				i-=2;
-			// printf("\twords = %d\n", words);
-			// printf("\tAFTER FANCY_STRLEN s[i] = %c\n", s[i]);
-		}
+			stupid_function_2(&words, &i, s, c);
 	}
 	return (words);
 }
 
-char	**adv_loop(char **array, const char *s, int x, char c)
+void check_check_check(int *flag, int *x, const char *s, int i)
 {
-	int			word_len;
-	size_t		word;
-	int			i;
-	size_t		total_words;
-	int			check;
-	int flag;
+	if (*flag == 0 && (*x) > 1 && is_char_redir(s[i]) > 0)
+	{
+		(*x)--;
+		if (*x > 1 && s[1] && is_char_redir(s[i + 1]) > 0)
+			(*x)--;
+		(*flag)++;
+	}
+	else if (*flag == 1)
+	{
+		(*x)++;
+		(*flag)--;
+	}
+}
+
+int	get_word_len(int *check, int *x)
+{
+	int	word_len;
 
 	word_len = 0;
+	if (*check > *x)
+		word_len = (*check) - (*x);
+	else
+		word_len = (*x) - (*check);
+	return (word_len);
+}
+
+void init_adv_loop(t_temps *tmp)
+{
+	tmp->word_len = 0;
+	tmp->i = 0;
+	tmp->flag = 0;
+	tmp->x = 0;
+	tmp->check = 0;
+}
+
+char *stupid_function(size_t *word, t_temps *tmp, const char *s)
+{
+	(*word)++;
+	lol(&tmp->i, &tmp->x);
+	return (ft_substr(s, tmp->word_len, 1));
+}
+
+char	**adv_loop(char **array, const char *s, size_t total_words, t_temps *tmp)
+{
+	size_t		word;
+
 	word = 0;
-	i = 0;
-	flag = 0;
-	total_words = total_words_c(s, c) + 1;
-	// printf("------AAAAA------ ADV_LOOP -------AAAAA-----\n");
-	// printf("total words = %zu\n", total_words);
-	while (s[i] != '\0' && word < total_words)
+	init_adv_loop(tmp);
+	while (s[tmp->i] != '\0' && word < total_words)
 	{
-		// printf("THIS IS THE CHAR = %c\n", s[i]);
-		while (s[i] == c)
-			lol(&i, &x);
-		x += word_len;
-		// printf("\tlengt/h of the last word %d\n", x);
-		check = fancy_strlen(s, c, i);
-		// printf("fancy_strlen = %d\n", check);
-		// printf("x = %d\n", x);
-		if (flag == 0 && x > 1 && is_char_redir(s[i]) > 0)
-		{
-			// printf("DOES IT STEP INTO HERE??????\n");
-			x--;
-			if (x > 1 && s[1] && is_char_redir(s[i + 1]) > 0)
-				x--;
-			flag++;
-		}
-		else if (flag == 1)
-		{
-			x++;
-			flag--;
-		}
-		if (check > x)
-		{
-			// printf("word_len A\n");
-			word_len =  check - x;
-		}	
-		else
-		{
-			// printf("word_len B\n");
-			word_len =  x - check;
-		}	
-		// printf("\tcurrent word's length %d\n", word_len);
-		array[word] = ft_substr(s, i, word_len);
-		// printf("\tarray[%zu] = %s\n", word, array[word]);
+		while (s[tmp->i] == 32)
+			lol(&tmp->i, &tmp->x);
+		tmp->x += tmp->word_len;
+		tmp->check = fancy_strlen(s, 32, tmp->i);
+		check_check_check(&tmp->flag, &tmp->x, s, tmp->i);
+		tmp->word_len = get_word_len(&tmp->check, &tmp->x);
+		array[word] = ft_substr(s, tmp->i, tmp->word_len);
 		if (array[word] == NULL)
 			return (free_array(array), NULL);
-		i += ft_strlen(array[word]);
-		// printf("\tthe next char is %c\n", s[i]);
-		if (s[word_len] == '|' && s[i])
-		{
-			word++;
-			i++;
-			x++;
-			array[word] = ft_substr(s, word_len, 1);
-		}
+		tmp->i += ft_strlen(array[word]);
+		if (s[tmp->word_len] == '|' && s[tmp->i])
+			array[word] = stupid_function(&word, tmp, s);
 		if (word < total_words)
 			word++;
 	}
@@ -197,25 +179,26 @@ char	**ft_split_adv(char const *s, char c, t_data *data)
 	char	**array;
 	int		word_len;
 	int		x;
-	size_t	testing;
+	size_t	total_words;
 
 	x = 0;
-	testing = total_words_c(s, c);
-	//printf("words = %zu\n", testing);
+	if (s[0] == '|')
+		return (not_perror("syntax error", NULL, "unexpected token\n"), NULL);
+	total_words = total_words_c(s, c) + 1;
 	(void)data;
 	word_len = 0;
 	array = NULL;
 	if (!*s || !s)
 		return (NULL);
-	array = (char **)ft_calloc(sizeof(char *), testing + 1);
+	array = (char **)ft_calloc(sizeof(char *), total_words);
 	if (!s || !array)
 		return (NULL);
-	if (testing == 1)
+	if (total_words == 2)
 	{
 		array[0] = ft_substr(s, 0, ft_strlen(s) + 1); // if this throws a fit, remove +1
 		array[1] = NULL;
 		return (array);
 	}
-	array = adv_loop(array, s, x, c);
+	array = adv_loop(array, s, total_words, data->tmp);
 	return (array);
 }
