@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 20:54:57 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/20 10:09:27 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,11 @@ void	change_dir(t_data *data, t_env *envs, char *temp)
 		&& find_node(envs, "OLDPWD", data) == 1
 		&& find_node(envs, "PWD", data) == 1)
 	{
-		temp2 = getcwd(NULL, 0);
-		envs = fill_old_pwd(data, envs, temp2);
+		if (find_node(envs, "PWD", data) > 0)
+			temp2 = getcwd(NULL, 0);
+		if (find_node(envs, "OLDPWD", data) > 0)
+			envs = fill_old_pwd(data, envs, temp2);
 	}
-	else if (find_node(envs, "OLDPWD", data) == 0
-		|| find_node(envs, "PWD", data) == 0)
-		return ;
 	else
 		cmd_error(tokens->args[data->i], tokens->args[data->i + 1]);
 	temp2 = free_string(temp2);
@@ -59,14 +58,14 @@ void	handle_cd_input(t_data *data, t_env *envs, int i, char *temp)
 	}
 	temp = free_string(temp);
 	temp2 = ft_strdup(data->tokens->args[++i]);
-	if (is_slash(temp2) == 0)
-	{
-		temp = ft_strjoin(data->path, temp2);
-		temp2 = free_string(temp2);
-		change_dir(data, envs, temp);
-	}
-	else
-		change_dir(data, envs, temp2);
+	change_dir(data, envs, temp2);
+}
+
+void to_home(t_data *data, t_env *envs)
+{
+	find_passage(data, "HOME", 2);
+	if (chdir(data->tmp->env_line) == 0)
+		envs = fill_old_pwd(data, envs, data->tmp->env_line);
 }
 
 void	ft_cd(t_data *data, t_env *envs)
@@ -78,9 +77,7 @@ void	ft_cd(t_data *data, t_env *envs)
 	if (ft_strncmp(data->tokens->args[i], "cd", 3) == 0
 		&& data->tokens->args[i + 1] == NULL)
 	{
-		find_passage(data, "HOME", 2);
-		if (chdir(data->tmp->env_line) == 0)
-			envs = fill_old_pwd(data, envs, data->tmp->env_line);
+		to_home(data, envs);
 		return ;
 	}
 	temp = getcwd(NULL, 0);
@@ -88,6 +85,12 @@ void	ft_cd(t_data *data, t_env *envs)
 	{
 		data->path = free_string(data->path);
 		data->path = ft_strdup(temp);
+	}
+	else
+	{
+		printf("minishell: cd: cwd is null, go home, you're drunk\n");
+		to_home(data, envs);
+		return ;
 	}
 	handle_cd_input(data, envs, i, temp);
 }

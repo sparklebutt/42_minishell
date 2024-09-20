@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_adv.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/20 08:25:21 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/20 08:44:50 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,42 +17,28 @@ inside quotes. Quotes signify a full string therefore we need
 any and all spaces inside them */
 int	fancy_strlen(char const *s, char c, int i)
 {
-	// printf("------------- FANCY_STRLEN -------------\n");
 	while (s[i] && s[i] != c)
 	{
-		// printf("\tCHECK THIS s[%d] = %c\n", i, s[i]);
 		if (s[i] == '"')
 			fancy_loop(s, &i, '"');
 		else if (s[i] == '\'')
 			fancy_loop(s, &i, '\'');
 		else if (is_char_redir(s[i]) > 0)
 		{
-			// printf("\tIT IS A REDIRECT!\n");
-			// printf("\twhat is the next ones[i + 1] = %c\n", s[i + 1]);
 			if (i == 0)
 			{
-				// printf("\t\tredir is first char, returning word\n");
-				// printf("\t\tnew s[%d] is %c\n", i, s[i+1]);
 				if (is_char_redir(s[i + 1]) > 0)
-				{
-					// printf("\t\tA next char is a redir, return 2\n");
 					return (2);
-				}
 				else
-				{
-					// printf("\t\tA next char is NOT redir, return 1\n");
 					return (1);
-				}
 			}
 			return (i);
 		}
 		else if (i > 0 && s[i - 1] != 32 && s[i + 1] && s[i + 1] != 32 && s[i] == '|')
-			return(i); //=1
-		// printf("\tCHECK THIS s[%d] = |%c|\n", i, s[i]);
+			return(i);
 		if (s[i] && s[i] != c)
 			i++;
 	}
-	// printf("\tSTRING ENDED, final char is s[%d] = %c\n", i - 1, s[i - 1]);
 	return (i);
 }
 

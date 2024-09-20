@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 08:33:27 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 13:43:20 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/20 09:59:21 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	handle_cc(int signo)
 void	handle_sigquit(int signo)
 {
 	(void)signo;
-	write(STDOUT_FILENO, "Quit (core dumped because you asked it too)\n", 45);
+	write(STDOUT_FILENO, "Quit (core dumped because you asked it too)\n", 46);
 	signal(SIGQUIT, SIG_DFL);
 	kill(g_interactive_mode, SIGQUIT);
 }
