@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 08:21:48 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/20 10:11:36 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	ft_pwd(t_data *data, t_env *envs)
 	}
 	ft_printf("%s\n", data->path);
 	temp_path = free_string(temp_path);
+	data->path = free_string(data->path);
 	return (0);
 }
 

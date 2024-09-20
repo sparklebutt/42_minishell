@@ -11,9 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-# include <signal.h>
-# include <stdio.h>
-
 
 void	set_signals(void)
 {
@@ -38,7 +35,7 @@ void	handle_cc(int signo)
 void	handle_sigquit(int signo)
 {
 	(void)signo;
-	write(STDOUT_FILENO, "Quit (core dumped because you asked it too)\n", 45);
+	write(STDOUT_FILENO, "Quit (core dumped because you asked it too)\n", 46);
 	signal(SIGQUIT, SIG_DFL);
 	kill(g_interactive_mode, SIGQUIT);
 }

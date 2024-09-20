@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_adv.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
 /*   Updated: 2024/09/20 09:43:53 by vkettune         ###   ########.fr       */
@@ -42,17 +42,6 @@ int	fancy_strlen(char const *s, char c, int i)
 	}
 	return (i);
 }
-
-// void	stupid_function_2(int *words, int *i, const char *s, char c)
-// {
-// 	(*words)++;
-// 	(*i) += fancy_strlen(s, c, *i) - (*i);
-// 	if (s[*i] && is_char_redir(s[*i - 1]) > 0 && is_char_redir(s[*i - 2]) == 0)
-// 		(*i)--;
-// 	else if (s[*i] && is_char_redir(s[*i - 1]) > 0
-// 		&& is_char_redir(s[*i - 2]) > 0)
-// 		(*i) -= 2;
-// }
 
 /*~~ leave commented code in here, i will finish this soon,
 it got a bit late, attempt to increase word count based on
@@ -100,34 +89,6 @@ void	check_check_check(int *flag, int *x, const char *s, int i)
 		(*flag)--;
 	}
 }
-
-// int	get_word_len(int *check, int *x)
-// {
-// 	int	word_len;
-
-// 	word_len = 0;
-// 	if (*check > *x)
-// 		word_len = (*check) - (*x);
-// 	else
-// 		word_len = (*x) - (*check);
-// 	return (word_len);
-// }
-
-// void	init_adv_loop(t_temps *tmp)
-// {
-// 	tmp->word_len = 0;
-// 	tmp->i = 0;
-// 	tmp->flag = 0;
-// 	tmp->x = 0;
-// 	tmp->check = 0;
-// }
-
-// char	*stupid_function(size_t *word, t_temps *tmp, const char *s)
-// {
-// 	(*word)++;
-// 	lol(&tmp->i, &tmp->x);
-// 	return (ft_substr(s, tmp->word_len, 1));
-// }
 
 char	**adv_loop(char **array, const char *s, size_t total_words,
 	t_temps *tmp)
