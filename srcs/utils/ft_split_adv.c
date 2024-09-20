@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/20 08:44:50 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/20 09:43:53 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,13 @@ int	fancy_strlen(char const *s, char c, int i)
 			}
 			return (i);
 		}
-		else if (i > 0 && s[i - 1] != 32 && s[i + 1] && s[i + 1] != 32 && s[i] == '|')
-			return(i);
+		else if (i > 0 && s[i - 1] != 32 && s[i + 1]
+			&& s[i + 1] != 32 && s[i] == '|')
+			return (i);
 		if (s[i] && s[i] != c)
 			i++;
 	}
 	return (i);
-}
-
-void stupid_function_2(int *words, int *i, const char *s, char c)
-{
-	(*words)++;
-	(*i) += fancy_strlen(s, c, *i) - (*i);
-	if (s[*i] && is_char_redir(s[*i - 1]) > 0 && is_char_redir(s[*i - 2]) == 0)
-		(*i)--;
-	else if (s[*i] && is_char_redir(s[*i - 1]) > 0 && is_char_redir(s[*i - 2]) > 0)
-		(*i)-=2;
 }
 
 /*~~ leave commented code in here, i will finish this soon,
@@ -83,7 +74,7 @@ size_t	total_words_c(char const *s, char c)
 	return (words);
 }
 
-void check_check_check(int *flag, int *x, const char *s, int i)
+void	check_check_check(int *flag, int *x, const char *s, int i)
 {
 	if (*flag == 0 && (*x) > 1 && is_char_redir(s[i]) > 0)
 	{
@@ -99,35 +90,8 @@ void check_check_check(int *flag, int *x, const char *s, int i)
 	}
 }
 
-int	get_word_len(int *check, int *x)
-{
-	int	word_len;
-
-	word_len = 0;
-	if (*check > *x)
-		word_len = (*check) - (*x);
-	else
-		word_len = (*x) - (*check);
-	return (word_len);
-}
-
-void init_adv_loop(t_temps *tmp)
-{
-	tmp->word_len = 0;
-	tmp->i = 0;
-	tmp->flag = 0;
-	tmp->x = 0;
-	tmp->check = 0;
-}
-
-char *stupid_function(size_t *word, t_temps *tmp, const char *s)
-{
-	(*word)++;
-	lol(&tmp->i, &tmp->x);
-	return (ft_substr(s, tmp->word_len, 1));
-}
-
-char	**adv_loop(char **array, const char *s, size_t total_words, t_temps *tmp)
+char	**adv_loop(char **array, const char *s, size_t total_words,
+	t_temps *tmp)
 {
 	size_t		word;
 
@@ -150,7 +114,6 @@ char	**adv_loop(char **array, const char *s, size_t total_words, t_temps *tmp)
 		if (word < total_words)
 			word++;
 	}
-	// print_arr(array, "the shitter");
 	array[word] = NULL;
 	return (array);
 }
@@ -181,7 +144,7 @@ char	**ft_split_adv(char const *s, char c, t_data *data)
 		return (NULL);
 	if (total_words == 2)
 	{
-		array[0] = ft_substr(s, 0, ft_strlen(s) + 1); // if this throws a fit, remove +1
+		array[0] = ft_substr(s, 0, ft_strlen(s) + 1);
 		array[1] = NULL;
 		return (array);
 	}
