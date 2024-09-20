@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 08:33:27 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 13:43:20 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/20 10:00:15 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+# include <signal.h>
+# include <stdio.h>
+
 
 void	set_signals(void)
 {

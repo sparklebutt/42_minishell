@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/20 07:58:26 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/20 09:49:05 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <dirent.h>
-# include <stdio.h> // dont need to remove
+# include <stdio.h>
 # include <errno.h>
 # include <sys/param.h>
 # include <sys/wait.h>
@@ -116,7 +116,7 @@ int		check_path(char *string, int divert, t_data *data, int x);
 // ~~~~~in pipe_parsing.c
 void	pipe_collector(t_tokens *tokens, char **array);
 // ~~~~~in expansion_helper.c
-void	 simple_flagged(t_data *data, char *new, int len, int i);
+void	simple_flagged(t_data *data, char *new, int len, int i);
 // ~~~~~in prasing_helpers.c
 bool	set_check(char *string, bool ver, int *x, char c);
 int		simple_quote_check(char *s, int i);
@@ -124,15 +124,15 @@ bool	confirm_expansion(char *string, int len, int x);
 int		multi_dollar_handle(t_data *data, t_tokens *tokens, int i);
 
 // ~~~~~in redirects.c
-int 	create_redir_array(t_tokens *tokens);
+int		create_redir_array(t_tokens *tokens);
 int		redirect_collector(t_tokens *tokens, char **array, int i, int in_count);
 int		redirect_helper(t_tokens *tokens, int x);
 int		parse_redirections(t_data *data, t_tokens *tokens, char **args, int i);
 // ~~~~~in redir_helper.c
-int 	is_char_redir(char arg);
-int 	is_redirect(char *arg);
-int 	input_helper(t_tokens *tokens, int fd, int i);
-int 	output_helper(t_tokens *tokens, int fd, int i, int x);
+int		is_char_redir(char arg);
+int		is_redirect(char *arg);
+int		input_helper(t_tokens *tokens, int fd, int i);
+int		output_helper(t_tokens *tokens, int fd, int i, int x);
 
 // ENV - - - - - - - - -
 
@@ -183,8 +183,8 @@ char	**free_loop(char **arr, int index);
 // signals
 void	signal_handler(int signo);
 void	set_signals(void);
-void 	reset_signals();
-void	handle_sigquit();
+void	reset_signals(int signo);
+void	handle_sigquit(int signo);
 
 // ft_split_adv
 char	**ft_split_adv(char const*s, char c, t_data *data);
@@ -194,7 +194,7 @@ size_t	total_words_c(char const *s, char c);
 const char	*exp_loop(char c, int *i, const char *s, int *count);
 void		sublen_loop(char c, int *sublen, int *save, const char *s);
 int			loop_quotes(t_tokens *tokens, int quote_count, int i, int *x);
-void 		fancy_loop(const char *s, int *i, char c);
+void		fancy_loop(const char *s, int *i, char c);
 void		stupid_if_statement(const char *s, int *i);
 int			special_echo_loop(char **args, int *x, int *i);
 void		parse_redir_loop(t_data *data, int *i, int *x);
@@ -212,19 +212,19 @@ int		handle_line(t_data data, t_tokens *tokens, t_env **env);
 int		is_builtins(char *cmd);
 int		exec_builtins(t_data data, char *cmd, t_env **envs);
 t_env	*init(t_data *data);
-void 	heredoc_loop(t_data *data, t_tokens *tokens, char *eof);
-int 	parse_heredoc(char **args);
+void	heredoc_loop(t_data *data, t_tokens *tokens, char *eof);
+int		parse_heredoc(char **args);
 
 
 // forking
 int		pipe_fork(t_data *data, int x, int status);
 int		child(t_data *data, int *fds, int x, int flag);
 int		send_to_child(t_data *data, int fds[2], int x);
-void 	free_n_exit(t_data *data, int *fds, int flag);
+void	free_n_exit(t_data *data, int *fds, int flag);
 
 // forking utils
 int		set_array(t_data *data);
-char 	**set_env_array(t_data *data, int i, int x);
+char	**set_env_array(t_data *data, int i, int x);
 int		dup_fds(t_data *data, int *fds, int x);
 
 //parsers.c
@@ -236,15 +236,21 @@ int		check_file(char *str);
 int		exit_code(int flag, int num);
 
 int		compare_str(char *str1, char *str2);
-int 	create_file(t_tokens *tokens);
+int		create_file(t_tokens *tokens);
 char	*new_str(char *str, char *value, int start, size_t end);
 char	*replace_exitcode(char *arg, int start);
 
 // tester fucntions 
-int 	print_arr(char **array, char *array_name); //tester fucntion can get rid
-int 	open_and_fill_heredoc(t_tokens *tokens);
-int	 	no_dollar_handle(t_tokens *tokens, t_data *data, int i);
+int		print_arr(char **array, char *array_name); //tester fucntion can get rid
+int		open_and_fill_heredoc(t_tokens *tokens);
+int		no_dollar_handle(t_tokens *tokens, t_data *data, int i);
 int		check_next(char *str, size_t len);
 int		null_check(char *str1, t_env *str2, char *str3);
 t_env	*create_env_list(char *value, char *key, char *temp);
+
+void	init_adv_loop(t_temps *tmp);
+char	*stupid_function(size_t *word, t_temps *tmp, const char *s);
+void	stupid_function_2(int *words, int *i, const char *s, char c);
+int		get_word_len(int *check, int *x);
+int		fancy_strlen(char const *s, char c, int i);
 #endif

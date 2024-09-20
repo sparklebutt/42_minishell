@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 14:34:47 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/20 09:50:25 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 			free_n_exit(data, fds, 1);
 		}
 		tmp = set_env_array(data, 0, 0);
-		reset_signals();
+		reset_signals(0);
 		if (data->tmp->filename != NULL)
 			execve(data->tmp->filename, data->tmp->ex_arr, tmp);
 		free_array(tmp);
