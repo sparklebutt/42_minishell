@@ -6,13 +6,13 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 06:50:42 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 12:57:10 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_interactive_mode; // = 1 means we are in interactive mode
+int	g_interactive_mode;
 
 /**~~ added error handeling to collect_cmd_array returns 0 on success
  im not sure if this might be more helpfull when handleing exit codes, 
@@ -39,7 +39,6 @@ void	minishell(t_data *data)
 		}
 		rl = free_string(rl);
 		free_array(data->tokens->args);
-		//free(data->tokens->heredoc);
 		data->tokens->input_file = free_string(data->tokens->input_file);
 		free_array(data->tokens->output_files);
 		data->tokens->output_files = NULL;

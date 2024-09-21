@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 10:45:06 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 12:52:46 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,10 @@ int	redirect_collector(t_tokens *tokens, char **args, int i, int in_count)
 	{
 		if (redir_syntax(args, i, &out_count, &in_count) != 0)
 			return (-1);
-		if (args[i][0] == '|')
-		{
-			if (comp_out < out_count)
-				add_redir_count(tokens->out_a_count, &out_count, &comp_out);
-			if (comp_in < in_count)
-				add_redir_count(tokens->in_a_count, &in_count, &comp_in);
-		}
+		if (args[i][0] == '|' && comp_out < out_count)
+			add_redir_count(tokens->out_a_count, &out_count, &comp_out);
+		if (args[i][0] == '|' && comp_in < in_count)
+			add_redir_count(tokens->in_a_count, &in_count, &comp_in);
 		if (args[i + 1] == NULL)
 			break ;
 		i++;

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:08:22 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/20 08:07:36 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 14:02:27 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,28 +41,6 @@ void	sublen_loop(char c, int *sublen, int *save, const char *s)
 	(*sublen)++;
 }
 
-int	loop_quotes(t_tokens *tokens, int quote_count, int i, int *x)
-{
-	char	c;
-
-	c = 0;
-	if (tokens->quote == 1)
-		c = '\'';
-	else if (tokens->quote == 2)
-		c = '"';
-	(*x)++;
-	quote_count += 1;
-	if (tokens->args[i][*x] == c)
-		quote_count += 1;
-	while (tokens->args[i][*x] != '\0' && tokens->args[i][*x] != c)
-	{
-		(*x)++;
-		if (tokens->args[i][*x] == c)
-			quote_count += 1;
-	}
-	return (quote_count);
-}
-
 void	fancy_loop(const char *s, int *i, char c)
 {
 	(*i)++;
@@ -85,9 +63,12 @@ void	stupid_if_statement(const char *s, int *i)
 	(*i)++;
 }
 
-// char *stupid_function(size_t *word, t_temps *tmp, char **array, char *s)
-// {
-// 	(*word)++;
-// 	lol(&tmp->i, &tmp->x);
-// 	return (ft_substr(s, tmp->word_len, 1))
-// }
+void	close_diff_fds(int *fds, t_data *data, int flag)
+{
+	if (data->prev_fd != -1)
+		close(data->prev_fd);
+	data->prev_fd = fds[0];
+	close(fds[1]);
+	if (flag == 0)
+		close(fds[0]);
+}

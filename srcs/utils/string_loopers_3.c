@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_loopers_3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 23:16:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/20 18:17:35 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 13:42:02 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,26 @@ int	dup_fds(t_data *data, int *fds, int x)
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
 	return (0);
+}
+
+void	simple_flagged(t_data *data, char *new, int len, int i)
+{
+	char	**exp_array;
+	char	*tmp;
+	int		flag;
+
+	tmp = NULL;
+	exp_array = data->tmp->exp_array;
+	flag = check_next(exp_array[i + 1], ft_strlen(exp_array[i]));
+	if (ft_strchr(exp_array[i], '"') != NULL
+		|| ft_strchr(exp_array[i], '\'') != NULL)
+	{
+		new = clean_quotes(exp_array[i], len, 0, 0);
+		tmp = look_if_expans(data, data->env, new, flag);
+		exp_array[i] = free_string(exp_array[i]);
+		exp_array[i] = ft_strdup((tmp));
+		tmp = free_string(tmp);
+	}
+	else
+		exp_array[i] = look_if_expans(data, data->env, exp_array[i], flag);
 }

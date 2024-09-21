@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:54:01 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/31 18:33:26 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 14:16:34 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ int	ft_printf(const char *str, ...)
 			printed += ft_conversion(args, *(++str));
 		else
 			printed += ft_putchar(*str);
-		//check = ft_check_error(printed, check);
-		if (ft_check_error(printed, check) == -1)//(check == -1)
+		if (ft_check_error(printed, check) == -1)
 			return (-1);
 		str++;
 	}

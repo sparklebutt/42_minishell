@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*   ft_strnstr_vil.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 10:47:05 by vkettune          #+#    #+#             */
-/*   Updated: 2024/07/01 16:50:18 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 14:06:07 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t l)
 {
 	size_t	h;
 	size_t	n;
-	//size_t	n_len;
 	char	*hay;
 
 	h = 0;
-	n_len = ft_strlen(needle);
 	hay = (char *)haystack;
 	if (needle[0] == '\0')
 		return (hay);

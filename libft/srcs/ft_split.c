@@ -6,13 +6,12 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 08:18:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 06:34:14 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 14:16:12 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
-
 
 int	fancy_strlen_a(char const *s, char c, int i)
 {
@@ -52,6 +51,18 @@ char	**free_array_if(char **array)
 	return (NULL);
 }
 
+char	**malloc_array(size_t total_words, int *word, int *i)
+{
+	char	**array;
+
+	(*i) = 0;
+	(*word) = 0;
+	array = malloc(sizeof(char *) * (total_words + 1));
+	if (!array)
+		return (NULL);
+	return (array);
+}
+
 char	**ft_split(char const *s, char c)
 {
 	char	**array;
@@ -59,11 +70,8 @@ char	**ft_split(char const *s, char c)
 	int		word_len;
 	int		i;
 
-	i = 0;
-	word = 0;
-	// printf("total words = %zu + 1\n", total_words(s, c));
-	array = malloc(sizeof(char *) * (total_words(s, c) + 1));
-	if (!s || !array)
+	array = malloc_array(total_words(s, c), &word, &i);
+	if (!s | !array)
 		return (NULL);
 	while (s[i])
 	{
@@ -78,7 +86,6 @@ char	**ft_split(char const *s, char c)
 			word++;
 			i += word_len;
 		}
-		// array[word] = NULL;
 	}
 	array[word] = NULL;
 	return (array);

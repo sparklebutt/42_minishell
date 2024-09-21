@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 06:53:04 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 12:49:46 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	path_is_null(t_data *data, t_env *envs, int check)
 int	ft_pwd(t_data *data, t_env *envs)
 {
 	char	*temp_path;
-	int check;
+	int		check;
 
 	check = find_node(envs, "OLDPWD", data);
 	temp_path = getcwd(NULL, 0);
@@ -43,7 +43,6 @@ int	ft_pwd(t_data *data, t_env *envs)
 	}
 	ft_printf("%s\n", data->path);
 	temp_path = free_string(temp_path);
-	// data->path = free_string(data->path);
 	return (0);
 }
 

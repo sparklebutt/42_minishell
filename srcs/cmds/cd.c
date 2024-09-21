@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:08:14 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/20 10:09:27 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 12:51:19 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	handle_cd_input(t_data *data, t_env *envs, int i, char *temp)
 	change_dir(data, envs, temp2);
 }
 
-void to_home(t_data *data, t_env *envs)
+void	to_home(t_data *data, t_env *envs)
 {
 	find_passage(data, "HOME", 2);
 	if (chdir(data->tmp->env_line) == 0)

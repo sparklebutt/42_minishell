@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 11:33:13 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 14:01:36 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int open_infile(t_tokens *tokens)
+int	open_infile(t_tokens *tokens)
 {
-	int fd;
-	
+	int	fd;
+
 	fd = 0;
 	if (tokens->input_file == NULL)
 	{
@@ -26,9 +26,9 @@ int open_infile(t_tokens *tokens)
 			return (error("infile", "Failed to duplicate fd"));
 		}
 		close(fd);
-		return (0);	
+		return (0);
 	}
-	fd = open(tokens->input_file, O_RDONLY); 
+	fd = open(tokens->input_file, O_RDONLY);
 	if (fd < 0)
 		return (error("infile", "Failed to open input file B"));
 	if (dup2(fd, STDIN_FILENO) == -1)
@@ -39,6 +39,7 @@ int open_infile(t_tokens *tokens)
 	close(fd);
 	return (0);
 }
+
 // delete temp file at the end of minishell loop
 // (or earlier e.g. end of forks, find place)
 int	child(t_data *data, int *fds, int x, int flag)
@@ -54,88 +55,20 @@ int	child(t_data *data, int *fds, int x, int flag)
 		g_interactive_mode = data->child[data->child_i];
 		dup_fds(data, fds, x);
 		if (data->tokens->action == true
-				&& redirect_helper(data->tokens, data->x) != 0)
+			&& redirect_helper(data->tokens, data->x) != 0)
 			free_n_exit(data, fds, 1);
 		if (data->tokens->h_action == true)
 			open_and_fill_heredoc(data->tokens);
 		if (data->in_action)
-		{
 			open_infile(data->tokens);
-			//free_n_exit(data, fds, 1); // new
-		}
 		if (flag == 1)
-		{
 			exec_builtins(*data, data->tokens->args[data->i], &data->env);
+		if (flag == 1)
 			free_n_exit(data, fds, 1);
-		}
-		tmp = set_env_array(data, 0, 0);
-		reset_signals(0);
-		if (data->tmp->filename != NULL)
-			execve(data->tmp->filename, data->tmp->ex_arr, tmp);
-		free_array(tmp);
-		free_n_exit(data, fds, 1);
+		execve_fail(data, tmp, fds);
 	}
-	data->tokens->h_action = false;
-	data->tokens->action = false;
-	data->in_action = false;
-	data->child_i++;
-	if (data->prev_fd != -1)
-		close(data->prev_fd);
-	close(fds[1]);
-	data->tmp->filename = free_string(data->tmp->filename);
+	after_child(data, fds);
 	return (0);//exit_code(1, 0));
-}
-
-int	set_builtin_info(t_data *data, int fds[2], int x)
-{
-	int	i;
-
-	i = 0;
-	i = data->i;
-	while (data->tokens->args[i] != NULL && data->tokens->args[i][0] != '|')
-	{
-		if (is_redirect(data->tokens->args[i]) > 0)
-		{
-			data->tokens->action = true;
-			break ;
-		}
-		i++;
-	}
-	child(data, fds, x, 1);
-	data->i++;
-	while (data->tokens->args[data->i] != NULL)
-	{
-		if (data->tokens->args[data->i][0] == '|')
-		{
-			data->i++;
-			break ;
-		}
-		data->i++;
-	}
-	return (0);
-}
-
-int	send_to_child_help(t_data *data, int fds[2], int x)
-{
-	char	**args;
-
-	args = data->tokens->args;
-	set_array(data);
-	child(data, fds, x, 0);
-	if (data->i == data->tokens->array_count)
-		return (1);
-	if (args[data->i] != NULL && args[data->i][0] == '|')
-		data->i++;
-	return (0);
-}
-void	set_bools(t_data *data, char *args)
-{
-	if (is_redirect(args) == 3)
-		data->tokens->action = true;
-	else if (is_redirect(args) == 2)
-		data->tokens->h_action = true;
-	else if (is_redirect(args) == 1)
-		data->in_action = true;	
 }
 
 int	send_to_child(t_data *data, int fds[2], int x)
@@ -147,14 +80,7 @@ int	send_to_child(t_data *data, int fds[2], int x)
 		return (0);
 	if (args[data->i] != NULL && is_redirect(args[data->i]) > 0)
 	{
-		while(args[data->i] != NULL && args[data->i][0] != '|' && is_redirect(args[data->i]) > 0)
-		{
-			set_bools(data, args[data->i]);
-			data->i += 2;
-		}
-		if (args[data->i] != NULL && args[data->i][0] == '|')
-			data->i++;
-		if (args[data->i] != NULL && check_path(data->tmp->env_line, 1, data, data->i) == 0)
+		if (checks_before_redir(data, args) == -1)
 			return (-1);
 		if (send_to_child_help(data, fds, x) == 1)
 			return (0);
@@ -162,7 +88,8 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	}
 	else if (is_builtins(args[data->i]) == 1)
 		set_builtin_info(data, fds, x);
-	else if (args[data->i] != NULL && check_path(data->tmp->env_line, 1, data, data->i) != 0)
+	else if (args[data->i] != NULL
+		&& check_path(data->tmp->env_line, 1, data, data->i) != 0)
 	{
 		if (send_to_child_help(data, fds, x) == 1)
 			return (0);
@@ -176,10 +103,7 @@ int	send_to_child(t_data *data, int fds[2], int x)
 of env manipulation instead then freed at the very end of everything~~*/
 static int	wait_and_close(t_data *data, int status, int fds[2], int x)
 {
-	close(fds[0]);
-	close(fds[1]);
-	if (data->prev_fd != -1)
-		close(data->prev_fd);
+	close_diff_fds(fds, data, 0);
 	while (data->child_i >= 0)
 	{
 		waitpid(data->child[data->child_i], &status, 0);
@@ -193,8 +117,8 @@ static int	wait_and_close(t_data *data, int status, int fds[2], int x)
 	}
 	if (data->tokens->here_file != NULL)
 	{
-	 	unlink(data->tokens->here_file);
-	 	data->tokens->here_file = free_string(data->tokens->here_file);
+		unlink(data->tokens->here_file);
+		data->tokens->here_file = free_string(data->tokens->here_file);
 		free_array(data->tokens->heredoc);
 		data->tokens->heredoc = NULL;
 	}
@@ -220,16 +144,10 @@ int	pipe_fork(t_data *data, int x, int status)
 		}
 		if (send_to_child(data, fds, x) == -1)
 		{
-			if (data->prev_fd != -1)
-				close(data->prev_fd);
-			close(fds[1]);
-			close(fds[0]);
+			close_diff_fds(fds, data, 0);
 			return (-1);
 		}
-		if (data->prev_fd != -1)
-			close(data->prev_fd);
-		data->prev_fd = fds[0];
-		close(fds[1]);
+		close_diff_fds(fds, data, 1);
 		x++;
 	}
 	wait_and_close(data, status, fds, x);

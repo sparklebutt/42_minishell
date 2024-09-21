@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 09:51:39 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 12:40:37 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int	fancy_strlen(char const *s, char c, int i)
 		else if (is_char_redir(s[i]) > 0)
 		{
 			if (i == 0)
-			while (s[i] && is_char_redir(s[i]) > 0)
-				i++;
+				while (s[i] && is_char_redir(s[i]) > 0)
+					i++;
 			return (i);
 		}
 		else if (i > 0 && s[i - 1] != 32 && s[i + 1]

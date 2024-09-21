@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 04:44:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 10:26:27 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 13:11:42 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,7 @@ char	**set_into_heredoc_array(t_data *data, char **heredoc, char *line)
 		return (NULL);
 	i = 0;
 	while (heredoc != NULL && heredoc[i] != NULL)
-	{
-		new_heredoc[i] = ft_strdup(heredoc[i]);
-		i++;
-	}
+		why(new_heredoc, heredoc, &i);
 	ft_strlcpy(line, line, ft_strlen(line));
 	if (line != NULL && ft_strchr(line, '$') != NULL)
 		new_heredoc[i] = look_if_expans(data, data->env, ft_strdup(line), 0);
@@ -79,17 +76,19 @@ char	**set_into_heredoc_array(t_data *data, char **heredoc, char *line)
 
 int	create_file(t_tokens *tokens)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	tokens->here_fd = 0;
 	if (tokens->here_file != NULL)
-		tokens->here_fd = open(tokens->here_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		tokens->here_fd = open(tokens->here_file,
+				O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (tokens->here_fd < 0)
 		return (error("heredoc", "Failed to open input file A"));
 	while (tokens->heredoc[i] != NULL)
 	{
-		write(tokens->here_fd, tokens->heredoc[i], ft_strlen(tokens->heredoc[i]));
+		write(tokens->here_fd, tokens->heredoc[i],
+			ft_strlen(tokens->heredoc[i]));
 		i++;
 	}
 	close(tokens->here_fd);

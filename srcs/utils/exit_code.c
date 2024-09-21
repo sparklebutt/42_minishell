@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_code.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 08:40:21 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 11:37:11 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 12:43:16 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ char	*replace_exitcode(char *arg, int start)
 	return (new_arg);
 }
 
-
-void free_stuff(t_data *data, int flag)
+void	free_stuff(t_data *data, int flag)
 {
 	if (flag == 0 || flag == 1)
 	{
@@ -44,6 +43,11 @@ void free_stuff(t_data *data, int flag)
 	}
 	if (flag == 1)
 		free_nodes(data->env);
+	if (data->tmp->ex_arr)
+	{
+		free(data->tmp->ex_arr);
+		data->tmp->ex_arr = NULL;
+	}
 }
 
 void	free_n_exit(t_data *data, int *fds, int flag)
@@ -58,20 +62,11 @@ void	free_n_exit(t_data *data, int *fds, int flag)
 			close(data->prev_fd);
 	}
 	if (flag == 1 || flag == 0)
-	{
-		if (data->tmp->ex_arr)
-		{
-			free(data->tmp->ex_arr);
-			data->tmp->ex_arr = NULL;
-		}
-		free_array(data->tokens->args);
-		free_nodes(data->env);
-		free_array(data->tokens->output_files);
-	}
+		free_stuff(data, 1);
 	if (data->tokens->here_file != NULL)
 	{
-	 	unlink(data->tokens->here_file);
-	 	data->tokens->here_file = free_string(data->tokens->here_file);
+		unlink(data->tokens->here_file);
+		data->tokens->here_file = free_string(data->tokens->here_file);
 		free_array(data->tokens->heredoc);
 		data->tokens->heredoc = NULL;
 	}
