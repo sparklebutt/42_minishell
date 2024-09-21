@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 13:25:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 13:29:06 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:30:51 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	set_bools(t_data *data, char *args)
 	if (is_redirect(args) == 3)
 		data->tokens->action = true;
 	else if (is_redirect(args) == 2)
-		data->tokens->h_action = true;
+		data->h_action = true;
 	else if (is_redirect(args) == 1)
 		data->in_action = true;
 }
@@ -25,7 +25,7 @@ void	set_bools(t_data *data, char *args)
 void	execve_fail(t_data *data, char **tmp, int *fds)
 {
 	tmp = set_env_array(data, 0, 0);
-	reset_signals(0);
+	signal(SIGQUIT, SIG_DFL);
 	if (data->tmp->filename != NULL)
 		execve(data->tmp->filename, data->tmp->ex_arr, tmp);
 	free_array(tmp);
@@ -34,7 +34,8 @@ void	execve_fail(t_data *data, char **tmp, int *fds)
 
 void	after_child(t_data *data, int *fds)
 {
-	data->tokens->h_action = false;
+	signal(SIGQUIT, handle_sigquit);
+	data->h_action = false;
 	data->tokens->action = false;
 	data->in_action = false;
 	data->child_i++;

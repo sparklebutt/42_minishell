@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_expansions.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:33:28 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 14:42:13 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:48:25 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ static int	ft_count_sub_len(const char *s, int sublen)
 	return (sublen);
 }
 
-/*~~removing tokens causes issues qith quick tests , i dont know why yet~~*/
 char	**ft_split_expansions(t_tokens *tokens, char const *s, int index)
 {
 	unsigned long int	i;

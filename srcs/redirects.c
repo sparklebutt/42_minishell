@@ -6,14 +6,12 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 12:52:46 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:56:06 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*~~ to collect redirect count as well as collect how many infiles and outfiles
- we need, since each pipe will value only 1 ~~*/
 int	create_redir_array(t_tokens *tokens)
 {
 	if (tokens->out_a_count > 0)
@@ -47,9 +45,6 @@ int	redir_syntax(char **args, int i, int *out_count, int *in_count)
 	return (0);//exit_code(1, 0));
 }
 
-/*~~ this has been over complicated for te fear  of needing this data 
-i do not think we will need it but its some of the easiest to remove
-in last moments eg echo > echo > > echo > | ~~*/
 int	redirect_collector(t_tokens *tokens, char **args, int i, int in_count)
 {
 	int	out_count;

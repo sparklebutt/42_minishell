@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 23:16:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 13:42:02 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:52:43 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,6 @@ char	**fill_env_arr_loop(t_env	*temp2, char **tmp_array, int x,
 	return (tmp_array);
 }
 
-/*~~~ here we tunr the envs into a null terminated array
-for the 3rd parameter of exceve(), taken from the env linked list
-as is up to dat must remeber to free all this data once we are
-done with it ~~~*/
 char	**set_env_array(t_data *data, int i, int x)
 {
 	t_env	*temp2;
@@ -53,23 +49,22 @@ char	**set_env_array(t_data *data, int i, int x)
 	return (fill_env_arr_loop(temp2, tmp_array, x, key_full));
 }
 
-// change error messages to perror, and change error func's
 int	dup_fds(t_data *data, int *fds, int x)
 {
 	if (x > 0)
 	{
 		if (dup2(data->prev_fd, STDIN_FILENO) == -1)
 		{
+			perror("minishell: dup:\n");
 			free_n_exit(data, fds, 2);
-			perror("dup of prev failed\n");
 		}
 	}
 	if (x < data->tokens->pipe_count)
 	{
 		if (dup2(fds[1], STDOUT_FILENO) == -1)
 		{
+			perror("minishell: dup: \n");
 			free_n_exit(data, fds, 2);
-			printf("dup of fds[1] failed\n");
 		}
 	}
 	close(fds[0]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 15:13:47 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:47:14 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,6 @@ bool	set_check(char *string, bool ver, int *x, char c)
 	return (ver);
 }
 
-// similar to quotes_handling (combine them?), maybe add bools into struct
-/*~~this functions handles when there are quotes straight after $symbol, 
-i could not find a case where this type of syntax is expandable eg $"USER"~~*/
 int	simple_quote_check(char *s, int i)
 {
 	int	x;

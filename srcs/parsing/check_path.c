@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/20 18:13:53 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:46:43 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	match(t_temps *tmp, DIR *dir, char *suffix, int i)
 	return (1);
 }
 
-// if this leaks, add these back and figure out how to cut this func
 int	iterate_and_match(char *suffix, size_t cmd_len, t_data *data, int x)
 {
 	DIR				*dir;
@@ -52,7 +51,7 @@ int	iterate_and_match(char *suffix, size_t cmd_len, t_data *data, int x)
 	int				i;
 
 	i = 0;
-	while (data->tmp->array[i])
+	while (data->tmp->array && data->tmp->array[i])
 	{
 		if (check_dir(data->tmp->array[i]) == 1)
 		{
@@ -85,10 +84,6 @@ void	split_diversion(t_data *data, int divert, char *string)
 		not_perror("check path", NULL, "malloc fail B\n");
 }
 
-/* checking access and creating sub tokens for easy access 
-in children res = 3 means we are looking into current directory
-so we do not need to check_dir but file muts be checked, this is
- eg so that minishell can run inside minishell*/
 int	check_path(char *string, int divert, t_data *data, int x)
 {
 	char	*suffix;
@@ -97,6 +92,8 @@ int	check_path(char *string, int divert, t_data *data, int x)
 
 	cmd_len = 0;
 	suffix = NULL;
+	if (string == NULL)
+		return (0);
 	res = initial_checks_and_setup(&suffix, &cmd_len, data, x);
 	if (res == 3)
 	{

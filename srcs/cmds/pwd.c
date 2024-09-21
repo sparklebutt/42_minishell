@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 12:49:46 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 15:43:23 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ int	ft_pwd(t_data *data, t_env *envs)
 	}
 	else if (temp_path == NULL)
 	{
-		if (path_is_null(data, envs, check) == 1)
+		if (path_is_null(data, envs, check) == -1)
 			return (1);
 	}
 	ft_printf("%s\n", data->path);
-	temp_path = free_string(temp_path);
+	data->path = free_string(data->path);
 	return (0);
 }
 

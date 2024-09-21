@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 18:11:00 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 13:15:40 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:54:13 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// change SHLVL to update the number, add other default nodes into env,
-// check "env -i ./minishell" and "env -i bash"
 t_env	*create_env_list(char *value, char *key, char *temp)
 {
 	extern char	**environ;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/20 18:18:12 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:53:41 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,6 @@ static int	malloc_array(t_data *data, int i)
 	return (0);
 }
 
-/* frankly i dont understand this anymore myself 
-neither do I, should we try making it make sense? 14.9
-we could try using the is_redir function for these??
-if there isn't anything in input_file*/
 static int	fill_output_info(t_data *data, int i)
 {
 	if (is_redirect(data->tokens->args[data->i]) != 2)

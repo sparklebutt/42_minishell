@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:12:32 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 13:38:07 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:53:01 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,6 @@ char	*ft_strtrim_front(char *s1, char set)
 	return (trimmed_str);
 }
 
-/*~~ using this to return a dollar count instead of using strchr so we
-can redirect the expansion parser based on if the token comes in as one
-big string instead of seperate tokens. Since the out put needs to be 
-one whole string too, this was easier than other options ~~*/
 void	dollar_counter(char *string, t_tokens *tokens)
 {
 	int	i;

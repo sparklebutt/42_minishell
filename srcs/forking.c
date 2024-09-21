@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 14:01:36 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:45:09 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ int	open_infile(t_tokens *tokens)
 	return (0);
 }
 
-// delete temp file at the end of minishell loop
-// (or earlier e.g. end of forks, find place)
 int	child(t_data *data, int *fds, int x, int flag)
 {
 	char	**tmp;
@@ -52,12 +50,12 @@ int	child(t_data *data, int *fds, int x, int flag)
 		return (error("fork", "first child failed"));
 	if (data->child[data->child_i] == 0)
 	{
-		g_interactive_mode = data->child[data->child_i];
+		signal(SIGQUIT, SIG_DFL);
 		dup_fds(data, fds, x);
 		if (data->tokens->action == true
 			&& redirect_helper(data->tokens, data->x) != 0)
 			free_n_exit(data, fds, 1);
-		if (data->tokens->h_action == true)
+		if (data->h_action == true)
 			open_and_fill_heredoc(data->tokens);
 		if (data->in_action)
 			open_infile(data->tokens);
@@ -99,8 +97,6 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	return (0);
 }
 
-/*~~ pipes and forks , set_env_array could be moved to every instance 
-of env manipulation instead then freed at the very end of everything~~*/
 static int	wait_and_close(t_data *data, int status, int fds[2], int x)
 {
 	close_diff_fds(fds, data, 0);

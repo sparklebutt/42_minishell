@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:03:03 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 14:28:54 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 14:31:44 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,6 @@
 # include <stdarg.h>
 # include <stdlib.h>
 # include "get_next_line_b.h"
-
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
 
 typedef struct s_list
 {
@@ -88,8 +84,5 @@ int		ft_printptr(unsigned long long ptr, int *c);
 int		ft_printhex(unsigned long long nbr, char format, int *c);
 int		ft_len(unsigned long long nbr);
 int		ft_check_error(int value, int check);
-
-// get_next_line
-char	*get_next_line(int fd);
 
 #endif

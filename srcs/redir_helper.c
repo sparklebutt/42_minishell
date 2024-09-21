@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   redir_helper.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:02:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 10:20:03 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:55:01 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*~~ needed a fucntion that does the same thing as is_redirect but took a char
-and returns the count, it is possible i over thank it ~~*/
 int	is_char_redir(char arg)
 {
 	if (arg == '>')

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 12:40:37 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:48:03 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,11 +118,6 @@ char	**adv_loop(char **array, const char *s, size_t total_words,
 	return (array);
 }
 
-/*~~ split string but do not remove spaces if inside quotes to input
-into tokesn array we are missing special cases where there are no spaces
-yet special symbols do exist eg hello>world>spagett OR
-echo hello>banana_file|cat>spaghetti, total_words_c will also have to take
-all of this into consideration, due to atleast 1 extra use of the fucn*/
 char	**ft_split_adv(char const *s, t_data *data)
 {
 	char	**array;
