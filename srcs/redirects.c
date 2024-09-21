@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 17:56:06 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 21:19:49 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	redir_syntax(char **args, int i, int *out_count, int *in_count)
 		redir_collect_loop(args, i, out_count);
 	if (args[i][0] == '<')
 		redir_collect_loop(args, i, in_count);
-	return (0);//exit_code(1, 0));
+	return (0);
 }
 
 int	redirect_collector(t_tokens *tokens, char **args, int i, int in_count)

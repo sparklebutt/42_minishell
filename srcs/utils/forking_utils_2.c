@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 13:25:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 20:01:48 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 21:22:58 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,12 @@ int	send_to_child_help(t_data *data, int fds[2], int x)
 
 	args = data->tokens->args;
 	set_array(data);
-	while(args[data->i] != NULL && args[data->i][0] != '|' && is_redirect(args[data->i]) > 0)
+	while (args[data->i] != NULL && args[data->i][0] != '|'
+		&& is_redirect(args[data->i]) > 0)
 	{
 		set_bools(data, args[data->i]);
 		data->i += 2;
-	}
+	}	
 	child(data, fds, x, 0);
 	if (data->i == data->tokens->array_count)
 		return (1);

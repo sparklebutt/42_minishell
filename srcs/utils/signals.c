@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 08:33:27 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 19:53:41 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 21:21:15 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void	handle_sigint(int sig)
 
 void	here_signal(int sig)
 {
-	g_interactive_mode = sig;
-	struct sigaction sa;
+	struct sigaction	sa;
 
+	g_interactive_mode = sig;
 	sa.sa_handler = handle_sigint;
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);

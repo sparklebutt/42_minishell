@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 20:38:08 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 21:16:01 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ int	send_to_child(t_data *data, int fds[2], int x)
 			return (-1);
 		if (send_to_child_help(data, fds, x) == 1)
 			return (0);
-		data->i++;
 	}
 	else if (is_builtins(args[data->i]) == 1)
 		set_builtin_info(data, fds, x);

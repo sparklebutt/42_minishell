@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 04:44:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 20:41:44 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 21:19:01 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	create_file(t_tokens *tokens)
 				O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (tokens->here_fd < 0)
 		return (error("heredoc", "Failed to open input file A"));
-	while (tokens->heredoc[i] != NULL)
+	while (tokens->heredoc != NULL && tokens->heredoc[i] != NULL)
 	{
 		write(tokens->here_fd, tokens->heredoc[i],
 			ft_strlen(tokens->heredoc[i]));
@@ -109,7 +109,7 @@ void	heredoc_loop(t_data *data, t_tokens *tokens, char *eof)
 		}
 		line = readline("hereboy> ");
 		if (line == NULL || (ft_strlen(line) == ft_strlen(eof)
-			&& ft_strncmp(line, eof, ft_strlen(eof)) == 0))
+				&& ft_strncmp(line, eof, ft_strlen(eof)) == 0))
 		{
 			line = free_string(line);
 			break ;

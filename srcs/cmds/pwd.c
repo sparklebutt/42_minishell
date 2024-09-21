@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 15:43:23 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 21:20:07 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	path_is_null(t_data *data, t_env *envs, int check)
 		data->path = ft_strdup(envs->value);
 	}
 	else
-		return (-1); // exit code maybe
+		return (-1);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 07:09:16 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 21:20:34 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	handle_absolute_path(t_data *all, int x, char *path)
 	{
 		error("check dir", path);
 		path = free_string(path);
-		return (0);//(exit_code(1, 0));
+		return (0);
 	}
 	else
 	{
@@ -113,5 +113,5 @@ int	handle_absolute_path(t_data *all, int x, char *path)
 		return (1);
 	}
 	path = free_string(path);
-	return (0);//exit_code(1, 0));
+	return (0);
 }
