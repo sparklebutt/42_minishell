@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:08:22 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 14:02:27 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 20:04:59 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,9 @@ void	close_diff_fds(int *fds, t_data *data, int flag)
 {
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
-	data->prev_fd = fds[0];
-	close(fds[1]);
+	close(fds[1]);	
+	if (flag == 2)
+		data->prev_fd = fds[0];
 	if (flag == 0)
 		close(fds[0]);
 }

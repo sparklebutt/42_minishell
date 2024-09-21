@@ -6,13 +6,13 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 17:54:48 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 20:12:16 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_interactive_mode;
+volatile sig_atomic_t	g_interactive_mode;
 
 void	minishell(t_data *data)
 {
@@ -20,7 +20,7 @@ void	minishell(t_data *data)
 
 	while (1)
 	{
-		set_signals();
+		set_signals(g_interactive_mode);
 		rl = readline(data->prompt);
 		add_history(rl);
 		if (!rl)

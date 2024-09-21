@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 23:16:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 17:52:43 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 20:39:16 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,23 @@ void	simple_flagged(t_data *data, char *new, int len, int i)
 	}
 	else
 		exp_array[i] = look_if_expans(data, data->env, exp_array[i], flag);
+}
+
+char	*set_the_string(t_data *data, char *line)
+{
+	char	*temp;
+	char	*temp2;
+
+	temp2 = NULL;
+	temp = NULL;
+	if (line != NULL && ft_strchr(line, '$') != NULL)
+	{
+		temp = look_if_expans(data, data->env, ft_strdup(line), 0);
+		temp2 = ft_strjoin(temp, "\n");
+		temp = free_string(temp);
+		return (temp2);
+	}
+	else if (line != NULL)
+		return (ft_strjoin(line, "\n"));
+	return (NULL);
 }

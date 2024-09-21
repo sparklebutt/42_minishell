@@ -6,15 +6,12 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 17:48:03 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 20:09:58 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*this is baisicicaly split excepet it ignores the delimeter
-inside quotes. Quotes signify a full string therefore we need
-any and all spaces inside them */
 int	fancy_strlen(char const *s, char c, int i)
 {
 	while (s[i] && s[i] != c)
@@ -39,10 +36,6 @@ int	fancy_strlen(char const *s, char c, int i)
 	return (i);
 }
 
-/*~~ leave commented code in here, i will finish this soon,
-it got a bit late, attempt to increase word count based on
-having no spaces but having redirects non the less, 
-will add pipes also~~*/
 size_t	total_words_c(char const *s, char c)
 {
 	int	words;

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 17:45:09 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 20:38:08 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 		execve_fail(data, tmp, fds);
 	}
 	after_child(data, fds);
-	return (0);//exit_code(1, 0));
+	return (0);
 }
 
 int	send_to_child(t_data *data, int fds[2], int x)
@@ -143,7 +143,7 @@ int	pipe_fork(t_data *data, int x, int status)
 			close_diff_fds(fds, data, 0);
 			return (-1);
 		}
-		close_diff_fds(fds, data, 1);
+		close_diff_fds(fds, data, 2);
 		x++;
 	}
 	wait_and_close(data, status, fds, x);

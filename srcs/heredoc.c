@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 04:44:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 13:11:42 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 20:41:44 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	open_and_fill_heredoc(t_tokens *tokens)
 {
-	tokens->here_fd = open (tokens->here_file, O_RDONLY);
+	tokens->here_fd = open(tokens->here_file, O_RDONLY);
 	if (tokens->here_fd < 0)
 		return (error("heredoc", "Failed to open input file B"));
 	if (dup2(tokens->here_fd, STDIN_FILENO) == -1)
@@ -62,11 +62,7 @@ char	**set_into_heredoc_array(t_data *data, char **heredoc, char *line)
 	i = 0;
 	while (heredoc != NULL && heredoc[i] != NULL)
 		why(new_heredoc, heredoc, &i);
-	ft_strlcpy(line, line, ft_strlen(line));
-	if (line != NULL && ft_strchr(line, '$') != NULL)
-		new_heredoc[i] = look_if_expans(data, data->env, ft_strdup(line), 0);
-	else if (line != NULL)
-		new_heredoc[i] = ft_strjoin(line, "\n");
+	new_heredoc[i] = set_the_string(data, line);
 	if (new_heredoc[i] != NULL)
 		new_heredoc[i + 1] = NULL;
 	free_array(heredoc);
@@ -103,14 +99,17 @@ void	heredoc_loop(t_data *data, t_tokens *tokens, char *eof)
 	fd = 0;
 	line = NULL;
 	tokens->here_file = ft_strdup("temp_heredoc_file_that_none_know_about");
+	signal(SIGINT, here_signal);
 	while (1)
 	{
-		write(1, "> ", 2);
-		line = get_next_line(fd);
-		if (line == NULL)
+		if (g_interactive_mode == 1)
+		{
+			g_interactive_mode = 0;
 			break ;
-		if (ft_strncmp(line, eof, ft_strlen(eof)) == 0
-			&& ft_strlen(eof) + 1 == ft_strlen(line))
+		}
+		line = readline("hereboy> ");
+		if (line == NULL || (ft_strlen(line) == ft_strlen(eof)
+			&& ft_strncmp(line, eof, ft_strlen(eof)) == 0))
 		{
 			line = free_string(line);
 			break ;

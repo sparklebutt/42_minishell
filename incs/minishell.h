@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 17:58:01 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 20:39:39 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include <stdbool.h>
 # include "libft.h"
 
-extern int	g_interactive_mode;
+volatile extern sig_atomic_t	g_interactive_mode;
 
 typedef struct s_env
 {
@@ -190,10 +190,11 @@ void			free_nodes(t_env *nodes);
 char			**free_loop(char **arr, int index);
 
 // signals
-void			signal_handler(int signo);
-void			set_signals(void);
-void			reset_signals(int signo);
-void			handle_sigquit(int signo);
+void			here_signal(int sig);
+void			handle_sigint(int sig);
+void			handle_sigquit(int sig);
+void			signal_handler(int sig);
+void			set_signals(int sig);
 
 // ft_split_adv
 char			**ft_split_adv(char const*s, t_data *data);
@@ -265,6 +266,7 @@ void			stupid_function_3(t_tokens *tokens, int *quote_count,
 int				get_word_len(int *check, int *x);
 int				fancy_strlen(char const *s, char c, int i);
 void			why(char **new_heredoc, char **old_heredoc, int *i);
+char			*set_the_string(t_data *data, char *line);
 
 void			set_bools(t_data *data, char *args);
 void			execve_fail(t_data *data, char **tmp, int *fds);
@@ -273,5 +275,4 @@ int				set_builtin_info(t_data *data, int fds[2], int x);
 int				send_to_child_help(t_data *data, int fds[2], int x);
 void			close_diff_fds(int *fds, t_data *data, int flag);
 int				checks_before_redir(t_data *data, char **args);
-
 #endif
