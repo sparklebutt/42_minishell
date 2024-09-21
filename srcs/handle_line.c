@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 14:36:00 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 11:44:38 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	exec_builtins(t_data data, char *cmd, t_env **envs)
 	tokens = data.tokens;
 	if (ft_strncmp(cmd, "exit", 5) == 0)
 		return (ft_exit(&data, cmd, tokens), 0);
-	else if (ft_strncmp(cmd, "cd", 2) == 0)
+	else if (ft_strncmp(cmd, "cd", 3) == 0)
 		ft_cd(&data, *envs);
 	else if (ft_strncmp(cmd, "pwd", 4) == 0)
 		ft_pwd(&data, *envs);
@@ -40,7 +40,7 @@ int	is_builtins(char *cmd)
 		return (1);
 	else if (ft_strncmp(cmd, "pwd", 4) == 0)
 		return (1);
-	else if (ft_strncmp(cmd, "cd", 2) == 0)
+	else if (ft_strncmp(cmd, "cd", 3) == 0)
 		return (1);
 	else if (ft_strncmp(cmd, "echo", 5) == 0)
 		return (1);
