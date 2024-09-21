@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 08:40:21 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 07:44:30 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 08:58:39 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	free_n_exit(t_data *data, int *fds, int flag)
 	}
 	if (data->tokens->here_file != NULL)
 	{
-		dprintf(2, "weeeeee\n");
+		dprintf(2, "A UNLINK\n");
 	 	unlink(data->tokens->here_file);
 	 	data->tokens->here_file = free_string(data->tokens->here_file);
 		free_array(data->tokens->heredoc);

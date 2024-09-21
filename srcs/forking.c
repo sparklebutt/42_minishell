@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 07:44:58 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 08:58:31 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ static int	wait_and_close(t_data *data, int status, int fds[2], int x)
 	}
 	if (data->tokens->here_file != NULL)
 	{
-		dprintf(2, "waaaaaaa\n");
+		dprintf(2, "B UNLINK\n");
 	 	unlink(data->tokens->here_file);
 	 	data->tokens->here_file = free_string(data->tokens->here_file);
 		free_array(data->tokens->heredoc);

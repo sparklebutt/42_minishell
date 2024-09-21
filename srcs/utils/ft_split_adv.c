@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 07:08:58 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 09:51:39 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	fancy_strlen(char const *s, char c, int i)
 		{
 			if (i == 0)
 			while (s[i] && is_char_redir(s[i]) > 0)
-					i++;
+				i++;
 			return (i);
 		}
 		else if (i > 0 && s[i - 1] != 32 && s[i + 1]
@@ -97,8 +97,10 @@ char	**adv_loop(char **array, const char *s, size_t total_words,
 	init_adv_loop(tmp);
 	while (s[tmp->i] != '\0' && word < total_words)
 	{
-		while (s[tmp->i] == 32)
+		while (s[tmp->i] != '\0' && s[tmp->i] == 32)
 			lol(&tmp->i, &tmp->x);
+		if (s[tmp->i] == '\0')
+			break ;
 		tmp->x += tmp->word_len;
 		tmp->check = fancy_strlen(s, 32, tmp->i);
 		check_check_check(&tmp->flag, &tmp->x, s, tmp->i);

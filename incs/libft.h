@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:03:03 by vkettune          #+#    #+#             */
-/*   Updated: 2024/08/08 21:36:23 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 09:15:27 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <string.h>
 # include <stdarg.h>
 # include <stdlib.h>
+# include "get_next_line_b.h"
 
 
 # ifndef BUFFER_SIZE
