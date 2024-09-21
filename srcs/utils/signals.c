@@ -6,15 +6,15 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 08:33:27 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 17:48:52 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:59:24 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    here_signal(int sig)
+void	here_signal(int sig)
 {
-	g_interactive_mode = sig;    
+	g_interactive_mode = sig;
 }
 
 void	handle_sigquit(int signo)

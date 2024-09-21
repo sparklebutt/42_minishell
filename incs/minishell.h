@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 17:28:58 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:58:01 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ typedef struct s_tokens
 	int		in_a_count;
 
 	bool	action;
-	// bool	h_action;
 	bool	in_action;
 	bool	redirect_in;
 	bool	redirect_out;
