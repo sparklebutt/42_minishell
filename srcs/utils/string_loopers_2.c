@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:08:22 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/20 18:12:16 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 11:38:38 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	special_echo_loop(char **args, int *x, int *i)
 	return (0);
 }
 
-void	parse_redir_loop(t_data *data, int *i, int *x)
+int	parse_redir_loop(t_data *data, int *i, int *x)
 {
 	char	**args;
 	int		fd;
@@ -41,9 +41,10 @@ void	parse_redir_loop(t_data *data, int *i, int *x)
 		heredoc_loop(data, data->tokens, args[*i + 1]);
 	else if (args[*i + 1] != NULL && is_redirect(args[*i]) == 1)
 		input_helper(data->tokens, fd, *i);
-	else if (args[*i + 1] != NULL && (strcmp(args[*i], ">>") == 0
-			|| strcmp(args[*i], ">") == 0))
+	else if (args[*i + 1] != NULL && (ft_strncmp(args[*i], ">>", 2) == 0
+			|| ft_strncmp(args[*i], ">", 1) == 0))
 		output_helper(data->tokens, fd, *i, *x);
+	return (0);
 }
 
 void	redir_collect_loop(char **array, int i, int *count)

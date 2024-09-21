@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 07:09:59 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 10:59:21 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_tokens
 	int		in_fd;
 	int		array_count;
 	int		pipe_count;
+	int		pipe_comp;
 	int		redirect_count;
 	int		dollar_count;
 
@@ -202,7 +203,7 @@ int			loop_quotes(t_tokens *tokens, int quote_count, int i, int *x);
 void		fancy_loop(const char *s, int *i, char c);
 void		stupid_if_statement(const char *s, int *i);
 int			special_echo_loop(char **args, int *x, int *i);
-void		parse_redir_loop(t_data *data, int *i, int *x);
+int			parse_redir_loop(t_data *data, int *i, int *x);
 void		redir_collect_loop(char **array, int i, int *count);
 
 void		lol(int *x, int *y);

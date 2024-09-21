@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_code.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 08:40:21 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 08:58:39 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 11:37:11 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,7 @@ void free_stuff(t_data *data, int flag)
 void	free_n_exit(t_data *data, int *fds, int flag)
 {
 	if (flag == 1)
-	{
-		free(data->tmp->ex_arr);
 		close(fds[1]);
-	}
 	else if (flag == 2)
 	{
 		close(fds[0]);
@@ -62,13 +59,17 @@ void	free_n_exit(t_data *data, int *fds, int flag)
 	}
 	if (flag == 1 || flag == 0)
 	{
+		if (data->tmp->ex_arr)
+		{
+			free(data->tmp->ex_arr);
+			data->tmp->ex_arr = NULL;
+		}
 		free_array(data->tokens->args);
 		free_nodes(data->env);
 		free_array(data->tokens->output_files);
 	}
 	if (data->tokens->here_file != NULL)
 	{
-		dprintf(2, "A UNLINK\n");
 	 	unlink(data->tokens->here_file);
 	 	data->tokens->here_file = free_string(data->tokens->here_file);
 		free_array(data->tokens->heredoc);

@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/20 18:12:54 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 10:45:06 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	redirect_collector(t_tokens *tokens, char **args, int i, int in_count)
 	out_count = 0;
 	comp_in = 0;
 	comp_out = 0;
-	while (args[i])
+	while (args[i] != NULL)
 	{
 		if (redir_syntax(args, i, &out_count, &in_count) != 0)
 			return (-1);
@@ -89,7 +89,7 @@ int	redirect_helper(t_tokens *tokens, int x)
 	fd = 0;
 	if (tokens->redirect_append)
 		fd = open(out_files[x], O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else if ( tokens->redirect_out && out_files[x] != NULL)
+	else if (tokens->redirect_out && out_files[x] != NULL)
 		fd = open(out_files[x], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 		return (error("redirect", "Failed to open input file A"));
@@ -115,7 +115,13 @@ int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 			x++;
 			tokens->redirect_out = 0;
 		}
-		parse_redir_loop(data, &i, &x);
+		if (parse_redir_loop(data, &i, &x) == -1)
+		{
+			data->tokens->here_file = free_string(data->tokens->here_file);
+			free_array(data->tokens->heredoc);
+			data->tokens->heredoc = NULL;
+			return (-1);
+		}
 		if (args[i] != NULL)
 			i++;
 	}

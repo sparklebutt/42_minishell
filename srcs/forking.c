@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forking.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 08:58:31 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 11:33:13 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,18 @@ int open_infile(t_tokens *tokens)
 {
 	int fd;
 	
-	printf("check file = %s\n", tokens->input_file);
+	fd = 0;
+	if (tokens->input_file == NULL)
+	{
+		fd = open("/dev/null", O_RDONLY);
+		if (dup2(fd, STDIN_FILENO) == -1)
+		{
+			close(fd);
+			return (error("infile", "Failed to duplicate fd"));
+		}
+		close(fd);
+		return (0);	
+	}
 	fd = open(tokens->input_file, O_RDONLY); 
 	if (fd < 0)
 		return (error("infile", "Failed to open input file B"));
@@ -25,7 +36,6 @@ int open_infile(t_tokens *tokens)
 		close(fd);
 		return (error("infile", "Failed to duplicate fd"));
 	}
-	// free input file here maybe
 	close(fd);
 	return (0);
 }
@@ -46,10 +56,13 @@ int	child(t_data *data, int *fds, int x, int flag)
 		if (data->tokens->action == true
 				&& redirect_helper(data->tokens, data->x) != 0)
 			free_n_exit(data, fds, 1);
-		if (data->tokens->h_action == true)// && data->tokens->in_action == false)
+		if (data->tokens->h_action == true)
 			open_and_fill_heredoc(data->tokens);
 		if (data->in_action)
+		{
 			open_infile(data->tokens);
+			//free_n_exit(data, fds, 1); // new
+		}
 		if (flag == 1)
 		{
 			exec_builtins(*data, data->tokens->args[data->i], &data->env);
@@ -180,7 +193,6 @@ static int	wait_and_close(t_data *data, int status, int fds[2], int x)
 	}
 	if (data->tokens->here_file != NULL)
 	{
-		dprintf(2, "B UNLINK\n");
 	 	unlink(data->tokens->here_file);
 	 	data->tokens->here_file = free_string(data->tokens->here_file);
 		free_array(data->tokens->heredoc);
