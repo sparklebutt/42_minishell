@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 17:32:57 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/20 18:13:53 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ int	match(t_temps *tmp, DIR *dir, char *suffix, int i)
 }
 
 // if this leaks, add these back and figure out how to cut this func
-// dir = NULL;
-// dp = NULL;
 int	iterate_and_match(char *suffix, size_t cmd_len, t_data *data, int x)
 {
 	DIR				*dir;
@@ -77,13 +75,13 @@ int	iterate_and_match(char *suffix, size_t cmd_len, t_data *data, int x)
 }
 
 /* divert 1 = PATH, divert 2 = HOME*/
-void	split_diversion(t_temps *tmp, int divert, char *string)
+void	split_diversion(t_data *data, int divert, char *string)
 {
 	if (divert == 1)
-		tmp->array = ft_split(string, ':');
+		data->tmp->array = ft_split(string, ':');
 	else if (divert == 2)
-		tmp->array = ft_split(string, ' ');
-	if (tmp->array == NULL)
+		data->tmp->array = ft_split(string, ' ');
+	if (data->tmp->array == NULL)
 		not_perror("check path", NULL, "malloc fail B\n");
 }
 
@@ -109,7 +107,7 @@ int	check_path(char *string, int divert, t_data *data, int x)
 	}
 	if (res != 2)
 		return (res);
-	split_diversion(data->tmp, divert, string);
+	split_diversion(data, divert, string);
 	res = iterate_and_match(suffix, cmd_len, data, x);
 	free_array(data->tmp->array);
 	if (res == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_not.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 17:33:40 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 07:09:16 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	check_extra_special_echo_case(char **args)
 int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
 	tokens->array_count = total_words_c(string, ' ');
-	tokens->args = ft_split_adv(string, ' ', data);
+	tokens->args = ft_split_adv(string, data);
 	if (tokens->args == NULL)
 		return (1);
 	if (check_open_quotes(tokens, 0, 0) == -1)

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 13:52:57 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 06:50:42 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	minishell(t_data *data)
 		}
 		rl = free_string(rl);
 		free_array(data->tokens->args);
-		free(data->tokens->heredoc);
+		//free(data->tokens->heredoc);
 		data->tokens->input_file = free_string(data->tokens->input_file);
 		free_array(data->tokens->output_files);
 		data->tokens->output_files = NULL;

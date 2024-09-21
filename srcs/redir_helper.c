@@ -6,7 +6,7 @@
 /*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:02:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 17:39:17 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/20 18:10:31 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,6 @@
 and returns the count, it is possible i over thank it ~~*/
 int	is_char_redir(char arg)
 {
-	//if (arg == '>' && arg + 1 == '>')
-	//	return (2);
-	//if (arg == '<' && arg + 1 == '<')
-	//	return (2);
 	if (arg == '>')
 		return (1);
 	if (arg == '<')
@@ -40,10 +36,6 @@ int	is_redirect(char *arg)
 
 int	input_helper(t_tokens *tokens, int fd, int i)
 {
-	fd = open(tokens->args[i + 1], O_RDONLY);
-	if (fd < 0)
-		return (1);
-	close (fd);
 	if (ft_strncmp(tokens->args[i], "<<", ft_strlen(tokens->args[i]) + 1) == 0)
 	{
 		tokens->here_file = free_string(tokens->here_file);
@@ -52,9 +44,17 @@ int	input_helper(t_tokens *tokens, int fd, int i)
 	}
 	else
 	{
+		fd = open(tokens->args[i + 1], O_RDONLY);
+		if (fd < 0)
+		{
+			tokens->input_file = free_string(tokens->input_file);
+			not_perror(tokens->args[i + 1], NULL, NO_FILE);
+			return (-1);
+		}
 		tokens->input_file = free_string(tokens->input_file);
 		tokens->input_file = ft_strdup(tokens->args[i + 1]);
 		tokens->redirect_in = 1;
+		close(fd);
 	}
 	return (0);
 }

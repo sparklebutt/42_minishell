@@ -6,12 +6,29 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/20 09:50:25 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 07:44:58 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int open_infile(t_tokens *tokens)
+{
+	int fd;
+	
+	printf("check file = %s\n", tokens->input_file);
+	fd = open(tokens->input_file, O_RDONLY); 
+	if (fd < 0)
+		return (error("infile", "Failed to open input file B"));
+	if (dup2(fd, STDIN_FILENO) == -1)
+	{
+		close(fd);
+		return (error("infile", "Failed to duplicate fd"));
+	}
+	// free input file here maybe
+	close(fd);
+	return (0);
+}
 // delete temp file at the end of minishell loop
 // (or earlier e.g. end of forks, find place)
 int	child(t_data *data, int *fds, int x, int flag)
@@ -29,8 +46,10 @@ int	child(t_data *data, int *fds, int x, int flag)
 		if (data->tokens->action == true
 				&& redirect_helper(data->tokens, data->x) != 0)
 			free_n_exit(data, fds, 1);
-		if (data->tokens->h_action == true)
+		if (data->tokens->h_action == true)// && data->tokens->in_action == false)
 			open_and_fill_heredoc(data->tokens);
+		if (data->in_action)
+			open_infile(data->tokens);
 		if (flag == 1)
 		{
 			exec_builtins(*data, data->tokens->args[data->i], &data->env);
@@ -45,6 +64,7 @@ int	child(t_data *data, int *fds, int x, int flag)
 	}
 	data->tokens->h_action = false;
 	data->tokens->action = false;
+	data->in_action = false;
 	data->child_i++;
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
@@ -84,20 +104,25 @@ int	set_builtin_info(t_data *data, int fds[2], int x)
 
 int	send_to_child_help(t_data *data, int fds[2], int x)
 {
-	char **args;
+	char	**args;
 
 	args = data->tokens->args;
 	set_array(data);
 	child(data, fds, x, 0);
-	if (data->i > 0 && args[data->i-1] != NULL && args[data->i-1][0] == '>')
-		data->i++;
-	else if (args[data->i] != NULL && args[data->i][0] == '>')
-		data->i += 2;
-	else if (data->i == data->tokens->array_count)
+	if (data->i == data->tokens->array_count)
 		return (1);
 	if (args[data->i] != NULL && args[data->i][0] == '|')
 		data->i++;
 	return (0);
+}
+void	set_bools(t_data *data, char *args)
+{
+	if (is_redirect(args) == 3)
+		data->tokens->action = true;
+	else if (is_redirect(args) == 2)
+		data->tokens->h_action = true;
+	else if (is_redirect(args) == 1)
+		data->in_action = true;	
 }
 
 int	send_to_child(t_data *data, int fds[2], int x)
@@ -107,28 +132,29 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	args = data->tokens->args;
 	if (args[data->i] == NULL)
 		return (0);
-	if (data->i == 0 && is_char_redir(args[data->i][0]) > 0)
+	if (args[data->i] != NULL && is_redirect(args[data->i]) > 0)
 	{
-		if (data->i == 0 && is_redirect(args[data->i]) == 3)
+		while(args[data->i] != NULL && args[data->i][0] != '|' && is_redirect(args[data->i]) > 0)
 		{
-			data->tokens->action = true;
+			set_bools(data, args[data->i]);
 			data->i += 2;
 		}
-		else if (data->i == 0 && is_redirect(args[data->i]) == 1)
-			data->i += 2;
-		if (check_path(data->tmp->env_line, 1, data, data->i) == 0)
+		if (args[data->i] != NULL && args[data->i][0] == '|')
+			data->i++;
+		if (args[data->i] != NULL && check_path(data->tmp->env_line, 1, data, data->i) == 0)
 			return (-1);
 		if (send_to_child_help(data, fds, x) == 1)
 			return (0);
+		data->i++;
 	}
-	if (is_builtins(args[data->i]) == 1)
+	else if (is_builtins(args[data->i]) == 1)
 		set_builtin_info(data, fds, x);
-	else if (check_path(data->tmp->env_line, 1, data, data->i) != 0)
+	else if (args[data->i] != NULL && check_path(data->tmp->env_line, 1, data, data->i) != 0)
 	{
 		if (send_to_child_help(data, fds, x) == 1)
 			return (0);
 	}	
-	else
+	else if (args[data->i] != NULL)
 		return (-1);
 	return (0);
 }
@@ -151,6 +177,14 @@ static int	wait_and_close(t_data *data, int status, int fds[2], int x)
 	{
 		free(data->tmp->ex_arr);
 		data->tmp->ex_arr = NULL;
+	}
+	if (data->tokens->here_file != NULL)
+	{
+		dprintf(2, "waaaaaaa\n");
+	 	unlink(data->tokens->here_file);
+	 	data->tokens->here_file = free_string(data->tokens->here_file);
+		free_array(data->tokens->heredoc);
+		data->tokens->heredoc = NULL;
 	}
 	status = (status >> 8) & 0xFF;
 	exit_code(1, status);

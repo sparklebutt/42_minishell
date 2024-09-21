@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 08:18:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 13:48:51 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 06:34:14 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
+
 
 int	fancy_strlen_a(char const *s, char c, int i)
 {
@@ -59,7 +61,8 @@ char	**ft_split(char const *s, char c)
 
 	i = 0;
 	word = 0;
-	array = (char **)ft_calloc(sizeof(char *), (total_words(s, c) + 1)); // MALLOCED VARIABLE
+	// printf("total words = %zu + 1\n", total_words(s, c));
+	array = malloc(sizeof(char *) * (total_words(s, c) + 1));
 	if (!s || !array)
 		return (NULL);
 	while (s[i])
@@ -69,7 +72,7 @@ char	**ft_split(char const *s, char c)
 		else
 		{
 			word_len = fancy_strlen_a(s, c, i) - i;
-			array[word] = ft_substr(s, i, word_len); // MALLOCED VARIABLE
+			array[word] = ft_substr(s, i, word_len);
 			if (array[word] == NULL)
 				return (free_array_if(array));
 			word++;
@@ -77,6 +80,6 @@ char	**ft_split(char const *s, char c)
 		}
 		// array[word] = NULL;
 	}
-	// array[word + 1] = NULL;
+	array[word] = NULL;
 	return (array);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 14:19:26 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/20 18:12:54 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,13 +102,10 @@ int	redirect_helper(t_tokens *tokens, int x)
 	return (0);
 }
 
-/*super good spot to reset all redirection things here */
 int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 {
 	int	x;
-	int	fd;
 
-	fd = 0;
 	x = 0;
 	tokens->redirect_out = false;
 	while (args[i] != NULL)

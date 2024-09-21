@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 08:40:21 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 13:35:32 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 07:44:30 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,13 @@ void	free_n_exit(t_data *data, int *fds, int flag)
 		free_nodes(data->env);
 		free_array(data->tokens->output_files);
 	}
-	// if (data->tokens->here_file != NULL)
-	// {
-	// 	unlink(data->tokens->here_file);
-	// 	data->tokens->here_file = free_string(data->tokens->here_file);
-	// }
+	if (data->tokens->here_file != NULL)
+	{
+		dprintf(2, "weeeeee\n");
+	 	unlink(data->tokens->here_file);
+	 	data->tokens->here_file = free_string(data->tokens->here_file);
+		free_array(data->tokens->heredoc);
+		data->tokens->heredoc = NULL;
+	}
 	exit(exit_code(0, 0));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_adv.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/20 09:43:53 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 07:08:58 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,8 @@ int	fancy_strlen(char const *s, char c, int i)
 		else if (is_char_redir(s[i]) > 0)
 		{
 			if (i == 0)
-			{
-				if (is_char_redir(s[i + 1]) > 0)
-					return (2);
-				else
-					return (1);
-			}
+			while (s[i] && is_char_redir(s[i]) > 0)
+					i++;
 			return (i);
 		}
 		else if (i > 0 && s[i - 1] != 32 && s[i + 1]
@@ -62,9 +58,11 @@ size_t	total_words_c(char const *s, char c)
 			stupid_if_statement(s, &i);
 		else if (is_char_redir(s[i]) > 0)
 		{
-			if (s[i + 1] && is_char_redir(s[i + 1]) > 0)
+			i++;
+			while (s[i] && is_char_redir(s[i]) > 0)
 				i++;
-			lol(&words, &i);
+			if (s[i] && is_char_redir(s[i]) == 0)
+				words++;
 		}
 		else if (s[i] == '|')
 			lol(&words, &i);
@@ -123,31 +121,20 @@ into tokesn array we are missing special cases where there are no spaces
 yet special symbols do exist eg hello>world>spagett OR
 echo hello>banana_file|cat>spaghetti, total_words_c will also have to take
 all of this into consideration, due to atleast 1 extra use of the fucn*/
-char	**ft_split_adv(char const *s, char c, t_data *data)
+char	**ft_split_adv(char const *s, t_data *data)
 {
 	char	**array;
-	int		word_len;
 	int		x;
-	size_t	total_words;
 
 	x = 0;
 	if (s[0] == '|')
 		return (not_perror("syntax error", NULL, "unexpected token\n"), NULL);
-	total_words = total_words_c(s, c) + 1;
-	(void)data;
-	word_len = 0;
 	array = NULL;
 	if (!*s || !s)
 		return (NULL);
-	array = (char **)ft_calloc(sizeof(char *), total_words);
+	array = (char **)ft_calloc(sizeof(char *), data->tokens->array_count + 1);
 	if (!s || !array)
 		return (NULL);
-	if (total_words == 2)
-	{
-		array[0] = ft_substr(s, 0, ft_strlen(s) + 1);
-		array[1] = NULL;
-		return (array);
-	}
-	array = adv_loop(array, s, total_words, data->tmp);
+	array = adv_loop(array, s, data->tokens->array_count, data->tmp);
 	return (array);
 }

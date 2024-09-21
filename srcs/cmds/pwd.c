@@ -3,41 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:05:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/20 10:11:36 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/21 06:53:04 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	path_is_null(t_data *data, t_env *envs, char *check)
+int	path_is_null(t_data *data, t_env *envs, int check)
 {
-	if (check != NULL)
+	if (check != 0)
 	{
-		check = free_string(check);
 		envs = move_list(envs, "OLDPWD");
-		if (envs->value != NULL)
-			data->path = ft_strdup(envs->value);
-		else
-			return (call_cmd_error("pwd", "OLDPWD", NULL, -1));
+		data->path = ft_strdup(envs->value);
 	}
 	else
-		return (call_cmd_error("pwd", "OLDPWD", NULL, -1));
+		return (-1); // exit code maybe
 	return (0);
 }
 
 int	ft_pwd(t_data *data, t_env *envs)
 {
 	char	*temp_path;
-	char	*check;
+	int check;
 
-	check = find_key("OLDPWD");
+	check = find_node(envs, "OLDPWD", data);
 	temp_path = getcwd(NULL, 0);
 	if (temp_path != NULL)
 	{
-		check = free_string(check);
 		data->path = free_string(data->path);
 		data->path = temp_path;
 	}
@@ -48,7 +43,7 @@ int	ft_pwd(t_data *data, t_env *envs)
 	}
 	ft_printf("%s\n", data->path);
 	temp_path = free_string(temp_path);
-	data->path = free_string(data->path);
+	// data->path = free_string(data->path);
 	return (0);
 }
 

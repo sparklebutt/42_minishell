@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_loopers_2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:08:22 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/19 14:19:49 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/20 18:12:16 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,15 @@ void	parse_redir_loop(t_data *data, int *i, int *x)
 
 	fd = 0;
 	args = data->tokens->args;
-	if (ft_strncmp(args[*i], "<<", 2) == 0)
-	{
+	if (ft_strlen(args[*i]) == 2 && ft_strncmp(args[*i], "<<", 2) == 0)
 		heredoc_loop(data, data->tokens, args[*i + 1]);
-		(*i)++;
-	}
-	else if (args[*i + 1] != NULL && strcmp(args[*i], "<") == 0)
-	{
+	else if (args[*i + 1] != NULL && is_redirect(args[*i]) == 1)
 		input_helper(data->tokens, fd, *i);
-		i++;
-	}	
 	else if (args[*i + 1] != NULL && (strcmp(args[*i], ">>") == 0
 			|| strcmp(args[*i], ">") == 0))
-	{
 		output_helper(data->tokens, fd, *i, *x);
-		i++;
-	}
 }
 
-// make sure this works as expected
-// handle redirect as last chat / str
 void	redir_collect_loop(char **array, int i, int *count)
 {
 	if (ft_strlen(array[i]) > 2)

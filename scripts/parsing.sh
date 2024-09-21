@@ -40,7 +40,7 @@ echo $HOME''
 cat "meow.txt"
 
 cat "'meow.txt'"
-#"cat "'meow.txt'""
+"cat "'meow.txt'""
 
 echo "$HOME is where the heart is"
 

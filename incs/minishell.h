@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/20 09:49:05 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/21 07:09:59 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define MINISHELL_H
 # define NOT_VALID "not a valid identifier\n"
 # define NO_CMD "command not found\n"
-# define NO_FNAME "filename argument required\n"
+//# define NO_FNAME "filename argument required\n"
+# define NO_FILE "no such file or directory\n"
 # include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -46,7 +47,8 @@ typedef struct s_tokens
 	char	**heredoc;
 	char	*here_file;
 	bool	here_check;
-
+	int		here_fd;
+	int		in_fd;
 	int		array_count;
 	int		pipe_count;
 	int		redirect_count;
@@ -60,6 +62,7 @@ typedef struct s_tokens
 	
 	bool	action;
 	bool	h_action;
+	bool	in_action;
 	bool	redirect_in;
 	bool	redirect_out;
 	bool	redirect_append;
@@ -95,9 +98,11 @@ typedef struct s_data
 	int			child_i;
 	char		*path;
 	bool		simple;
+	bool		in_action;
 }	t_data;
 
 // PARSING - - - - - - - - -
+void set_bools(t_data *data, char *args);
 // ~~~~~in parsing_not.c
 int		collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
 int		find_passage(t_data *data, char *string, int divert);
@@ -149,7 +154,7 @@ int		find_node_len(t_data *data);
 int		find_node(t_env *envs, char *key, t_data *data); // does node with x key exist in env
 
 // variable expansions
-char 	*replace_expansion(t_data *data, t_env *envs, char *arg, int i);
+char	*replace_expansion(t_data *data, t_env *envs, char *arg, int i);
 char	*look_if_expans(t_data *data, t_env *envs, char *arg, int flag);
 
 // CMDS - - - - - - - - -
@@ -187,7 +192,7 @@ void	reset_signals(int signo);
 void	handle_sigquit(int signo);
 
 // ft_split_adv
-char	**ft_split_adv(char const*s, char c, t_data *data);
+char	**ft_split_adv(char const*s, t_data *data);
 size_t	total_words_c(char const *s, char c);
 
 // string_loopers
