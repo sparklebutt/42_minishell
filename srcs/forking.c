@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/23 16:05:42 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:47:03 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	open_infile(t_tokens *tokens)
 	if (fd < 0)
 	{
 		tokens->input_file = free_string(tokens->input_file);
-		printf("check infile = %s\n", tokens->input_file);
+		// printf("check infile = %s\n", tokens->input_file);
 		return (1);
 	}
 	if (dup2(fd, STDIN_FILENO) == -1)
@@ -91,8 +91,8 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	}
 	else if (is_builtins(args[data->i]) == 1)
 		set_builtin_info(data, fds, x);
-	else if (args[data->i] != NULL
-		&& check_path(data->tmp->env_line, 1, data, data->i) != 0)
+	else if (args[data->i] != NULL && find_node(data->env, "PATH", data) == 1
+		&& check_path(find_keys_value(data->env, "PATH"), 1, data, data->i) != 0)
 	{
 		if (send_to_child_help(data, fds, x) == 1)
 			return (0);

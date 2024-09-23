@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 17:46:43 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:46:57 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,9 @@ int	iterate_and_match(char *suffix, size_t cmd_len, t_data *data, int x)
 /* divert 1 = PATH, divert 2 = HOME*/
 void	split_diversion(t_data *data, int divert, char *string)
 {
+	// printf("string = %s\n", string);
+	if (string == NULL || ft_strlen(string) == 0)
+		return ;
 	if (divert == 1)
 		data->tmp->array = ft_split(string, ':');
 	else if (divert == 2)

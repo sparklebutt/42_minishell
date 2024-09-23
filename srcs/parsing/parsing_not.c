@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/23 17:18:32 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:44:17 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,19 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 	return (0);
 }
 
-int	find_passage(t_data *all, char *string, int divert)
+int	find_passage(t_data *data, char *string, int divert)
 {
-	if (null_check(all->env->key, all->env, string) != 1)
+	if (null_check(data->env->key, data->env, string) != 1)
 		return (-1);
-	if (find_node(all->env, string, all) == 1
-		&& all->tmp->env_line != NULL && divert == 2)
+	if (find_node(data->env, string, data) == 1
+		&& data->tmp->env_line != NULL && divert == 2)
 	{
-		if (check_dir(all->tmp->env_line) == 0)
+		if (check_dir(data->tmp->env_line) == 0)
 			return (-1);
 		return (1);
 	}
-	if (pipe_fork(all, 0, 0) == -1)
+	// data->tmp->env_line = free_string(data->tmp->env_line);
+	if (pipe_fork(data, 0, 0) == -1)
 		return (-1);
 	return (1);
 }

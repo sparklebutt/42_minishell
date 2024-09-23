@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 18:24:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 12:43:42 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:24:54 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ void	not_perror(char *cmd, char *arg, char *msg)
 	}
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(msg, 2);
-	if (ft_strncmp("redirect", cmd, 8) == 0)
+	if (ft_strncmp("syntax error", cmd, 12) == 0)
 		exit_code(1, 2);
+	// add exit codes that come to mind
 	else
 		exit_code(1, 1);
 }

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/23 10:14:15 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:47:23 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,17 @@ void	ft_env(t_env **envs, t_data *data)
 
 	ret = NULL;
 	temp_env = *envs;
-	printf("check\n");
+	// printf("check\n");
 	if (find_node(*envs, "PATH", data) == 1)
 	{
-		printf("found PATH with something in it from env\n");
+		// printf("found PATH with something in it from env\n");
 		ret = env_helper(data, *envs);
 		if (ret == NULL)
 			return (not_perror("env", NULL, "No such file or directory\n"));
 	}
 	else
 		return (not_perror("env", NULL, "No such file or directory\n"));
-	printf("what  is ret? %s\n", ret);
+	// printf("what  is ret? %s\n", ret);
 	free_array(data->tmp->array);
 	if (data->tokens->args[data->i + 1] != NULL
 		&& data->tokens->args[data->i + 1][0] != '|'

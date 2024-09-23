@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/23 10:08:21 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:35:47 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	exec_builtins(t_data data, char *cmd, t_env **envs)
 	if (ft_strncmp(cmd, "exit", 5) == 0)
 		return (ft_exit(&data, cmd, tokens), 0);
 	else if (ft_strncmp(cmd, "cd", 3) == 0)
-		ft_cd(&data, *envs);
+		ft_cd(&data, *envs); // change this env
 	else if (ft_strncmp(cmd, "pwd", 4) == 0)
 		ft_pwd(&data, *envs);
 	else if (ft_strncmp(cmd, "export", 7) == 0)
