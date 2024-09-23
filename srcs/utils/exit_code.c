@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 08:40:21 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 12:43:16 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:10:32 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	free_stuff(t_data *data, int flag)
 	{
 		free_array(data->tokens->args);
 		free_array(data->tokens->output_files);
+		data->tokens->input_file = free_string(data->tokens->input_file);
 		data->tokens->output_files = NULL;
 	}
 	if (flag == 1)

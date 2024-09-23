@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 20:12:16 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:15:08 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ volatile sig_atomic_t	g_interactive_mode;
 void	minishell(t_data *data)
 {
 	char	*rl;
+	// CHECK MAKEFILE FOR FUCKING COMMENTS AND CLEAN IT
 
 	while (1)
 	{

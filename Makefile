@@ -6,7 +6,7 @@
 #    By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/09/21 13:53:39 by vkettune         ###   ########.fr        #
+#    Updated: 2024/09/23 18:13:26 by vkettune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ CYAN = \033[0;96m
 WHITE = \033[0;97m
 #-fsanitize=address
 NAME = minishell
-FLAGS = -Wall -Wextra -Werror -g $(HEADERS) #-fsanitize=address
+FLAGS = -Wall -Wextra -Werror $(HEADERS) #-fsanitize=address -g 
 HEADERS = -I ./incs/ # -I ~/.brew/opt/readline/include
 
 LIBS = $(READLINE) $(LIBFT)

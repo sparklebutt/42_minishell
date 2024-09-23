@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/23 17:47:03 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:56:48 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,8 @@ static int	wait_and_close(t_data *data, int status, int fds[2], int x)
 		free_array(data->tokens->heredoc);
 		data->tokens->heredoc = NULL;
 	}
-	status = (status >> 8) & 0xFF;
+	status = status % 256;
+	// status = (status >> 8) & 0xFF;
 	exit_code(1, status);
 	return (0);
 }
