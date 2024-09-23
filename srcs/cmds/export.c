@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:04:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/22 13:26:02 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:20:54 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	export_syntax_check(char *string)
 {
 	int	i;
 
+	if (string == NULL)
+		return (0);
 	i = ft_strlen(string);
 	if (ft_isalpha(string[0]) == 0)
 	{
@@ -96,6 +98,7 @@ void	ft_export(t_data *data)
 
 	i = 1;
 	tokens = data->tokens;
+	// printf("data->tokens->array_count = %d\n", data->tokens->array_count);
 	if (data->tokens->array_count == 1)
 		export_alphabetical(data);
 	else

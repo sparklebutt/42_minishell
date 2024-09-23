@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/23 13:47:22 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:17:51 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,24 +43,23 @@ int	fancy_strlen(char const *s, char c, int i)
 
 int	stupid_if_statement(const char *s, int *i, int *words, int *flag)
 {
-	if (s[*i] && s[*i] == '"' && (*i)++)
+	if (s[*i] && s[*i] == '"')
 	{
-		while (s[*i] && s[*i] != '"')
-			(*i)++;
+		fancy_loop(s, i, '"');
 		(*words)++;
 		(*flag) = 1;
 		return (1);
 	}
-	else if (s[*i] && s[*i] == '\'' && (*i)++)
+	else if (s[*i] && s[*i] == '\'')
 	{
-		while (s[*i] && s[*i] != '\'')
-			(*i)++;
+		fancy_loop(s, i, '\'');
 		(*words)++;
 		(*flag) = 1;
 		return (1);
 	}
 	else if (s[*i] && is_char_redir(s[*i]) > 0)
 	{
+		(*i)++;
 		while (s[*i] && is_char_redir(s[*i]) > 0)
 			(*i)++;
 		(*words)++;
@@ -100,31 +99,32 @@ size_t	total_words_c(char const *s, char c)
 }
 
 char	**adv_loop(char **array, const char *s, size_t total_words,
-	t_temps *tmp)
+	t_data *data)
 {
 	size_t		word;
 
 	word = 0;
-	init_adv_loop(tmp);
-	while (s[tmp->i] != '\0' && word < total_words)
+	init_adv_loop(data->tmp);
+	while (s[data->tmp->i] != '\0' && word < total_words)
 	{
-		while (s[tmp->i] != '\0' && s[tmp->i] == 32)
-			lol(&tmp->i, &tmp->x);
-		if (s[tmp->i] == '\0')
+		while (s[data->tmp->i] != '\0' && s[data->tmp->i] == 32)
+			lol(&data->tmp->i, &data->tmp->x);
+		if (s[data->tmp->i] == '\0')
 			break ;
-		tmp->x += tmp->word_len;
-		tmp->check = fancy_strlen(s, 32, tmp->i);
-		tmp->word_len = get_word_len(&tmp->check, &tmp->x);
-		array[word] = ft_substr(s, tmp->i, tmp->word_len);
+		data->tmp->x += data->tmp->word_len;
+		data->tmp->check = fancy_strlen(s, 32, data->tmp->i);
+		data->tmp->word_len = get_word_len(&data->tmp->check, &data->tmp->x);
+		array[word] = ft_substr(s, data->tmp->i, data->tmp->word_len);
 		if (array[word] == NULL)
 			return (free_array(array), NULL);
-		tmp->i += ft_strlen(array[word]);
-		if (s[tmp->i]  && s[tmp->word_len] == '|')
-			array[word] = stupid_function(&word, tmp, s);
+		data->tmp->i += ft_strlen(array[word]);
+		if (s[data->tmp->i]  && s[data->tmp->word_len] == '|')
+			array[word] = stupid_function(&word, data->tmp, s);
 		if (word < total_words)
 			word++;
 	}
 	array[word] = NULL;
+	data->tokens->array_count = word;
 	return (array);
 }
 
@@ -142,7 +142,7 @@ char	**ft_split_adv(char const *s, t_data *data)
 	array = (char **)ft_calloc(sizeof(char *), data->tokens->array_count + 1);
 	if (!s || !array)
 		return (NULL);
-	array = adv_loop(array, s, data->tokens->array_count, data->tmp);
+	array = adv_loop(array, s, data->tokens->array_count, data);
 	// print_arr(array, "array");
 	return (array);
 }

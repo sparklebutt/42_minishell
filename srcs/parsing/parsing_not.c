@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/23 13:18:48 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:18:32 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	check_extra_special_echo_case(char **args)
 int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
 	tokens->array_count = total_words_c(string, ' ');
-	// printf("1 total words = %d\n", tokens->array_count);
 	tokens->args = ft_split_adv(string, data);
 	if (tokens->args == NULL)
 		return (1);
