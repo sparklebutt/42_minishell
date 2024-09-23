@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 13:25:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 21:22:58 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:41:14 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,14 @@ int	set_builtin_info(t_data *data, int fds[2], int x)
 		i++;
 	}
 	child(data, fds, x, 1);
-	data->i++;
+	// data->i++;
+	// printf("what is args? %s\n", data->tokens->args[data->i]);
 	while (data->tokens->args[data->i] != NULL)
 	{
+		// printf("loop\n");
 		if (data->tokens->args[data->i][0] == '|')
 		{
+			// printf("found pipe!!\n");
 			data->i++;
 			break ;
 		}

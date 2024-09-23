@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 21:16:01 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:05:42 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,25 @@ int	open_infile(t_tokens *tokens)
 		if (dup2(fd, STDIN_FILENO) == -1)
 		{
 			close(fd);
-			return (error("infile", "Failed to duplicate fd"));
+			return (error("infile", "Failed to duplicate fd\n"));
 		}
 		close(fd);
 		return (0);
 	}
 	fd = open(tokens->input_file, O_RDONLY);
 	if (fd < 0)
-		return (error("infile", "Failed to open input file B"));
+	{
+		tokens->input_file = free_string(tokens->input_file);
+		printf("check infile = %s\n", tokens->input_file);
+		return (1);
+	}
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
+		tokens->input_file = free_string(tokens->input_file);
 		close(fd);
-		return (error("infile", "Failed to duplicate fd"));
+		return (not_perror("infile", NULL, "Failed to duplicate fd\n"), 1);
 	}
+	tokens->input_file = free_string(tokens->input_file);
 	close(fd);
 	return (0);
 }
@@ -57,8 +63,8 @@ int	child(t_data *data, int *fds, int x, int flag)
 			free_n_exit(data, fds, 1);
 		if (data->h_action == true)
 			open_and_fill_heredoc(data->tokens);
-		if (data->in_action)
-			open_infile(data->tokens);
+		if (data->in_action && open_infile(data->tokens) == 1)
+			free_n_exit(data, fds, 1);
 		if (flag == 1)
 			exec_builtins(*data, data->tokens->args[data->i], &data->env);
 		if (flag == 1)

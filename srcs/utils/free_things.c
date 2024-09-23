@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:59:15 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 13:32:42 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:58:25 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,6 @@ void	free_nodes(t_env *node)
 int	error(char *cmd, char *error)
 {
 	exit_code(1, 1);
-	ft_printf("minishell: %s: %s\n", cmd, error);
+	printf("minishell: %s: %s\n", cmd, error);
 	return (1);
 }

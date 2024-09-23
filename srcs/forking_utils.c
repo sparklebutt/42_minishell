@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 20:09:10 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:03:41 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,33 @@ static int	count_args(t_data *data)
 	return (arg_count);
 }
 
+int check_redirs(t_data *data, int i)
+{
+	(void)i;
+
+	if (data->tokens->args[data->i] != NULL && is_redirect(data->tokens->args[data->i]) == 1)
+	{
+		//printf("infile malloced pos\n");
+		data->tokens->input_file = free_string(data->tokens->input_file);
+		// printf("check = %s\n", data->tokens->args[data->i + 1]);
+		data->tokens->input_file = ft_strdup(data->tokens->args[data->i + 1]);
+		// printf("aaaaaaaaaaaaa%s\n", data->tokens->input_file);
+		data->in_action = true;
+		data->i += 2;
+	}
+	else if (is_redirect(data->tokens->args[data->i]) == 3) //(data->tokens->args[data->i] != NULL && 
+	{
+		data->tokens->action = true;
+		data->i += 2;  
+	}
+	else if (is_redirect(data->tokens->args[data->i]) == 2)
+	{
+		data->h_action = true;
+		data->i += 2;
+	}
+	return (0);
+}
+
 static int	malloc_array(t_data *data, int i)
 {
 	if (data->tmp->ex_arr != NULL)
@@ -45,60 +72,76 @@ static int	malloc_array(t_data *data, int i)
 	return (0);
 }
 
-static int	fill_output_info(t_data *data, int i)
+// static int	fill_output_info(t_data *data, int i)
+// {
+// 	if (is_redirect(data->tokens->args[data->i]) != 2)
+// 		data->tokens->action = true;
+// 	if (data->tokens->input_file != NULL)
+// 	{
+// 		if (ft_strncmp(data->tmp->ex_arr[i - 1], data->tokens->input_file,
+// 				ft_strlen(data->tokens->input_file)) == 0)
+// 			data->i++;
+// 		else
+// 		{
+// 			data->tmp->ex_arr[i] = data->tokens->output_files[data->x];
+// 			data->tokens->action = true;
+// 			data->i += 2;
+// 		}
+// 	}
+// 	else if (is_redirect(data->tokens->args[data->i]) == 2)
+// 	{
+// 		data->h_action = true;
+// 		data->i += 2;
+// 	}
+// 	else
+// 	{
+// 		data->tmp->ex_arr[i] = NULL;
+// 		data->i++;
+// 	}
+// 	return (0);
+// }
+
+static int    fill_array(t_data *data, int i)
 {
-	if (is_redirect(data->tokens->args[data->i]) != 2)
-		data->tokens->action = true;
-	if (data->tokens->input_file != NULL)
+	if (data->tokens->args[data->i] != NULL)
 	{
-		if (ft_strncmp(data->tmp->ex_arr[i - 1], data->tokens->input_file,
-				ft_strlen(data->tokens->input_file)) == 0)
-			data->i++;
-		else
+		if (data->tokens->args[data->i] != NULL
+			&& data->tokens->args[data->i][0] != '|' && is_redirect(data->tokens->args[data->i]) == 0)
 		{
-			data->tmp->ex_arr[i] = data->tokens->output_files[data->x];
-			data->tokens->action = true;
-			data->i += 2;
+			data->tmp->ex_arr[i] = data->tokens->args[data->i];
+			data->i++;
 		}
-	}
-	else if (is_redirect(data->tokens->args[data->i]) == 2)
-	{
-		data->h_action = true;
-		data->i += 2;
-	}
-	else
-	{
-		data->tmp->ex_arr[i] = NULL;
-		data->i++;
+		else if (data->tokens->args[data->i] != NULL && is_redirect(data->tokens->args[data->i]) > 0)
+			return (1);
 	}
 	return (0);
 }
 
-static int	fill_array(t_data *data, int i)
-{
-	if (data->tokens->args[data->i] != NULL
-		&& is_redirect(data->tokens->args[data->i]) > 0)
-	{
-		if (is_redirect(data->tokens->args[data->i]) == 1)
-		{
-			data->tmp->ex_arr[i] = data->tokens->input_file;
-			data->i += 2;
-		}
-		else if (is_redirect(data->tokens->args[data->i]) >= 2)
-			fill_output_info(data, i);
-		else
-			data->tmp->ex_arr[i] = NULL;
-	}
-	else if (data->tokens->args[data->i] != NULL
-		&& data->tokens->args[data->i][0] != '|')
-	{
-		data->tmp->ex_arr[i] = data->tokens->args[data->i];
-		data->i++;
-	}
-	else
-		data->tmp->ex_arr[i] = NULL;
-	return (0);
-}
+// static int	fill_array(t_data *data, int i)
+// {
+// 	if (data->tokens->args[data->i] != NULL
+// 		&& is_redirect(data->tokens->args[data->i]) > 0)
+// 	{
+// 		if (is_redirect(data->tokens->args[data->i]) == 1)
+// 		{
+// 			data->tmp->ex_arr[i] = data->tokens->input_file;
+// 			data->i += 2;
+// 		}
+// 		else if (is_redirect(data->tokens->args[data->i]) >= 2)
+// 			fill_output_info(data, i);
+// 		else
+// 			data->tmp->ex_arr[i] = NULL;
+// 	}
+// 	else if (data->tokens->args[data->i] != NULL
+// 		&& data->tokens->args[data->i][0] != '|')
+// 	{
+// 		data->tmp->ex_arr[i] = data->tokens->args[data->i];
+// 		data->i++;
+// 	}
+// 	else
+// 		data->tmp->ex_arr[i] = NULL;
+// 	return (0);
+// }
 
 int	set_array(t_data *data)
 {
@@ -118,10 +161,16 @@ int	set_array(t_data *data)
 		i++;
 		data->i++;
 	}
+	// while (args[data->i] != NULL && args[data->i][0] != '|')
+	// {
+	// 	fill_array(data, i);
+	// 	i++;
+	// }
 	while (args[data->i] != NULL && args[data->i][0] != '|')
 	{
-		fill_array(data, i);
-		i++;
+		check_redirs(data, i);
+		if (fill_array(data, i) == 0)
+			i++;
 	}
 	return (i);
 }

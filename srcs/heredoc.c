@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 04:44:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/23 11:16:40 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:50:05 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ int	open_and_fill_heredoc(t_tokens *tokens)
 {
 	tokens->here_fd = open(tokens->here_file, O_RDONLY);
 	if (tokens->here_fd < 0)
-		return (error("heredoc", "Failed to open input file B"));
+	{
+		//printf("check herefile = %s\n", tokens->here_file);
+		return (1);//(error("heredoc", "Failed to open input file B"));
+	}
 	if (dup2(tokens->here_fd, STDIN_FILENO) == -1)
 	{
 		close(tokens->here_fd);
