@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:08:22 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 21:21:43 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:02:19 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,21 @@ void	fancy_loop(const char *s, int *i, char c)
 		(*i)++;
 }
 
-void	stupid_if_statement(const char *s, int *i)
-{
-	if (s[*i] == '"' && (*i)++)
-	{
-		while (s[*i] && s[*i] != '"')
-			(*i)++;
-	}
-	else if (s[*i] == '\'' && (*i)++)
-	{
-		while (s[*i] && s[*i] != '\'')
-			(*i)++;
-	}
-	(*i)++;
-}
+// void	stupid_if_statement(const char *s, int *i, int *words)
+// {
+// 	if (s[*i] == '"' && (*i)++)
+// 	{
+// 		while (s[*i] && s[*i] != '"')
+// 			(*i)++;
+// 		(*words)++;
+// 	}
+// 	else if (s[*i] == '\'' && (*i)++)
+// 	{
+// 		while (s[*i] && s[*i] != '\'')
+// 			(*i)++;
+// 		(*words)++;
+// 	}
+// }
 
 void	close_diff_fds(int *fds, t_data *data, int flag)
 {

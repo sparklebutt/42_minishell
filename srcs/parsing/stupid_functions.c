@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 11:14:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 14:00:34 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:18:17 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,6 @@ char	*stupid_function(size_t *word, t_temps *tmp, const char *s)
 	return (ft_substr(s, tmp->word_len, 1));
 }
 
-void	stupid_function_2(int *words, int *i, const char *s, char c)
-{
-	(*words)++;
-	(*i) += fancy_strlen(s, c, *i) - (*i);
-	if (s[*i] && is_char_redir(s[*i - 1]) > 0 && is_char_redir(s[*i - 2]) == 0)
-		(*i)--;
-	else if (s[*i] && is_char_redir(s[*i - 1]) > 0
-		&& is_char_redir(s[*i - 2]) > 0)
-		(*i) -= 2;
-}
-
 void	stupid_function_3(t_tokens *tokens, int *quote_count, int i, int *x)
 {
 	tokens->quote = 1;
@@ -37,7 +26,7 @@ void	stupid_function_3(t_tokens *tokens, int *quote_count, int i, int *x)
 		(*quote_count) = loop_quotes(tokens, *quote_count, i, x);
 }
 
-void	why(char **new_heredoc, char **old_heredoc, int *i)
+void	stupid_function_4(char **new_heredoc, char **old_heredoc, int *i)
 {
 	new_heredoc[*i] = ft_strdup(old_heredoc[*i]);
 	(*i)++;

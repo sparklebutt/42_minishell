@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/23 10:08:32 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:50:24 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,47 +108,72 @@ typedef struct s_data
 /*                                                                            */
 /* ************************************************************************** */
 
-void			set_bools(t_data *data, char *args);
-// ~~~~~in parsing_not.c
+//          - - - - - - - - -   parsing_not.c   - - - - - - - - -
+
+int				check_extra_special_echo_case(char **args);
 int				collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
-int				find_passage(t_data *data, char *string, int divert);
-int				find_len(char *str);
-int				handle_absolute_path(t_data *data, int x, char *path);
-// ~~~~~in parsers.c
+int				find_passage(t_data *all, char *string, int divert);
+
+// int	find_len(char *str);
+
+// void			set_bools(t_data *data, char *args);
+// int				collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
+// int				find_passage(t_data *data, char *string, int divert);
+// int				find_len(char *str);
+// int				handle_absolute_path(t_data *data, int x, char *path);
+
+//            - - - - - - - - -   parsers.c   - - - - - - - - -
+
+
+
 int				clean_if_multi_dollar_handle(t_data *data, t_tokens *tokens,
 					int i);
 void			handle_expansion(t_data *data, int len, int i, char *new);
+int				expansion_parser_help(t_tokens *tokens, t_data *data, char *new,
+					int i);
 int				expansion_parser(t_tokens *tokens, t_data *data);
-// ~~~~~in quotes_parsing.c
+
+//       - - - - - - - - -   quotes_parsing.c   - - - - - - - - -
+
 int				check_open_quotes(t_tokens *tokens, int s_quote_count,
 					int d_quote_count);
 char			*clean_quotes(char *string, int len, int x, int y);
 int				clean_rest_of_quotes(t_data *data, int i, int len);
-// ~~~~~in check_path.c
+
+//      - - - - - - - - -   check_path.c   - - - - - - - - -
+
 int				check_path(char *string, int divert, t_data *data, int x);
-// ~~~~~in pipe_parsing.c
-void			pipe_collector(t_tokens *tokens, char **array);
-// ~~~~~in expansion_helper.c
+
+//         - - - - - - - - -   pipe_parsing.c   - - - - - - - - -
+
+int			pipe_collector(t_tokens *tokens, char **array);
+
+//      - - - - - - - - -   expansion_helper.c   - - - - - - - - -
+
 void			simple_flagged(t_data *data, char *new, int len, int i);
-// ~~~~~in prasing_helpers.c
+
+//       - - - - - - - - -   prasing_helpers.c   - - - - - - - - -
+
 bool			set_check(char *string, bool ver, int *x, char c);
 int				simple_quote_check(char *s, int i);
 bool			confirm_expansion(char *string, int len, int x);
 int				multi_dollar_handle(t_data *data, t_tokens *tokens, int i);
 
-// ~~~~~in redirects.c
+//      - - - - - - - - -   list_manipulation.c   - - - - - - - - -
+
 int				create_redir_array(t_tokens *tokens);
 int				redirect_collector(t_tokens *tokens, char **array, int i,
 					int in_count);
 int				redirect_helper(t_tokens *tokens, int x);
 int				parse_redirections(t_data *data, t_tokens *tokens,
 					char **args, int i);
-// ~~~~~in redir_helper.c
+
+//      - - - - - - - - -   redir_helper.c   - - - - - - - - -
+
 int				is_char_redir(char arg);
 int				is_redirect(char *arg);
 int				input_helper(t_tokens *tokens, int fd, int i);
 int				output_helper(t_tokens *tokens, int fd, int i, int x);
-
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -156,19 +181,24 @@ int				output_helper(t_tokens *tokens, int fd, int i, int x);
 /*                                                                            */
 /* ************************************************************************** */
 
-// list manipulation
+//      - - - - - - - - -   list_manipulation.c   - - - - - - - - -
+
 t_env			*replace_value(t_env *env, char *key, char *new_value);
 int				insert_node(t_env **env_lst, char *key_name, char *value);
 t_env			*move_list(t_env *envs, char *key);
 
-// find from env
+//        - - - - - - - - -   find_from_env.c   - - - - - - - - -
+
 char			*find_key(char *str);
 char			*find_value(char *arg);
 char			*find_keys_value(t_env *envs, char *key);
 int				find_node_len(t_data *data);
 int				find_node(t_env *envs, char *key, t_data *data);
 
-// variable expansions
+//      - - - - - - - - -   list_manipulation.c   - - - - - - - - -
+//      - - - - - - - - -   list_manipulation.c   - - - - - - - - -
+
+// variable_expansions
 char			*replace_expansion(t_data *data, t_env *envs, char *arg, int i);
 char			*look_if_expans(t_data *data, t_env *envs, char *arg, int flag);
 
@@ -203,7 +233,7 @@ t_env			*call_env_error(char *cmd, char *arg);
 int				call_cmd_error(char *cmd, char *arg, char *msg, int ret_value);
 void			not_perror(char *cmd, char *arg, char *msg);
 
-// free things
+// free_things
 void			free_array(char **array);
 char			*free_string(char *string);
 void			free_nodes(t_env *nodes);
@@ -225,10 +255,10 @@ const char		*exp_loop(char c, int *i, const char *s, int *count);
 void			sublen_loop(char c, int *sublen, int *save, const char *s);
 int				loop_quotes(t_tokens *tokens, int quote_count, int i, int *x);
 void			fancy_loop(const char *s, int *i, char c);
-void			stupid_if_statement(const char *s, int *i);
+// void			stupid_if_statement(const char *s, int *i, int *words);
 int				special_echo_loop(char **args, int *x, int *i);
 int				parse_redir_loop(t_data *data, int *i, int *x);
-void			redir_collect_loop(char **array, int i, int *count);
+int				redir_collect_loop(char **array, int i, int *count);
 
 void			lol(int *x, int *y);
 void			add_redir_count(int token_count, int *count, int *comp_count);
@@ -290,7 +320,7 @@ void			stupid_function_3(t_tokens *tokens, int *quote_count,
 					int i, int *x);
 int				get_word_len(int *check, int *x);
 int				fancy_strlen(char const *s, char c, int i);
-void			why(char **new_heredoc, char **old_heredoc, int *i);
+void			stupid_function_4(char **new_heredoc, char **old_heredoc, int *i);
 char			*set_the_string(t_data *data, char *line);
 
 void			set_bools(t_data *data, char *args);
@@ -300,4 +330,7 @@ int				set_builtin_info(t_data *data, int fds[2], int x);
 int				send_to_child_help(t_data *data, int fds[2], int x);
 void			close_diff_fds(int *fds, t_data *data, int flag);
 int				checks_before_redir(t_data *data, char **args);
+char	**fill_env_arr_loop(t_env	*temp2, char **tmp_array, int x,
+	char *key_full);
+int	handle_absolute_path(t_data *all, int x, char *path);
 #endif

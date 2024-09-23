@@ -10,6 +10,14 @@ echo   hello |              cat Makefile | wc
 
 >1 >2 >     4 | echo hello
 
+echo hello ||| cat Makefile
+
+echo hello ||||| cat Makefile
+
+|| echo hello
+
+ls || grep .txt
+
 cat 1
 cat 2
 cat 4

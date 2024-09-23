@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:56:54 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/23 10:26:52 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 11:23:45 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_unset(t_env **env, char **args)
 	int	i;
 
 	i = 0;
-	while (args[i] != NULL && args[i] != '|' && is_redirect(args[i]) == 0)
+	while (args[i] != NULL && args[i][0] != '|' && is_redirect(args[i]) == 0)
 	{
 		loop_args_in_unset(env, args[i]);
 		i++;

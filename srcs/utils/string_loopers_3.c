@@ -6,31 +6,16 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 23:16:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 20:39:16 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 11:19:00 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**fill_env_arr_loop(t_env	*temp2, char **tmp_array, int x,
-	char *key_full)
+void	add_redir_count(int token_count, int *count, int *comp_count)
 {
-	while (temp2 != NULL)
-	{
-		key_full = ft_strjoin(temp2->key, "=");
-		tmp_array[x] = ft_strjoin(key_full, temp2->value);
-		if (tmp_array[x] == NULL)
-		{
-			key_full = free_string(key_full);
-			free_loop(tmp_array, x);
-			break ;
-		}
-		key_full = free_string(key_full);
-		x++;
-		temp2 = temp2->next;
-	}
-	tmp_array[x] = NULL;
-	return (tmp_array);
+	token_count++;
+	(*comp_count) = (*count);
 }
 
 char	**set_env_array(t_data *data, int i, int x)

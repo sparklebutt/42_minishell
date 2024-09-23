@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 20:09:58 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:47:22 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,69 +16,87 @@ int	fancy_strlen(char const *s, char c, int i)
 {
 	while (s[i] && s[i] != c)
 	{
-		if (s[i] == '"')
+		if (s[i] && s[i] == '"')
 			fancy_loop(s, &i, '"');
-		else if (s[i] == '\'')
+		else if (s[i] && s[i] == '\'')
 			fancy_loop(s, &i, '\'');
 		else if (is_char_redir(s[i]) > 0)
 		{
-			if (i == 0)
-				while (s[i] && is_char_redir(s[i]) > 0)
-					i++;
+			i++;
+			while (s[i] && s[i] != c && is_char_redir(s[i]) > 0)
+				i++;
 			return (i);
 		}
-		else if (i > 0 && s[i - 1] != 32 && s[i + 1]
-			&& s[i + 1] != 32 && s[i] == '|')
+		else if (s[i] && s[i] == '|')
+		{
+			while (s[i] && s[i] != c && s[i] == '|')
+				i++;
 			return (i);
+		}
 		if (s[i] && s[i] != c)
 			i++;
+		if (s[i] && (s[i] == '|' || is_char_redir(s[i]) > 0))
+			return (i);
 	}
 	return (i);
+}
+
+int	stupid_if_statement(const char *s, int *i, int *words, int *flag)
+{
+	if (s[*i] && s[*i] == '"' && (*i)++)
+	{
+		while (s[*i] && s[*i] != '"')
+			(*i)++;
+		(*words)++;
+		(*flag) = 1;
+		return (1);
+	}
+	else if (s[*i] && s[*i] == '\'' && (*i)++)
+	{
+		while (s[*i] && s[*i] != '\'')
+			(*i)++;
+		(*words)++;
+		(*flag) = 1;
+		return (1);
+	}
+	else if (s[*i] && is_char_redir(s[*i]) > 0)
+	{
+		while (s[*i] && is_char_redir(s[*i]) > 0)
+			(*i)++;
+		(*words)++;
+		(*flag) = 1;
+		return (1);
+	}
+	return (0);
 }
 
 size_t	total_words_c(char const *s, char c)
 {
 	int	words;
 	int	i;
+	int flag;
 
 	words = 0;
 	i = 0;
+	flag = 0;
 	if (ft_strlen(s) == 1)
 		return (1);
-	while (s[i] != '\0')
+	while (s[i] && s[i] != '\0')
 	{
-		if (s[i] == c)
-			stupid_if_statement(s, &i);
-		else if (is_char_redir(s[i]) > 0)
-		{
+		if (s[i] && s[i] == c)
 			i++;
-			while (s[i] && is_char_redir(s[i]) > 0)
+		else if (stupid_if_statement(s, &i, &words, &flag) == 1)
+			flag = 0;
+		else if (s[i] && s[i] == '|')
+		{
+			while (s[i] && s[i] == '|')
 				i++;
-			if (s[i] && is_char_redir(s[i]) == 0)
-				words++;
+			words++;
 		}
-		else if (s[i] == '|')
+		else if (s[i] && s[i] != c)
 			lol(&words, &i);
-		else if (s[i] == '$' || s[i] != c)
-			stupid_function_2(&words, &i, s, c);
 	}
 	return (words);
-}
-
-void	check_check_check(int *flag, int *x, const char *s, int i)
-{
-	if (*flag == 0 && (*x) > 1 && is_char_redir(s[i]) > 0)
-	{
-		(*x)--;
-		if (*x > 1 && s[1] && is_char_redir(s[i + 1]) > 0)
-			(*x)--;
-		(*flag)++;
-	}
-	else if (*flag == 1)
-	{
-		(*x)++;
-		(*flag)--;
-	}
 }
 
 char	**adv_loop(char **array, const char *s, size_t total_words,
@@ -96,13 +114,12 @@ char	**adv_loop(char **array, const char *s, size_t total_words,
 			break ;
 		tmp->x += tmp->word_len;
 		tmp->check = fancy_strlen(s, 32, tmp->i);
-		check_check_check(&tmp->flag, &tmp->x, s, tmp->i);
 		tmp->word_len = get_word_len(&tmp->check, &tmp->x);
 		array[word] = ft_substr(s, tmp->i, tmp->word_len);
 		if (array[word] == NULL)
 			return (free_array(array), NULL);
 		tmp->i += ft_strlen(array[word]);
-		if (s[tmp->word_len] == '|' && s[tmp->i])
+		if (s[tmp->i]  && s[tmp->word_len] == '|')
 			array[word] = stupid_function(&word, tmp, s);
 		if (word < total_words)
 			word++;
@@ -126,5 +143,6 @@ char	**ft_split_adv(char const *s, t_data *data)
 	if (!s || !array)
 		return (NULL);
 	array = adv_loop(array, s, data->tokens->array_count, data->tmp);
+	// print_arr(array, "array");
 	return (array);
 }

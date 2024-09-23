@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 21:19:49 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:50:12 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,15 @@ int	redir_syntax(char **args, int i, int *out_count, int *in_count)
 			return (not_perror("redirect", NULL, "syntax error\n"), -1);
 	}
 	if (args[i][0] == '>' || (args[i][0] == '>' && args[i][1] == '>'))
-		redir_collect_loop(args, i, out_count);
+	{
+		if (redir_collect_loop(args, i, out_count)  == -1)
+			return (-1);
+	}
 	if (args[i][0] == '<')
-		redir_collect_loop(args, i, in_count);
+	{
+		if (redir_collect_loop(args, i, in_count)  == -1)
+			return (-1);
+	}
 	return (0);
 }
 

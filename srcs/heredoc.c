@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 04:44:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 21:19:01 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 11:16:40 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	**set_into_heredoc_array(t_data *data, char **heredoc, char *line)
 		return (NULL);
 	i = 0;
 	while (heredoc != NULL && heredoc[i] != NULL)
-		why(new_heredoc, heredoc, &i);
+		stupid_function_4(new_heredoc, heredoc, &i);
 	new_heredoc[i] = set_the_string(data, line);
 	if (new_heredoc[i] != NULL)
 		new_heredoc[i + 1] = NULL;

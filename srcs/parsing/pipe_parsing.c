@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_parsing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:10:09 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 09:26:54 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 11:29:52 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	pipe_collector(t_tokens *tokens, char **array)
+int	pipe_collector(t_tokens *tokens, char **array)
 {
 	int	i;
 	int	count;
@@ -28,14 +28,15 @@ void	pipe_collector(t_tokens *tokens, char **array)
 			if (len == 2)
 			{
 				if (array[i][1] == '|')
-					printf("we have 2 pipes next to eachother\n");
+					return (not_perror("syntax error", NULL, "unexpected token\n"), -1);
 			}
 			if (len > 2)
 				if (array[i][2] == '|')
-					printf("syntax error , too many pipes\n");
+					return (not_perror("syntax error", NULL, "unexpected token\n"), -1);
 			count++;
 		}
 		i++;
 	}
 	tokens->pipe_count = count;
+	return (0);
 }

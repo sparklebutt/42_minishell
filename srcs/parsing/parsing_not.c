@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 21:20:34 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:18:48 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	check_extra_special_echo_case(char **args)
 int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 {
 	tokens->array_count = total_words_c(string, ' ');
+	// printf("1 total words = %d\n", tokens->array_count);
 	tokens->args = ft_split_adv(string, data);
 	if (tokens->args == NULL)
 		return (1);
@@ -52,7 +53,8 @@ int	collect_cmd_array(t_data *data, t_tokens *tokens, char *string)
 		return (1);
 	check_extra_special_echo_case(tokens->args);
 	expansion_parser(tokens, data);
-	pipe_collector(tokens, tokens->args);
+	if (pipe_collector(tokens, tokens->args) == -1)
+		return (1);
 	if (tokens->redirect_count > 0 && create_redir_array(tokens) == -1)
 		return (not_perror("redirect", NULL, "malloc fail\n"), 1);
 	if (parse_redirections(data, tokens, tokens->args, 0) == -1)
@@ -76,42 +78,4 @@ int	find_passage(t_data *all, char *string, int divert)
 	if (pipe_fork(all, 0, 0) == -1)
 		return (-1);
 	return (1);
-}
-
-int	find_len(char *str)
-{
-	size_t	len;
-
-	len = ft_strlen(str);
-	while (len > 0)
-	{
-		if (str[len] == '/')
-			break ;
-		len--;
-	}
-	return (len);
-}
-
-int	handle_absolute_path(t_data *all, int x, char *path)
-{
-	size_t	len;
-
-	len = find_len(all->tokens->args[x]);
-	path = free_string(path);
-	path = ft_calloc(sizeof(char), len + 1);
-	path = ft_strncpy(path, all->tokens->args[x], len);
-	if (check_dir(path) == 0)
-	{
-		error("check dir", path);
-		path = free_string(path);
-		return (0);
-	}
-	else
-	{
-		all->tmp->filename = all->tokens->args[x];
-		path = free_string(path);
-		return (1);
-	}
-	path = free_string(path);
-	return (0);
 }

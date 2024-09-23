@@ -3,18 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:17:27 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/18 11:23:01 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 11:21:47 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*~~ a function to take an array and turn it into a string
-returning to caller, note this should be multip-puprose, also note
-any array sent in must end in NULL~~*/
 static char	*array_to_string(char **array)
 {
 	char	*new_string;

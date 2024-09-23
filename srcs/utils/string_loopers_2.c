@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_loopers_2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:08:22 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/21 11:38:38 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:49:06 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,35 @@ int	parse_redir_loop(t_data *data, int *i, int *x)
 	return (0);
 }
 
-void	redir_collect_loop(char **array, int i, int *count)
+int	redir_collect_loop(char **array, int i, int *count)
 {
 	if (ft_strlen(array[i]) > 2)
 	{
 		if (array[i][2])
-			not_perror("syntax error", NULL, "too many redirects\n");
+			return (not_perror("syntax error", NULL, "too many redirects\n"), -1);
 	}
 	(*count)++;
+	return (0);
 }
 
-void	add_redir_count(int token_count, int *count, int *comp_count)
+char	**fill_env_arr_loop(t_env	*temp2, char **tmp_array, int x,
+	char *key_full)
 {
-	token_count++;
-	(*comp_count) = (*count);
+	while (temp2 != NULL)
+	{
+		key_full = ft_strjoin(temp2->key, "=");
+		tmp_array[x] = ft_strjoin(key_full, temp2->value);
+		if (tmp_array[x] == NULL)
+		{
+			key_full = free_string(key_full);
+			free_loop(tmp_array, x);
+			break ;
+		}
+		key_full = free_string(key_full);
+		x++;
+		temp2 = temp2->next;
+	}
+	tmp_array[x] = NULL;
+	return (tmp_array);
 }
+
