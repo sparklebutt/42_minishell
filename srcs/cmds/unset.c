@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:56:54 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/18 22:24:16 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 10:26:52 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	free_node(t_env *env)
 	}
 }
 
-void	ft_unset(t_env **env, char *key_name)
+void loop_args_in_unset(t_env **env, char *key_name)
 {
 	t_env	*current_env;
 	t_env	*prev_env;
@@ -48,4 +48,17 @@ void	ft_unset(t_env **env, char *key_name)
 		return ;
 	prev_env->next = current_env->next;
 	free_node(current_env);
+}
+
+
+void	ft_unset(t_env **env, char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i] != NULL && args[i] != '|' && is_redirect(args[i]) == 0)
+	{
+		loop_args_in_unset(env, args[i]);
+		i++;
+	}
 }

@@ -3,105 +3,92 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 08:42:12 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/23 10:14:15 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*loop_array(char **array, char *tmp, char *value)
+char *close_n_return(DIR *dir)
 {
-	int		i;
-	char	*tmp_2;
+	closedir(dir);
+	return ("env");
+}
 
-	tmp_2 = NULL;
+
+char *loop_path(t_data *data)
+{
+	DIR				*dir;
+	struct dirent	*dp;
+	int				i;
+
 	i = 0;
-	array = ft_split(value, ':');
-	if (array == NULL)
-		return (NULL);
-	while (array[i] != NULL)
+	while (data->tmp->array && data->tmp->array[i])
 	{
-		tmp_2 = ft_strnstr(array[i], "/bin", 5);
-		if (tmp_2 != NULL)
+		if (data->tmp->array && check_dir(data->tmp->array[i]) == 1)
 		{
-			tmp = ft_strdup(tmp_2);
-			break ;
+			dir = opendir(data->tmp->array[i]);
+			dp = readdir(dir);
+			while (dp != NULL)
+			{
+				if (ft_strncmp(dp->d_name, "env", 3) == 0
+					&& ft_strlen(dp->d_name) == 3)
+					return (close_n_return(dir));
+				if (i != 0)
+					dp = readdir(dir);
+			}
+			closedir(dir);
 		}
 		i++;
 	}
-	free_array(array);
-	return (tmp);
+	return (NULL);
 }
 
-char	*env_helper(t_env *env, int i, int split_count)
+char	*env_helper(t_data *data, t_env *env)
 {
 	char	*value;
 	char	*ret;
-	char	*tmp;
 
-	tmp = NULL;
 	ret = NULL;
 	value = find_keys_value(env, "PATH");
 	if (value == NULL || ft_strlen(value) == 0)
 		return (NULL);
-	while (value[i++] != '\0')
-		split_count++;
-	tmp = loop_array(NULL, tmp, value);
-	if (tmp != NULL)
-	{
-		ret = ft_strdup(tmp);
-		free_string(tmp);
-	}
+	data->tmp->array = ft_split(value, ':');
+	if (data->tmp->array == NULL)
+		not_perror("path array", NULL, "malloc failn");
+	ret = loop_path(data);
 	return (ret);
 }
 
-int	check_envs_ret(char *ret)
+void	ft_env(t_env **envs, t_data *data)
 {
-	if (ret == NULL || ft_strlen(ret) > 4)
-	{
-		if (ret != NULL && ft_strlen(ret) == 5 && ret[4] == '/')
-		{
-			ret = free_string(ret);
-			return (0);
-		}
-		else
-		{
-			if (ret != NULL)
-				ret = free_string(ret);
-			return (not_perror("env", NULL, "No such file or directory\n"), 1);
-		}
-	}
-	ret = free_string(ret);
-	return (0);
-}
-
-void	ft_env(t_data *data)
-{
-	t_env	*env;
+	t_env	*temp_env;
 	char	*ret;
 
-	env = data->env;
 	ret = NULL;
-	if (find_node(env, "PATH", data) == 1)
+	temp_env = *envs;
+	printf("check\n");
+	if (find_node(*envs, "PATH", data) == 1)
 	{
-		ret = env_helper(env, 0, 0);
-		if (check_envs_ret(ret) == 1)
-			return ;
+		printf("found PATH with something in it from env\n");
+		ret = env_helper(data, *envs);
+		if (ret == NULL)
+			return (not_perror("env", NULL, "No such file or directory\n"));
 	}
 	else
 		return (not_perror("env", NULL, "No such file or directory\n"));
+	printf("what  is ret? %s\n", ret);
+	free_array(data->tmp->array);
 	if (data->tokens->args[data->i + 1] != NULL
-		&& data->tokens->args[data->i + 1][0] != '|')
-	{
-		if (check_dir(data->tokens->args[data->i + 1]) == 0)
+		&& data->tokens->args[data->i + 1][0] != '|'
+		&& is_redirect(data->tokens->args[data->i + 1]) > 0)
 			return (cmd_error("env", data->tokens->args[data->i + 1]));
-	}
-	while (env != NULL)
+	while (temp_env != NULL)
 	{
-		printf("%s=%s\n", env->key, env->value);
-		env = env->next;
+		printf("%s=%s\n", temp_env->key, temp_env->value);
+		temp_env = temp_env->next;
 	}
 }

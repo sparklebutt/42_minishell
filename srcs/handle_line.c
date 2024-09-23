@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 16:32:23 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 10:08:21 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ int	exec_builtins(t_data data, char *cmd, t_env **envs)
 	else if (ft_strncmp(cmd, "export", 7) == 0)
 		ft_export(&data);
 	else if (ft_strncmp(cmd, "unset", 6) == 0)
-		ft_unset(envs, tokens->args[1]);
+		ft_unset(envs, tokens->args);
 	else if (ft_strncmp(cmd, "echo", 5) == 0)
 		ft_echo(&data, tokens->args);
 	else if (ft_strncmp(cmd, "env", 4) == 0)
-		ft_env(&data);
+		ft_env(envs, &data);
 	return (0);
 }
 

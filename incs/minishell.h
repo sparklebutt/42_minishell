@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 20:39:39 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/23 10:08:32 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,13 @@ typedef struct s_data
 	bool		h_action;
 }	t_data;
 
-// PARSING - - - - - - - - -
+
+/* ************************************************************************** */
+/*                                                                            */
+/*            - - - - - - - - -   PARSING   - - - - - - - - -                 */
+/*                                                                            */
+/* ************************************************************************** */
+
 void			set_bools(t_data *data, char *args);
 // ~~~~~in parsing_not.c
 int				collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
@@ -143,7 +149,12 @@ int				is_redirect(char *arg);
 int				input_helper(t_tokens *tokens, int fd, int i);
 int				output_helper(t_tokens *tokens, int fd, int i, int x);
 
-// ENV - - - - - - - - -
+
+/* ************************************************************************** */
+/*                                                                            */
+/*              - - - - - - - - -   ENV   - - - - - - - - -                   */
+/*                                                                            */
+/* ************************************************************************** */
 
 // list manipulation
 t_env			*replace_value(t_env *env, char *key, char *new_value);
@@ -161,20 +172,29 @@ int				find_node(t_env *envs, char *key, t_data *data);
 char			*replace_expansion(t_data *data, t_env *envs, char *arg, int i);
 char			*look_if_expans(t_data *data, t_env *envs, char *arg, int flag);
 
-// CMDS - - - - - - - - -
-void			ft_unset(t_env **env, char *key_name);
+/* ************************************************************************** */
+/*                                                                            */
+/*              - - - - - - - - -   CMDS   - - - - - - - - -                  */
+/*                                                                            */
+/* ************************************************************************** */
+
+void			ft_unset(t_env **env, char **args);
 int				ft_pwd(t_data *data, t_env *envs);
 t_env			*fill_old_pwd(t_data *data, t_env *env, char *temp_path);
 void			ft_exit(t_data *data, char *cmd, t_tokens *tokens);
 void			ft_cd(t_data *data, t_env *envs);
 void			ft_echo(t_data *data, char **args);
-void			ft_env(t_data *data);
+void			ft_env(t_env **envs, t_data *data);
 void			ft_export(t_data *data);
 void			handle_arg(t_data *data, int arg_i, t_tokens *tokens);
 char			*ft_strtrim_front(char *s1, char set);
 int				check_dir(char *str);
 
-// UTILS - - - - - - - - -
+/* ************************************************************************** */
+/*                                                                            */
+/*              - - - - - - - - -   UTILS   - - - - - - - - -                 */
+/*                                                                            */
+/* ************************************************************************** */
 
 // error_handling
 int				error(char *cmd, char *error);
@@ -213,7 +233,12 @@ void			redir_collect_loop(char **array, int i, int *count);
 void			lol(int *x, int *y);
 void			add_redir_count(int token_count, int *count, int *comp_count);
 
-// OTHER - - - - - - - - -
+
+/* ************************************************************************** */
+/*                                                                            */
+/*              - - - - - - - - -   OTHER   - - - - - - - - -                 */
+/*                                                                            */
+/* ************************************************************************** */
 
 // handle_line, main & init
 int				main(int argc, char **argv);

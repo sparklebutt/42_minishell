@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:04:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/19 14:47:30 by araveala         ###   ########.fr       */
+/*   Updated: 2024/09/22 13:26:02 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,25 @@ int	export_syntax_check(char *string)
 {
 	int	i;
 
-	i = 0;
-	if (ft_strchr(string, '=') == NULL)
-		return (1);
+	i = ft_strlen(string);
 	if (ft_isalpha(string[0]) == 0)
 	{
 		not_perror("export", string, NOT_VALID);
 		return (1);
 	}
-	if (is_char_redir(string[0]) > 0)
-		return (0);
+	if (ft_strchr(string, '=') == NULL)
+	{
+		if (ft_isalpha(string[i - 1]) == 0 && ft_isalnum(string[i - 1]) == 0)
+		{
+			not_perror("export", string, NOT_VALID);
+			return (1);
+		}
+		return (1); //could return a different number , flag env list for storage not printable 
+	}
+	i = 0;
 	while (string[i] && string[i] != '=')
 		i++;
-	if (ft_isalpha(string[i - 1]) == 0)
+	if (ft_isalpha(string[i - 1]) == 0 && ft_isalnum(string[i - 1]) == 0)
 	{
 		not_perror("export", string, NOT_VALID);
 		return (1);
