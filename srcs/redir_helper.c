@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:02:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/21 20:53:31 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 18:18:22 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	input_helper(t_tokens *tokens, int fd, int i)
 	{
 		tokens->here_file = free_string(tokens->here_file);
 		tokens->here_file = ft_strdup(tokens->args[i + 1]);
-		tokens->here_check = 1;
 	}
 	else
 	{

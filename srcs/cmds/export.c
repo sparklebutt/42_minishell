@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:04:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/23 16:20:54 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:47:41 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,27 +20,18 @@ int	export_syntax_check(char *string)
 		return (0);
 	i = ft_strlen(string);
 	if (ft_isalpha(string[0]) == 0)
-	{
-		not_perror("export", string, NOT_VALID);
-		return (1);
-	}
+		return (not_perror("export", string, NOT_VALID), 1);
 	if (ft_strchr(string, '=') == NULL)
 	{
 		if (ft_isalpha(string[i - 1]) == 0 && ft_isalnum(string[i - 1]) == 0)
-		{
-			not_perror("export", string, NOT_VALID);
-			return (1);
-		}
-		return (1); //could return a different number , flag env list for storage not printable 
+			return (not_perror("export", string, NOT_VALID), 1);
+		return (1);
 	}
 	i = 0;
 	while (string[i] && string[i] != '=')
 		i++;
 	if (ft_isalpha(string[i - 1]) == 0 && ft_isalnum(string[i - 1]) == 0)
-	{
-		not_perror("export", string, NOT_VALID);
-		return (1);
-	}
+		return (not_perror("export", string, NOT_VALID), 1);
 	return (0);
 }
 
@@ -98,7 +89,6 @@ void	ft_export(t_data *data)
 
 	i = 1;
 	tokens = data->tokens;
-	// printf("data->tokens->array_count = %d\n", data->tokens->array_count);
 	if (data->tokens->array_count == 1)
 		export_alphabetical(data);
 	else

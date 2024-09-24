@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 13:25:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/24 12:50:57 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:39:05 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	after_child(t_data *data, int *fds)
 	data->h_action = false;
 	data->tokens->action = false;
 	data->in_action = false;
+	data->tokens->ignore_heredoc = false;
 	data->child_i++;
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
@@ -52,23 +53,14 @@ int	set_builtin_info(t_data *data, int fds[2], int x)
 	i = data->i;
 	while (data->tokens->args[i] != NULL && data->tokens->args[i][0] != '|')
 	{
-		// if (is_redirect(data->tokens->args[i]) > 0)
-		// {
-		// 	data->tokens->action = true;
-		// 	break ;
-		// }
 		set_bools(data, data->tokens->args[i]);
 		i++;
 	}
 	child(data, fds, x, 1);
-	// data->i++;
-	// printf("what is args? %s\n", data->tokens->args[data->i]);
 	while (data->tokens->args[data->i] != NULL)
 	{
-		// printf("loop\n");
 		if (data->tokens->args[data->i][0] == '|')
 		{
-			// printf("found pipe!!\n");
 			data->i++;
 			break ;
 		}
@@ -82,15 +74,7 @@ int	send_to_child_help(t_data *data, int fds[2], int x)
 	char	**args;
 
 	args = data->tokens->args;
-	printf("check args = %s\n", args[data->i]);
 	set_array(data);
-	// maybe needed
-	// while (args[data->i] != NULL && args[data->i][0] != '|'
-	// 	&& is_redirect(args[data->i]) > 0)
-	// {
-	// 	set_bools(data, args[data->i]);
-	// 	data->i += 2;
-	// }	
 	child(data, fds, x, 0);
 	if (data->i == data->tokens->array_count)
 		return (1);

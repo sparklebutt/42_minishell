@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/24 10:07:37 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:37:36 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ size_t	total_words_c(char const *s, char c)
 {
 	int	words;
 	int	i;
-	int flag;
+	int	flag;
 
 	words = 0;
 	i = 0;
@@ -105,7 +105,6 @@ char	**adv_loop(char **array, const char *s, size_t total_words,
 
 	word = 0;
 	init_adv_loop(data->tmp);
-
 	while (s[data->tmp->i] != '\0' && word < total_words)
 	{
 		while (s[data->tmp->i] != '\0' && s[data->tmp->i] == 32)
@@ -141,6 +140,5 @@ char	**ft_split_adv(char const *s, t_data *data)
 	if (!s || !array)
 		return (NULL);
 	array = adv_loop(array, s, data->tokens->array_count, data);
-	// print_arr(array, "array");
 	return (array);
 }

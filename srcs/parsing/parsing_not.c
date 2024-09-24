@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:00:43 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/23 17:44:17 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:41:51 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int	find_passage(t_data *data, char *string, int divert)
 			return (-1);
 		return (1);
 	}
-	// data->tmp->env_line = free_string(data->tmp->env_line);
 	if (pipe_fork(data, 0, 0) == -1)
 		return (-1);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/24 16:49:00 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 18:21:15 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,23 +42,19 @@ typedef struct s_tokens
 	char	*cmd;
 	char	**args;
 	int		quote;
-
-	char	**heredoc;
 	char	*here_file;
-	bool	here_check;
+	
 	int		here_fd;
-	int		in_fd;
 	int		array_count;
 	int		pipe_count;
-	int		pipe_comp;
 	int		redirect_count;
 	int		dollar_count;
-
+	int		out_a_count;
+	int		in_a_count;
+	
 	char	*input_file;
 	char	**output_files;
 
-	int		out_a_count;
-	int		in_a_count;
 
 	bool	action;
 	bool	in_action;
@@ -102,7 +98,6 @@ typedef struct s_data
 	bool		h_action;
 }	t_data;
 
-
 /* ************************************************************************** */
 /*                                                                            */
 /*            - - - - - - - - -   PARSING   - - - - - - - - -                 */
@@ -115,17 +110,7 @@ int				check_extra_special_echo_case(char **args);
 int				collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
 int				find_passage(t_data *all, char *string, int divert);
 
-// int	find_len(char *str);
-
-// void			set_bools(t_data *data, char *args);
-// int				collect_cmd_array(t_data *data, t_tokens *tokens, char *string);
-// int				find_passage(t_data *data, char *string, int divert);
-// int				find_len(char *str);
-// int				handle_absolute_path(t_data *data, int x, char *path);
-
 //            - - - - - - - - -   parsers.c   - - - - - - - - -
-
-
 
 int				clean_if_multi_dollar_handle(t_data *data, t_tokens *tokens,
 					int i);
@@ -147,7 +132,7 @@ int				check_path(char *string, int divert, t_data *data, int x);
 
 //         - - - - - - - - -   pipe_parsing.c   - - - - - - - - -
 
-int			pipe_collector(t_tokens *tokens, char **array);
+int				pipe_collector(t_tokens *tokens, char **array);
 
 //      - - - - - - - - -   expansion_helper.c   - - - - - - - - -
 
@@ -239,7 +224,7 @@ void			free_array(char **array);
 char			*free_string(char *string);
 void			free_nodes(t_env *nodes);
 char			**free_loop(char **arr, int index);
-void	free_stuff(t_data *data, int flag);
+void			free_stuff(t_data *data, int flag);
 
 // signals
 void			here_signal(int sig);
@@ -264,7 +249,6 @@ int				redir_collect_loop(char **array, int i, int *count);
 
 void			lol(int *x, int *y);
 void			add_redir_count(int token_count, int *count, int *comp_count);
-
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -303,7 +287,7 @@ int				check_file(char *str);
 int				exit_code(int flag, int num);
 
 int				compare_str(char *str1, char *str2);
-int				create_file(t_tokens *tokens);
+int				create_file(t_tokens *tokens, int fd);
 char			*new_str(char *str, char *value, int start, size_t end);
 char			*replace_exitcode(char *arg, int start);
 
@@ -320,7 +304,6 @@ void			stupid_function_3(t_tokens *tokens, int *quote_count,
 					int i, int *x);
 int				get_word_len(int *check, int *x);
 int				fancy_strlen(char const *s, char c, int i);
-void			stupid_function_4(char **new_heredoc, char **old_heredoc, int *i);
 char			*set_the_string(t_data *data, char *line);
 
 void			set_bools(t_data *data, char *args);
@@ -330,7 +313,8 @@ int				set_builtin_info(t_data *data, int fds[2], int x);
 int				send_to_child_help(t_data *data, int fds[2], int x);
 void			close_diff_fds(int *fds, t_data *data, int flag);
 int				checks_before_redir(t_data *data, char **args);
-char	**fill_env_arr_loop(t_env	*temp2, char **tmp_array, int x,
-	char *key_full);
-int	handle_absolute_path(t_data *all, int x, char *path);
+char			**fill_env_arr_loop(t_env	*temp2, char **tmp_array, int x,
+					char *key_full);
+int				handle_absolute_path(t_data *all, int x, char *path);
+int				free_string_2(char *str, int ret);
 #endif

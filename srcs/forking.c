@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/24 12:53:17 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 18:12:29 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,7 @@ int	open_infile(t_tokens *tokens)
 
 	fd = 0;
 	if (tokens->input_file == NULL)
-	{
-		// fd = open("/dev/null", O_RDONLY);
-		// if (dup2(fd, STDIN_FILENO) == -1)
-		// {
-		// 	close(fd);
-		// 	return (error("infile", "Failed to duplicate fd\n"));
-		// }
-		// close(fd);
 		return (1);
-	}
 	fd = open(tokens->input_file, O_RDONLY);
 	if (fd < 0)
 	{
@@ -91,7 +82,8 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	else if (is_builtins(args[data->i]) == 1)
 		set_builtin_info(data, fds, x);
 	else if (args[data->i] != NULL
-		&& check_path(find_keys_value(data->env, "PATH"), 1, data, data->i) != 0)
+		&& check_path(find_keys_value(data->env, "PATH"), 1,
+			data, data->i) != 0)
 	{
 		if (send_to_child_help(data, fds, x) == 1)
 			return (0);
@@ -119,8 +111,6 @@ static int	wait_and_close(t_data *data, int status, int fds[2], int x)
 	{
 		unlink(data->tokens->here_file);
 		data->tokens->here_file = free_string(data->tokens->here_file);
-		free_array(data->tokens->heredoc);
-		data->tokens->heredoc = NULL;
 	}
 	if (g_interactive_mode == 2)
 		status = 130;
@@ -136,7 +126,6 @@ int	pipe_fork(t_data *data, int x, int status)
 
 	data->x = 0;
 	data->prev_fd = -1;
-	printf("check\n");
 	while (x <= data->tokens->pipe_count)
 	{
 		if (data->i > data->tokens->array_count)
@@ -148,8 +137,7 @@ int	pipe_fork(t_data *data, int x, int status)
 		}
 		if (send_to_child(data, fds, x) == -1)
 		{
-			close_diff_fds(fds, data, 0);
-			printf("fails send to child\n");
+			wait_and_close(data, status, fds, x);
 			return (-1);
 		}
 		close_diff_fds(fds, data, 2);

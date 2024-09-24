@@ -6,7 +6,7 @@
 #    By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/09/23 18:13:26 by vkettune         ###   ########.fr        #
+#    Updated: 2024/09/24 18:17:21 by vkettune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,10 +27,10 @@ BLUE = \033[0;94m
 MAGENTA = \033[0;95m
 CYAN = \033[0;96m
 WHITE = \033[0;97m
-#-fsanitize=address
+
 NAME = minishell
-FLAGS = -Wall -Wextra -Werror $(HEADERS) #-fsanitize=address -g 
-HEADERS = -I ./incs/ # -I ~/.brew/opt/readline/include
+FLAGS = -Wall -Wextra -Werror $(HEADERS)
+HEADERS = -I ./incs/
 
 LIBS = $(READLINE) $(LIBFT)
 READLINE = -lreadline  -L ~/.brew/opt/readline/lib
@@ -69,6 +69,7 @@ CMD_OBJ = $(addprefix $(OBJS_DIR), $(CMD:.c=.o))
 ENV_OBJ = $(addprefix $(OBJS_DIR), $(ENV:.c=.o))
 UTIL_OBJ = $(addprefix $(OBJS_DIR), $(UTIL:.c=.o))
 PAR_OBJ = $(addprefix $(OBJS_DIR), $(PAR:.c=.o))
+
 OBJECTS = $(OBJ) $(CMD_OBJ) $(ENV_OBJ) $(UTIL_OBJ) $(PAR_OBJ)
 
 all: folders comp_libft $(NAME)
@@ -103,10 +104,5 @@ fclean: clean
 
 re: fclean all
 	@echo "$(GREEN)Sucessfully cleaned and rebuilt everything$(X)"
-
-test: # remove this
-	@mkdir -p example/ example/example2 example/example2/example3
-	@touch example/file1 example/file2 example/example2/file3 example/example2/file4 example/example2/example3/file5
-	@echo "$(DARK_MAGENTA)- - - - - test folders and files created - - - - - -\n$(X)"
 
 .PHONY: all clean fclean re

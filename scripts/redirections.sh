@@ -12,11 +12,20 @@ cat test_files/out
 
 ls|grep .txt>test_files/out
 
-< inputfile > outfile >outfile2 | cat outfile2 
-
-< inputfile cat >> outifle  | < inputfile cat >> outfile
-
 cat<test_files/out
+
+echo "helllooooo" > infile
+
+< infile > outfile >outfile2 | cat outfile2 
+
+cat outfile
+
+cat test_files/empty > outfile
+
+< infile cat >> outfile  | < infile cat >> outfile
+< infile cat >> outfile  | < infile cat >> outfile
+
+cat outfile
 
 >>filename>new    > gfdfghjk <<<<<
 

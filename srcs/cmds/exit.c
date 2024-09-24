@@ -6,15 +6,15 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:11:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/23 18:56:13 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:48:04 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int check_num(char *str)
+int	check_num(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i] != '\0')
@@ -29,7 +29,7 @@ int check_num(char *str)
 void	ft_exit(t_data *data, char *cmd, t_tokens *tokens)
 {
 	char	*temp;
-	int	code;
+	int		code;
 
 	temp = NULL;
 	code = 0;

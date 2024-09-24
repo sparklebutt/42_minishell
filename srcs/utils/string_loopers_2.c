@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:08:22 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/24 15:58:36 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:36:19 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int	redir_collect_loop(char **array, int i, int *count)
 	if (ft_strlen(array[i]) > 2)
 	{
 		if (array[i][2])
-			return (not_perror("syntax error", NULL, "too many redirects\n"), -1);
+			return (not_perror("syntax error", NULL,
+					"too many redirects\n"), -1);
 	}
 	(*count)++;
 	return (0);
@@ -78,4 +79,3 @@ char	**fill_env_arr_loop(t_env	*temp2, char **tmp_array, int x,
 	tmp_array[x] = NULL;
 	return (tmp_array);
 }
-

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/23 13:50:12 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 18:12:06 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ int	redir_syntax(char **args, int i, int *out_count, int *in_count)
 	}
 	if (args[i][0] == '>' || (args[i][0] == '>' && args[i][1] == '>'))
 	{
-		if (redir_collect_loop(args, i, out_count)  == -1)
+		if (redir_collect_loop(args, i, out_count) == -1)
 			return (-1);
 	}
 	if (args[i][0] == '<')
 	{
-		if (redir_collect_loop(args, i, in_count)  == -1)
+		if (redir_collect_loop(args, i, in_count) == -1)
 			return (-1);
 	}
 	return (0);
@@ -116,8 +116,6 @@ int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 		if (parse_redir_loop(data, &i, &x) == -1)
 		{
 			data->tokens->here_file = free_string(data->tokens->here_file);
-			free_array(data->tokens->heredoc);
-			data->tokens->heredoc = NULL;
 			return (-1);
 		}
 		if (args[i] != NULL)

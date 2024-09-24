@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 08:33:27 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/24 15:54:54 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:36:40 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	here_signal(int sig)
 
 void	handle_sigquit(int sig)
 {
-	// exit_code(1, 131);
 	g_interactive_mode = sig;
 	signal(SIGQUIT, SIG_IGN);
 	write(STDOUT_FILENO, "Quit (core dumped because you asked it too)\n", 45);
@@ -39,7 +38,6 @@ void	signal_handler(int sig)
 	printf("\n");
 	rl_on_new_line();
 	rl_redisplay();
-	// exit_code(1, 0);
 }
 
 void	set_signals(int sig)
@@ -49,8 +47,4 @@ void	set_signals(int sig)
 	x = sig;
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
-	// if (sig == 2)
-	// 	exit_code(1, 130);
-	// else if (sig == 0)
-	// 	exit_code(1, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 18:24:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/24 09:08:55 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:38:19 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	not_perror(char *cmd, char *arg, char *msg)
 	if (ft_strncmp("syntax error", cmd, 12) == 0
 		|| ft_strncmp("syntax error", msg, 12) == 0)
 		exit_code(1, 2);
-	// add exit codes that come to mind
 	else
 		exit_code(1, 1);
 }

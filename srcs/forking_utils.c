@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:01:07 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/24 11:25:09 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:53:08 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static int	count_args(t_data *data)
 
 int	check_redirs(t_data *data)
 {
-	if (data->tokens->args[data->i] != NULL && is_redirect(data->tokens->args[data->i]) == 1)
+	if (data->tokens->args[data->i] != NULL
+		&& is_redirect(data->tokens->args[data->i]) == 1)
 	{
 		data->tokens->input_file = free_string(data->tokens->input_file);
 		data->tokens->input_file = ft_strdup(data->tokens->args[data->i + 1]);
@@ -44,7 +45,7 @@ int	check_redirs(t_data *data)
 	else if (is_redirect(data->tokens->args[data->i]) == 3)
 	{
 		data->tokens->action = true;
-		data->i += 2;  
+		data->i += 2;
 	}
 	else if (is_redirect(data->tokens->args[data->i]) == 2)
 	{
@@ -70,17 +71,19 @@ static int	malloc_array(t_data *data, int i)
 	return (0);
 }
 
-static int    fill_array(t_data *data, int i)
+static int	fill_array(t_data *data, int i)
 {
 	if (data->tokens->args[data->i] != NULL)
 	{
 		if (data->tokens->args[data->i] != NULL
-			&& data->tokens->args[data->i][0] != '|' && is_redirect(data->tokens->args[data->i]) == 0)
+			&& data->tokens->args[data->i][0] != '|'
+			&& is_redirect(data->tokens->args[data->i]) == 0)
 		{
 			data->tmp->ex_arr[i] = data->tokens->args[data->i];
 			data->i++;
 		}
-		else if (data->tokens->args[data->i] != NULL && is_redirect(data->tokens->args[data->i]) > 0)
+		else if (data->tokens->args[data->i] != NULL
+			&& is_redirect(data->tokens->args[data->i]) > 0)
 			return (1);
 	}
 	return (0);

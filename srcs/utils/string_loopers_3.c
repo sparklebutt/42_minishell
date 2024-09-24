@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 23:16:46 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/23 19:17:30 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:34:26 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,6 @@ char	**set_env_array(t_data *data, int i, int x)
 
 int	dup_fds(t_data *data, int *fds, int x)
 {
-	// check cmd {env | grep PATH}, it doesn't seem to dupe properly te first time around,
-	// OR somehow grep isn't able to get the env output from the dup.
-	// check child func maybe
 	if (x > 0)
 	{
 		if (dup2(data->prev_fd, STDIN_FILENO) == -1)

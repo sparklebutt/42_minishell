@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 14:56:54 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/23 11:23:45 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:45:32 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	free_node(t_env *env)
 	}
 }
 
-void loop_args_in_unset(t_env **env, char *key_name)
+void	loop_args_in_unset(t_env **env, char *key_name)
 {
 	t_env	*current_env;
 	t_env	*prev_env;
@@ -49,7 +49,6 @@ void loop_args_in_unset(t_env **env, char *key_name)
 	prev_env->next = current_env->next;
 	free_node(current_env);
 }
-
 
 void	ft_unset(t_env **env, char **args)
 {
