@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/23 17:17:51 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 09:47:19 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ char	**adv_loop(char **array, const char *s, size_t total_words,
 
 	word = 0;
 	init_adv_loop(data->tmp);
+
 	while (s[data->tmp->i] != '\0' && word < total_words)
 	{
 		while (s[data->tmp->i] != '\0' && s[data->tmp->i] == 32)
@@ -118,10 +119,7 @@ char	**adv_loop(char **array, const char *s, size_t total_words,
 		if (array[word] == NULL)
 			return (free_array(array), NULL);
 		data->tmp->i += ft_strlen(array[word]);
-		if (s[data->tmp->i]  && s[data->tmp->word_len] == '|')
-			array[word] = stupid_function(&word, data->tmp, s);
-		if (word < total_words)
-			word++;
+		word++;
 	}
 	array[word] = NULL;
 	data->tokens->array_count = word;
@@ -143,6 +141,5 @@ char	**ft_split_adv(char const *s, t_data *data)
 	if (!s || !array)
 		return (NULL);
 	array = adv_loop(array, s, data->tokens->array_count, data);
-	// print_arr(array, "array");
 	return (array);
 }

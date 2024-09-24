@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 11:14:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/23 13:18:17 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 09:36:46 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 char	*stupid_function(size_t *word, t_temps *tmp, const char *s)
 {
-	(*word)++;
+	(void)word;
+	// (*word)++;
 	lol(&tmp->i, &tmp->x);
 	return (ft_substr(s, tmp->word_len, 1));
 }

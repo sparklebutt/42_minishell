@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 13:25:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/23 15:41:14 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 08:12:59 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,12 @@ int	set_builtin_info(t_data *data, int fds[2], int x)
 	i = data->i;
 	while (data->tokens->args[i] != NULL && data->tokens->args[i][0] != '|')
 	{
-		if (is_redirect(data->tokens->args[i]) > 0)
-		{
-			data->tokens->action = true;
-			break ;
-		}
+		// if (is_redirect(data->tokens->args[i]) > 0)
+		// {
+		// 	data->tokens->action = true;
+		// 	break ;
+		// }
+		set_bools(data, data->tokens->args[i]);
 		i++;
 	}
 	child(data, fds, x, 1);
