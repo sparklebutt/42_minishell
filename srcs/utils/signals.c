@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 08:33:27 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/24 09:49:50 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 15:54:54 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,8 @@ void	handle_sigint(int sig)
 
 void	here_signal(int sig)
 {
-	struct sigaction	sa;
-
 	g_interactive_mode = sig;
-	sa.sa_handler = handle_sigint;
-	sa.sa_flags = 0;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
+	exit(130);
 }
 
 void	handle_sigquit(int sig)
@@ -52,7 +47,6 @@ void	set_signals(int sig)
 	int	x;
 
 	x = sig;
-	dprintf(2, "signal = %d\n", sig);
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
 	// if (sig == 2)

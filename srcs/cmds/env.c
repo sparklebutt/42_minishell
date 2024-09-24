@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:43:28 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/23 19:17:49 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 10:59:56 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,11 @@ void	ft_env(t_env **envs, t_data *data)
 	else
 		return (not_perror("env", NULL, "No such file or directory\n"));
 	free_array(data->tmp->array);
+	// test this well, added is_redir to == 0 instead of > 0 which broke redirs after env
 	if (data->tokens->args[data->i + 1] != NULL
 		&& data->tokens->args[data->i + 1][0] != '|'
-		&& is_redirect(data->tokens->args[data->i + 1]) > 0)
+		&& is_redirect(data->tokens->args[data->i + 1]) == 0)
 			return (cmd_error("env", data->tokens->args[data->i + 1]));
-	// dprintf(2, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaah\n");
 	while (temp_env != NULL)
 	{
 		printf("%s=%s\n", temp_env->key, temp_env->value);

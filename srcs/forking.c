@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:25:52 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/24 09:54:00 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 12:53:17 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	open_infile(t_tokens *tokens)
 	if (fd < 0)
 	{
 		tokens->input_file = free_string(tokens->input_file);
-		// printf("check infile = %s\n", tokens->input_file);
 		return (1);
 	}
 	if (dup2(fd, STDIN_FILENO) == -1)
@@ -91,7 +90,7 @@ int	send_to_child(t_data *data, int fds[2], int x)
 	}
 	else if (is_builtins(args[data->i]) == 1)
 		set_builtin_info(data, fds, x);
-	else if (args[data->i] != NULL && find_node(data->env, "PATH", data) == 1
+	else if (args[data->i] != NULL
 		&& check_path(find_keys_value(data->env, "PATH"), 1, data, data->i) != 0)
 	{
 		if (send_to_child_help(data, fds, x) == 1)
@@ -123,10 +122,10 @@ static int	wait_and_close(t_data *data, int status, int fds[2], int x)
 		free_array(data->tokens->heredoc);
 		data->tokens->heredoc = NULL;
 	}
-	// printf("check before status = %d\n", status);
-	status = status % 256;
-	// printf("check after status = %d\n", status);
-	// status = (status >> 8) & 0xFF;
+	if (g_interactive_mode == 2)
+		status = 130;
+	else
+		status = status % 256;
 	exit_code(1, status);
 	return (0);
 }
@@ -137,6 +136,7 @@ int	pipe_fork(t_data *data, int x, int status)
 
 	data->x = 0;
 	data->prev_fd = -1;
+	printf("check\n");
 	while (x <= data->tokens->pipe_count)
 	{
 		if (data->i > data->tokens->array_count)
@@ -149,6 +149,7 @@ int	pipe_fork(t_data *data, int x, int status)
 		if (send_to_child(data, fds, x) == -1)
 		{
 			close_diff_fds(fds, data, 0);
+			printf("fails send to child\n");
 			return (-1);
 		}
 		close_diff_fds(fds, data, 2);

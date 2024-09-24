@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/23 17:46:57 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 11:59:31 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,6 @@ int	check_path(char *string, int divert, t_data *data, int x)
 
 	cmd_len = 0;
 	suffix = NULL;
-	if (string == NULL)
-		return (0);
 	res = initial_checks_and_setup(&suffix, &cmd_len, data, x);
 	if (res == 3)
 	{
@@ -104,6 +102,11 @@ int	check_path(char *string, int divert, t_data *data, int x)
 			return (0);
 		data->tmp->filename = ft_strdup(data->tokens->args[x]);
 		return (res);
+	}
+	if (string == NULL)
+	{
+		suffix = free_string(suffix);
+		return (0);
 	}
 	if (res != 2)
 		return (res);

@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:31 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/23 18:15:08 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 13:08:19 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	minishell(t_data *data)
 	{
 		set_signals(g_interactive_mode);
 		rl = readline(data->prompt);
-		add_history(rl);
 		if (!rl)
 			break ;
+		add_history(rl);
 		if (rl)
 		{
 			if (collect_cmd_array(data, data->tokens, rl) == 0)

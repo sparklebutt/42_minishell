@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/23 13:50:24 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 16:49:00 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_tokens
 	bool	redirect_in;
 	bool	redirect_out;
 	bool	redirect_append;
+	bool	ignore_heredoc;
 }	t_tokens;
 
 typedef struct s_temps
@@ -238,6 +239,7 @@ void			free_array(char **array);
 char			*free_string(char *string);
 void			free_nodes(t_env *nodes);
 char			**free_loop(char **arr, int index);
+void	free_stuff(t_data *data, int flag);
 
 // signals
 void			here_signal(int sig);
@@ -277,7 +279,7 @@ int				handle_line(t_data data, t_tokens *tokens, t_env **env);
 int				is_builtins(char *cmd);
 int				exec_builtins(t_data data, char *cmd, t_env **envs);
 t_env			*init(t_data *data);
-void			heredoc_loop(t_data *data, t_tokens *tokens, char *eof);
+void			heredoc_loop(t_data *data, int fd, t_tokens *tokens, char *eof);
 int				parse_heredoc(char **args);
 
 // forking
@@ -314,8 +316,6 @@ int				null_check(char *str1, t_env *str2, char *str3);
 t_env			*create_env_list(char *value, char *key, char *temp);
 
 void			init_adv_loop(t_temps *tmp);
-char			*stupid_function(size_t *word, t_temps *tmp, const char *s);
-void			stupid_function_2(int *words, int *i, const char *s, char c);
 void			stupid_function_3(t_tokens *tokens, int *quote_count,
 					int i, int *x);
 int				get_word_len(int *check, int *x);

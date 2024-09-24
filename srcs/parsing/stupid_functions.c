@@ -6,19 +6,11 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 11:14:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/24 09:36:46 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 12:52:07 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*stupid_function(size_t *word, t_temps *tmp, const char *s)
-{
-	(void)word;
-	// (*word)++;
-	lol(&tmp->i, &tmp->x);
-	return (ft_substr(s, tmp->word_len, 1));
-}
 
 void	stupid_function_3(t_tokens *tokens, int *quote_count, int i, int *x)
 {
@@ -42,9 +34,12 @@ int	checks_before_redir(t_data *data, char **args)
 		data->i += 2;
 	}
 	if (args[data->i] != NULL && args[data->i][0] == '|')
+	{
 		data->i++;
-	if (args[data->i] != NULL
-		&& check_path(data->tmp->env_line, 1, data, data->i) == 0)
+		return (0);
+	}
+	if (args[data->i] != NULL && check_path(data->tmp->env_line,
+		1, data, data->i) == 0)
 		return (-1);
 	return (0);
 }

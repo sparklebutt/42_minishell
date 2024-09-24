@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/24 09:47:19 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 10:07:37 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,5 +141,6 @@ char	**ft_split_adv(char const *s, t_data *data)
 	if (!s || !array)
 		return (NULL);
 	array = adv_loop(array, s, data->tokens->array_count, data);
+	// print_arr(array, "array");
 	return (array);
 }

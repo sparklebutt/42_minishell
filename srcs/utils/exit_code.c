@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 08:40:21 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/23 18:10:32 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 16:07:32 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,7 @@ void	free_stuff(t_data *data, int flag)
 
 void	free_n_exit(t_data *data, int *fds, int flag)
 {
-	if (flag == 1)
-		close(fds[1]);
-	else if (flag == 2)
+	if (flag == 2)
 	{
 		close(fds[0]);
 		close(fds[1]);
@@ -64,12 +62,12 @@ void	free_n_exit(t_data *data, int *fds, int flag)
 	}
 	if (flag == 1 || flag == 0)
 		free_stuff(data, 1);
-	if (data->tokens->here_file != NULL)
-	{
-		unlink(data->tokens->here_file);
-		data->tokens->here_file = free_string(data->tokens->here_file);
-		free_array(data->tokens->heredoc);
-		data->tokens->heredoc = NULL;
-	}
+	// if (data->tokens->here_file != NULL)
+	// {
+	// 	unlink(data->tokens->here_file);
+	// 	data->tokens->here_file = free_string(data->tokens->here_file);
+	// 	free_array(data->tokens->heredoc);
+	// 	data->tokens->heredoc = NULL;
+	// }
 	exit(exit_code(0, 0));
 }

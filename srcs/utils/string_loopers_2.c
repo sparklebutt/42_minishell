@@ -6,7 +6,7 @@
 /*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:08:22 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/23 13:49:06 by vkettune         ###   ########.fr       */
+/*   Updated: 2024/09/24 15:58:36 by vkettune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	parse_redir_loop(t_data *data, int *i, int *x)
 	fd = 0;
 	args = data->tokens->args;
 	if (ft_strlen(args[*i]) == 2 && ft_strncmp(args[*i], "<<", 2) == 0)
-		heredoc_loop(data, data->tokens, args[*i + 1]);
+		heredoc_loop(data, 0, data->tokens, args[*i + 1]);
 	else if (args[*i + 1] != NULL && is_redirect(args[*i]) == 1)
 		input_helper(data->tokens, fd, *i);
 	else if (args[*i + 1] != NULL && (ft_strncmp(args[*i], ">>", 2) == 0
