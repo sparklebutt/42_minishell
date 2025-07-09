@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_loopers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:08:22 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/23 13:02:19 by vkettune         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:07:05 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,6 @@ void	fancy_loop(const char *s, int *i, char c)
 	while (s[*i] && s[*i] != c)
 		(*i)++;
 }
-
-// void	stupid_if_statement(const char *s, int *i, int *words)
-// {
-// 	if (s[*i] == '"' && (*i)++)
-// 	{
-// 		while (s[*i] && s[*i] != '"')
-// 			(*i)++;
-// 		(*words)++;
-// 	}
-// 	else if (s[*i] == '\'' && (*i)++)
-// 	{
-// 		while (s[*i] && s[*i] != '\'')
-// 			(*i)++;
-// 		(*words)++;
-// 	}
-// }
 
 void	close_diff_fds(int *fds, t_data *data, int flag)
 {

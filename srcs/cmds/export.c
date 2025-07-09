@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:04:51 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/24 17:47:41 by vkettune         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:00:52 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,9 @@ void	export_alphabetical(t_data *data)
 
 void	ft_export(t_data *data)
 {
-	t_tokens	*tokens;
 	int			i;
 
 	i = 1;
-	tokens = data->tokens;
 	if (data->tokens->array_count == 1)
 		export_alphabetical(data);
 	else

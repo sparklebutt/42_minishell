@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: shaboom <shaboom@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 12:56:39 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/24 18:21:15 by vkettune         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:12:45 by shaboom          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include <stdbool.h>
 # include "libft.h"
 
-volatile extern sig_atomic_t	g_interactive_mode;
+extern volatile sig_atomic_t	g_interactive_mode;
 
 typedef struct s_env
 {

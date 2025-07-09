@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: shaboom <shaboom@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 08:17:55 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/24 17:51:55 by vkettune         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:33:35 by shaboom          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	handle_line(t_data data, t_tokens *tokens, t_env **env)
 		if (tokens->pipe_count == 0 && tokens->redirect_count == 0
 			&& is_builtins(tokens->args[data.i]) == 1)
 		{
+			
 			exit_code(1, 0);
 			exec_builtins(data, tokens->args[data.i], env);
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:11:33 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/24 17:48:04 by vkettune         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:00:46 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,8 @@ int	check_num(char *str)
 
 void	ft_exit(t_data *data, char *cmd, t_tokens *tokens)
 {
-	char	*temp;
 	int		code;
 
-	temp = NULL;
 	code = 0;
 	ft_printf("exit\n");
 	if (tokens->array_count > 1)

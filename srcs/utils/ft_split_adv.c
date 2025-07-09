@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_adv.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:10:33 by araveala          #+#    #+#             */
-/*   Updated: 2024/09/24 17:37:36 by vkettune         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:00:58 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,9 +128,7 @@ char	**adv_loop(char **array, const char *s, size_t total_words,
 char	**ft_split_adv(char const *s, t_data *data)
 {
 	char	**array;
-	int		x;
 
-	x = 0;
 	if (s[0] == '|')
 		return (not_perror("syntax error", NULL, "unexpected token\n"), NULL);
 	array = NULL;

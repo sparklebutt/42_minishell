@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: shaboom <shaboom@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:33:22 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/24 18:12:06 by vkettune         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:59:20 by shaboom          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ int	parse_redirections(t_data *data, t_tokens *tokens, char **args, int i)
 	int	x;
 
 	x = 0;
+	if (tokens->out_a_count == 0 && tokens->in_a_count == 0)
+		return (0);
 	tokens->redirect_out = false;
 	while (args[i] != NULL)
 	{

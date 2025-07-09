@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: araveala <araveala@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:50:47 by vkettune          #+#    #+#             */
-/*   Updated: 2024/09/24 17:44:41 by vkettune         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:00:20 by araveala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,7 @@ int	iterate_and_match(char *suffix, size_t cmd_len, t_data *data, int x)
 				if (ft_strncmp(dp->d_name, data->tokens->args[x], cmd_len) == 0
 					&& ft_strlen(dp->d_name) == cmd_len)
 					return (match(data->tmp, dir, suffix, i));
-				if (i != 0)
-					dp = readdir(dir);
+				dp = readdir(dir);
 			}
 			closedir(dir);
 		}

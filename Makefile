@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vkettune <vkettune@student.hive.fi>        +#+  +:+       +#+         #
+#    By: shaboom <shaboom@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 12:56:28 by vkettune          #+#    #+#              #
-#    Updated: 2024/09/24 18:17:21 by vkettune         ###   ########.fr        #
+#    Updated: 2025/07/09 14:35:07 by shaboom          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ CYAN = \033[0;96m
 WHITE = \033[0;97m
 
 NAME = minishell
-FLAGS = -Wall -Wextra -Werror $(HEADERS)
+FLAGS = -Wall -Wextra -Werror -g $(HEADERS)
 HEADERS = -I ./incs/
 
 LIBS = $(READLINE) $(LIBFT)
